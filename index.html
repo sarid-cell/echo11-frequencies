@@ -204,21 +204,12 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <div class="prog-lbl" id="prog-lbl">Your progress</div>
     <div class="streak-card">
       <div style="display:flex;align-items:center;gap:10px">
-        <div class="sk-n" id="sk-num">11</div>
-        <div><div class="sk-lbl" id="sk-lbl">day streak</div><div class="sk-sub" id="sk-sub">Most played: 432 Hz</div></div>
+        <div class="sk-n" id="sk-num">0</div>
+        <div><div class="sk-lbl" id="sk-lbl">day streak</div><div class="sk-sub" id="sk-sub">Start listening today</div></div>
       </div>
       <div>
-        <div class="sk-bars">
-          <div class="sk-bar h" style="height:38%"></div><div class="sk-bar h" style="height:62%"></div>
-          <div class="sk-bar h" style="height:48%"></div><div class="sk-bar h" style="height:78%"></div>
-          <div class="sk-bar h" style="height:52%"></div><div class="sk-bar h" style="height:68%"></div>
-          <div class="sk-bar t" style="height:88%" id="today-bar"></div>
-        </div>
-        <div class="sk-days">
-          <div class="sk-d">M</div><div class="sk-d">T</div><div class="sk-d">W</div>
-          <div class="sk-d">T</div><div class="sk-d">F</div><div class="sk-d">S</div>
-          <div class="sk-d t">S</div>
-        </div>
+        <div class="sk-bars" id="sk-bars-wrap"></div>
+        <div class="sk-days" id="sk-days-wrap"></div>
       </div>
     </div>
     <div class="hero" onclick="openPlayer('hz432')">
@@ -262,11 +253,6 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
     <button class="lib-link" id="lib-link" onclick="showLibrary()">← Full Library · 22 Frequencies</button>
   </div>
-  <div style="text-align:center;padding:8px;border-top:.5px solid var(--b1)">
-  <a href="legal.html" style="font-size:9px;letter-spacing:.18em;color:var(--t3);text-decoration:none;font-family:inherit">
-    Privacy · Accessibility · Terms · echo.11 © 2026
-  </a>
-</div>
   <div class="acc-bar"><button class="pill on">Aa</button><button class="pill" onclick="changeFontSize(1)">A+</button><button class="pill" onclick="changeFontSize(-1)">A−</button></div>
 </div>
 
@@ -390,6 +376,105 @@ let volume=40,elapsed=0,activeTab=0,selTimerSec=1200
 let elapsedIv=null,audioCtx=null,audioNodes={}
 let playerAnimId=null,playerT=0
 
+// ══ localStorage ENGINE ══════════════════════════════════════
+const STORE_KEY='echo11_sessions'
+
+function getTodayKey(){
+  const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+}
+
+function loadSessions(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'{}') }catch(e){ return {} }
+}
+
+function saveSession(freqId, seconds){
+  if(seconds<5) return // ignore accidental taps
+  const sessions=loadSessions()
+  const key=getTodayKey()
+  if(!sessions[key]) sessions[key]={total:0,freqs:{}}
+  sessions[key].total+=seconds
+  sessions[key].freqs[freqId]=(sessions[key].freqs[freqId]||0)+seconds
+  // keep only last 30 days
+  const keys=Object.keys(sessions).sort()
+  while(keys.length>30){ delete sessions[keys.shift()] }
+  try{ localStorage.setItem(STORE_KEY,JSON.stringify(sessions)) }catch(e){}
+  renderStreak()
+}
+
+function calcStreak(sessions){
+  let streak=0,d=new Date()
+  while(true){
+    const key=`${d.getFullYear()}-${(d.getMonth()+1)}-${d.getDate()}`
+    if(sessions[key]&&sessions[key].total>0){ streak++; d.setDate(d.getDate()-1) }
+    else break
+  }
+  return streak
+}
+
+function getMostPlayed(sessions){
+  const counts={}
+  Object.values(sessions).forEach(day=>{
+    Object.entries(day.freqs||{}).forEach(([id,s])=>{ counts[id]=(counts[id]||0)+s })
+  })
+  const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0]
+  if(!top) return null
+  return FREQS.find(f=>f.id===top[0])
+}
+
+function get7Days(){
+  const sessions=loadSessions()
+  const days=[]
+  for(let i=6;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i)
+    const key=`${d.getFullYear()}-${(d.getMonth()+1)}-${d.getDate()}`
+    const label=['M','T','W','T','F','S','S'][d.getDay()===0?6:d.getDay()-1]
+    days.push({ key, label, secs:(sessions[key]?.total||0), isToday:i===0 })
+  }
+  return days
+}
+
+function renderStreak(){
+  const sessions=loadSessions()
+  const streak=calcStreak(sessions)
+  const days=get7Days()
+  const maxSecs=Math.max(...days.map(d=>d.secs),1)
+  const top=getMostPlayed(sessions)
+
+  // Update streak number
+  document.getElementById('sk-num').textContent=streak
+  const lbl=lang==='he'?'ימים רצופים':'day streak'
+  document.getElementById('sk-lbl').textContent=lbl
+
+  // Update sub
+  const subEl=document.getElementById('sk-sub')
+  if(top){
+    const name=top[lang]?.name||top.en.name
+    subEl.textContent=(lang==='he'?'הכי מאוזן: ':'Most played: ')+name+' · '+top.hz+' Hz'
+  } else {
+    subEl.textContent=lang==='he'?'התחילי להאזין היום':'Start listening today'
+  }
+
+  // Rebuild bars
+  const barsEl=document.getElementById('sk-bars-wrap')
+  const daysEl=document.getElementById('sk-days-wrap')
+  barsEl.innerHTML=''
+  daysEl.innerHTML=''
+  days.forEach(day=>{
+    const pct=day.secs>0?Math.max(12,Math.round((day.secs/maxSecs)*100)):5
+    const bar=document.createElement('div')
+    bar.className='sk-bar'+(day.secs>0?' h':'')+(day.isToday?' t':'')
+    bar.style.height=pct+'%'
+    if(day.isToday) bar.id='today-bar'
+    bar.title=day.secs>0?`${Math.round(day.secs/60)} min`:''
+    barsEl.appendChild(bar)
+
+    const dl=document.createElement('div')
+    dl.className='sk-d'+(day.isToday?' t':'')
+    dl.textContent=day.label
+    daysEl.appendChild(dl)
+  })
+}
+
 function getCtx(){
   if(!audioCtx||audioCtx.state==='closed') audioCtx=new(window.AudioContext||window.webkitAudioContext)()
   if(audioCtx.state==='suspended') audioCtx.resume()
@@ -423,9 +508,11 @@ function audioVol(id,v){ const n=audioNodes[id]; if(!n) return; try{getCtx(); n.
 
 async function enterApp(){
   try{ const c=new(window.AudioContext||window.webkitAudioContext)(); await c.resume(); c.close() }catch(e){}
-  document.getElementById('splash').style.display='none'; showHome()
+  document.getElementById('splash').style.display='none'
+  renderStreak()
+  showHome()
 }
-function showHome(){ show('home') }
+function showHome(){ show('home'); renderStreak() }
 function showLibrary(){ buildLibrary(); show('library') }
 // FIX 4 — stop audio when leaving player
 function leavePlayer(){ if(playing) doStop(); show('home') }
@@ -479,7 +566,10 @@ function updatePlayBtn(){
   }
 }
 function doStop(){
-  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); elapsed=0
+  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv)
+  // Save real session to localStorage
+  if(elapsed>5) saveSession(f.id, elapsed)
+  elapsed=0
   document.getElementById('el-row').style.display='none'
   document.getElementById('compassWrap').style.display='none'
   updatePlayBtn()
@@ -494,16 +584,30 @@ function togglePlay(){
   elapsedIv=setInterval(()=>{
     elapsed++
     const ts=`${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}`
-    // FIX 2 — grow today's bar
-    document.getElementById('today-bar').style.height=Math.min(98,88+elapsed/30)+'%'
+    // Timer display: show elapsed / total if timer set
+    let timerDisplay=ts
+    if(selTimerSec>0){
+      const remaining=selTimerSec-elapsed
+      const rem=Math.max(0,remaining)
+      const remStr=`${Math.floor(rem/60)}:${String(rem%60).padStart(2,'0')}`
+      timerDisplay=`${ts} / ${Math.floor(selTimerSec/60)}:${String(selTimerSec%60).padStart(2,'0')} · ${remStr} left`
+    }
+    // Update today bar from localStorage
+    const todayBar=document.getElementById('today-bar')
+    if(todayBar){
+      const sessions=loadSessions()
+      const key=getTodayKey()
+      const todaySecs=(sessions[key]?.total||0)+elapsed
+      todayBar.style.height=Math.min(98,Math.max(5,Math.round(todaySecs/6)))+'%'
+    }
     // brain state
-    document.getElementById('bs-fill').style.width=Math.min(100,(elapsed/1200)*100)+'%'
+    document.getElementById('bs-fill').style.width=Math.min(100,(elapsed/(selTimerSec||1200))*100)+'%'
     document.getElementById('bs-time').textContent=ts
     const s=[...BRAIN].reverse().find(b=>elapsed>=b.t); if(s) document.getElementById('bs-txt').innerHTML=s[lang]
-    // FIX 8 — elapsed row
+    // elapsed row
     const er=document.getElementById('el-row'); er.style.display='flex'
-    document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${ts}`
-    // FIX 1 — compass draw
+    document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
+    // compass draw
     drawCompass(elapsed,selTimerSec); document.getElementById('compassTime').textContent=ts
     // timer end
     if(selTimerSec>0 && elapsed>=selTimerSec) doStop()
