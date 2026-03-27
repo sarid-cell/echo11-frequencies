@@ -282,15 +282,9 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <div class="pl-num" id="pl-num">B5 · solfeggio</div>
     </div>
   </div>
-  <div class="pl-cv-wrap">
-    <canvas id="playerCv"></canvas>
-    <!-- FIX 1: compass timer -->
-    <div class="compass-wrap" id="compassWrap">
-      <canvas id="compassCv" width="44" height="44"></canvas>
-      <div class="compass-time" id="compassTime">0:00</div>
-    </div>
-    <button class="pl-arr" style="right:10px" onclick="nextFreq()">›</button>
-    <button class="pl-arr" style="left:10px" onclick="prevFreq()">‹</button>
+  <div style="position:relative;z-index:2;flex-shrink:0;display:flex;justify-content:space-between;padding:0 4px">
+    <button class="pl-arr" onclick="prevFreq()">‹</button>
+    <button class="pl-arr" onclick="nextFreq()">›</button>
   </div>
   <div class="pl-freq-bar">
     <div style="display:flex;align-items:baseline;gap:5px">
@@ -560,10 +554,10 @@ function show(id){
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
   if(idx>=0){ if(playing) doStop(); curIdx=idx; renderPlayer() }
-  show('player'); setTimeout(initPlayerCanvas,80)
+  show('player'); 
 }
-function nextFreq(){ if(playing) doStop(); curIdx=(curIdx+1)%FREQS.length; renderPlayer(); setTimeout(initPlayerCanvas,80) }
-function prevFreq(){ if(playing) doStop(); curIdx=(curIdx-1+FREQS.length)%FREQS.length; renderPlayer(); setTimeout(initPlayerCanvas,80) }
+function nextFreq(){ if(playing) doStop(); curIdx=(curIdx+1)%FREQS.length; renderPlayer();  }
+function prevFreq(){ if(playing) doStop(); curIdx=(curIdx-1+FREQS.length)%FREQS.length; renderPlayer();  }
 
 function renderPlayer(){
   const f=FREQS[curIdx],t=f[lang]||f.en
@@ -583,7 +577,7 @@ function renderPlayer(){
   document.getElementById('bs-fill').style.width='0%'
   document.getElementById('bs-time').textContent='0:00'
   document.getElementById('el-row').style.display='none'
-  document.getElementById('compassWrap').style.display='none'
+  
   updatePlayBtn()
 }
 function setTab(i,el){ activeTab=i; document.querySelectorAll('.pl-tab').forEach(t=>t.classList.remove('on')); el.classList.add('on'); renderTab() }
@@ -607,7 +601,7 @@ function doStop(){
   if(elapsed>5) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
-  document.getElementById('compassWrap').style.display='none'
+  
   updatePlayBtn()
 }
 function togglePlay(){
@@ -615,7 +609,7 @@ function togglePlay(){
   if(playing){ doStop(); return }
   audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0
   // FIX 1 — show compass
-  const cw=document.getElementById('compassWrap'); cw.style.display='flex'
+  
   clearInterval(elapsedIv)
   elapsedIv=setInterval(()=>{
     elapsed++
@@ -644,46 +638,11 @@ function togglePlay(){
     const er=document.getElementById('el-row'); er.style.display='flex'
     document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
     // compass draw
-    drawCompass(elapsed,selTimerSec); document.getElementById('compassTime').textContent=ts
+    
     // timer end
     if(selTimerSec>0 && elapsed>=selTimerSec) doStop()
   },1000)
   updatePlayBtn()
-}
-
-// FIX 1 — compass drawing (sketch/watch style)
-function drawCompass(elapsed,total){
-  const cv=document.getElementById('compassCv'),ctx=cv.getContext('2d')
-  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,R=18
-  ctx.clearRect(0,0,W,H)
-  const dk=document.body.classList.contains('dark')
-  const c1=dk?'rgba(200,196,184,0.85)':'rgba(30,28,22,0.7)'
-  const c2=dk?'rgba(200,196,184,0.2)':'rgba(30,28,22,0.15)'
-  // outer ring
-  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.strokeStyle=c2; ctx.lineWidth=.5; ctx.stroke()
-  // tick marks — compass rose style
-  for(let i=0;i<12;i++){
-    const a=i/12*Math.PI*2-Math.PI/2, major=i%3===0
-    const r1=major?R-5:R-3, r2=R
-    ctx.beginPath(); ctx.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1); ctx.lineTo(cx+Math.cos(a)*r2,cy+Math.sin(a)*r2)
-    ctx.strokeStyle=major?c1:c2; ctx.lineWidth=major?.9:.4; ctx.stroke()
-  }
-  // progress arc
-  if(total>0){
-    const prog=Math.min(1,elapsed/total)
-    ctx.beginPath(); ctx.arc(cx,cy,R-5,-Math.PI/2,-Math.PI/2+prog*Math.PI*2); ctx.strokeStyle=c1; ctx.lineWidth=1.5; ctx.stroke()
-    // needle
-    const na=-Math.PI/2+prog*Math.PI*2
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(na)*(R-7),cy+Math.sin(na)*(R-7))
-    ctx.strokeStyle=c1; ctx.lineWidth=.9; ctx.stroke()
-  } else {
-    // infinite — rotating needle
-    const na=-Math.PI/2+(elapsed/60)*Math.PI*2
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(na)*(R-7),cy+Math.sin(na)*(R-7))
-    ctx.strokeStyle=c1; ctx.lineWidth=.9; ctx.stroke()
-  }
-  // center dot
-  ctx.beginPath(); ctx.arc(cx,cy,2,0,Math.PI*2); ctx.fillStyle=c1; ctx.fill()
 }
 
 // Library
@@ -768,91 +727,6 @@ function toggleLang(){
 })()
 
 // Player canvas
-function initPlayerCanvas(){
-  if(playerAnimId) cancelAnimationFrame(playerAnimId)
-  const cv=document.getElementById('playerCv'),ctx=cv.getContext('2d')
-  function resize(){ cv.width=cv.offsetWidth||400; cv.height=cv.offsetHeight||160 }
-  setTimeout(resize,80); new ResizeObserver(resize).observe(cv)
-  const spd=FREQS[curIdx]?.morph||.022
-  function frame(){
-    const W=cv.width,H=cv.height
-    if(!W||!H){playerT+=.28;playerAnimId=requestAnimationFrame(frame);return}
-    ctx.clearRect(0,0,W,H)
-    const dk=document.body.classList.contains('dark')
-    const pA=playing?1:.28
-
-    // background
-    ctx.fillStyle=dk?'#050402':'#f2f0ea'
-    ctx.fillRect(0,0,W,H)
-
-    // horizon glow — breathes at frequency
-    const gA=playing?.08+.04*Math.sin(playerT*spd*.06):.02
-    const gc=dk?'185,181,170':'145,140,128'
-    const hg=ctx.createLinearGradient(0,H*.25,0,H*.6)
-    hg.addColorStop(0,`rgba(${gc},0)`)
-    hg.addColorStop(.5,`rgba(${gc},${gA})`)
-    hg.addColorStop(1,`rgba(${gc},0)`)
-    ctx.fillStyle=hg;ctx.fillRect(0,H*.22,W,H*.4)
-
-    // 3 dune layers — no figure
-    const dunesDk=[['#0f0e0a','#0b0a07','#070605']]
-    const dunesLt=[['#e0dbd2','#d4cfc6','#c8c3ba']]
-    ;[[H*.88,H*.1,2.2,.18],[H*.80,H*.07,3.5,.13],[H*.73,H*.05,5.2,.09]].forEach(([y,amp,fr,sp],li)=>{
-      const col=dk?['#100f0c','#0c0b09','#08080605'][li]:['#e0dbd2','#d4cfc6','#c8c3ba'][li]
-      ctx.beginPath();ctx.moveTo(0,H)
-      for(let x=0;x<=W;x+=3){
-        const wy=y+(amp*Math.sin((x/W)*Math.PI*fr+playerT*sp*spd)+amp*.28*Math.sin((x/W)*Math.PI*(fr*1.7)+playerT*sp*spd*1.3))*pA
-        x===0?ctx.moveTo(x,wy):ctx.lineTo(x,wy)
-      }
-      ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath()
-      ctx.fillStyle=col;ctx.fill()
-      // crest shimmer
-      ctx.beginPath()
-      for(let x=0;x<=W;x+=3){
-        const wy=y+(amp*Math.sin((x/W)*Math.PI*fr+playerT*sp*spd)+amp*.28*Math.sin((x/W)*Math.PI*(fr*1.7)+playerT*sp*spd*1.3))*pA
-        x===0?ctx.moveTo(x,wy):ctx.lineTo(x,wy)
-      }
-      ctx.strokeStyle=dk?'rgba(185,181,170,.04)':'rgba(14,12,9,.04)'
-      ctx.lineWidth=.5;ctx.stroke()
-    })
-
-    // sand particles when playing
-    if(playing) for(let i=0;i<24;i++){
-      const px=((i*97+playerT*spd*5*(i%2?1:-1))%W+W)%W
-      const py=H*.72+H*.2*((i*53)%100)/100
-      const pa=.06+.09*Math.sin(playerT*spd*.15+i);if(pa<.02) continue
-      ctx.beginPath();ctx.arc(px,py,.4,0,Math.PI*2)
-      ctx.fillStyle=dk?`rgba(185,181,170,${pa})`:`rgba(14,12,9,${pa*.4})`
-      ctx.fill()
-    }
-
-    // light column when playing — centered, poetic
-    if(playing){
-      const cx=W*.5
-      const rA=.05+.025*Math.sin(playerT*spd*.04)
-      const rg=ctx.createLinearGradient(cx,0,cx,H*.85)
-      const lv=dk?'205,201,190':'160,155,143'
-      rg.addColorStop(0,`rgba(${lv},0)`)
-      rg.addColorStop(.75,`rgba(${lv},${rA})`)
-      rg.addColorStop(1,`rgba(${lv},0)`)
-      ctx.beginPath()
-      ctx.moveTo(cx-W*.012,0);ctx.lineTo(cx+W*.012,0)
-      ctx.lineTo(cx+W*.007,H*.85);ctx.lineTo(cx-W*.007,H*.85)
-      ctx.closePath();ctx.fillStyle=rg;ctx.fill()
-    }
-
-    // stars in dark mode
-    if(dk) for(let i=0;i<28;i++){
-      const sx=((i*137+playerT*.04)%W),sy=((i*43)%(H*.45))
-      const pa=(playing?.25:.1)*((i*13%100)/100)
-      ctx.beginPath();ctx.arc(sx,sy,.4,0,Math.PI*2)
-      ctx.fillStyle=`rgba(245,244,240,${pa})`;ctx.fill()
-    }
-
-    playerT+=.28;playerAnimId=requestAnimationFrame(frame)
-  }
-  playerAnimId=requestAnimationFrame(frame)
-}
 </script>
 </body>
 </html>
