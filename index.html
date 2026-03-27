@@ -14,8 +14,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
 input[type=range]{accent-color:var(--t3);width:100%}
 ::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.scr{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);overflow:hidden}
-.scr.on{display:flex}
+.scr{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);overflow:hidden;opacity:0;transition:opacity .35s ease}
+.scr.on{display:flex;opacity:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.scr.on > *{animation:fadeUp .45s ease both}
 
 /* SPLASH */
 #splash{position:fixed;inset:0;background:var(--bg);overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end}
@@ -199,12 +201,12 @@ input[type=range]{accent-color:var(--t3);width:100%}
 <div id="home" class="scr">
   <div class="app-hdr" style="position:absolute;top:0;left:0;right:0;z-index:10;background:transparent;border-bottom:none">
     <div class="brand-wrap">
-      <div class="brand-bars"><span class="bb" style="opacity:.9"></span><span class="bt" style="opacity:.5"></span><span class="bsp"></span><span class="bt" style="opacity:.5"></span><span class="bb" style="opacity:.9"></span></div>
-      <div><div class="brand-name" style="color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.3)">echo.11</div><div class="brand-tag" id="hm-tag" style="color:rgba(255,255,255,.55)">tune your mind</div></div>
+      <div class="brand-bars"><span class="bb"></span><span class="bt"></span><span class="bsp"></span><span class="bt"></span><span class="bb"></span></div>
+      <div><div class="brand-name">echo.11</div><div class="brand-tag" id="hm-tag">tune your mind</div></div>
     </div>
     <div class="hdr-r">
-      <button class="pill" id="lang-h" onclick="toggleLang()" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)">עב</button>
-      <button class="pill" id="dark-h" onclick="toggleDark()" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)">◐ Dark</button>
+      <button class="pill" id="lang-h" onclick="toggleLang()">עב</button>
+      <button class="pill" id="dark-h" onclick="toggleDark()">◐ Dark</button>
     </div>
   </div>
 
@@ -256,6 +258,11 @@ input[type=range]{accent-color:var(--t3);width:100%}
       </button>
     </div>
     <button class="lib-link" id="lib-link" onclick="showLibrary()">← Full Library · 22 Frequencies</button>
+    <div style="text-align:center;padding:6px 14px 14px">
+      <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:8px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;display:inline-block;padding:6px 0">
+        Privacy · Accessibility · Terms · echo.11 © 2026
+      </a>
+    </div>
   </div>
   <div class="acc-bar"><button class="pill on">Aa</button><button class="pill" onclick="changeFontSize(1)">A+</button><button class="pill" onclick="changeFontSize(-1)">A−</button></div>
 </div>
@@ -533,8 +540,12 @@ function showLibrary(){ buildLibrary(); show('library') }
 // FIX 4 — stop audio when leaving player
 function leavePlayer(){ if(playing) doStop(); show('home') }
 function show(id){
-  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'))
-  document.getElementById(id).classList.add('on')
+  const prev=document.querySelector('.scr.on')
+  const next=document.getElementById(id)
+  if(prev===next) return
+  if(prev){ prev.classList.remove('on'); prev.style.display='none' }
+  next.style.display='flex'
+  requestAnimationFrame(()=>{ next.classList.add('on') })
   document.body.dir=lang==='he'?'rtl':'ltr'
 }
 function openPlayer(fid){
@@ -759,105 +770,74 @@ function initPlayerCanvas(){
     if(!W||!H){playerT+=.28;playerAnimId=requestAnimationFrame(frame);return}
     ctx.clearRect(0,0,W,H)
     const dk=document.body.classList.contains('dark')
-    const pA=playing?1:.32
+    const pA=playing?1:.28
 
-    if(dk){
-      // dark: black sky
-      ctx.fillStyle='#000';ctx.fillRect(0,0,W,H)
-      // stars
-      for(let i=0;i<30;i++){
-        const sx=((i*137+playerT*.05)%W),sy=((i*43)%(H*.5))
-        ctx.beginPath();ctx.arc(sx,sy,.5,0,Math.PI*2)
-        ctx.fillStyle=`rgba(245,244,240,${(playing?.3:.12)*((i*13%100)/100)})`;ctx.fill()
-      }
-    } else {
-      // light: warm paper
-      ctx.fillStyle='#f5f3ee';ctx.fillRect(0,0,W,H)
-    }
+    // background
+    ctx.fillStyle=dk?'#050402':'#f2f0ea'
+    ctx.fillRect(0,0,W,H)
 
-    // horizon glow
-    const gA=playing?.09+.04*Math.sin(playerT*spd*.06):.025
-    const hg=ctx.createLinearGradient(0,H*.3,0,H*.62)
-    const gc=dk?'185,181,170':'155,150,138'
+    // horizon glow — breathes at frequency
+    const gA=playing?.08+.04*Math.sin(playerT*spd*.06):.02
+    const gc=dk?'185,181,170':'145,140,128'
+    const hg=ctx.createLinearGradient(0,H*.25,0,H*.6)
     hg.addColorStop(0,`rgba(${gc},0)`)
     hg.addColorStop(.5,`rgba(${gc},${gA})`)
     hg.addColorStop(1,`rgba(${gc},0)`)
-    ctx.fillStyle=hg;ctx.fillRect(0,H*.28,W,H*.36)
+    ctx.fillStyle=hg;ctx.fillRect(0,H*.22,W,H*.4)
 
-    // dunes
-    const duneColors=dk
-      ?[['#0f0e0b','#0c0b08','#090806']]
-      :[['#e4e0d8','#d8d4cc','#ccc8bf']]
-    const dunes=[[H*.88,H*.1,2.2,.18],[H*.80,H*.07,3.5,.13],[H*.73,H*.05,5.2,.09]]
-    dunes.forEach(([y,amp,fr,sp],li)=>{
-      const col=dk?['#0f0e0b','#0c0b08','#090806'][li]:['#e4e0d8','#d8d4cc','#ccc8bf'][li]
+    // 3 dune layers — no figure
+    const dunesDk=[['#0f0e0a','#0b0a07','#070605']]
+    const dunesLt=[['#e0dbd2','#d4cfc6','#c8c3ba']]
+    ;[[H*.88,H*.1,2.2,.18],[H*.80,H*.07,3.5,.13],[H*.73,H*.05,5.2,.09]].forEach(([y,amp,fr,sp],li)=>{
+      const col=dk?['#100f0c','#0c0b09','#08080605'][li]:['#e0dbd2','#d4cfc6','#c8c3ba'][li]
       ctx.beginPath();ctx.moveTo(0,H)
       for(let x=0;x<=W;x+=3){
         const wy=y+(amp*Math.sin((x/W)*Math.PI*fr+playerT*sp*spd)+amp*.28*Math.sin((x/W)*Math.PI*(fr*1.7)+playerT*sp*spd*1.3))*pA
         x===0?ctx.moveTo(x,wy):ctx.lineTo(x,wy)
       }
-      ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fillStyle=col;ctx.fill()
-      // crest line
+      ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath()
+      ctx.fillStyle=col;ctx.fill()
+      // crest shimmer
       ctx.beginPath()
       for(let x=0;x<=W;x+=3){
         const wy=y+(amp*Math.sin((x/W)*Math.PI*fr+playerT*sp*spd)+amp*.28*Math.sin((x/W)*Math.PI*(fr*1.7)+playerT*sp*spd*1.3))*pA
         x===0?ctx.moveTo(x,wy):ctx.lineTo(x,wy)
       }
-      const edgeC=dk?'rgba(185,181,170,.05)':'rgba(14,12,9,.05)'
-      ctx.strokeStyle=edgeC;ctx.lineWidth=.5;ctx.stroke()
+      ctx.strokeStyle=dk?'rgba(185,181,170,.04)':'rgba(14,12,9,.04)'
+      ctx.lineWidth=.5;ctx.stroke()
     })
 
-    // astronaut figure
-    const ax=W*.63,ay=H*.8,sc=H*.1
-    const br=playing?1+.018*Math.sin(playerT*spd*.04):1
-    ctx.save();ctx.translate(ax,ay);ctx.scale(sc*br,sc*br)
-    const figCol=dk?'rgba(8,7,5,.96)':'rgba(14,12,9,.82)'
-    ctx.fillStyle=figCol
-    // body
-    ctx.beginPath();ctx.moveTo(-1.4,0);ctx.lineTo(-1.4,-4.2);ctx.lineTo(-.55,-4.2)
-    ctx.lineTo(-.38,-6.2);ctx.lineTo(.38,-6.2);ctx.lineTo(.55,-4.2)
-    ctx.lineTo(1.4,-4.2);ctx.lineTo(1.4,0);ctx.closePath();ctx.fill()
-    // helmet
-    ctx.beginPath();ctx.arc(0,-7.2,.88,0,Math.PI*2);ctx.fill()
-    // helmet shimmer when playing
-    if(playing){
-      ctx.beginPath();ctx.arc(0,-7.2,1.06,0,Math.PI*2)
-      const shimC=dk?`rgba(245,244,240,${.08+.06*Math.sin(playerT*.05)})`:
-                     `rgba(14,12,9,${.06+.04*Math.sin(playerT*.05)})`
-      ctx.strokeStyle=shimC;ctx.lineWidth=.04;ctx.stroke()
-    }
-    // cape
-    const cw=playing?Math.sin(playerT*spd*.04)*.55:0
-    ctx.beginPath();ctx.moveTo(-.3,-3.8)
-    ctx.quadraticCurveTo(-3.2+cw,.4,-3.8+cw*1.4,1.7)
-    ctx.lineTo(-1.3,.4);ctx.closePath()
-    const capeC=dk?'rgba(22,20,14,.85)':'rgba(14,12,9,.5)'
-    ctx.fillStyle=capeC;ctx.fill()
-    // legs
-    ctx.fillStyle=figCol;ctx.fillRect(-1.2,0,.8,2.1);ctx.fillRect(.4,0,.8,2.1)
-    ctx.restore()
-
     // sand particles when playing
-    if(playing) for(let i=0;i<28;i++){
+    if(playing) for(let i=0;i<24;i++){
       const px=((i*97+playerT*spd*5*(i%2?1:-1))%W+W)%W
-      const py=H*.74+H*.18*((i*53)%100)/100
-      const pa=.07+.1*Math.sin(playerT*spd*.15+i);if(pa<.02) continue
-      ctx.beginPath();ctx.arc(px,py,.45,0,Math.PI*2)
-      const pCol=dk?`rgba(185,181,170,${pa})`:`rgba(14,12,9,${pa*.5})`
-      ctx.fillStyle=pCol;ctx.fill()
+      const py=H*.72+H*.2*((i*53)%100)/100
+      const pa=.06+.09*Math.sin(playerT*spd*.15+i);if(pa<.02) continue
+      ctx.beginPath();ctx.arc(px,py,.4,0,Math.PI*2)
+      ctx.fillStyle=dk?`rgba(185,181,170,${pa})`:`rgba(14,12,9,${pa*.4})`
+      ctx.fill()
     }
 
-    // light column when playing
+    // light column when playing — centered, poetic
     if(playing){
-      const rA=.04+.02*Math.sin(playerT*spd*.04)
-      const rg=ctx.createLinearGradient(ax,0,ax,ay)
-      const lc=dk?205:180,la=dk?190:165,lb=dk?190:155
-      rg.addColorStop(0,`rgba(${lc},${la},${lb},0)`)
-      rg.addColorStop(.82,`rgba(${lc},${la},${lb},${rA})`)
-      rg.addColorStop(1,`rgba(${lc},${la},${lb},0)`)
-      ctx.beginPath();ctx.moveTo(ax-W*.009,0);ctx.lineTo(ax+W*.009,0)
-      ctx.lineTo(ax+W*.006,ay);ctx.lineTo(ax-W*.006,ay)
+      const cx=W*.5
+      const rA=.05+.025*Math.sin(playerT*spd*.04)
+      const rg=ctx.createLinearGradient(cx,0,cx,H*.85)
+      const lv=dk?'205,201,190':'160,155,143'
+      rg.addColorStop(0,`rgba(${lv},0)`)
+      rg.addColorStop(.75,`rgba(${lv},${rA})`)
+      rg.addColorStop(1,`rgba(${lv},0)`)
+      ctx.beginPath()
+      ctx.moveTo(cx-W*.012,0);ctx.lineTo(cx+W*.012,0)
+      ctx.lineTo(cx+W*.007,H*.85);ctx.lineTo(cx-W*.007,H*.85)
       ctx.closePath();ctx.fillStyle=rg;ctx.fill()
+    }
+
+    // stars in dark mode
+    if(dk) for(let i=0;i<28;i++){
+      const sx=((i*137+playerT*.04)%W),sy=((i*43)%(H*.45))
+      const pa=(playing?.25:.1)*((i*13%100)/100)
+      ctx.beginPath();ctx.arc(sx,sy,.4,0,Math.PI*2)
+      ctx.fillStyle=`rgba(245,244,240,${pa})`;ctx.fill()
     }
 
     playerT+=.28;playerAnimId=requestAnimationFrame(frame)
