@@ -88,7 +88,7 @@ a:hover{color:var(--t1)}
   <div class="hdr-r">
     <button class="pill" id="lang-btn" onclick="toggleLang()">עב</button>
     <button class="pill" id="dark-btn" onclick="toggleDark()">◐ Dark</button>
-    <a href="index.html" class="pill" id="app-btn" style="text-decoration:none;border:none">← App</a>
+    <a href="index.html" class="pill" id="app-btn" style="text-decoration:none;border:none" onclick="var f=new URLSearchParams(window.location.search).get('from');if(f)this.href='index.html#'+f">← App</a>
   </div>
 </div>
 
@@ -111,7 +111,7 @@ a:hover{color:var(--t1)}
       <div class="contact-icon">📧</div>
       <div>
         <div class="contact-label" id="pp-contact-lbl">Contact</div>
-        <div class="contact-value">echo11frequencies@gmail.com</div>
+        <div class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7217111a1d43431400170307171c111b170132151f131b1e5c111d1f">[email&#160;protected]</a></div>
       </div>
     </div>
   </div>
@@ -152,7 +152,7 @@ a:hover{color:var(--t1)}
 
   <div class="section">
     <div class="section-title" id="pp-s7-title">Your Rights (GDPR)</div>
-    <p class="body-text" id="pp-s7-text">Since we collect no personal data, there is nothing to access, correct, or delete. For any questions, contact us at echo11frequencies@gmail.com</p>
+    <p class="body-text" id="pp-s7-text">Since we collect no personal data, there is nothing to access, correct, or delete. For any questions, contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdd8ded5d28c8cdbcfd8ccc8d8d3ded4d8cefddad0dcd4d193ded2d0">[email&#160;protected]</a></p>
   </div>
 </div>
 
@@ -196,7 +196,7 @@ a:hover{color:var(--t1)}
       <div class="contact-icon">📧</div>
       <div>
         <div class="contact-label" id="ac-contact-lbl">Accessibility Contact</div>
-        <div class="contact-value">echo11frequencies@gmail.com</div>
+        <div class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b6d3d5ded98787d0c4d3c7c3d3d8d5dfd3c5f6d1dbd7dfda98d5d9db">[email&#160;protected]</a></div>
       </div>
     </div>
   </div>
@@ -261,7 +261,7 @@ a:hover{color:var(--t1)}
       <div class="contact-icon">📧</div>
       <div>
         <div class="contact-label" id="tu-contact-lbl">Questions about these terms</div>
-        <div class="contact-value">echo11frequencies@gmail.com</div>
+        <div class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e98c8a8186d8d88f9b8c989c8c878a808c9aa98e84888085c78a8684">[email&#160;protected]</a></div>
       </div>
     </div>
   </div>
@@ -277,7 +277,7 @@ a:hover{color:var(--t1)}
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 let lang='en', dark=false
 
 function showPage(id, el){
@@ -394,20 +394,4 @@ const STR={
     'tu-s5-title':'קניין רוחני','tu-s5-text':'כל התוכן, העיצוב, התדרים והמיתוג של echo.11 הם קניינה הרוחני של <strong>שירה שריד / echo.11</strong>. שם echo.11, הלוגו (‖ ‖), וזהות "האסטרונאוטית" מוגנים.',
     'tu-s6-title':'הגבלת אחריות','tu-s6-text':'echo.11 מסופקת "כמות שהיא" ללא אחריות מכל סוג. איננו אחראים לנזקים ישירים, עקיפים, או תוצאתיים.',
     'tu-s7-title':'דין חל','tu-s7-text':'תנאים אלה כפופים לדיני <strong>מדינת ישראל</strong>. סכסוכים יידונו בבתי המשפט בתל אביב.',
-    'tu-s8-title':'יצירת קשר','tu-contact-lbl':'שאלות לגבי תנאים אלה',
-    'footer-brand':'echo.11 · נוצרה על ידי שירה שריד · ישראל · 2024–2026 · ‖ ‖ כווני את מוחך',
-    'fl-pp':'מדיניות פרטיות','fl-ac':'נגישות','fl-tu':'תנאי שימוש','fl-app':'← חזרה לאפליקציה',
-  }
-}
-
-function toggleLang(){
-  lang=lang==='en'?'he':'en'
-  document.body.dir=lang==='he'?'rtl':'ltr'
-  Object.entries(STR[lang]).forEach(([id,val])=>{
-    const el=document.getElementById(id); if(!el) return
-    el.innerHTML=val
-  })
-}
-</script>
-</body>
-</html>
+    'tu-s8

@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f5f4f0;--bg2:#eeedea;--card:#fff;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#808078;--t4:#b0b0a8}
+:root{--bg:#f5f4f0;--bg2:#eeedea;--card:#fff;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#636360;--t4:#9a9890}
 .dark{--bg:#000;--bg2:#0c0c0a;--card:#111110;--b1:rgba(255,255,255,.14);--b2:rgba(255,255,255,.24);--b3:rgba(255,255,255,.38);--t1:#f5f5f0;--t2:#aaa8a2;--t3:#686862;--t4:#3a3a32}
 html,body{width:100%;height:100%;background:var(--bg);color:var(--t1);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color .35s;font-weight:300}
@@ -18,6 +18,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .scr.on{display:flex;opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .scr.on > *{animation:fadeUp .45s ease both}
+/* WCAG: minimum 10px for all functional text */
+.brand-tag,.sk-lbl,.sk-d,.modes-lbl,.prog-lbl,.pl-num,.card-cnt,.home-today-lbl,.home-freq-unit,.bs-sec-lbl,.timer-lbl,.pl-sub,.lb-gl,.pl-vl,.pl-vn{font-size:10px!important}
 
 /* SPLASH */
 #splash{position:fixed;inset:0;background:var(--bg);overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end}
@@ -259,7 +261,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
     <button class="lib-link" id="lib-link" onclick="showLibrary()">← Full Library · 22 Frequencies</button>
     <div style="text-align:center;padding:6px 14px 14px">
-      <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:8px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;display:inline-block;padding:6px 0">
+      <a href="legal.html?from=home" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;display:inline-block;padding:6px 0">
         Privacy · Accessibility · Terms · echo.11 © 2026
       </a>
     </div>
@@ -360,7 +362,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 <script>
 const FREQS=[
-  {id:'gamma', num:'A1',cat:'science', mode:'focus',   type:'pure',     hz:40,  cL:40,  cR:40,  beat:null,wave:'Gamma',morph:.045,noHp:true,en:{name:'Gamma MIT',sub:'Focus · Brain Health',desc:'MIT Picower Institute (2016) proved 40 Hz stimulation reduces amyloid proteins by 40% and improves cognitive performance.',res:'MIT Picower Institute · Nature, 2016',ideal:'Deep focus · Writing · Learning · Brain fog relief'},he:{name:'גמא MIT',sub:'ריכוז · בריאות המוח',desc:'מחקר MIT מ-2016 הוכיח כי גירוי ב-40 Hz מפחית חלבוני אמילואיד ב-40% ומשפר ביצועים קוגניטיביים.',res:'MIT · Nature, 2016',ideal:'ריכוז עמוק · כתיבה · למידה · מניעת ערפל מוחי'}},
+  {id:'gamma', num:'A1',cat:'science', mode:'focus',   type:'binaural',  hz:40,  cL:200, cR:240, beat:40,  wave:'Gamma',morph:.045,en:{name:'Gamma MIT',sub:'Focus · Brain Health',desc:'MIT Picower Institute (2016) proved 40 Hz stimulation reduces amyloid proteins by 40% and improves cognitive performance.',res:'MIT Picower Institute · Nature, 2016',ideal:'Deep focus · Writing · Learning · Brain fog relief'},he:{name:'גמא MIT',sub:'ריכוז · בריאות המוח',desc:'מחקר MIT מ-2016 הוכיח כי גירוי ב-40 Hz מפחית חלבוני אמילואיד ב-40% ומשפר ביצועים קוגניטיביים.',res:'MIT · Nature, 2016',ideal:'ריכוז עמוק · כתיבה · למידה · מניעת ערפל מוחי'}},
   {id:'alpha', num:'A2',cat:'science', mode:'focus',   type:'binaural',  hz:10,  cL:200, cR:210, beat:10,  wave:'Alpha',morph:.025,en:{name:'Alpha Silva',sub:'Creativity · Clarity',desc:'Alpha 8-12 Hz — the bridge between conscious and subconscious. The basis of the Silva Method, EEG-verified.',res:'José Silva · Silva Method · 1966',ideal:'Creativity · Accelerated learning · Light meditation'},he:{name:'אלפא סילבה',sub:'יצירתיות · בהירות',desc:'אלפא 8-12 Hz — הגשר בין המודע לתת-מודע. הבסיס לשיטת סילבה.',res:'José Silva · שיטת סילבה · 1966',ideal:'יצירה · למידה מואצת · מדיטציה קלה'}},
   {id:'theta', num:'A3',cat:'science', mode:'healing', type:'binaural',  hz:6,   cL:200, cR:206, beat:6,   wave:'Theta',morph:.015,en:{name:'Deep Theta',sub:'Meditation · Subconscious',desc:'Theta 4-8 Hz appear in deep meditation and REM sleep. Excellent for emotional processing and trauma release.',res:'Brainwave Research · Multiple studies',ideal:'Deep meditation · Emotional healing · Misophonia'},he:{name:'Theta עמוק',sub:'מדיטציה · תת-מודע',desc:'גלי תטא 4-8 Hz מופיעים במדיטציה עמוקה ובREM. מעולה לעיבוד רגשי.',res:'מחקרי גלי מוח · מחקרים מאומתים',ideal:'מדיטציה עמוקה · ריפוי רגשי · מיסופוניה'}},
   {id:'beta',  num:'A4',cat:'science', mode:'focus',   type:'binaural',  hz:18,  cL:300, cR:318, beat:18,  wave:'Beta', morph:.05, en:{name:'Beta Focus',sub:'Attention · ADHD',desc:'Beta 12-30 Hz characterize active focus and logical thinking. Neurofeedback-proven for ADHD.',res:'Neurofeedback Research · EEG studies',ideal:'Focus · ADHD · Analytical tasks'},he:{name:'Beta ריכוז',sub:'קשב · ADHD',desc:'גלי בטא 12-30 Hz אופייניים למצבי ריכוז פעיל. מוכח בנוירופידבק לADHD.',res:'מחקרי נוירופידבק · EEG',ideal:'ריכוז · ADHD · מטלות ניתוח'}},
@@ -536,6 +538,13 @@ async function enterApp(){
   showHome()
 }
 function showHome(){ show('home'); renderStreak() }
+
+// Handle return from legal.html — skip splash if #home in URL
+if(window.location.hash==='#home'){
+  document.getElementById('splash').style.display='none'
+  renderStreak(); showHome()
+  history.replaceState(null,'',window.location.pathname)
+}
 function showLibrary(){ buildLibrary(); show('library') }
 // FIX 4 — stop audio when leaving player
 function leavePlayer(){ if(playing) doStop(); show('home') }
