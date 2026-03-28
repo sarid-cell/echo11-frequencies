@@ -99,59 +99,63 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 /* Player bg image — Layer 0+1+2 */
 .pl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;z-index:0}
-.pl-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,.0) 18%,rgba(245,243,238,.0) 42%,rgba(245,243,238,.88) 65%,var(--bg) 80%);z-index:1;pointer-events:none}
-.dark .pl-overlay{background:linear-gradient(to bottom,rgba(0,0,0,.0) 0%,rgba(0,0,0,.0) 18%,rgba(0,0,0,.45) 42%,rgba(0,0,0,.88) 65%,rgba(0,0,0,1) 80%)}
+.pl-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,.0) 22%,rgba(245,243,238,.0) 44%,rgba(245,243,238,.82) 62%,var(--bg) 75%);z-index:1;pointer-events:none}
+.dark .pl-overlay{background:linear-gradient(to bottom,rgba(0,0,0,.0) 0%,rgba(0,0,0,.0) 22%,rgba(0,0,0,.42) 44%,rgba(0,0,0,.85) 62%,rgba(0,0,0,1) 75%)}
 .pl-astro{display:none}
-.pl-nav{display:flex;align-items:center;justify-content:space-between;padding:48px 22px 8px;z-index:2;flex-shrink:0}
+
+/* Nav — top */
+.pl-nav{display:flex;align-items:center;justify-content:space-between;padding:52px 22px 0;z-index:2;flex-shrink:0}
 .pl-back{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3);transition:color .2s;font-weight:300}.pl-back:hover{color:var(--t1)}
 .pl-nav-r{display:flex;align-items:center;gap:6px}
 .pl-num{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.26em;color:var(--t4)}
-.pl-cv-wrap{position:relative;height:160px;overflow:hidden;z-index:2;flex-shrink:0}
-.pl-cv-wrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-/* FIX 1 — compass timer */
-.compass-wrap{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:4;display:none;flex-direction:column;align-items:center;gap:2px;pointer-events:none}
-.compass-time{font-size:10px;font-weight:300;letter-spacing:.1em;color:var(--t2);text-align:center}
-.pl-arr{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t4);transition:all .2s}
-.pl-arr:hover{color:var(--t2)}
-.pl-freq-bar{display:flex;align-items:flex-start;justify-content:space-between;padding:4px 22px 8px;z-index:2;flex-shrink:0}
+
+/* Hz + Name — spacer zone, sits over image */
+.pl-freq-bar{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 22px 0;z-index:2;flex-shrink:0}
 .pl-fn{font-family:'Cormorant Garamond',Georgia,serif;font-size:72px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.88}
 .pl-fu{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;letter-spacing:.3em;color:var(--t4);margin-top:8px}
 .pl-fname{font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:var(--t2)}
 .pl-ftype{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.14em;color:var(--t3);background:none;border:.5px solid var(--b1);border-radius:20px;padding:3px 10px}
-.pl-scroll{flex:1;overflow-y:auto;padding:0 18px 20px;z-index:2;scrollbar-width:thin;scrollbar-color:var(--b2) transparent}
-.bs-row{display:flex;align-items:center;gap:7px;padding:9px 0 0}
-.bs-sec-lbl{font-size:7px;letter-spacing:.26em;color:var(--t4);text-transform:uppercase}
-.bs-live{font-size:7px;letter-spacing:.16em;color:var(--t3);border:.5px solid var(--b2);border-radius:10px;padding:2px 7px}
-.brain-state{background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:12px 15px;margin:8px 0 12px}
-.bs-top{font-size:7px;letter-spacing:.26em;color:var(--t4);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+
+/* Spacer — pushes controls to bottom */
+.pl-spacer{flex:1;z-index:2;min-height:20px}
+
+/* Scroll area — middle content */
+.pl-scroll{overflow-y:auto;padding:0 22px;z-index:2;scrollbar-width:none;max-height:38vh}
+.pl-scroll::-webkit-scrollbar{display:none}
+
+/* Bottom controls — always visible */
+.pl-bottom{flex-shrink:0;z-index:2;padding:0 22px 32px;display:flex;flex-direction:column;gap:0;background:linear-gradient(to bottom,transparent,var(--bg) 28px)}
+
+.bs-row{display:flex;align-items:center;gap:7px;padding:0 0 6px}
+.bs-sec-lbl{font-size:10px;letter-spacing:.22em;color:var(--t4);text-transform:uppercase}
+.bs-live{font-size:9px;letter-spacing:.14em;color:var(--t3);border:.5px solid var(--b2);border-radius:10px;padding:2px 7px}
+.brain-state{background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:10px 14px;margin-bottom:14px}
+.bs-top{font-size:10px;letter-spacing:.22em;color:var(--t4);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px}
 .bs-pulse{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pd 2s infinite;flex-shrink:0}
-.bs-txt{font-size:12px;font-weight:300;color:var(--t1);line-height:1.65;min-height:36px}
+.bs-txt{font-size:13px;font-weight:300;color:var(--t1);line-height:1.65;min-height:32px}
 .bs-txt em{color:var(--t2);font-style:normal}
-/* FIX 8 — elapsed visible */
-.bs-bar{display:flex;align-items:center;gap:8px;margin-top:9px}
-.bs-bw{flex:1;height:1.5px;background:var(--b2);border-radius:1px;overflow:hidden}
+.bs-bar{display:flex;align-items:center;gap:8px;margin-top:8px}
+.bs-bw{flex:1;height:1px;background:var(--b2);border-radius:1px;overflow:hidden}
 .bs-bf{height:100%;background:var(--t2);border-radius:1px;width:0%;transition:width .8s linear}
-.bs-time{font-size:12px;font-weight:300;letter-spacing:.1em;color:var(--t2);min-width:36px;text-align:right}
-.pl-sub{font-size:9px;letter-spacing:.18em;color:var(--t4);text-transform:uppercase;margin-bottom:9px}
-.pl-audio{display:inline-flex;background:var(--card);border:.5px solid var(--b1);border-radius:8px;padding:6px 12px;margin-bottom:12px;font-size:11px;font-weight:300;color:var(--t2)}
-.pl-tabs{display:flex;gap:6px;margin-bottom:10px}
+.bs-time{font-size:11px;font-weight:300;letter-spacing:.1em;color:var(--t2);min-width:36px;text-align:right}
+.pl-sub{font-size:10px;letter-spacing:.18em;color:var(--t4);text-transform:uppercase;margin-bottom:8px}
+.pl-audio{display:inline-flex;background:var(--card);border:.5px solid var(--b1);border-radius:8px;padding:5px 11px;margin-bottom:10px;font-size:11px;font-weight:300;color:var(--t2)}
+.pl-tabs{display:flex;gap:6px;margin-bottom:8px}
 .pl-tab{font-size:10px;letter-spacing:.1em;color:var(--t3);background:var(--card);border:.5px solid var(--b1);border-radius:20px;padding:6px 12px;cursor:pointer;transition:all .2s;font-family:inherit}
 .pl-tab:hover{color:var(--t1)}.pl-tab.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
-.pl-txt{font-size:13px;font-weight:300;line-height:1.9;color:var(--t2);margin-bottom:12px;min-height:44px}
-.timer-lbl{font-size:8px;letter-spacing:.22em;color:var(--t4);text-transform:uppercase;margin-bottom:7px}
-.pl-timers{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.pl-timer{font-size:10px;letter-spacing:.11em;color:var(--t3);background:var(--card);border:.5px solid var(--b1);border-radius:20px;padding:5px 12px;cursor:pointer;transition:all .2s;font-family:inherit}
+.pl-txt{font-size:13px;font-weight:300;line-height:1.85;color:var(--t2);margin-bottom:10px;min-height:40px}
+.timer-lbl{font-size:10px;letter-spacing:.2em;color:var(--t4);text-transform:uppercase;margin-bottom:6px}
+.pl-timers{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pl-timer{font-size:10px;letter-spacing:.11em;color:var(--t3);background:var(--card);border:.5px solid var(--b1);border-radius:20px;padding:6px 14px;cursor:pointer;transition:all .2s;font-family:inherit}
 .pl-timer:hover{color:var(--t1)}.pl-timer.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
-.pl-vol{display:flex;align-items:center;gap:9px;margin-bottom:12px}
-.pl-vl,.pl-vn{font-size:9px;letter-spacing:.13em;color:var(--t3)}.pl-vn{min-width:20px;text-align:left}
-/* play btn — SVG circle, no fill */
-.pl-play{width:100%;padding:15px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:all .25s;margin-bottom:7px}
+.pl-vol{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.pl-vl,.pl-vn{font-size:10px;letter-spacing:.13em;color:var(--t3)}.pl-vn{min-width:20px;text-align:left}
+.pl-play{width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:all .25s}
 .pl-play:hover{opacity:.82}
 .pl-play.stop-mode{background:var(--card);color:var(--t1);border:.5px solid var(--b2)}
-/* FIX 8 */
-.elapsed-row{display:none;align-items:center;justify-content:center;gap:8px;padding:4px 0}
+.elapsed-row{display:none;align-items:center;justify-content:center;gap:8px;padding:5px 0 0}
 .el-dot{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pd 2s infinite}
-.el-txt{font-size:12px;font-weight:300;letter-spacing:.14em;color:var(--t2)}
+.el-txt{font-size:11px;font-weight:300;letter-spacing:.14em;color:var(--t2)}
 
 /* LIBRARY */
 #library .lb-scroll{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--b2) transparent}
@@ -275,17 +279,14 @@ input[type=range]{accent-color:var(--t3);width:100%}
   <div class="pl-overlay"></div>
   <div class="pl-nav">
     <button class="pl-back" id="pl-back" onclick="leavePlayer()">← Back</button>
-    <!-- FIX 9: dark+lang in player -->
     <div class="pl-nav-r">
       <button class="pill" id="lang-p" onclick="toggleLang()" style="font-size:8px;padding:3px 9px">עב</button>
       <button class="pill" id="dark-p" onclick="toggleDark()" style="font-size:8px;padding:3px 9px">◐ Dark</button>
       <div class="pl-num" id="pl-num">B5 · solfeggio</div>
     </div>
   </div>
-  <div style="position:relative;z-index:2;flex-shrink:0;display:flex;justify-content:space-between;padding:0 4px">
-    <button class="pl-arr" onclick="prevFreq()">‹</button>
-    <button class="pl-arr" onclick="nextFreq()">›</button>
-  </div>
+
+  <!-- Hz number + freq nav — floats over image -->
   <div class="pl-freq-bar">
     <div style="display:flex;align-items:baseline;gap:5px">
       <div class="pl-fn" id="pl-hz">432</div><div class="pl-fu">Hz</div>
@@ -295,6 +296,15 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <div class="pl-ftype" id="pl-type">🔊 Pure Tone</div>
     </div>
   </div>
+  <div style="position:relative;z-index:2;flex-shrink:0;display:flex;justify-content:space-between;padding:0 6px">
+    <button class="pl-arr" onclick="prevFreq()">‹</button>
+    <button class="pl-arr" onclick="nextFreq()">›</button>
+  </div>
+
+  <!-- Spacer — image breathes through here -->
+  <div class="pl-spacer"></div>
+
+  <!-- Scrollable middle content -->
   <div class="pl-scroll">
     <div class="bs-row"><div class="bs-sec-lbl" id="bs-what">What's happening</div><div class="bs-live">Live</div></div>
     <div class="brain-state">
@@ -310,6 +320,10 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <button class="pl-tab" onclick="setTab(2,this)" id="tab2">Ideal for</button>
     </div>
     <p class="pl-txt" id="pl-txt"></p>
+  </div>
+
+  <!-- Bottom controls — always pinned to bottom -->
+  <div class="pl-bottom">
     <div class="timer-lbl" id="timer-lbl">Session duration</div>
     <div class="pl-timers">
       <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
@@ -322,9 +336,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
       <div class="pl-vn" id="vol-n">40</div>
     </div>
-    <!-- FIX 3: no blue stop -->
     <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
-    <!-- FIX 8: elapsed visible -->
     <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
   </div>
 </div>
@@ -362,7 +374,7 @@ const FREQS=[
   {id:'beta',  num:'A4',cat:'science', mode:'focus',   type:'binaural',  hz:18,  cL:300, cR:318, beat:18,  wave:'Beta', morph:.05, en:{name:'Beta Focus',sub:'Attention · ADHD',desc:'Beta 12-30 Hz characterize active focus and logical thinking. Neurofeedback-proven for ADHD.',res:'Neurofeedback Research · EEG studies',ideal:'Focus · ADHD · Analytical tasks'},he:{name:'Beta ריכוז',sub:'קשב · ADHD',desc:'גלי בטא 12-30 Hz אופייניים למצבי ריכוז פעיל. מוכח בנוירופידבק לADHD.',res:'מחקרי נוירופידבק · EEG',ideal:'ריכוז · ADHD · מטלות ניתוח'}},
   {id:'delta', num:'A5',cat:'science', mode:'sleep',   type:'binaural',  hz:2,   cL:200, cR:202, beat:2,   wave:'Delta',morph:.008,en:{name:'Delta Sleep',sub:'Deep Sleep · Renewal',desc:'Delta 0.5-4 Hz are the deepest sleep stages. Body regenerates, immune system strengthens.',res:'Sleep Research · AASM guidelines',ideal:'Deep sleep · Physical recovery · Immune boost'},he:{name:'Delta שינה',sub:'שינה עמוקה · התחדשות',desc:'גלי דלתא 0.5-4 Hz — שלבי השינה העמוקה ביותר. הגוף מתחדש.',res:'מחקרי שינה · AASM',ideal:'שינה עמוקה · התחדשות פיזית'}},
   {id:'hz432', num:'B5',cat:'solfeggio',mode:'sleep',  type:'solfeggio',  hz:432, cL:432, cR:432, beat:null,wave:'Pure', morph:.022,noHp:true,en:{name:'The Universe',sub:'Deep Sleep · Release · Align',desc:'Mathematically aligned with the Golden Ratio and Fibonacci. Differs from standard 440 Hz — many report deeper sleep, greater calm, and natural alignment.',res:'Pythagorean tuning · Nature harmonics · Golden Ratio',ideal:'Deep sleep · Evening meditation · Emotional release · Nervous system reset'},he:{name:'היקום',sub:'שינה עמוקה · שחרור · יישור',desc:'מיושר מתמטית עם מספר הזהב ופיבונאצ׳י. שונה מ-440 Hz הסטנדרטי.',res:'כוונון פיתגוראי · הרמוניות הטבע',ideal:'שינה עמוקה · מדיטציה · שחרור רגשי'}},
-  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',en:{name:'The Love',sub:'Healing · Heart · DNA',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone. Studies suggest DNA repair effects.',res:'Dr. Leonard Horowitz · Journal of Addiction Research, 2017',ideal:'Heart healing · Self-love · Emotional repair'},he:{name:'האהבה',sub:'ריפוי · לב · DNA',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. מחקרים מצביעים על תיקון DNA.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון'}},
+  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',imgPos:'center 55%',en:{name:'The Love',sub:'Healing · Heart · DNA',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone. Studies suggest DNA repair effects.',res:'Dr. Leonard Horowitz · Journal of Addiction Research, 2017',ideal:'Heart healing · Self-love · Emotional repair'},he:{name:'האהבה',sub:'ריפוי · לב · DNA',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. מחקרים מצביעים על תיקון DNA.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון'}},
   {id:'hz396', num:'B3',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:396, cL:396, cR:396, beat:null,wave:'Pure', morph:.018,noHp:true,en:{name:'Liberation',sub:'Guilt · Trauma · Root',desc:'Solfeggio UT. Helps release fear, guilt and deep negative energy.',res:'Solfeggio UT · Ancient Gregorian chant',ideal:'Trauma release · Guilt processing · Emotional freedom'},he:{name:'שחרור עבר',sub:'אשמה · טראומה · שורש',desc:'סולפג׳יו UT. מסייע בשחרור פחד, אשמה ואנרגיה שלילית.',res:'סולפג׳יו UT · שירה גריגוריאנית עתיקה',ideal:'שחרור טראומה · אשמה · חופש רגשי'}},
   {id:'hz369', num:'B7',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:369, cL:369, cR:369, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Tesla 3-6-9',sub:'Energy · Alignment',desc:'"If you only knew the magnificence of 3, 6 and 9, you would have a key to the universe." — Nikola Tesla',res:'Inspired by Nikola Tesla · Vortex Mathematics',ideal:'Energy · Intention · Cosmic alignment'},he:{name:'טסלה 3-6-9',sub:'אנרגיה · יישור',desc:'״אם רק ידעת את גדולת 3, 6 ו-9, היית מחזיק בכל מפתחות היקום.״ — ניקולה טסלה',res:'בהשראת ניקולה טסלה',ideal:'אנרגיה · כוונה · יישור קוסמי'}},
   {id:'hz963', num:'B11',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:963,cL:963, cR:963, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Unity',sub:'Abundance · Awakening',desc:'Solfeggio SI — crown chakra. Known as the spiritual awakening frequency.',res:'Solfeggio SI · Crown Chakra',ideal:'Abundance · Intention · Spiritual awakening'},he:{name:'אחדות',sub:'שפע · התעוררות',desc:'סולפג׳יו SI — צ׳אקרת הכתר. ידוע כתדר ההתעוררות הרוחנית.',res:'סולפג׳יו SI · צ׳אקרת הכתר',ideal:'שפע · כוונה · התעוררות'}},
@@ -563,7 +575,10 @@ function renderPlayer(){
   const f=FREQS[curIdx],t=f[lang]||f.en
   // Switch player background image per frequency
   const bg=document.querySelector('.pl-bg')
-  if(bg) bg.src=f.img||'img_player.jpg'
+  if(bg){
+    bg.src=f.img||'img_player.jpg'
+    bg.style.objectPosition=f.imgPos||'center 28%'
+  }
   document.getElementById('pl-hz').textContent=f.hz
   document.getElementById('pl-num').textContent=`${f.num} · ${f.cat}`
   document.getElementById('pl-name').textContent=t.name
