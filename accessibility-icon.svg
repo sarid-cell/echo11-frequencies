@@ -1,0 +1,13 @@
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Accessibility" role="img">
+  <!-- Circle border — echo.11 warm style -->
+  <circle cx="22" cy="22" r="21" stroke="#525250" stroke-width="0.6" fill="#f5f3ee"/>
+  <!-- Head -->
+  <circle cx="22" cy="12.5" r="2.8" fill="#1a1a18"/>
+  <!-- Body -->
+  <line x1="22" y1="16" x2="22" y2="26.5" stroke="#1a1a18" stroke-width="1.1" stroke-linecap="round"/>
+  <!-- Arms -->
+  <line x1="15.5" y1="20.5" x2="28.5" y2="20.5" stroke="#1a1a18" stroke-width="1.1" stroke-linecap="round"/>
+  <!-- Legs -->
+  <line x1="22" y1="26.5" x2="18" y2="33.5" stroke="#1a1a18" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="22" y1="26.5" x2="26" y2="33.5" stroke="#1a1a18" stroke-width="1.1" stroke-linecap="round"/>
+</svg>

@@ -14,8 +14,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f5f4f0;--bg2:#eeedea;--card:#fff;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#636360;--t4:#9a9890}
-.dark{--bg:#000;--bg2:#0c0c0a;--card:#111110;--b1:rgba(255,255,255,.14);--b2:rgba(255,255,255,.24);--b3:rgba(255,255,255,.38);--t1:#f5f5f0;--t2:#aaa8a2;--t3:#686862;--t4:#3a3a32}
+:root{--bg:#f5f4f0;--bg2:#eeedea;--card:#fff;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672}
+.dark{--bg:#000;--bg2:#0c0c0a;--card:#111110;--b1:rgba(255,255,255,.14);--b2:rgba(255,255,255,.24);--b3:rgba(255,255,255,.38);--t1:#f5f5f0;--t2:#c8c6c0;--t3:#a0a09a;--t4:#787872}
 html,body{width:100%;height:100%;background:var(--bg);color:var(--t1);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color .35s;font-weight:300}
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
@@ -53,7 +53,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-desc{font-size:13px;font-weight:300;color:var(--t2);text-align:center;line-height:1.85;margin-bottom:18px;max-width:250px}
 .sp-hp{display:flex;align-items:center;gap:12px;background:var(--card);border:.5px solid var(--b2);border-radius:12px;padding:11px 15px;margin-bottom:15px;max-width:270px;width:100%}
 .sp-hp-m{font-size:11px;font-weight:300;color:var(--t2)}
-.sp-hp-s{font-size:8px;letter-spacing:.16em;color:var(--t3);margin-top:2px}
+.sp-hp-s{font-size:10px;letter-spacing:.14em;color:var(--t3);margin-top:2px}
 .sp-btn{max-width:270px;width:100%;padding:15px;background:var(--t1);border:none;border-radius:12px;font-family:inherit;font-size:12px;font-weight:300;letter-spacing:.18em;color:var(--bg);cursor:pointer;text-align:center;transition:opacity .2s}
 .sp-btn:hover{opacity:.84}
 
@@ -65,7 +65,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .bt{display:block;width:.5px;height:18px;background:var(--t1);opacity:.2}
 .bsp{display:block;width:7px}
 .brand-name{font-size:14px;font-weight:300;letter-spacing:.15em;color:var(--t1)}
-.brand-tag{font-size:8px;letter-spacing:.26em;color:var(--t4)}
+.brand-tag{font-size:10px;letter-spacing:.2em;color:var(--t3)}
 .hdr-r{display:flex;align-items:center;gap:6px}
 .pill{font-size:9px;letter-spacing:.12em;color:var(--t3);border:.5px solid var(--b2);border-radius:20px;padding:4px 10px;cursor:pointer;background:var(--card);font-family:inherit;transition:all .2s}
 .pill:hover{color:var(--t1)}.pill.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
@@ -98,19 +98,19 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .home-today-lbl{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:lowercase;margin-bottom:5px;display:flex;align-items:center;gap:6px}
 
 /* STREAK — compact below image */
-.prog-lbl{font-size:8px;letter-spacing:.26em;color:var(--t4);text-transform:uppercase;padding:13px 18px 8px}
+.prog-lbl{font-size:10px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;padding:13px 18px 8px}
 .streak-card{display:flex;align-items:center;justify-content:space-between;margin:0 14px 12px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:12px 16px}
 .sk-n{font-size:28px;font-weight:100;color:var(--t1);line-height:1}
-.sk-lbl{font-size:8px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase}
+.sk-lbl{font-size:10px;letter-spacing:.18em;color:var(--t2);text-transform:uppercase}
 .sk-sub{font-size:10px;font-weight:300;color:var(--t2);margin-top:2px}
 .sk-bars{display:flex;align-items:flex-end;gap:3px;height:28px}
 .sk-bar{width:7px;border-radius:2px 2px 0 0;background:var(--b1);transition:height .6s ease}
 .sk-bar.h{background:var(--t3)}.sk-bar.t{background:var(--t1)}
 .sk-days{display:flex;gap:3px;margin-top:3px}
-.sk-d{width:7px;text-align:center;font-size:6px;color:var(--t4)}.sk-d.t{color:var(--t1);font-weight:500}
+.sk-d{width:9px;text-align:center;font-size:9px;color:var(--t4)}.sk-d.t{color:var(--t1);font-weight:500}
 .ldot{width:3px;height:3px;border-radius:50%;background:var(--t3);animation:pd 3s infinite}
 @keyframes pd{0%,100%{opacity:.3}50%{opacity:1}}
-.modes-lbl{font-size:8px;letter-spacing:.26em;color:var(--t4);text-transform:uppercase;padding:0 18px 9px}
+.modes-lbl{font-size:10px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;padding:0 18px 9px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 14px}
 .mode-card{background:var(--card);border:.5px solid var(--b1);border-radius:16px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;min-height:118px;justify-content:center;transition:all .22s;font-family:inherit}
 .mode-card:hover{border-color:var(--b2);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.07)}
@@ -131,7 +131,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .pl-nav{display:flex;align-items:center;justify-content:space-between;padding:52px 22px 0;z-index:2;flex-shrink:0}
 .pl-back{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3);transition:color .2s;font-weight:300}.pl-back:hover{color:var(--t1)}
 .pl-nav-r{display:flex;align-items:center;gap:6px}
-.pl-num{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.26em;color:var(--t4)}
+.pl-num{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t4)}
 
 /* Hz + Name — spacer zone, sits over image */
 .pl-freq-bar{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 22px 0;z-index:2;flex-shrink:0}
@@ -188,8 +188,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .lb-si{background:none;border:none;outline:none;font-family:inherit;font-size:12px;color:var(--t1);flex:1}
 .lb-si::placeholder{color:var(--t4)}
 .lb-grp{display:flex;align-items:center;gap:9px;padding:13px 16px 7px}
-.lb-gl{font-size:8px;letter-spacing:.28em;color:var(--t4);text-transform:uppercase;flex-shrink:0}
-.lb-gline{flex:1;height:.5px;background:var(--b2)}.lb-gc{font-size:8px;color:var(--t4)}
+.lb-gl{font-size:10px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;flex-shrink:0}
+.lb-gline{flex:1;height:.5px;background:var(--b2)}.lb-gc{font-size:10px;color:var(--t3)}
 .lb-row{display:flex;align-items:center;gap:13px;padding:12px 16px;border-bottom:.5px solid var(--b1);cursor:pointer;transition:background .15s;position:relative;background:var(--bg);font-family:inherit;width:100%;text-align:left}
 .lb-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--t1);opacity:0;transition:opacity .2s;border-radius:0 1px 1px 0}
 .lb-row:hover{background:var(--card)}.lb-row:hover::before{opacity:1}
@@ -260,16 +260,17 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
   <div class="scrl">
     <div class="prog-lbl" id="prog-lbl">Your progress</div>
-    <div class="streak-card">
+    <button class="streak-card" onclick="show('history')" style="width:calc(100% - 28px);cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;border:none;font-family:inherit" title="View history">
       <div style="display:flex;align-items:center;gap:10px">
         <div class="sk-n" id="sk-num">0</div>
         <div><div class="sk-lbl" id="sk-lbl">day streak</div><div class="sk-sub" id="sk-sub">Start listening today</div></div>
       </div>
-      <div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
         <div class="sk-bars" id="sk-bars-wrap"></div>
         <div class="sk-days" id="sk-days-wrap"></div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:2px">view history →</div>
       </div>
-    </div>
+    </button>
     <div class="modes-lbl" id="modes-lbl">Choose a mode</div>
     <div class="grid">
       <button class="mode-card" onclick="openPlayer('hz432')">
@@ -311,8 +312,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
   <div class="pl-nav">
     <button class="pl-back" id="pl-back" onclick="leavePlayer()">← Back</button>
     <div class="pl-nav-r">
-      <button class="pill" id="lang-p" onclick="toggleLang()" style="font-size:8px;padding:3px 9px">עב</button>
-      <button class="pill" id="dark-p" onclick="toggleDark()" style="font-size:8px;padding:3px 9px">◐ Dark</button>
+      <button class="pill" id="lang-p" onclick="toggleLang()" style="font-size:10px;padding:5px 10px">עב</button>
+      <button class="pill" id="dark-p" onclick="toggleDark()" style="font-size:10px;padding:5px 10px">◐ Dark</button>
       <div class="pl-num" id="pl-num">B5 · solfeggio</div>
     </div>
   </div>
@@ -402,7 +403,74 @@ input[type=range]{accent-color:var(--t3);width:100%}
   <div class="lb-scroll" id="lib-rows"></div>
 </div>
 
+<!-- HISTORY -->
+<div id="history" class="scr">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:52px 22px 0;flex-shrink:0;z-index:2">
+    <button class="pl-back" onclick="show('home');renderStreak()">← Back</button>
+    <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3)" id="hist-title">Listening History</span>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:20px 22px 40px;scrollbar-width:none" id="hist-list"></div>
+</div>
+
 <script>
+function buildHistory(){
+  const sessions=loadSessions()
+  const keys=Object.keys(sessions).sort((a,b)=>b.localeCompare(a))
+  const el=document.getElementById('hist-list')
+  if(!keys.length){
+    el.innerHTML=`<div style="text-align:center;padding:60px 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;font-style:italic;color:var(--t3)">${lang==='he'?'עדיין לא האזנת':'No sessions yet'}</div>`
+    return
+  }
+  const totalSecs=Object.values(sessions).reduce((s,d)=>s+(d.total||0),0)
+  const totalMin=Math.round(totalSecs/60)
+  const streak=calcStreak(sessions)
+
+  let html=`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px">
+      <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${streak}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);margin-top:3px">${lang==='he'?'ימים רצופים':'day streak'}</div>
+      </div>
+      <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${totalMin}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);margin-top:3px">${lang==='he'?'דקות סה"כ':'total min'}</div>
+      </div>
+      <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${keys.length}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);margin-top:3px">${lang==='he'?'ימי האזנה':'days active'}</div>
+      </div>
+    </div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">${lang==='he'?'היסטוריית האזנות':'session history'}</div>`
+
+  keys.forEach(key=>{
+    const d=sessions[key]
+    const mins=Math.round((d.total||0)/60)
+    if(!mins) return
+    // format date
+    const [y,m,day]=key.split('-')
+    const dateStr=`${day}/${m}/${y}`
+    // freq name
+    const freqName=d.freqs?Object.keys(d.freqs).map(fid=>{
+      const f=FREQS.find(x=>x.id===fid)
+      return f?(f[lang]||f.en).name:fid
+    }).join(', '):(lang==='he'?'האזנה':'session')
+
+    html+=`<div style="display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;border-bottom:.5px solid var(--b1)">
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--t1);margin-bottom:3px">${dateStr}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3)">${freqName}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:200;color:var(--t1)">${mins}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t4)">${lang==='he'?'דק':"min"}</div>
+      </div>
+    </div>`
+  })
+  el.innerHTML=html
+}
+
+// history trigger handled in main show()
 const FREQS=[
   {id:'gamma', num:'A1',cat:'science', mode:'focus',   type:'binaural',  hz:40,  cL:200, cR:240, beat:40,  wave:'Gamma',morph:.045,en:{name:'Gamma MIT',sub:'Focus · Brain Health',desc:'Inspired by MIT Picower Institute (2016) research on 40 Hz stimulation and cognitive performance. echo.11 is not a medical device.',res:'MIT Picower Institute · Nature, 2016',ideal:'Deep focus · Writing · Learning · Brain fog relief'},he:{name:'גמא MIT',sub:'ריכוז · בריאות המוח',desc:'בהשראת מחקר MIT מ-2016 על גירוי ב-40 Hz וביצועים קוגניטיביים. echo.11 אינה מכשיר רפואי.',res:'MIT · Nature, 2016',ideal:'ריכוז עמוק · כתיבה · למידה · מניעת ערפל מוחי'}},
   {id:'alpha', num:'A2',cat:'science', mode:'focus',   type:'binaural',  hz:10,  cL:200, cR:210, beat:10,  wave:'Alpha',morph:.025,en:{name:'Alpha Silva',sub:'Creativity · Clarity',desc:'Alpha 8-12 Hz — the bridge between conscious and subconscious. The basis of the Silva Method, EEG-verified.',res:'José Silva · Silva Method · 1966',ideal:'Creativity · Accelerated learning · Light meditation'},he:{name:'אלפא סילבה',sub:'יצירתיות · בהירות',desc:'אלפא 8-12 Hz — הגשר בין המודע לתת-מודע. הבסיס לשיטת סילבה.',res:'José Silva · שיטת סילבה · 1966',ideal:'יצירה · למידה מואצת · מדיטציה קלה'}},
@@ -619,6 +687,7 @@ function show(id){
   next.style.display='flex'
   requestAnimationFrame(()=>{ next.classList.add('on') })
   document.body.dir=lang==='he'?'rtl':'ltr'
+  if(id==='history') setTimeout(buildHistory,50)
 }
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
@@ -750,9 +819,15 @@ function toggleDark(){
   const txt=dark?'◑ Light':'◐ Dark'
   ;['dark-h','dark-p'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=txt})
 }
+let baseFontSize=16
 function changeFontSize(d){
-  const c=parseFloat(getComputedStyle(document.body).fontSize)||16
-  document.body.style.fontSize=Math.max(12,Math.min(20,c+d))+'px'
+  baseFontSize=Math.max(13,Math.min(22,baseFontSize+d))
+  document.documentElement.style.setProperty('--base-font',baseFontSize+'px')
+  document.body.style.fontSize=baseFontSize+'px'
+  // Force re-render of em-based sizes
+  document.querySelectorAll('.pl-fn,.home-freq-num,.pl-fname,.home-freq-name').forEach(el=>{
+    el.style.opacity='0.99'; setTimeout(()=>el.style.opacity='',50)
+  })
 }
 const STR={
   en:{'sp-sub':'frequencies','sp-desc':'22 science-backed healing frequencies.\nTune your nervous system.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 22 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 22 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},

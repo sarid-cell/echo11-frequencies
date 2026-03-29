@@ -158,8 +158,20 @@ a:hover{color:var(--t1)}
 
 <!-- ══ ACCESSIBILITY ═══════════════════════════════════════════ -->
 <div class="page" id="page-access">
-  <div class="page-eyebrow" id="ac-eyebrow">Legal · Accessibility</div>
-  <h1 class="page-title" id="ac-title">Accessibility Statement</h1>
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+      <circle cx="22" cy="22" r="21" stroke="var(--t3)" stroke-width="0.6" fill="var(--card)"/>
+      <circle cx="22" cy="12.5" r="2.8" fill="var(--t1)"/>
+      <line x1="22" y1="16" x2="22" y2="26.5" stroke="var(--t1)" stroke-width="1.1" stroke-linecap="round"/>
+      <line x1="15.5" y1="20.5" x2="28.5" y2="20.5" stroke="var(--t1)" stroke-width="1.1" stroke-linecap="round"/>
+      <line x1="22" y1="26.5" x2="18" y2="33.5" stroke="var(--t1)" stroke-width="1.1" stroke-linecap="round"/>
+      <line x1="22" y1="26.5" x2="26" y2="33.5" stroke="var(--t1)" stroke-width="1.1" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="page-eyebrow" id="ac-eyebrow">Legal · Accessibility</div>
+      <h1 class="page-title" id="ac-title" style="margin-bottom:0">Accessibility Statement</h1>
+    </div>
+  </div>
   <p class="page-date" id="ac-date">Last updated: March 2026 · Per Israeli Law Amendment 35</p>
 
   <div class="section">
@@ -284,9 +296,21 @@ function showPage(id, el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'))
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'))
   document.getElementById('page-'+id).classList.add('on')
-  el.classList.add('on')
+  if(el) el.classList.add('on')
   window.scrollTo(0,0)
+  // update URL hash so direct links work
+  history.replaceState(null,'','#'+id)
 }
+
+// On load — check hash to open correct tab
+window.addEventListener('DOMContentLoaded',()=>{
+  const hash=window.location.hash.replace('#','')
+  const validTabs=['privacy','access','terms']
+  if(validTabs.includes(hash)){
+    const tabEl=document.getElementById('tab-'+hash)
+    showPage(hash, tabEl)
+  }
+})
 
 function toggleDark(){
   dark=!dark; document.body.classList.toggle('dark',dark)
