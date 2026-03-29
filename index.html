@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="echo.11"/>
+<meta name="theme-color" content="#f5f4f0"/>
+<meta name="description" content="22 healing frequencies. Tune your nervous system."/>
+<link rel="apple-touch-icon" href="astronaut.jpg"/>
+<link rel="manifest" href="manifest.json"/>
 <title>echo.11 · frequencies</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
 <style>
@@ -14,11 +21,18 @@ body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
 input[type=range]{accent-color:var(--t3);width:100%}
 ::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.scr{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);overflow:hidden;opacity:0;transition:opacity .35s ease}
+.scr{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);overflow:hidden;opacity:0;transition:opacity .35s ease;height:100dvh}
 .scr.on{display:flex;opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .scr.on > *{animation:fadeUp .45s ease both}
-/* WCAG: minimum 10px for all functional text */
+/* touch-friendly nav arrows — 48pt minimum per Apple HIG */
+.pl-arr{background:none;border:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t4);transition:color .2s;-webkit-tap-highlight-color:transparent}
+.pl-arr:hover,.pl-arr:active{color:var(--t2)}
+/* Safe area for iPhone notch + home indicator */
+.pl-bottom{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+.pl-nav{padding-top:calc(52px + env(safe-area-inset-top))}
+/* Aa buttons — inside scroll, not floating */
+.acc-bar{display:flex;align-items:center;gap:6px;padding:8px 14px 14px;flex-wrap:wrap}
 .brand-tag,.sk-lbl,.sk-d,.modes-lbl,.prog-lbl,.pl-num,.card-cnt,.home-today-lbl,.home-freq-unit,.bs-sec-lbl,.timer-lbl,.pl-sub,.lb-gl,.pl-vl,.pl-vn{font-size:10px!important}
 
 /* SPLASH */
@@ -59,19 +73,29 @@ input[type=range]{accent-color:var(--t3);width:100%}
 /* HOME */
 #home .scrl{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--b2) transparent}
 
-/* HOME HERO — full bleed top image */
-.home-hero-img{position:relative;height:50vh;min-height:240px;max-height:360px;overflow:hidden;flex-shrink:0}
+/* HOME HERO — image only, full bleed */
+.home-hero-img{position:relative;height:52vh;min-height:250px;max-height:380px;overflow:hidden;flex-shrink:0}
 .home-hero-img img{width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block}
-.home-hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,0) 28%,rgba(245,243,238,0) 52%,rgba(245,243,238,.75) 75%,var(--bg) 100%)}
-.home-hero-info{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:0 22px 20px;display:flex;align-items:flex-end;justify-content:space-between}
+.home-hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,
+  rgba(0,0,0,.1) 0%,
+  rgba(0,0,0,0)  22%,
+  rgba(245,243,238,0) 70%,
+  var(--bg) 100%
+)}
+/* Today block — on paper, below image */
+.home-today-block{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:16px 22px 14px;flex-shrink:0;
+  background:var(--bg);
+}
 .home-freq-badge{display:flex;align-items:baseline;gap:4px}
-.home-freq-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:68px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.9}
-.home-freq-unit{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.28em;color:var(--t3);padding-bottom:8px}
-.home-freq-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:13px;font-weight:200;font-style:italic;color:var(--t2)}
-.home-play-btn{background:rgba(14,12,9,.06);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:.5px solid rgba(14,12,9,.15);border-radius:2px;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;letter-spacing:.2em;color:var(--t2);cursor:pointer;transition:all .25s}
-.home-play-btn:hover{background:rgba(14,12,9,.1);color:var(--t1)}
-.dark .home-play-btn{background:rgba(245,245,240,.1);border-color:rgba(245,245,240,.2);color:rgba(245,245,240,.7)}
-.home-today-lbl{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.3em;color:var(--t3);text-transform:lowercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.home-freq-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:64px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.9}
+.home-freq-unit{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.28em;color:var(--t3);padding-bottom:6px}
+.home-freq-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:13px;font-weight:200;font-style:italic;color:var(--t2);margin-top:2px}
+.home-play-btn{background:none;border:.5px solid var(--b2);border-radius:2px;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;letter-spacing:.2em;color:var(--t2);cursor:pointer;transition:all .25s;white-space:nowrap;flex-shrink:0;align-self:center}
+.home-play-btn:hover{border-color:var(--b3);color:var(--t1)}
+.dark .home-play-btn{border-color:rgba(245,243,238,.2);color:rgba(245,243,238,.6)}
+.home-today-lbl{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:lowercase;margin-bottom:5px;display:flex;align-items:center;gap:6px}
 
 /* STREAK — compact below image */
 .prog-lbl{font-size:8px;letter-spacing:.26em;color:var(--t4);text-transform:uppercase;padding:13px 18px 8px}
@@ -216,20 +240,22 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
   </div>
 
-  <!-- Full bleed hero image -->
+  <!-- Full bleed hero image — image only, no text inside -->
   <div class="home-hero-img">
     <img src="img_home.jpg" alt="echo.11 · astronaut in desert"/>
-    <div class="home-hero-info">
-      <div>
-        <div class="home-today-lbl"><div class="ldot"></div><span id="today-lbl">Today's Frequency</span></div>
-        <div class="home-freq-badge">
-          <div class="home-freq-num" id="hero-hz-num">432</div>
-          <div class="home-freq-unit">Hz</div>
-        </div>
-        <div class="home-freq-name" id="today-name">The Universe · Deep Sleep · Release</div>
+  </div>
+
+  <!-- Today info — fully on paper, below image -->
+  <div class="home-today-block">
+    <div>
+      <div class="home-today-lbl"><div class="ldot"></div><span id="today-lbl">today's frequency</span></div>
+      <div class="home-freq-badge">
+        <div class="home-freq-num" id="hero-hz-num">432</div>
+        <div class="home-freq-unit">Hz</div>
       </div>
-      <button class="home-play-btn" id="today-cta" onclick="openPlayer('hz432')">Listen →</button>
+      <div class="home-freq-name" id="today-name">The Universe · Deep Sleep · Release</div>
     </div>
+    <button class="home-play-btn" id="today-cta" onclick="openPlayer('hz432')">Listen →</button>
   </div>
 
   <div class="scrl">
@@ -374,7 +400,7 @@ const FREQS=[
   {id:'beta',  num:'A4',cat:'science', mode:'focus',   type:'binaural',  hz:18,  cL:300, cR:318, beat:18,  wave:'Beta', morph:.05, en:{name:'Beta Focus',sub:'Attention · ADHD',desc:'Beta 12-30 Hz characterize active focus and logical thinking. Neurofeedback-proven for ADHD.',res:'Neurofeedback Research · EEG studies',ideal:'Focus · ADHD · Analytical tasks'},he:{name:'Beta ריכוז',sub:'קשב · ADHD',desc:'גלי בטא 12-30 Hz אופייניים למצבי ריכוז פעיל. מוכח בנוירופידבק לADHD.',res:'מחקרי נוירופידבק · EEG',ideal:'ריכוז · ADHD · מטלות ניתוח'}},
   {id:'delta', num:'A5',cat:'science', mode:'sleep',   type:'binaural',  hz:2,   cL:200, cR:202, beat:2,   wave:'Delta',morph:.008,en:{name:'Delta Sleep',sub:'Deep Sleep · Renewal',desc:'Delta 0.5-4 Hz are the deepest sleep stages. Body regenerates, immune system strengthens.',res:'Sleep Research · AASM guidelines',ideal:'Deep sleep · Physical recovery · Immune boost'},he:{name:'Delta שינה',sub:'שינה עמוקה · התחדשות',desc:'גלי דלתא 0.5-4 Hz — שלבי השינה העמוקה ביותר. הגוף מתחדש.',res:'מחקרי שינה · AASM',ideal:'שינה עמוקה · התחדשות פיזית'}},
   {id:'hz432', num:'B5',cat:'solfeggio',mode:'sleep',  type:'solfeggio',  hz:432, cL:432, cR:432, beat:null,wave:'Pure', morph:.022,noHp:true,en:{name:'The Universe',sub:'Deep Sleep · Release · Align',desc:'Mathematically aligned with the Golden Ratio and Fibonacci. Differs from standard 440 Hz — many report deeper sleep, greater calm, and natural alignment.',res:'Pythagorean tuning · Nature harmonics · Golden Ratio',ideal:'Deep sleep · Evening meditation · Emotional release · Nervous system reset'},he:{name:'היקום',sub:'שינה עמוקה · שחרור · יישור',desc:'מיושר מתמטית עם מספר הזהב ופיבונאצ׳י. שונה מ-440 Hz הסטנדרטי.',res:'כוונון פיתגוראי · הרמוניות הטבע',ideal:'שינה עמוקה · מדיטציה · שחרור רגשי'}},
-  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',imgPos:'center 55%',en:{name:'The Love',sub:'Healing · Heart · DNA',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone. Studies suggest DNA repair effects.',res:'Dr. Leonard Horowitz · Journal of Addiction Research, 2017',ideal:'Heart healing · Self-love · Emotional repair'},he:{name:'האהבה',sub:'ריפוי · לב · DNA',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. מחקרים מצביעים על תיקון DNA.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון'}},
+  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',imgPos:'center 82%',en:{name:'The Love',sub:'Healing · Heart · DNA',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone. Studies suggest DNA repair effects.',res:'Dr. Leonard Horowitz · Journal of Addiction Research, 2017',ideal:'Heart healing · Self-love · Emotional repair'},he:{name:'האהבה',sub:'ריפוי · לב · DNA',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. מחקרים מצביעים על תיקון DNA.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון'}},
   {id:'hz396', num:'B3',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:396, cL:396, cR:396, beat:null,wave:'Pure', morph:.018,noHp:true,en:{name:'Liberation',sub:'Guilt · Trauma · Root',desc:'Solfeggio UT. Helps release fear, guilt and deep negative energy.',res:'Solfeggio UT · Ancient Gregorian chant',ideal:'Trauma release · Guilt processing · Emotional freedom'},he:{name:'שחרור עבר',sub:'אשמה · טראומה · שורש',desc:'סולפג׳יו UT. מסייע בשחרור פחד, אשמה ואנרגיה שלילית.',res:'סולפג׳יו UT · שירה גריגוריאנית עתיקה',ideal:'שחרור טראומה · אשמה · חופש רגשי'}},
   {id:'hz369', num:'B7',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:369, cL:369, cR:369, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Tesla 3-6-9',sub:'Energy · Alignment',desc:'"If you only knew the magnificence of 3, 6 and 9, you would have a key to the universe." — Nikola Tesla',res:'Inspired by Nikola Tesla · Vortex Mathematics',ideal:'Energy · Intention · Cosmic alignment'},he:{name:'טסלה 3-6-9',sub:'אנרגיה · יישור',desc:'״אם רק ידעת את גדולת 3, 6 ו-9, היית מחזיק בכל מפתחות היקום.״ — ניקולה טסלה',res:'בהשראת ניקולה טסלה',ideal:'אנרגיה · כוונה · יישור קוסמי'}},
   {id:'hz963', num:'B11',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:963,cL:963, cR:963, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Unity',sub:'Abundance · Awakening',desc:'Solfeggio SI — crown chakra. Known as the spiritual awakening frequency.',res:'Solfeggio SI · Crown Chakra',ideal:'Abundance · Intention · Spiritual awakening'},he:{name:'אחדות',sub:'שפע · התעוררות',desc:'סולפג׳יו SI — צ׳אקרת הכתר. ידוע כתדר ההתעוררות הרוחנית.',res:'סולפג׳יו SI · צ׳אקרת הכתר',ideal:'שפע · כוונה · התעוררות'}},
@@ -455,10 +481,14 @@ function getMostPlayed(sessions){
 function get7Days(){
   const sessions=loadSessions()
   const days=[]
+  const EN_DAYS=['M','T','W','T','F','S','S']
+  const HE_DAYS=['ב','ג','ד','ה','ו','ש','א']
   for(let i=6;i>=0;i--){
     const d=new Date(); d.setDate(d.getDate()-i)
     const key=`${d.getFullYear()}-${(d.getMonth()+1)}-${d.getDate()}`
-    const label=['M','T','W','T','F','S','S'][d.getDay()===0?6:d.getDay()-1]
+    // getDay(): 0=Sun,1=Mon...6=Sat → map to M=0..S=6
+    const dayIdx=d.getDay()===0?6:d.getDay()-1
+    const label=lang==='he'?HE_DAYS[dayIdx]:EN_DAYS[dayIdx]
     days.push({ key, label, secs:(sessions[key]?.total||0), isToday:i===0 })
   }
   return days
@@ -507,16 +537,20 @@ function renderStreak(){
 }
 
 function getCtx(){
-  if(!audioCtx||audioCtx.state==='closed') audioCtx=new(window.AudioContext||window.webkitAudioContext)()
-  if(audioCtx.state==='suspended') audioCtx.resume()
+  if(!audioCtx||audioCtx.state==='closed')
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)()
   return audioCtx
 }
-function audioPlay(f){
+async function audioPlay(f){
   audioStopId(f.id)
   const ctx=getCtx()
-  const gain=ctx.createGain(); gain.gain.setValueAtTime(0,ctx.currentTime); gain.gain.linearRampToValueAtTime(.18,ctx.currentTime+2); gain.connect(ctx.destination)
+  // iOS Safari: MUST resume inside user gesture synchronously
+  if(ctx.state==='suspended') await ctx.resume()
+  const gain=ctx.createGain()
+  gain.gain.setValueAtTime(0,ctx.currentTime)
+  gain.gain.linearRampToValueAtTime(.18,ctx.currentTime+2)
+  gain.connect(ctx.destination)
   if(f.type==='binaural'){
-    // FIX 6 — proper stereo L/R binaural
     const merger=ctx.createChannelMerger(2); merger.connect(gain)
     const oL=ctx.createOscillator(),pL=ctx.createStereoPanner()
     oL.type='sine'; oL.frequency.value=f.cL; pL.pan.value=-1
@@ -526,8 +560,21 @@ function audioPlay(f){
     oR.connect(pR); pR.connect(merger,0,1); oR.start()
     audioNodes[f.id]={oL,oR,gain}
   } else {
-    const o=ctx.createOscillator(); o.type='sine'; o.frequency.value=f.cL; o.connect(gain); o.start()
+    const o=ctx.createOscillator(); o.type='sine'
+    o.frequency.value=f.cL; o.connect(gain); o.start()
     audioNodes[f.id]={o,gain}
+  }
+  // MediaSession API — shows on iOS Lock Screen + Control Center
+  if('mediaSession' in navigator){
+    const t=f[lang]||f.en
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title: t.name,
+      artist: `echo.11 · ${f.hz} Hz`,
+      album: 'echo.11 frequencies'
+    })
+    navigator.mediaSession.setActionHandler('play', ()=>{ if(!playing) togglePlay() })
+    navigator.mediaSession.setActionHandler('pause', ()=>{ if(playing) doStop() })
+    navigator.mediaSession.playbackState='playing'
   }
 }
 function audioStopId(id){
@@ -615,17 +662,16 @@ function updatePlayBtn(){
 }
 function doStop(){
   const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv)
-  // Save real session to localStorage
   if(elapsed>5) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
-  
+  if('mediaSession' in navigator) navigator.mediaSession.playbackState='paused'
   updatePlayBtn()
 }
-function togglePlay(){
+async function togglePlay(){
   const f=FREQS[curIdx]
   if(playing){ doStop(); return }
-  audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0
+  await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0
   // FIX 1 — show compass
   
   clearInterval(elapsedIv)
