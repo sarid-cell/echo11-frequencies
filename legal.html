@@ -289,7 +289,7 @@ a:hover{color:var(--t1)}
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 let lang='en', dark=false
 
 function showPage(id, el){
@@ -418,4 +418,33 @@ const STR={
     'tu-s5-title':'קניין רוחני','tu-s5-text':'כל התוכן, העיצוב, התדרים והמיתוג של echo.11 הם קניינה הרוחני של <strong>שירה שריד / echo.11</strong>. שם echo.11, הלוגו (‖ ‖), וזהות "האסטרונאוטית" מוגנים.',
     'tu-s6-title':'הגבלת אחריות','tu-s6-text':'echo.11 מסופקת "כמות שהיא" ללא אחריות מכל סוג. איננו אחראים לנזקים ישירים, עקיפים, או תוצאתיים.',
     'tu-s7-title':'דין חל','tu-s7-text':'תנאים אלה כפופים לדיני <strong>מדינת ישראל</strong>. סכסוכים יידונו בבתי המשפט בתל אביב.',
-    'tu-s8
+    'tu-s8-title':'Contact','tu-contact-lbl':'Questions about these terms',
+    'tu-s8-email':'legal@echo11.com',
+  },
+}
+
+function toggleLang(){
+  lang=lang==='en'?'he':'en'
+  document.body.dir=lang==='he'?'rtl':'ltr'
+  Object.entries(STR[lang]).forEach(([id,v])=>{
+    const e=document.getElementById(id)
+    if(!e) return
+    if(e.tagName==='INPUT') e.placeholder=v
+    else if(v.includes('<')) e.innerHTML=v
+    else e.textContent=v
+  })
+  document.getElementById('lang-btn').textContent=lang==='he'?'EN':'עב'
+}
+
+// On load: check hash to open correct tab
+window.addEventListener('DOMContentLoaded',()=>{
+  const hash=window.location.hash.replace('#','')
+  const validTabs=['privacy','access','terms']
+  if(validTabs.includes(hash)){
+    const el=document.getElementById('tab-'+hash)
+    showPage(hash, el)
+  }
+})
+</script>
+</body>
+</html>

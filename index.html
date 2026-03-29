@@ -41,6 +41,18 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 /* SPLASH */
 #splash{position:fixed;inset:0;background:var(--bg);overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end}
+/* Splash entrance animations */
+@keyframes sp-fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sp-img-reveal{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:scale(1)}}
+@keyframes sp-line-grow{from{width:0}to{width:26px}}
+#splash canvas{animation:sp-img-reveal 1.8s cubic-bezier(.22,.8,.32,1) both}
+.sp-ui{animation:sp-fade-up .9s .6s cubic-bezier(.22,.8,.32,1) both}
+.sp-title{animation:sp-fade-up .9s .75s cubic-bezier(.22,.8,.32,1) both}
+.sp-sub{animation:sp-fade-up .8s .9s ease both}
+.sp-line{animation:sp-line-grow .6s 1.05s ease both}
+.sp-desc{animation:sp-fade-up .8s 1.0s ease both}
+.sp-hp{animation:sp-fade-up .8s 1.15s ease both}
+.sp-btn{animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
 .sp-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
 .sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1}
 .sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02)}
@@ -58,8 +70,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-hp{display:flex;align-items:center;gap:12px;background:var(--card);border:.5px solid var(--b2);border-radius:12px;padding:11px 15px;margin-bottom:15px;max-width:270px;width:100%}
 .sp-hp-m{font-size:11px;font-weight:300;color:var(--t2)}
 .sp-hp-s{font-size:10px;letter-spacing:.14em;color:var(--t3);margin-top:2px}
-.sp-btn{max-width:270px;width:100%;padding:15px;background:var(--t1);border:none;border-radius:12px;font-family:inherit;font-size:12px;font-weight:300;letter-spacing:.18em;color:var(--bg);cursor:pointer;text-align:center;transition:opacity .2s}
-.sp-btn:hover{opacity:.84}
+.sp-btn{max-width:270px;width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:opacity .2s;animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
+.sp-btn:hover,.sp-btn:focus{opacity:.84;outline:2px solid var(--t1);outline-offset:3px}
 
 /* SHARED */
 .app-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 9px;border-bottom:.5px solid var(--b1);flex-shrink:0}
@@ -222,7 +234,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <div class="sp-title">echo.11</div>
     <p class="sp-sub" id="sp-sub">frequencies</p>
     <div class="sp-line"></div>
-    <p class="sp-desc" id="sp-desc">22 science-backed healing frequencies.<br>Tune your nervous system.</p>
+    <p class="sp-desc" id="sp-desc">21 science-backed healing frequencies.<br>Tune your nervous system.</p>
     <div class="sp-hp">
       <span style="font-size:20px;flex-shrink:0">🎧</span>
       <div><p class="sp-hp-m" id="sp-hp-m">Headphones required</p><p class="sp-hp-s" id="sp-hp-s">BINAURAL BEATS · STEREO SEPARATION</p></div>
@@ -294,7 +306,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <div class="card-nm" id="m-abund">Abundance</div><div class="card-cnt" id="m-abundc">4 frequencies</div>
       </button>
     </div>
-    <button class="lib-link" id="lib-link" onclick="showLibrary()">← Full Library · 22 Frequencies</button>
+    <button class="lib-link" id="lib-link" onclick="showLibrary()">← Full Library · 21 Frequencies</button>
     <div style="text-align:center;padding:6px 14px 14px">
       <a href="legal.html?from=home#access" style="display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;padding:6px 0">
         <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;display:block">
@@ -403,14 +415,14 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,transparent 40%,var(--bg) 100%)"></div>
     <div style="position:absolute;top:0;left:0;right:0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
       <button class="pl-back" id="lib-back" onclick="showHome()" style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)">← Back</button>
-      <div style="font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.7);text-shadow:0 1px 6px rgba(0,0,0,.3)" id="lib-title">Library · 22 Frequencies</div>
+      <div style="font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.7);text-shadow:0 1px 6px rgba(0,0,0,.3)" id="lib-title">Library · 21 Frequencies</div>
       <div style="display:flex;gap:6px">
         <button class="pill" onclick="toggleLang()" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)">עב</button>
         <button class="pill" onclick="toggleDark()" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)">◐</button>
       </div>
     </div>
     <div style="position:absolute;bottom:14px;left:18px">
-      <div style="font-size:9px;letter-spacing:.28em;color:rgba(255,255,255,.6);text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.3)" id="lib-sub">22 frequencies · 3 categories</div>
+      <div style="font-size:9px;letter-spacing:.28em;color:rgba(255,255,255,.6);text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.3)" id="lib-sub">21 frequencies · 3 categories</div>
     </div>
   </div>
   <div class="lb-search">
@@ -847,8 +859,8 @@ function changeFontSize(d){
   })
 }
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'22 science-backed healing frequencies.\nTune your nervous system.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 22 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 22 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
-  he:{'sp-sub':'תדרים','sp-desc':'22 תדרי ריפוי מבוססי מדע.\nכווני את מערכת העצבים שלך.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 22 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 22 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
+  en:{'sp-sub':'frequencies','sp-desc':'21 science-backed healing frequencies.\nTune your nervous system.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
+  he:{'sp-sub':'תדרים','sp-desc':'21 תדרי ריפוי מבוססי מדע.\nכווני את מערכת העצבים שלך.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
@@ -891,6 +903,281 @@ function toggleLang(){
 })()
 
 // Player canvas
+</script>
+<!-- ════════════════════════════════════════════
+     GLOBAL ACCESSIBILITY WIDGET
+     Fixed position · z-index 99999 · all screens
+════════════════════════════════════════════ -->
+<style>
+/* Widget button */
+#a11y-btn{
+  position:fixed;
+  bottom:24px;
+  left:20px;
+  z-index:99999;
+  width:48px;height:48px;
+  border-radius:50%;
+  background:#1a1a18;
+  border:2px solid #f5f4f0;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 12px rgba(0,0,0,.28);
+  transition:transform .2s,box-shadow .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+#a11y-btn:hover,#a11y-btn:focus{
+  transform:scale(1.08);
+  box-shadow:0 4px 20px rgba(0,0,0,.38);
+  outline:2px solid #f5f4f0;
+  outline-offset:2px;
+}
+/* Menu panel */
+#a11y-menu{
+  position:fixed;
+  bottom:82px;
+  left:20px;
+  z-index:99999;
+  width:240px;
+  background:#f5f4f0;
+  border:.5px solid rgba(0,0,0,.18);
+  border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.22);
+  overflow:hidden;
+  display:none;
+  flex-direction:column;
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+#a11y-menu.open{display:flex}
+.a11y-head{
+  background:#1a1a18;
+  color:#f5f4f0;
+  padding:11px 16px;
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.16em;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.a11y-close{
+  background:none;border:none;color:#f5f4f0;
+  font-size:18px;cursor:pointer;padding:0 0 0 8px;
+  line-height:1;opacity:.7;
+}
+.a11y-close:hover{opacity:1}
+.a11y-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;
+  border-bottom:.5px solid rgba(0,0,0,.08);
+  background:#f5f4f0;
+}
+.a11y-row:last-child{border-bottom:none}
+.a11y-lbl{
+  font-size:12px;font-weight:300;
+  color:#1a1a18;letter-spacing:.06em;
+}
+.a11y-controls{display:flex;align-items:center;gap:6px}
+.a11y-btn-sm{
+  width:32px;height:32px;
+  border-radius:6px;
+  border:1px solid rgba(0,0,0,.18);
+  background:#fff;
+  color:#1a1a18;
+  font-size:13px;font-weight:400;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+  font-family:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+.a11y-btn-sm:hover{background:#e8e6e0}
+.a11y-btn-sm.on{background:#1a1a18;color:#f5f4f0;border-color:#1a1a18}
+.a11y-val{
+  font-size:11px;font-weight:300;
+  color:#525250;min-width:28px;text-align:center;
+  letter-spacing:.06em;
+}
+/* High contrast mode */
+body.hc-mode{
+  --bg:#000!important;--bg2:#111!important;--card:#111!important;
+  --t1:#fff!important;--t2:#fff!important;--t3:#ddd!important;--t4:#bbb!important;
+  --b1:rgba(255,255,255,.3)!important;--b2:rgba(255,255,255,.5)!important;
+}
+body.hc-mode #a11y-menu{
+  background:#111;border-color:#fff;
+}
+body.hc-mode .a11y-row{background:#111;border-color:rgba(255,255,255,.2)}
+body.hc-mode .a11y-lbl{color:#fff}
+body.hc-mode .a11y-btn-sm{background:#222;color:#fff;border-color:#fff}
+body.hc-mode .a11y-btn-sm.on{background:#fff;color:#000}
+/* Stop animations */
+body.no-anim *{
+  animation:none!important;
+  transition:none!important;
+}
+</style>
+
+<!-- Widget button -->
+<button
+  id="a11y-btn"
+  aria-label="תפריט נגישות"
+  aria-expanded="false"
+  aria-haspopup="true"
+  onclick="toggleA11yMenu()"
+>
+  <svg width="26" height="26" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="22" cy="22" r="20" fill="none" stroke="#f5f4f0" stroke-width="2"/>
+    <circle cx="22" cy="12.5" r="3" fill="#f5f4f0" stroke="none"/>
+    <line x1="22" y1="16.5" x2="22" y2="27" stroke="#f5f4f0" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15" y1="20.5" x2="29" y2="20.5" stroke="#f5f4f0" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="22" y1="27" x2="17.5" y2="34" stroke="#f5f4f0" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="22" y1="27" x2="26.5" y2="34" stroke="#f5f4f0" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<!-- Menu panel -->
+<div id="a11y-menu" role="dialog" aria-label="תפריט נגישות" aria-modal="false">
+  <div class="a11y-head">
+    <span id="a11y-title">נגישות</span>
+    <button class="a11y-close" onclick="closeA11yMenu()" aria-label="סגור">✕</button>
+  </div>
+
+  <!-- Font size -->
+  <div class="a11y-row">
+    <span class="a11y-lbl" id="a11y-lbl-font">גודל טקסט</span>
+    <div class="a11y-controls">
+      <button class="a11y-btn-sm" onclick="a11yFont(-1)" aria-label="הקטן טקסט">A−</button>
+      <span class="a11y-val" id="a11y-font-val">100%</span>
+      <button class="a11y-btn-sm" onclick="a11yFont(1)" aria-label="הגדל טקסט">A+</button>
+    </div>
+  </div>
+
+  <!-- High contrast -->
+  <div class="a11y-row">
+    <span class="a11y-lbl" id="a11y-lbl-hc">ניגודיות גבוהה</span>
+    <div class="a11y-controls">
+      <button class="a11y-btn-sm" id="a11y-hc-btn" onclick="a11yContrast()" aria-pressed="false">כב</button>
+    </div>
+  </div>
+
+  <!-- Stop animations -->
+  <div class="a11y-row">
+    <span class="a11y-lbl" id="a11y-lbl-anim">עצור אנימציות</span>
+    <div class="a11y-controls">
+      <button class="a11y-btn-sm" id="a11y-anim-btn" onclick="a11yAnim()" aria-pressed="false">כב</button>
+    </div>
+  </div>
+
+  <!-- Reset -->
+  <div class="a11y-row">
+    <span class="a11y-lbl" id="a11y-lbl-reset">איפוס</span>
+    <div class="a11y-controls">
+      <button class="a11y-btn-sm" onclick="a11yReset()" aria-label="אפס הגדרות נגישות">↺</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Accessibility Widget ──────────────────────────────────
+let a11yFontLevel = 0  // -2 to +4 steps
+let a11yHC = false
+let a11yNoAnim = false
+let a11yOpen = false
+
+function toggleA11yMenu(){
+  a11yOpen = !a11yOpen
+  const menu = document.getElementById('a11y-menu')
+  const btn  = document.getElementById('a11y-btn')
+  menu.classList.toggle('open', a11yOpen)
+  btn.setAttribute('aria-expanded', a11yOpen)
+  if(a11yOpen) menu.querySelector('.a11y-close').focus()
+}
+function closeA11yMenu(){
+  a11yOpen = false
+  document.getElementById('a11y-menu').classList.remove('open')
+  document.getElementById('a11y-btn').setAttribute('aria-expanded','false')
+  document.getElementById('a11y-btn').focus()
+}
+
+function a11yFont(d){
+  a11yFontLevel = Math.max(-2, Math.min(4, a11yFontLevel + d))
+  const base = 16 + a11yFontLevel * 2
+  document.body.style.fontSize = base + 'px'
+  document.getElementById('a11y-font-val').textContent = Math.round(base/16*100) + '%'
+  // sync with existing baseFontSize if defined
+  if(typeof baseFontSize !== 'undefined') baseFontSize = base
+}
+
+function a11yContrast(){
+  a11yHC = !a11yHC
+  document.body.classList.toggle('hc-mode', a11yHC)
+  const btn = document.getElementById('a11y-hc-btn')
+  btn.textContent = a11yHC ? 'פע' : 'כב'
+  btn.classList.toggle('on', a11yHC)
+  btn.setAttribute('aria-pressed', a11yHC)
+}
+
+function a11yAnim(){
+  a11yNoAnim = !a11yNoAnim
+  document.body.classList.toggle('no-anim', a11yNoAnim)
+  const btn = document.getElementById('a11y-anim-btn')
+  btn.textContent = a11yNoAnim ? 'פע' : 'כב'
+  btn.classList.toggle('on', a11yNoAnim)
+  btn.setAttribute('aria-pressed', a11yNoAnim)
+}
+
+function a11yReset(){
+  a11yFontLevel = 0
+  a11yHC = false
+  a11yNoAnim = false
+  document.body.style.fontSize = '16px'
+  document.body.classList.remove('hc-mode','no-anim')
+  document.getElementById('a11y-font-val').textContent = '100%'
+  const hcBtn = document.getElementById('a11y-hc-btn')
+  hcBtn.textContent = 'כב'; hcBtn.classList.remove('on'); hcBtn.setAttribute('aria-pressed','false')
+  const anBtn = document.getElementById('a11y-anim-btn')
+  anBtn.textContent = 'כב'; anBtn.classList.remove('on'); anBtn.setAttribute('aria-pressed','false')
+  if(typeof baseFontSize !== 'undefined') baseFontSize = 16
+}
+
+// Close on outside click
+document.addEventListener('click', e => {
+  if(a11yOpen && !e.target.closest('#a11y-menu') && !e.target.closest('#a11y-btn'))
+    closeA11yMenu()
+})
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && a11yOpen) closeA11yMenu()
+})
+
+// RTL/LTR sync for menu position
+function syncA11yPos(){
+  const btn  = document.getElementById('a11y-btn')
+  const menu = document.getElementById('a11y-menu')
+  if(document.body.dir === 'rtl'){
+    btn.style.left='auto';  btn.style.right='20px'
+    menu.style.left='auto'; menu.style.right='20px'
+  } else {
+    btn.style.right='auto'; btn.style.left='20px'
+    menu.style.right='auto';menu.style.left='20px'
+  }
+}
+// watch lang toggle
+const _origToggleLang = typeof toggleLang==='function' ? toggleLang : null
+if(_origToggleLang){
+  window.toggleLang = function(){
+    _origToggleLang()
+    syncA11yPos()
+    // translate widget labels
+    const isHe = document.body.dir==='rtl'
+    document.getElementById('a11y-title').textContent    = isHe?'נגישות':'Accessibility'
+    document.getElementById('a11y-lbl-font').textContent  = isHe?'גודל טקסט':'Text size'
+    document.getElementById('a11y-lbl-hc').textContent    = isHe?'ניגודיות גבוהה':'High contrast'
+    document.getElementById('a11y-lbl-anim').textContent  = isHe?'עצור אנימציות':'Stop animations'
+    document.getElementById('a11y-lbl-reset').textContent = isHe?'איפוס':'Reset'
+    document.getElementById('a11y-btn').setAttribute('aria-label', isHe?'תפריט נגישות':'Accessibility menu')
+  }
+}
+syncA11yPos()
 </script>
 </body>
 </html>
