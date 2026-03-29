@@ -1,0 +1,19 @@
+{
+  "name": "echo.11 frequencies",
+  "short_name": "echo.11",
+  "description": "22 science-backed healing frequencies. Tune your nervous system.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f4f0",
+  "theme_color": "#f5f4f0",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "astronaut.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "music", "lifestyle"]
+}
