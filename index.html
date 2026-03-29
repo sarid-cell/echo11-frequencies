@@ -25,7 +25,11 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .scr.on{display:flex;opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .scr.on > *{animation:fadeUp .45s ease both}
-/* touch-friendly nav arrows — 48pt minimum per Apple HIG */
+/* Accessibility icon — always visible */
+.a11y-icon-stroke{stroke:#767672}
+.a11y-icon-fill{fill:#525250;stroke:#525250}
+.dark .a11y-icon-stroke{stroke:#a0a09a}
+.dark .a11y-icon-fill{fill:#a0a09a;stroke:#a0a09a}
 .pl-arr{background:none;border:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t4);transition:color .2s;-webkit-tap-highlight-color:transparent}
 .pl-arr:hover,.pl-arr:active{color:var(--t2)}
 /* Safe area for iPhone notch + home indicator */
@@ -292,8 +296,21 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
     <button class="lib-link" id="lib-link" onclick="showLibrary()">← Full Library · 22 Frequencies</button>
     <div style="text-align:center;padding:6px 14px 14px">
+      <a href="legal.html?from=home#access" style="display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;padding:6px 0">
+        <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;display:block">
+          <circle cx="22" cy="22" r="21" fill="none" stroke="#525250" stroke-width="1.5"/>
+          <circle cx="22" cy="12.5" r="2.8" fill="#525250" stroke="none"/>
+          <line x1="22" y1="16" x2="22" y2="26.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="15.5" y1="20.5" x2="28.5" y2="20.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="22" y1="26.5" x2="18" y2="33.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="22" y1="26.5" x2="26" y2="33.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        Accessibility
+      </a>
+    </div>
+    <div style="text-align:center;padding:0 14px 14px">
       <a href="legal.html?from=home" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;display:inline-block;padding:6px 0">
-        Privacy · Accessibility · Terms · echo.11 © 2026
+        Privacy · Terms · echo.11 © 2026
       </a>
     </div>
     <!-- Aa buttons inside scroll, above legal -->
