@@ -295,8 +295,13 @@ input[type=range]{accent-color:var(--t3);width:100%}
         Privacy · Accessibility · Terms · echo.11 © 2026
       </a>
     </div>
+    <!-- Aa buttons inside scroll, above legal -->
+    <div style="display:flex;align-items:center;gap:6px;padding:0 14px 4px">
+      <span style="font-size:9px;letter-spacing:.18em;color:var(--t4);font-family:'DM Sans',sans-serif">text size</span>
+      <button class="pill" onclick="changeFontSize(1)" style="min-width:44px;min-height:44px">A+</button>
+      <button class="pill" onclick="changeFontSize(-1)" style="min-width:44px;min-height:44px">A−</button>
+    </div>
   </div>
-  <div class="acc-bar"><button class="pill on">Aa</button><button class="pill" onclick="changeFontSize(1)">A+</button><button class="pill" onclick="changeFontSize(-1)">A−</button></div>
 </div>
 
 <!-- PLAYER -->
@@ -364,6 +369,11 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
     <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
+    <!-- iOS screen lock notice -->
+    <div id="lock-notice" style="display:none;align-items:center;gap:8px;padding:8px 0 0">
+      <span style="font-size:16px">🔒</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
+    </div>
   </div>
 </div>
 
@@ -394,13 +404,13 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 <script>
 const FREQS=[
-  {id:'gamma', num:'A1',cat:'science', mode:'focus',   type:'binaural',  hz:40,  cL:200, cR:240, beat:40,  wave:'Gamma',morph:.045,en:{name:'Gamma MIT',sub:'Focus · Brain Health',desc:'MIT Picower Institute (2016) proved 40 Hz stimulation reduces amyloid proteins by 40% and improves cognitive performance.',res:'MIT Picower Institute · Nature, 2016',ideal:'Deep focus · Writing · Learning · Brain fog relief'},he:{name:'גמא MIT',sub:'ריכוז · בריאות המוח',desc:'מחקר MIT מ-2016 הוכיח כי גירוי ב-40 Hz מפחית חלבוני אמילואיד ב-40% ומשפר ביצועים קוגניטיביים.',res:'MIT · Nature, 2016',ideal:'ריכוז עמוק · כתיבה · למידה · מניעת ערפל מוחי'}},
+  {id:'gamma', num:'A1',cat:'science', mode:'focus',   type:'binaural',  hz:40,  cL:200, cR:240, beat:40,  wave:'Gamma',morph:.045,en:{name:'Gamma MIT',sub:'Focus · Brain Health',desc:'Inspired by MIT Picower Institute (2016) research on 40 Hz stimulation and cognitive performance. echo.11 is not a medical device.',res:'MIT Picower Institute · Nature, 2016',ideal:'Deep focus · Writing · Learning · Brain fog relief'},he:{name:'גמא MIT',sub:'ריכוז · בריאות המוח',desc:'בהשראת מחקר MIT מ-2016 על גירוי ב-40 Hz וביצועים קוגניטיביים. echo.11 אינה מכשיר רפואי.',res:'MIT · Nature, 2016',ideal:'ריכוז עמוק · כתיבה · למידה · מניעת ערפל מוחי'}},
   {id:'alpha', num:'A2',cat:'science', mode:'focus',   type:'binaural',  hz:10,  cL:200, cR:210, beat:10,  wave:'Alpha',morph:.025,en:{name:'Alpha Silva',sub:'Creativity · Clarity',desc:'Alpha 8-12 Hz — the bridge between conscious and subconscious. The basis of the Silva Method, EEG-verified.',res:'José Silva · Silva Method · 1966',ideal:'Creativity · Accelerated learning · Light meditation'},he:{name:'אלפא סילבה',sub:'יצירתיות · בהירות',desc:'אלפא 8-12 Hz — הגשר בין המודע לתת-מודע. הבסיס לשיטת סילבה.',res:'José Silva · שיטת סילבה · 1966',ideal:'יצירה · למידה מואצת · מדיטציה קלה'}},
   {id:'theta', num:'A3',cat:'science', mode:'healing', type:'binaural',  hz:6,   cL:200, cR:206, beat:6,   wave:'Theta',morph:.015,en:{name:'Deep Theta',sub:'Meditation · Subconscious',desc:'Theta 4-8 Hz appear in deep meditation and REM sleep. Excellent for emotional processing and trauma release.',res:'Brainwave Research · Multiple studies',ideal:'Deep meditation · Emotional healing · Misophonia'},he:{name:'Theta עמוק',sub:'מדיטציה · תת-מודע',desc:'גלי תטא 4-8 Hz מופיעים במדיטציה עמוקה ובREM. מעולה לעיבוד רגשי.',res:'מחקרי גלי מוח · מחקרים מאומתים',ideal:'מדיטציה עמוקה · ריפוי רגשי · מיסופוניה'}},
   {id:'beta',  num:'A4',cat:'science', mode:'focus',   type:'binaural',  hz:18,  cL:300, cR:318, beat:18,  wave:'Beta', morph:.05, en:{name:'Beta Focus',sub:'Attention · ADHD',desc:'Beta 12-30 Hz characterize active focus and logical thinking. Neurofeedback-proven for ADHD.',res:'Neurofeedback Research · EEG studies',ideal:'Focus · ADHD · Analytical tasks'},he:{name:'Beta ריכוז',sub:'קשב · ADHD',desc:'גלי בטא 12-30 Hz אופייניים למצבי ריכוז פעיל. מוכח בנוירופידבק לADHD.',res:'מחקרי נוירופידבק · EEG',ideal:'ריכוז · ADHD · מטלות ניתוח'}},
   {id:'delta', num:'A5',cat:'science', mode:'sleep',   type:'binaural',  hz:2,   cL:200, cR:202, beat:2,   wave:'Delta',morph:.008,en:{name:'Delta Sleep',sub:'Deep Sleep · Renewal',desc:'Delta 0.5-4 Hz are the deepest sleep stages. Body regenerates, immune system strengthens.',res:'Sleep Research · AASM guidelines',ideal:'Deep sleep · Physical recovery · Immune boost'},he:{name:'Delta שינה',sub:'שינה עמוקה · התחדשות',desc:'גלי דלתא 0.5-4 Hz — שלבי השינה העמוקה ביותר. הגוף מתחדש.',res:'מחקרי שינה · AASM',ideal:'שינה עמוקה · התחדשות פיזית'}},
   {id:'hz432', num:'B5',cat:'solfeggio',mode:'sleep',  type:'solfeggio',  hz:432, cL:432, cR:432, beat:null,wave:'Pure', morph:.022,noHp:true,en:{name:'The Universe',sub:'Deep Sleep · Release · Align',desc:'Mathematically aligned with the Golden Ratio and Fibonacci. Differs from standard 440 Hz — many report deeper sleep, greater calm, and natural alignment.',res:'Pythagorean tuning · Nature harmonics · Golden Ratio',ideal:'Deep sleep · Evening meditation · Emotional release · Nervous system reset'},he:{name:'היקום',sub:'שינה עמוקה · שחרור · יישור',desc:'מיושר מתמטית עם מספר הזהב ופיבונאצ׳י. שונה מ-440 Hz הסטנדרטי.',res:'כוונון פיתגוראי · הרמוניות הטבע',ideal:'שינה עמוקה · מדיטציה · שחרור רגשי'}},
-  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',imgPos:'center 82%',en:{name:'The Love',sub:'Healing · Heart · DNA',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone. Studies suggest DNA repair effects.',res:'Dr. Leonard Horowitz · Journal of Addiction Research, 2017',ideal:'Heart healing · Self-love · Emotional repair'},he:{name:'האהבה',sub:'ריפוי · לב · DNA',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. מחקרים מצביעים על תיקון DNA.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון'}},
+  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',imgPos:'center 82%',en:{name:'The Love',sub:'Heart · Restoration',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone of the ancient Solfeggio scale. Widely used in sound healing traditions.',res:'Dr. Leonard Horowitz · Journal of Addiction Research, 2017',ideal:'Heart opening · Self-love · Emotional restoration'},he:{name:'האהבה',sub:'ריפוי · לב · DNA',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. מחקרים מצביעים על תיקון DNA.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון'}},
   {id:'hz396', num:'B3',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:396, cL:396, cR:396, beat:null,wave:'Pure', morph:.018,noHp:true,en:{name:'Liberation',sub:'Guilt · Trauma · Root',desc:'Solfeggio UT. Helps release fear, guilt and deep negative energy.',res:'Solfeggio UT · Ancient Gregorian chant',ideal:'Trauma release · Guilt processing · Emotional freedom'},he:{name:'שחרור עבר',sub:'אשמה · טראומה · שורש',desc:'סולפג׳יו UT. מסייע בשחרור פחד, אשמה ואנרגיה שלילית.',res:'סולפג׳יו UT · שירה גריגוריאנית עתיקה',ideal:'שחרור טראומה · אשמה · חופש רגשי'}},
   {id:'hz369', num:'B7',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:369, cL:369, cR:369, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Tesla 3-6-9',sub:'Energy · Alignment',desc:'"If you only knew the magnificence of 3, 6 and 9, you would have a key to the universe." — Nikola Tesla',res:'Inspired by Nikola Tesla · Vortex Mathematics',ideal:'Energy · Intention · Cosmic alignment'},he:{name:'טסלה 3-6-9',sub:'אנרגיה · יישור',desc:'״אם רק ידעת את גדולת 3, 6 ו-9, היית מחזיק בכל מפתחות היקום.״ — ניקולה טסלה',res:'בהשראת ניקולה טסלה',ideal:'אנרגיה · כוונה · יישור קוסמי'}},
   {id:'hz963', num:'B11',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:963,cL:963, cR:963, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Unity',sub:'Abundance · Awakening',desc:'Solfeggio SI — crown chakra. Known as the spiritual awakening frequency.',res:'Solfeggio SI · Crown Chakra',ideal:'Abundance · Intention · Spiritual awakening'},he:{name:'אחדות',sub:'שפע · התעוררות',desc:'סולפג׳יו SI — צ׳אקרת הכתר. ידוע כתדר ההתעוררות הרוחנית.',res:'סולפג׳יו SI · צ׳אקרת הכתר',ideal:'שפע · כוונה · התעוררות'}},
@@ -672,38 +682,36 @@ async function togglePlay(){
   const f=FREQS[curIdx]
   if(playing){ doStop(); return }
   await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0
-  // FIX 1 — show compass
-  
+
+  // Show iOS screen lock notice once
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
+  if(isIOS && !sessionStorage.getItem('lockNotice')){
+    sessionStorage.setItem('lockNotice','1')
+    const notice=document.getElementById('lock-notice')
+    if(notice){ notice.style.display='flex'; setTimeout(()=>notice.style.display='none',5000) }
+  }
+
   clearInterval(elapsedIv)
   elapsedIv=setInterval(()=>{
     elapsed++
     const ts=`${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}`
-    // Timer display: show elapsed / total if timer set
     let timerDisplay=ts
     if(selTimerSec>0){
-      const remaining=selTimerSec-elapsed
-      const rem=Math.max(0,remaining)
+      const rem=Math.max(0,selTimerSec-elapsed)
       const remStr=`${Math.floor(rem/60)}:${String(rem%60).padStart(2,'0')}`
       timerDisplay=`${ts} / ${Math.floor(selTimerSec/60)}:${String(selTimerSec%60).padStart(2,'0')} · ${remStr} left`
     }
-    // Update today bar from localStorage
     const todayBar=document.getElementById('today-bar')
     if(todayBar){
       const sessions=loadSessions()
-      const key=getTodayKey()
-      const todaySecs=(sessions[key]?.total||0)+elapsed
+      const todaySecs=(sessions[getTodayKey()]?.total||0)+elapsed
       todayBar.style.height=Math.min(98,Math.max(5,Math.round(todaySecs/6)))+'%'
     }
-    // brain state
     document.getElementById('bs-fill').style.width=Math.min(100,(elapsed/(selTimerSec||1200))*100)+'%'
     document.getElementById('bs-time').textContent=ts
     const s=[...BRAIN].reverse().find(b=>elapsed>=b.t); if(s) document.getElementById('bs-txt').innerHTML=s[lang]
-    // elapsed row
     const er=document.getElementById('el-row'); er.style.display='flex'
     document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
-    // compass draw
-    
-    // timer end
     if(selTimerSec>0 && elapsed>=selTimerSec) doStop()
   },1000)
   updatePlayBtn()
@@ -747,8 +755,8 @@ function changeFontSize(d){
   document.body.style.fontSize=Math.max(12,Math.min(20,c+d))+'px'
 }
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'22 science-backed healing frequencies.\nTune your nervous system.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 22 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 22 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration'},
-  he:{'sp-sub':'תדרים','sp-desc':'22 תדרי ריפוי מבוססי מדע.\nכווני את מערכת העצבים שלך.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 22 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 22 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן'},
+  en:{'sp-sub':'frequencies','sp-desc':'22 science-backed healing frequencies.\nTune your nervous system.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 22 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 22 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
+  he:{'sp-sub':'תדרים','sp-desc':'22 תדרי ריפוי מבוססי מדע.\nכווני את מערכת העצבים שלך.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 22 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 22 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
