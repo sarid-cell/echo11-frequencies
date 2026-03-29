@@ -87,17 +87,69 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .pill:hover{color:var(--t1)}.pill.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
 
 /* HOME */
-#home .scrl{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--b2) transparent}
+#home .scrl{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--b2) transparent;scroll-behavior:smooth;overscroll-behavior:contain}
 
 /* HOME HERO — image only, full bleed */
-.home-hero-img{position:relative;height:52vh;min-height:250px;max-height:380px;overflow:hidden;flex-shrink:0}
-.home-hero-img img{width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block}
-.home-hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,
-  rgba(0,0,0,.1) 0%,
-  rgba(0,0,0,0)  22%,
-  rgba(245,243,238,0) 70%,
-  var(--bg) 100%
-)}
+.home-hero-img{
+  position:relative;
+  height:55vh;
+  min-height:260px;
+  max-height:420px;   /* mobile cap */
+  overflow:hidden;
+  flex-shrink:0;
+}
+.home-hero-img img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center 35%;  /* shows body, not just head */
+  display:block;
+}
+.home-hero-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(0,0,0,.08) 0%,
+    rgba(0,0,0,0)   18%,
+    rgba(245,243,238,0) 62%,
+    var(--bg) 100%
+  );
+}
+
+/* Desktop — show full astronaut figure */
+@media(min-width:768px){
+  /* Hero — full astronaut on desktop */
+  .home-hero-img{
+    height:68vh;
+    min-height:400px;
+    max-height:700px;
+  }
+  .home-hero-img img{
+    object-position:center 30%;
+  }
+  .home-hero-img::after{
+    background:linear-gradient(to bottom,
+      rgba(0,0,0,.05) 0%,
+      rgba(0,0,0,0)   15%,
+      rgba(245,243,238,0) 55%,
+      rgba(245,243,238,.6) 78%,
+      var(--bg) 100%
+    );
+  }
+  /* Wider content on desktop */
+  .home-today-block{padding:20px 40px 18px}
+  .home-freq-num{font-size:80px}
+  .home-freq-name{font-size:16px}
+  /* Constrain home scroll content width on large screens */
+  #home .scrl{max-width:800px;margin:0 auto;width:100%}
+  /* Modes grid 4 columns on desktop */
+  .grid{grid-template-columns:1fr 1fr 1fr 1fr;padding:0 20px}
+  /* Library wider */
+  #library .lb-scroll{max-width:800px;margin:0 auto}
+  /* Player max width */
+  #player .pl-freq-bar{padding:14px 40px 0}
+  #player .pl-bottom{padding:0 40px 40px}
+  #player .pl-nav{padding:52px 40px 0}
+  .pl-fn{font-size:96px}
+}
 /* Today block — on paper, below image */
 .home-today-block{
   display:flex;align-items:flex-end;justify-content:space-between;
@@ -697,7 +749,13 @@ async function enterApp(){
   renderStreak()
   showHome()
 }
-function showHome(){ show('home'); renderStreak() }
+function showHome(){
+  show('home')
+  renderStreak()
+  // Always scroll to top when entering home
+  const scrl = document.querySelector('#home .scrl')
+  if(scrl) scrl.scrollTop = 0
+}
 
 // Handle return from legal.html — skip splash if #home in URL
 if(window.location.hash==='#home'){
