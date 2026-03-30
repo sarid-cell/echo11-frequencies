@@ -165,67 +165,71 @@ input[type=range]{accent-color:var(--t3);width:100%}
 /* Hero centre text — on top of image */
 .home-hero-center{
   position:absolute;
-  bottom:22%;            /* lower — over the figure, not sky */
-  left:50%;
-  transform:translateX(-50%);
-  text-align:center;
+  bottom:18%;
+  left:0;
+  right:0;
+  padding:0 6% 0 7%;   /* left-aligned, breathing room */
   z-index:2;
   pointer-events:none;
-  width:90%;
   opacity:0;
   animation:hc-appear 1.1s .5s cubic-bezier(.22,.8,.32,1) both;
+  text-align:left;
+  max-width:720px;      /* cap on very wide screens */
 }
-@keyframes hc-appear{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes hc-appear{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
-/* Main tagline — always visible, crisp */
+/* Tagline — left, large, high contrast */
 .home-hero-tagline{
   font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:clamp(32px,6vw,72px);
+  font-size:clamp(38px,5.5vw,80px);
   font-weight:200;
   line-height:1.0;
-  letter-spacing:.02em;
-  color:#f5f3ee;
-  text-shadow:0 2px 32px rgba(0,0,0,.28);
-  margin-bottom:10px;
+  letter-spacing:.01em;
+  color:#ffffff;
+  text-shadow:0 2px 24px rgba(0,0,0,.35), 0 0 60px rgba(0,0,0,.2);
+  margin-bottom:12px;
   display:block;
 }
 /* Sub — what it does */
 .home-hero-sub{
   font-family:'DM Sans',sans-serif;
-  font-size:clamp(11px,2vw,15px);
+  font-size:clamp(10px,1.4vw,14px);
   font-weight:300;
-  letter-spacing:.24em;
-  color:rgba(245,243,238,.72);
-  text-shadow:0 1px 12px rgba(0,0,0,.22);
+  letter-spacing:.28em;
+  color:rgba(255,255,255,.75);
+  text-shadow:0 1px 8px rgba(0,0,0,.3);
   display:block;
-  margin-bottom:24px;
+  margin-bottom:22px;
   text-transform:lowercase;
 }
-/* CTA on hero */
+/* CTA — solid, readable, left-aligned */
 .home-hero-cta{
   display:inline-block;
   font-family:'DM Sans',sans-serif;
   font-size:11px;font-weight:300;
   letter-spacing:.22em;
-  color:#f5f3ee;
-  border:.5px solid rgba(245,243,238,.45);
+  color:#0e0c09;
+  background:rgba(245,243,238,.92);
+  border:none;
   border-radius:2px;
-  padding:11px 28px;
+  padding:13px 28px;
   cursor:pointer;
-  background:rgba(245,243,238,.08);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
   transition:all .25s;
   pointer-events:all;
   text-decoration:none;
+  backdrop-filter:none;
 }
 .home-hero-cta:hover,.home-hero-cta:focus{
-  background:rgba(245,243,238,.18);
-  border-color:rgba(245,243,238,.8);
+  background:#ffffff;
   outline:none;
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(0,0,0,.18);
 }
-.home-hero-eyebrow{display:none} /* replaced by tagline */
-.home-hero-title{display:none}   /* replaced by tagline */
+.home-hero-eyebrow{display:none}
+.home-hero-title{display:none}
 
 /* Scroll arrow */
 .home-scroll-arrow{
@@ -515,10 +519,10 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <div class="card-desc" id="m-sleep-d">calm your nervous system</div>
       </button>
       <button class="mode-card" onclick="openPlayer('hz528')">
-        <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><polygon points="50,8 90,76 10,76" stroke-width=".8" opacity=".44"/><polygon points="50,24 74,66 26,66" stroke-width=".5" opacity=".27"/><circle cx="50" cy="52" r="4" fill="currentColor" opacity=".44"/></svg></div>
+        <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><path d="M10 50 Q25 28 40 50 Q55 72 70 50 Q85 28 90 50" stroke-width=".9" opacity=".5" stroke-linecap="round"/><path d="M10 62 Q25 40 40 62 Q55 84 70 62 Q85 40 90 62" stroke-width=".5" opacity=".22" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="currentColor" opacity=".4"/></svg></div>
         <div class="card-nm" id="m-heal">Healing</div>
         <div class="card-cnt" id="m-healc">4 frequencies</div>
-        <div class="card-desc" id="m-heal-d">restore & release</div>
+        <div class="card-desc" id="m-heal-d">restore &amp; release</div>
       </button>
       <button class="mode-card" onclick="openPlayer('gamma')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><rect x="10" y="10" width="80" height="80" stroke-width=".8" opacity=".44"/><rect x="24" y="24" width="52" height="52" stroke-width=".5" opacity=".27"/><rect x="38" y="38" width="24" height="24" stroke-width=".4" opacity=".17"/><rect x="46" y="46" width="8" height="8" fill="currentColor" opacity=".44"/></svg></div>
@@ -659,70 +663,294 @@ input[type=range]{accent-color:var(--t3);width:100%}
 </div>
 
 <!-- HISTORY -->
-<div id="history" class="scr">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:52px 22px 0;flex-shrink:0;z-index:2">
-    <button class="pl-back" onclick="show('home');renderStreak()">← Back</button>
-    <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3)" id="hist-title">Listening History</span>
+<!-- HISTORY -->
+<div id="history" class="scr" style="overflow-y:auto;overflow-x:hidden">
+
+  <!-- Hero image with dynamic message -->
+  <div style="position:relative;height:42vh;min-height:220px;overflow:hidden;flex-shrink:0">
+    <img src="img_history.png" alt="" onerror="this.style.display='none'"
+      style="width:100%;height:115%;object-fit:cover;object-position:center 30%;display:block"/>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(245,243,238,0) 55%,var(--bg) 100%)"></div>
+    <!-- Back button -->
+    <button class="pl-back" onclick="show('home');renderStreak()"
+      style="position:absolute;top:52px;left:22px;z-index:3">← Back</button>
+    <!-- Dynamic emotional headline -->
+    <div style="position:absolute;bottom:22px;left:22px;right:22px;z-index:3">
+      <div id="hist-headline"
+        style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,4vw,36px);font-weight:200;font-style:italic;color:var(--t1);line-height:1.2;text-shadow:0 1px 20px rgba(245,243,238,.5)">
+      </div>
+    </div>
   </div>
-  <div style="flex:1;overflow-y:auto;padding:20px 22px 40px;scrollbar-width:none" id="hist-list"></div>
+
+  <!-- Stats row -->
+  <div id="hist-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:16px 18px 0"></div>
+
+  <!-- Weekly Shape — the core visual -->
+  <div style="padding:24px 18px 8px">
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.24em;color:var(--t3);text-transform:uppercase;margin-bottom:14px" id="hist-shape-lbl">this week's journey</div>
+    <div style="display:flex;align-items:center;gap:20px">
+      <!-- Shape canvas -->
+      <div style="position:relative;width:90px;height:90px;flex-shrink:0">
+        <canvas id="weekly-shape-cv" width="180" height="180" style="width:90px;height:90px"></canvas>
+      </div>
+      <!-- Shape meaning -->
+      <div>
+        <div id="hist-shape-title" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1);margin-bottom:4px"></div>
+        <div id="hist-shape-desc" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.6;max-width:200px"></div>
+        <div style="margin-top:8px;display:flex;gap:4px" id="hist-dots"></div>
+      </div>
+    </div>
+    <!-- Progress bar to next shape -->
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t4)" id="hist-prog-lbl">toward full circle</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t3)" id="hist-prog-val"></span>
+      </div>
+      <div style="height:2px;background:var(--b1);border-radius:1px;overflow:hidden">
+        <div id="hist-prog-bar" style="height:100%;background:var(--t1);border-radius:1px;transition:width .8s ease"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Weekly Analysis -->
+  <div style="margin:16px 18px 0;background:var(--card);border:.5px solid var(--b1);border-radius:14px;overflow:hidden">
+    <div style="padding:14px 16px;border-bottom:.5px solid var(--b1);display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:2px" id="hist-ai-lbl">weekly insight</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t2)" id="hist-ai-sub">powered by echo.11 intelligence</div>
+      </div>
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--t1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="3" fill="#f5f4f0"/>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#f5f4f0" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+    <div id="hist-ai-content" style="padding:14px 16px;min-height:80px">
+      <button id="hist-ai-btn"
+        style="width:100%;background:none;border:.5px solid var(--b2);border-radius:8px;padding:12px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.14em;color:var(--t2);cursor:pointer;transition:all .2s"
+        onclick="runAIAnalysis()">
+        analyse my week →
+      </button>
+    </div>
+  </div>
+
+  <!-- Session history list -->
+  <div style="padding:20px 18px 60px" id="hist-list"></div>
 </div>
 
 <script>
+// ── Weekly Shape system ──────────────────────────────────────
+// 7 days = 7 stages, each stage = a more complete geometric form
+const SHAPE_STAGES=[
+  {days:0, name:'', nameHe:'',          desc:'start listening to begin your journey', descHe:'התחילי להאזין כדי להתחיל את המסע'},
+  {days:1, name:'a point.',nameHe:'נקודה.',desc:'you have arrived. the journey begins.',descHe:'הגעת. המסע מתחיל.'},
+  {days:2, name:'a line.',nameHe:'קו.',   desc:'two days. you are building a thread.',descHe:'יומיים. את בונה חוט.'},
+  {days:3, name:'a triangle.',nameHe:'משולש.',desc:'three points. stability is forming.',descHe:'שלוש נקודות. יציבות מתגבשת.'},
+  {days:4, name:'a square.',nameHe:'ריבוע.',desc:'four corners. a foundation is here.',descHe:'ארבע פינות. בסיס נוצר.'},
+  {days:5, name:'a pentagon.',nameHe:'מחומש.',desc:'five days. your system is remembering.',descHe:'חמישה ימים. מערכת העצבים זוכרת.'},
+  {days:6, name:'a hexagon.',nameHe:'משושה.',desc:'six days. you are almost whole.',descHe:'שישה ימים. כמעט שלמה.'},
+  {days:7, name:'a circle.',nameHe:'מעגל.',desc:'seven days complete. you are the frequency.',descHe:'שבעה ימים שלמים. את התדר.'},
+]
+
+function drawWeeklyShape(ctx, days, size){
+  ctx.clearRect(0,0,size,size)
+  const cx=size/2, cy=size/2, r=size*.36
+  const isDark=document.body.classList.contains('dark')||document.body.classList.contains('hc-mode')
+  const stroke=isDark?'rgba(245,243,238,.7)':'rgba(26,26,24,.55)'
+  const fill=isDark?'rgba(245,243,238,.06)':'rgba(26,26,24,.04)'
+
+  ctx.strokeStyle=stroke
+  ctx.fillStyle=fill
+  ctx.lineWidth=size*.012
+
+  if(days===0){ // dot hint
+    ctx.beginPath()
+    ctx.arc(cx,cy,size*.04,0,Math.PI*2)
+    ctx.fillStyle=isDark?'rgba(245,243,238,.2)':'rgba(26,26,24,.15)'
+    ctx.fill()
+    return
+  }
+  if(days===1){ // point
+    ctx.beginPath()
+    ctx.arc(cx,cy,size*.05,0,Math.PI*2)
+    ctx.fillStyle=stroke; ctx.fill()
+    return
+  }
+  if(days>=7){ // full circle
+    ctx.beginPath()
+    ctx.arc(cx,cy,r,0,Math.PI*2)
+    ctx.fill(); ctx.stroke()
+    // inner glow ring
+    ctx.beginPath()
+    ctx.arc(cx,cy,r*.55,0,Math.PI*2)
+    ctx.strokeStyle=isDark?'rgba(245,243,238,.2)':'rgba(26,26,24,.15)'
+    ctx.stroke()
+    return
+  }
+  // polygon for days 2–6
+  const sides=days
+  ctx.beginPath()
+  for(let i=0;i<sides;i++){
+    const angle=(Math.PI*2/sides)*i - Math.PI/2
+    const x=cx+r*Math.cos(angle), y=cy+r*Math.sin(angle)
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+  }
+  ctx.closePath()
+  ctx.fill(); ctx.stroke()
+  // vertices
+  for(let i=0;i<sides;i++){
+    const angle=(Math.PI*2/sides)*i - Math.PI/2
+    const x=cx+r*Math.cos(angle), y=cy+r*Math.sin(angle)
+    ctx.beginPath()
+    ctx.arc(x,y,size*.028,0,Math.PI*2)
+    ctx.fillStyle=stroke; ctx.fill()
+  }
+}
+
+// ── AI Analysis ──────────────────────────────────────────────
+async function runAIAnalysis(){
+  const sessions=loadSessions()
+  const keys=Object.keys(sessions).sort((a,b)=>b.localeCompare(a)).slice(0,7)
+  if(!keys.length) return
+
+  const btn=document.getElementById('hist-ai-btn')
+  const content=document.getElementById('hist-ai-content')
+  btn.style.display='none'
+  content.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+    <div class="ldot"></div>
+    <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.1em">${lang==='he'?'מנתח את השבוע שלך...':'analysing your week...'}</span>
+  </div>`
+
+  // Build data summary for Claude
+  const summary=keys.map(k=>{
+    const d=sessions[k]
+    const mins=Math.round((d.total||0)/60)
+    const freqs=d.freqs?Object.keys(d.freqs).map(fid=>{
+      const f=FREQS.find(x=>x.id===fid)
+      return f?`${(f.en).name} (${f.hz}Hz)`:fid
+    }).join(', '):'unknown'
+    return `${k}: ${mins} min — ${freqs}`
+  }).join('\n')
+
+  const prompt=`You are a gentle, science-informed wellness guide for echo.11, a healing frequencies app. 
+Analyse this user's listening history from the past 7 days and give a warm, personal weekly insight.
+
+Listening data:
+${summary}
+
+Guidelines:
+- 3–4 sentences maximum
+- Mention specific frequencies they listened to and what that pattern suggests about their nervous system state
+- Give one gentle suggestion for next week
+- Tone: warm, poetic, scientific but accessible
+- ${lang==='he'?'Respond in Hebrew':'Respond in English'}
+- Do NOT use bullet points. Write flowing prose.
+- Do NOT mention "AI" or "analysis". Speak as if you deeply understand their journey.`
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:220,
+        messages:[{role:'user',content:prompt}]
+      })
+    })
+    const data=await resp.json()
+    const text=data.content?.[0]?.text||''
+    content.innerHTML=`
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75;margin-bottom:14px">${text}</div>
+      <button onclick="runAIAnalysis()" style="background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);cursor:pointer;padding:0">↻ ${lang==='he'?'ניתוח מחדש':'refresh'}</button>`
+  }catch(e){
+    content.innerHTML=`<div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t3);padding:8px 0">${lang==='he'?'לא ניתן להתחבר כרגע.':'Could not connect right now.'}</div>
+    <button onclick="runAIAnalysis()" style="background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t3);cursor:pointer">↻ try again</button>`
+  }
+}
+
+// ── buildHistory ─────────────────────────────────────────────
 function buildHistory(){
   const sessions=loadSessions()
   const keys=Object.keys(sessions).sort((a,b)=>b.localeCompare(a))
-  const el=document.getElementById('hist-list')
+  const isHe=lang==='he'
+
+  // ── Dynamic headline ──
+  const streak=calcStreak(sessions)
+  const totalMins=Math.round(Object.values(sessions).reduce((s,d)=>s+(d.total||0),0)/60)
+  const headlines=[
+    streak>=7  ? (isHe?`${streak} ימים. את התדר.`:`${streak} days. you are the frequency.`) : null,
+    streak>=3  ? (isHe?`${streak} ימים רצופים. מערכת העצבים שלך מרגישה.`:`${streak} days in a row. your nervous system feels it.`) : null,
+    streak===1  ? (isHe?'יום ראשון. הנסיעה מתחילה.':'day one. the journey begins.') : null,
+    totalMins>=60? (isHe?`${totalMins} דקות של כוונון.`:`${totalMins} minutes of tuning.`) : null,
+    isHe?'ההיסטוריה שלך.':'your history.',
+  ].find(h=>h!==null)||''
+  const headEl=document.getElementById('hist-headline')
+  if(headEl) headEl.textContent=headlines
+
+  // ── Stats ──
+  const statsEl=document.getElementById('hist-stats')
+  if(statsEl) statsEl.innerHTML=[
+    [streak, isHe?'ימים רצופים':'day streak'],
+    [totalMins, isHe?'דקות':'total min'],
+    [keys.length, isHe?'ימים':'days active'],
+  ].map(([v,l])=>`
+    <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${v}</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:3px">${l}</div>
+    </div>`).join('')
+
+  // ── Weekly Shape ──
+  const daysThisWeek=Math.min(streak,7)
+  const stage=SHAPE_STAGES[daysThisWeek]||SHAPE_STAGES[0]
+  const cv=document.getElementById('weekly-shape-cv')
+  if(cv){ const ctx=cv.getContext('2d'); drawWeeklyShape(ctx,daysThisWeek,180) }
+  const shapeTitleEl=document.getElementById('hist-shape-title')
+  if(shapeTitleEl) shapeTitleEl.textContent=isHe?stage.nameHe:stage.name
+  const shapeDescEl=document.getElementById('hist-shape-desc')
+  if(shapeDescEl) shapeDescEl.textContent=isHe?stage.descHe:stage.desc
+  // dots = days filled
+  const dotsEl=document.getElementById('hist-dots')
+  if(dotsEl) dotsEl.innerHTML=Array.from({length:7},(_,i)=>
+    `<div style="width:6px;height:6px;border-radius:50%;background:${i<daysThisWeek?'var(--t1)':'var(--b2)'}"></div>`
+  ).join('')
+  // progress bar
+  const pct=Math.round((daysThisWeek/7)*100)
+  const barEl=document.getElementById('hist-prog-bar')
+  if(barEl) setTimeout(()=>barEl.style.width=pct+'%',100)
+  const progVal=document.getElementById('hist-prog-val')
+  if(progVal) progVal.textContent=`${daysThisWeek}/7`
+
+  // ── Session list ──
+  const listEl=document.getElementById('hist-list')
+  if(!listEl) return
   if(!keys.length){
-    el.innerHTML=`<div style="text-align:center;padding:60px 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;font-style:italic;color:var(--t3)">${lang==='he'?'עדיין לא האזנת':'No sessions yet'}</div>`
+    listEl.innerHTML=`<div style="text-align:center;padding:40px 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;font-style:italic;color:var(--t3)">${isHe?'עדיין לא האזנת':'no sessions yet'}</div>`
     return
   }
-  const totalSecs=Object.values(sessions).reduce((s,d)=>s+(d.total||0),0)
-  const totalMin=Math.round(totalSecs/60)
-  const streak=calcStreak(sessions)
-
-  let html=`
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px">
-      <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${streak}</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);margin-top:3px">${lang==='he'?'ימים רצופים':'day streak'}</div>
-      </div>
-      <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${totalMin}</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);margin-top:3px">${lang==='he'?'דקות סה"כ':'total min'}</div>
-      </div>
-      <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${keys.length}</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);margin-top:3px">${lang==='he'?'ימי האזנה':'days active'}</div>
-      </div>
-    </div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">${lang==='he'?'היסטוריית האזנות':'session history'}</div>`
-
+  const labelEl=document.getElementById('hist-list')
+  let html=`<div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px">${isHe?'היסטוריית האזנות':'session history'}</div>`
   keys.forEach(key=>{
     const d=sessions[key]
     const mins=Math.round((d.total||0)/60)
     if(!mins) return
-    // format date
     const [y,m,day]=key.split('-')
-    const dateStr=`${day}/${m}/${y}`
-    // freq name
     const freqName=d.freqs?Object.keys(d.freqs).map(fid=>{
       const f=FREQS.find(x=>x.id===fid)
       return f?(f[lang]||f.en).name:fid
-    }).join(', '):(lang==='he'?'האזנה':'session')
-
-    html+=`<div style="display:flex;align-items:center;justify-content:space-between;
-      padding:14px 0;border-bottom:.5px solid var(--b1)">
+    }).join(', '):(isHe?'האזנה':'session')
+    html+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
       <div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--t1);margin-bottom:3px">${dateStr}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--t1);margin-bottom:3px">${day}/${m}/${y}</div>
         <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3)">${freqName}</div>
       </div>
       <div style="text-align:right">
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:200;color:var(--t1)">${mins}</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t4)">${lang==='he'?'דק':"min"}</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">${mins}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4)">${isHe?'דק':'min'}</div>
       </div>
     </div>`
   })
-  el.innerHTML=html
+  listEl.innerHTML=html
 }
 
 // history trigger handled in main show()
