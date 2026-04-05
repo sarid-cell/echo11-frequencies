@@ -429,7 +429,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <div class="sp-title">echo.11</div>
     <p class="sp-sub" id="sp-sub">frequencies</p>
     <div class="sp-line"></div>
-    <p class="sp-desc" id="sp-desc">21 science-backed healing frequencies.<br>Tune your nervous system.</p>
+    <p class="sp-desc" id="sp-desc">felt in seconds. backed by science..<br>Tune your nervous system.</p>
     <div class="sp-hp">
       <span style="font-size:20px;flex-shrink:0">🎧</span>
       <div><p class="sp-hp-m" id="sp-hp-m">Headphones required</p><p class="sp-hp-s" id="sp-hp-s">BINAURAL BEATS · STEREO SEPARATION</p></div>
@@ -463,9 +463,9 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
     <!-- Hero statement — orientation + value + action -->
     <div class="home-hero-center">
-      <span class="home-hero-tagline" id="hero-tagline">tune your<br>nervous system.</span>
-      <span class="home-hero-sub" id="hero-sub">21 science-backed healing frequencies</span>
-      <button class="home-hero-cta" onclick="document.getElementById('home-today').scrollIntoView({behavior:'smooth'})" id="hero-cta-btn">begin listening →</button>
+      <span class="home-hero-tagline" id="hero-tagline">your nervous system<br>is listening.</span>
+      <span class="home-hero-sub" id="hero-sub">felt in seconds. backed by science.</span>
+      <button class="home-hero-cta" onclick="document.getElementById('home-today').scrollIntoView({behavior:'smooth'})" id="hero-cta-btn">enter the frequency →</button>
     </div>
 
     <!-- Scroll arrow -->
@@ -1070,6 +1070,44 @@ function get7Days(){
   return days
 }
 
+// ── Daily Frequency Schedule ─────────────────────────────────
+// Each day of week maps to a curated frequency
+const DAILY_SCHEDULE=[
+  {dow:0, id:'hz432', en:'sunday · rest & release',   he:'ראשון · מנוחה ושחרור'},
+  {dow:1, id:'gamma', en:'monday · focus & clarity',  he:'שני · ריכוז ובהירות'},
+  {dow:2, id:'hz528', en:'tuesday · heal & restore',  he:'שלישי · ריפוי והתחדשות'},
+  {dow:3, id:'alpha', en:'wednesday · create & flow', he:'רביעי · יצירה וזרימה'},
+  {dow:4, id:'hz741', en:'thursday · express & truth',he:'חמישי · ביטוי ואמת'},
+  {dow:5, id:'hz639', en:'friday · connect & open',   he:'שישי · חיבור ופתיחות'},
+  {dow:6, id:'hz963', en:'saturday · align & receive',he:'שבת · יישור וקבלה'},
+]
+
+function getTodaySchedule(){
+  const dow=new Date().getDay()
+  return DAILY_SCHEDULE.find(d=>d.dow===dow)||DAILY_SCHEDULE[0]
+}
+
+function applyDailyFrequency(){
+  const sched=getTodaySchedule()
+  const f=FREQS.find(x=>x.id===sched.id)||FREQS[5]
+  const t=f[lang]||f.en
+  const isHe=lang==='he'
+  // Update today label to show day name
+  const lbl=document.getElementById('today-lbl')
+  if(lbl) lbl.textContent=isHe?sched.he:sched.en
+  // Update Hz number
+  const hzEl=document.getElementById('hero-hz-num')
+  if(hzEl) hzEl.textContent=f.hz
+  // Update freq name
+  const nameEl=document.getElementById('today-name')
+  if(nameEl) nameEl.textContent=(t.sub||t.name)
+  // Update listen button target
+  const ctaEl=document.getElementById('today-cta')
+  if(ctaEl){ ctaEl.setAttribute('data-freq',f.id); ctaEl.onclick=()=>openPlayer(f.id) }
+  // Update play button text
+  const playBtn=document.getElementById('today-cta')
+}
+
 // Intentions per mode — emotional hook before technical number
 const INTENTIONS={
   sleep:   {en:"close your eyes. let go.",         he:"עצמי עיניים. שחרי."},
@@ -1162,7 +1200,9 @@ function renderStreak(){
     }
   }
 
-  // ── Update intention text below today's frequency ──
+  // ── Apply daily frequency ──
+  applyDailyFrequency()
+  // ── Update intention text ──
   const intentEl=document.getElementById('today-intention')
   if(intentEl){
     const todayFreqId=document.getElementById('today-cta')?.getAttribute('data-freq')||'hz432'
@@ -1428,8 +1468,8 @@ function changeFontSize(d){
   })
 }
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'21 science-backed healing frequencies.\nTune your nervous system.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
-  he:{'sp-sub':'תדרים','sp-desc':'21 תדרי ריפוי מבוססי מדע.\nכווני את מערכת העצבים שלך.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
+  he:{'sp-sub':'תדרים','sp-desc':'מערכת העצבים שלך מקשיבה.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
