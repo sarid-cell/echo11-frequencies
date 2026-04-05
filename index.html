@@ -33,7 +33,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .pl-arr{background:none;border:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t4);transition:color .2s;-webkit-tap-highlight-color:transparent}
 .pl-arr:hover,.pl-arr:active{color:var(--t2)}
 /* Safe area for iPhone notch + home indicator */
-.pl-bottom{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+.pl-bottom{padding-bottom:calc(40px + env(safe-area-inset-bottom));padding-top:8px}
 .pl-nav{padding-top:calc(52px + env(safe-area-inset-top))}
 /* Aa buttons — inside scroll, not floating */
 .acc-bar{display:flex;align-items:center;gap:6px;padding:8px 14px 14px;flex-wrap:wrap}
@@ -389,6 +389,14 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .pl-play:hover{opacity:.82}
 .pl-play.stop-mode{background:var(--card);color:var(--t1);border:.5px solid var(--b2)}
 .wave-canvas{width:100%;height:52px;display:block;margin:4px 0 6px;opacity:.7}
+.playing-minimal{display:none}
+.is-playing .playing-minimal{display:block}
+.is-playing .playing-hide{display:none!important}
+/* Big time remaining — shown while playing */
+.pl-time-big{font-family:'Cormorant Garamond',Georgia,serif;font-size:52px;font-weight:200;
+  color:var(--t1);text-align:center;letter-spacing:.02em;line-height:1;padding:8px 0 4px}
+.pl-time-lbl{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;
+  color:var(--t4);text-align:center;text-transform:uppercase;margin-bottom:12px}
 .elapsed-row{display:none;align-items:center;justify-content:center;gap:8px;padding:5px 0 0}
 .el-dot{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pd 2s infinite}
 .el-txt{font-size:11px;font-weight:300;letter-spacing:.14em;color:var(--t2)}
@@ -622,10 +630,18 @@ input[type=range]{accent-color:var(--t3);width:100%}
   <!-- ══ PLAYER CONTROLS — CLEAN HIERARCHY ══ -->
   <!-- LAYER 1 PRIMARY: Wave + Play + Timer -->
   <div class="pl-bottom" style="gap:0">
-    <canvas id="wave-cv" class="wave-canvas" height="104"></canvas>
+    <!-- Minimal playing view: shown only while playing -->
+    <div class="playing-minimal" style="text-align:center;padding:4px 0 0">
+      <canvas id="wave-cv" class="wave-canvas" height="104"></canvas>
+      <div class="pl-time-big" id="pl-time-big">20:00</div>
+      <div class="pl-time-lbl" id="pl-time-lbl">remaining</div>
+    </div>
+    <!-- Wave also shown when stopped -->
+    <canvas id="wave-cv-stop" class="wave-canvas playing-hide" height="104" style="display:block"></canvas>
     <button class="pl-play" id="play-btn" onclick="togglePlay()">&#9658;  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
     <div class="pl-timers" style="margin-top:10px">
+      <button class="pl-timer" onclick="selTimer(this,180)" id="timer-3">3 min</button>
       <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
       <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
       <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
@@ -670,6 +686,32 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <span style="font-size:14px">&#128274;</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
     </div>
+  </div>
+</div>
+
+<!-- SESSION COMPLETE -->
+<div id="complete" class="scr" style="overflow-y:auto">
+  <div style="position:relative;height:38vh;min-height:220px;overflow:hidden;flex-shrink:0;background:linear-gradient(160deg,#1a1a18 0%,#3a3530 50%,#6b5e50 100%)">
+    <canvas id="complete-cv" width="300" height="300" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:150px;height:150px;opacity:.6"></canvas>
+    <button onclick="show('home');renderStreak()" style="position:absolute;top:22px;left:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer" id="comp-back">← Back</button>
+  </div>
+  <div style="padding:28px 22px 20px">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,4vw,32px);font-weight:200;font-style:italic;color:var(--t1);line-height:1.2;margin-bottom:6px" id="comp-headline"></div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:24px" id="comp-freq-lbl"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px" id="comp-stats"></div>
+    <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px 18px 20px;margin-bottom:16px">
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px" id="comp-brain-lbl">what happened</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75" id="comp-brain-txt"></div>
+    </div>
+    <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px">
+      <canvas id="comp-shape-cv" width="80" height="80" style="width:40px;height:40px;flex-shrink:0"></canvas>
+      <div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;color:var(--t1);margin-bottom:3px" id="comp-shape-name"></div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5" id="comp-shape-desc"></div>
+      </div>
+    </div>
+    <button onclick="replaySession()" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer;margin-bottom:10px" id="comp-replay">play again</button>
+    <button onclick="show('home');renderStreak()" style="width:100%;padding:14px;background:none;border:.5px solid var(--b2);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--t2);cursor:pointer" id="comp-home">back to home</button>
   </div>
 </div>
 
@@ -1141,6 +1183,11 @@ function getTodaySchedule(){
   return DAILY_SCHEDULE.find(d=>d.dow===dow)||DAILY_SCHEDULE[0]
 }
 
+function updateTimeLbl(){
+  const isHe=lang==='he'
+  const el=document.getElementById('pl-time-lbl')
+  if(el) el.textContent=isHe?'נשאר':'remaining'
+}
 function applyDailyFrequency(){
   const sched=getTodaySchedule()
   const f=FREQS.find(x=>x.id===sched.id)||FREQS[5]
@@ -1262,6 +1309,7 @@ function renderStreak(){
   }
   // ── Apply daily frequency ──
   applyDailyFrequency()
+  updateTimeLbl()
   // ── Update intention text ──
   const intentEl=document.getElementById('today-intention')
   if(intentEl){
@@ -1464,8 +1512,8 @@ function openQuickRelief(){
   setTimeout(()=>{
     selTimerSec=180
     document.querySelectorAll('.pl-timer').forEach(t=>t.classList.remove('on'))
-    const firstTimer=document.querySelector('.pl-timer')
-    if(firstTimer) firstTimer.classList.add('on')
+    const timer3=document.getElementById('timer-3')
+    if(timer3) timer3.classList.add('on')
     const bsTxt=document.getElementById('bs-txt')
     if(bsTxt) bsTxt.innerHTML=isHe
       ?'נשמי. תוך <em>90 שניות</em> הגוף יתחיל להרגע.'
@@ -1616,8 +1664,9 @@ function updatePlayBtn(){
   }
 }
 function doStop(){
-  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock()
-  if(elapsed>=30) saveSession(f.id, elapsed)
+  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock(); document.getElementById('player')?.classList.remove('is-playing')
+  const _elapsed=elapsed; const _fid=f.id
+  if(_elapsed>=30) saveSession(f.id,_elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
   if('mediaSession' in navigator) navigator.mediaSession.playbackState='paused'
@@ -1632,6 +1681,18 @@ async function togglePlay(){
     audioVol(f.id,volume)
     elapsed=0
     await requestWakeLock()
+    // Switch to minimal mode
+    document.getElementById('player')?.classList.add('is-playing')
+    // Collapse learn-more while playing
+    const lmp=document.getElementById('learn-more-panel')
+    const lmt=document.getElementById('learn-more-toggle')
+    const lml=document.getElementById('learn-more-lbl')
+    const isHeLM=lang==='he'
+    if(lmp&&lmp.style.display!=='none'){
+      lmp.style.display='none'
+      if(lmt) lmt.textContent='\u25B8'
+      if(lml) lml.textContent=isHeLM?'\u05E2\u05DC \u05D4\u05EA\u05D3\u05E8 \u05D4\u05D6\u05D4':'about this frequency'
+    }
   }catch(audioErr){
     console.warn('echo11 audio error:',audioErr)
     playing=false
@@ -1658,6 +1719,13 @@ async function togglePlay(){
       const remStr=`${Math.floor(rem/60)}:${String(rem%60).padStart(2,'0')}`
       timerDisplay=`${ts} / ${Math.floor(selTimerSec/60)}:${String(selTimerSec%60).padStart(2,'0')} · ${remStr} left`
     }
+    // Update big time display (minimal playing view)
+    if(selTimerSec>0){
+      const rem=Math.max(0,selTimerSec-elapsed)
+      const remMin=Math.floor(rem/60), remSec=String(rem%60).padStart(2,'0')
+      const tbEl=document.getElementById('pl-time-big')
+      if(tbEl) tbEl.textContent=`${remMin}:${remSec}`
+    }
     const todayBar=document.getElementById('today-bar')
     if(todayBar){
       const sessions=loadSessions()
@@ -1673,7 +1741,12 @@ async function togglePlay(){
     const s=[...BRAIN].reverse().find(b=>elapsed>=b.t); if(s) document.getElementById('bs-txt').innerHTML=s[lang]
     const er=document.getElementById('el-row'); er.style.display='flex'
     document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
-    if(selTimerSec>0 && elapsed>=selTimerSec) doStop()
+    if(selTimerSec>0 && elapsed>=selTimerSec){
+      const _fid=FREQS[curIdx]?.id
+      const _secs=elapsed
+      doStop()
+      if(_secs>=30) setTimeout(()=>showComplete(_fid,_secs),400)
+    }
   },1000)
   updatePlayBtn()
 }
@@ -1729,8 +1802,8 @@ function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
   Object.entries(STR[lang]).forEach(([id,v])=>{ const e=document.getElementById(id); if(!e) return; e.tagName==='INPUT'?e.placeholder=v:e.textContent=v })
   document.querySelectorAll('.pl-tab').forEach((t,i)=>{ t.textContent=lang==='he'?['מה זה?','מחקר','מתאים ל'][i]:['What is it?','Research','Ideal for'][i] })
-  document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['8 דק','20 דק','60 דק','∞'][i]:['8 min','20 min','60 min','∞'][i] })
-  renderPlayer(); buildLibrary()
+  document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['3 דק','8 דק','20 דק','60 דק','∞'][i]:['3 min','8 min','20 min','60 min','∞'][i] })
+  renderPlayer(); buildLibrary(); updateTimeLbl()
   const ql=document.getElementById('quick-lbl')
   if(ql) ql.textContent=lang==='he'?'הקלה מהירה':'quick relief'
   const qd=document.getElementById('quick-desc')
@@ -1796,6 +1869,84 @@ function toggleLang(){
   window.stopWave=stopWave
 })();
 
+
+// ── Session Complete ─────────────────────────────────────────
+const BRAIN_COMPLETE={
+  gamma:{en:"Your brain just ran a 40 Hz synchronization — the same rhythm MIT researchers found enhances memory and clears cognitive fog. Your neurons had a beat to lock onto.",he:"המוח שלך הרגע רץ על סינכרון 40 Hz — אותו קצב שחוקרי MIT מצאו שמשפר זיכרון ומנקה ערפל. נתת לנוירונים שלך משהו להסתנכרן איתו."},
+  alpha:{en:"Alpha waves washed through your cortex. The bridge between conscious thinking and subconscious flow opened. This is the state where effortless creativity lives.",he:"גלי אלפא שטפו את קליפת המוח שלך. הגשר בין החשיבה המודעת לזרימה התת-מודעת נפתח. זהו מצב היצירתיות הטבעית."},
+  theta:{en:"Deep Theta — your nervous system shifted toward the edge of sleep, where emotional processing happens, where the body heals itself.",he:"תטא עמוקה — מערכת העצבים שלך עברה לגבול השינה. שם מתרחש עיבוד רגשי, שם הגוף מרפא את עצמו."},
+  delta:{en:"Delta waves — the deepest brainwave state. Cellular repair, immune strengthening, growth hormone. Your body just did deep maintenance.",he:"גלי דלתא — מצב גלי המוח העמוק ביותר. תיקון תאי, חיזוק מערכת חיסון. הגוף שלך עשה תחזוקה עמוקה."},
+  solfeggio:{en:"The Solfeggio frequencies work through resonance — not brainwave entrainment. Your cells were exposed to a mathematically precise harmonic pattern.",he:"תדרי הסולפג׳יו עובדים דרך רזוננס. התאים שלך נחשפו לדפוס הרמוני מדויק מתמטית."},
+  echo11:{en:"The echo.11 original frequency. Where Tesla mathematics meets sound healing. Your system tuned to its own signal.",he:"התדר המקורי של echo.11. שם מתמטיקת טסלה פוגשת ריפוי קולי. המערכת שלך כוּונה לאות שלה עצמה."},
+}
+function getBrainComplete(f){
+  if(!f) return BRAIN_COMPLETE.solfeggio
+  if(f.wave==='Gamma') return BRAIN_COMPLETE.gamma
+  if(f.wave==='Alpha') return BRAIN_COMPLETE.alpha
+  if(f.wave==='Theta') return BRAIN_COMPLETE.theta
+  if(f.wave==='Delta') return BRAIN_COMPLETE.delta
+  if(f.cat==='echo11')  return BRAIN_COMPLETE.echo11
+  return BRAIN_COMPLETE.solfeggio
+}
+function replaySession(){
+  show('player')
+  if(typeof startWave==='function') setTimeout(startWave,50)
+}
+function showComplete(freqId,listenedSecs){
+  const f=FREQS.find(x=>x.id===freqId)||FREQS[curIdx]
+  const t=f?f[lang]||f.en:{}
+  const isHe=lang==='he'
+  const mins=Math.max(1,Math.round(listenedSecs/60))
+  const sessions=loadSessions()
+  const streak=calcStreak(sessions)
+  const totalMins=Math.round(Object.values(sessions).reduce((s,d)=>s+(d.total||0),0)/60)
+  const el=id=>document.getElementById(id)
+  const headlines=[
+    [streak>=7, isHe?`${streak} ימים. את התדר.`:`${streak} days. you are the frequency.`],
+    [mins>=20,  isHe?`${mins} דקות של כוונון.`:`${mins} minutes. your system shifted.`],
+    [mins>=3,   isHe?'סשן הושלם. הגוף שלך יודע.':'session complete. your body knows.'],
+    [true,      isHe?'האזנת. זה מספיק.':'you listened. that is enough.'],
+  ]
+  const headline=headlines.find(([c])=>c)[1]
+  if(el('comp-headline')) el('comp-headline').textContent=headline
+  if(el('comp-freq-lbl')) el('comp-freq-lbl').textContent=(f?.hz||'')+(f?.hz?' Hz · ':'')+((t.name)||'')
+  if(el('comp-stats')) el('comp-stats').innerHTML=[
+    [mins,isHe?'דקות':'minutes'],
+    [streak,isHe?'ימים רצופים':'day streak'],
+    [totalMins,isHe?'סה"כ דקות':'total min'],
+  ].map(([v,l])=>`<div style="background:var(--bg2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">${l}</div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1">${v}</div></div>`).join('')
+  const bd=getBrainComplete(f)
+  if(el('comp-brain-lbl')) el('comp-brain-lbl').textContent=isHe?'מה קרה':'what happened'
+  if(el('comp-brain-txt')) el('comp-brain-txt').textContent=isHe?bd.he:bd.en
+  const daysThisWeek=Math.min(streak,7)
+  const stage=SHAPE_STAGES[daysThisWeek]||SHAPE_STAGES[0]
+  const compCv=el('comp-shape-cv')
+  if(compCv){const ctx=compCv.getContext('2d');drawWeeklyShape(ctx,daysThisWeek,80)}
+  if(el('comp-shape-name')) el('comp-shape-name').textContent=isHe?stage.nameHe:stage.name
+  if(el('comp-shape-desc')) el('comp-shape-desc').textContent=isHe?stage.descHe:stage.desc
+  if(el('comp-replay')) el('comp-replay').textContent=isHe?`▶  שמע שוב · ${f?.hz||''} Hz`:`▶  listen again · ${f?.hz||''} Hz`
+  if(el('comp-home'))  el('comp-home').textContent=isHe?'← חזרה לבית':'← back to home'
+  if(el('comp-back'))  el('comp-back').textContent=isHe?'← חזרה':'← Back'
+  const cv=el('complete-cv')
+  if(cv){
+    const ctx=cv.getContext('2d'); let prog=0
+    const isDark=document.body.classList.contains('dark')
+    const col=isDark?'rgba(245,243,238,':'rgba(26,26,24,'
+    function drawComp(){
+      ctx.clearRect(0,0,300,300)
+      ctx.beginPath(); ctx.arc(150,150,110,0,Math.PI*2)
+      ctx.strokeStyle=col+'0.08)'; ctx.lineWidth=1; ctx.stroke()
+      ctx.beginPath(); ctx.arc(150,150,110,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(prog,1))
+      ctx.strokeStyle=col+'0.5)'; ctx.lineWidth=2.5; ctx.stroke()
+      ctx.beginPath(); ctx.arc(150,150,5,0,Math.PI*2)
+      ctx.fillStyle=col+'0.4)'; ctx.fill()
+      if(prog<1){prog+=0.01;requestAnimationFrame(drawComp)}
+    }
+    drawComp()
+  }
+  show('complete')
+}
+
 ;(function(){
   const cv=document.getElementById('splashCv'),ctx=cv.getContext('2d')
   const stars=Array.from({length:160},()=>({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random(),speed:.0006+Math.random()*.0009,size:Math.random()*1.2}))
@@ -1838,9 +1989,10 @@ function toggleLang(){
 #a11y-btn{
   position:fixed;
   bottom:24px;
-  left:20px;
+  right:20px;
+  left:auto;
   z-index:99999;
-  width:48px;height:48px;
+  width:40px;height:40px;
   border-radius:50%;
   background:#1a1a18;
   border:2px solid #f5f4f0;
@@ -2078,13 +2230,9 @@ document.addEventListener('keydown', e => {
 function syncA11yPos(){
   const btn  = document.getElementById('a11y-btn')
   const menu = document.getElementById('a11y-menu')
-  if(document.body.dir === 'rtl'){
-    btn.style.left='auto';  btn.style.right='20px'
-    menu.style.left='auto'; menu.style.right='20px'
-  } else {
-    btn.style.right='auto'; btn.style.left='20px'
-    menu.style.right='auto';menu.style.left='20px'
-  }
+  // Always on right — avoids overlapping RTL text
+  btn.style.left='auto';  btn.style.right='20px'
+  menu.style.left='auto'; menu.style.right='20px'
 }
 // watch lang toggle
 const _origToggleLang = typeof toggleLang==='function' ? toggleLang : null
