@@ -374,12 +374,12 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .bs-bf{height:100%;background:var(--t2);border-radius:1px;width:0%;transition:width .8s linear}
 .bs-time{font-size:11px;font-weight:300;letter-spacing:.1em;color:var(--t2);min-width:36px;text-align:right}
 .pl-sub{font-size:10px;letter-spacing:.18em;color:var(--t4);text-transform:uppercase;margin-bottom:8px}
-.pl-audio{display:inline-flex;background:var(--card);border:.5px solid var(--b1);border-radius:8px;padding:5px 11px;margin-bottom:10px;font-size:11px;font-weight:300;color:var(--t2)}
-.pl-tabs{display:flex;gap:6px;margin-bottom:8px}
+.pl-audio{display:inline-flex;background:var(--card);border:.5px solid var(--b1);border-radius:20px;padding:3px 10px;margin-bottom:8px;font-size:10px;font-weight:300;color:var(--t3);letter-spacing:.06em}
+.pl-tabs{display:flex;gap:5px;margin-bottom:6px}
 .pl-tab{font-size:10px;letter-spacing:.1em;color:var(--t3);background:var(--card);border:.5px solid var(--b1);border-radius:20px;padding:6px 12px;cursor:pointer;transition:all .2s;font-family:inherit}
 .pl-tab:hover{color:var(--t1)}.pl-tab.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
 .pl-txt{font-size:13px;font-weight:300;line-height:1.85;color:var(--t2);margin-bottom:10px;min-height:40px}
-.timer-lbl{font-size:10px;letter-spacing:.2em;color:var(--t4);text-transform:uppercase;margin-bottom:6px}
+.timer-lbl{font-size:9px;letter-spacing:.18em;color:var(--t4);text-transform:uppercase;margin-bottom:5px}
 .pl-timers{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .pl-timer{font-size:10px;letter-spacing:.11em;color:var(--t3);background:var(--card);border:.5px solid var(--b1);border-radius:20px;padding:6px 14px;cursor:pointer;transition:all .2s;font-family:inherit}
 .pl-timer:hover{color:var(--t1)}.pl-timer.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
@@ -388,6 +388,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .pl-play{width:100%;padding:18px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:all .25s}
 .pl-play:hover{opacity:.82}
 .pl-play.stop-mode{background:var(--card);color:var(--t1);border:.5px solid var(--b2)}
+.wave-canvas{width:100%;height:52px;display:block;margin:4px 0 6px;opacity:.7}
 .elapsed-row{display:none;align-items:center;justify-content:center;gap:8px;padding:5px 0 0}
 .el-dot{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pd 2s infinite}
 .el-txt{font-size:11px;font-weight:300;letter-spacing:.14em;color:var(--t2)}
@@ -623,14 +624,14 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <div class="bs-row" style="cursor:pointer;user-select:none" onclick="toggleBrainState()">
       <div class="bs-sec-lbl" id="bs-what">What's happening</div>
       <div class="bs-live">Live</div>
-      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▾</div>
+      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▸</div>
     </div>
-    <div class="brain-state" id="brain-state-card">
+    <div class="brain-state" id="brain-state-card" style="display:none">
       <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
       <div class="bs-txt" id="bs-txt">Press play. Your nervous system will begin to respond within <em>90 seconds</em>.</div>
       <div class="bs-bar"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
     </div>
-    <div class="pl-sub" id="pl-sub">DEEP SLEEP · RELEASE · ALIGN</div>
+  
     <div class="pl-audio" id="pl-audio">432 Hz · Both ears · No headphones needed</div>
     <div class="pl-tabs">
       <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
@@ -654,6 +655,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
       <div class="pl-vn" id="vol-n">40</div>
     </div>
+    <canvas id="wave-cv" class="wave-canvas" height="104"></canvas>
     <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
     <!-- iOS screen lock notice -->
@@ -1642,8 +1644,12 @@ async function togglePlay(){
       const todaySecs=(sessions[getTodayKey()]?.total||0)+elapsed
       todayBar.style.height=Math.min(98,Math.max(5,Math.round(todaySecs/6)))+'%'
     }
-    document.getElementById('bs-fill').style.width=Math.min(100,(elapsed/(selTimerSec||1200))*100)+'%'
-    document.getElementById('bs-time').textContent=ts
+    requestAnimationFrame(()=>{
+      const bsFill=document.getElementById('bs-fill')
+      if(bsFill) bsFill.style.width=Math.min(100,(elapsed/(selTimerSec||1200))*100)+'%'
+      const bsTime=document.getElementById('bs-time')
+      if(bsTime) bsTime.textContent=ts
+    })
     const s=[...BRAIN].reverse().find(b=>elapsed>=b.t); if(s) document.getElementById('bs-txt').innerHTML=s[lang]
     const er=document.getElementById('el-row'); er.style.display='flex'
     document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
@@ -1712,6 +1718,74 @@ function toggleLang(){
 }
 
 // Splash canvas
+;(function(){
+  // ── Brainwave Visualizer ─────────────────────────────────
+  // Maps frequency type to wave parameters
+  const WAVE_PARAMS={
+    gamma: {speed:2.8,  amp:.38, freq:3.2, color:'rgba(26,26,24,.5)',  waves:3},
+    beta:  {speed:2.2,  amp:.32, freq:2.6, color:'rgba(26,26,24,.45)', waves:3},
+    alpha: {speed:1.2,  amp:.48, freq:1.8, color:'rgba(26,26,24,.4)',  waves:2},
+    theta: {speed:.75,  amp:.55, freq:1.2, color:'rgba(26,26,24,.38)', waves:2},
+    delta: {speed:.35,  amp:.62, freq:.7,  color:'rgba(26,26,24,.35)', waves:1},
+    solfeggio:{speed:.9,amp:.50, freq:1.4, color:'rgba(26,26,24,.4)',  waves:2},
+  }
+  function getWaveParams(f){
+    if(!f) return WAVE_PARAMS.alpha
+    if(f.wave==='Gamma') return WAVE_PARAMS.gamma
+    if(f.wave==='Beta')  return WAVE_PARAMS.beta
+    if(f.wave==='Alpha') return WAVE_PARAMS.alpha
+    if(f.wave==='Theta') return WAVE_PARAMS.theta
+    if(f.wave==='Delta') return WAVE_PARAMS.delta
+    return WAVE_PARAMS.solfeggio
+  }
+  let waveT=0, waveAnim=null, waveActive=false
+  function drawWave(){
+    const cv=document.getElementById('wave-cv')
+    if(!cv) return
+    const ctx=cv.getContext('2d')
+    const W=cv.offsetWidth||300, H=cv.height/2||52
+    cv.width=W*2; cv.height=H*2
+    ctx.scale(2,2)
+    ctx.clearRect(0,0,W,H)
+    const f=FREQS[curIdx]||null
+    const p=getWaveParams(f)
+    const isDark=document.body.classList.contains('dark')
+    const baseColor=isDark?'rgba(245,243,238,':'rgba(26,26,24,'
+    for(let w=0;w<p.waves;w++){
+      const opacity=(p.waves-w)*0.22
+      const phaseOffset=w*(Math.PI*0.7)
+      const ampMult=1-w*0.2
+      ctx.beginPath()
+      ctx.strokeStyle=baseColor+(opacity)+')'
+      ctx.lineWidth=1.5-w*0.3
+      for(let x=0;x<=W;x+=2){
+        const t=waveT*p.speed
+        const y=H/2+Math.sin(x/W*Math.PI*2*p.freq+t+phaseOffset)*H*p.amp*ampMult*
+                 (playing?1:0.4)*(0.8+Math.sin(t*0.3+w)*0.2)
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+      }
+      ctx.stroke()
+    }
+    waveT+=0.04
+    waveAnim=requestAnimationFrame(drawWave)
+  }
+  function startWave(){ if(!waveAnim){ waveActive=true; drawWave() } }
+  function stopWave(){ if(waveAnim){ cancelAnimationFrame(waveAnim); waveAnim=null; waveActive=false } }
+  // Expose globally
+  window.startWave=startWave
+  window.stopWave=stopWave
+  window.drawWave=drawWave
+  // Start on player open
+  const _origShow=window.show
+  window.show=function(id){
+    _origShow(id)
+    if(id==='player') startWave()
+    else if(id!=='player') { /* keep wave if player stays visible */ }
+  }
+  // Initial draw
+  setTimeout(()=>{ if(document.getElementById('player')?.classList.contains('on')) startWave() },200)
+})();
+
 ;(function(){
   const cv=document.getElementById('splashCv'),ctx=cv.getContext('2d')
   const stars=Array.from({length:160},()=>({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random(),speed:.0006+Math.random()*.0009,size:Math.random()*1.2}))
