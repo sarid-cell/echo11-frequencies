@@ -531,19 +531,19 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <button class="mode-card" onclick="openPlayer('hz432')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><circle cx="50" cy="50" r="40" stroke-width=".8" opacity=".44"/><circle cx="50" cy="50" r="27" stroke-width=".5" opacity=".27"/><circle cx="50" cy="50" r="14" stroke-width=".4" opacity=".17"/><circle cx="50" cy="50" r="4" fill="currentColor" opacity=".44"/></svg></div>
         <div class="card-nm" id="m-sleep">Sleep</div>
-        <div class="card-cnt" id="m-sleepc">4 frequencies</div>
+        <div class="card-cnt" id="m-sleepc">2 frequencies</div>
         <div class="card-desc" id="m-sleep-d">calm your nervous system</div>
       </button>
       <button class="mode-card" onclick="openMode('healing')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><path d="M10 50 Q25 28 40 50 Q55 72 70 50 Q85 28 90 50" stroke-width=".9" opacity=".5" stroke-linecap="round"/><path d="M10 62 Q25 40 40 62 Q55 84 70 62 Q85 40 90 62" stroke-width=".5" opacity=".22" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="currentColor" opacity=".4"/></svg></div>
         <div class="card-nm" id="m-heal">Healing</div>
-        <div class="card-cnt" id="m-healc">4 frequencies</div>
+        <div class="card-cnt" id="m-healc">8 frequencies</div>
         <div class="card-desc" id="m-heal-d">restore &amp; release</div>
       </button>
       <button class="mode-card" onclick="openMode('focus')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><rect x="10" y="10" width="80" height="80" stroke-width=".8" opacity=".44"/><rect x="24" y="24" width="52" height="52" stroke-width=".5" opacity=".27"/><rect x="38" y="38" width="24" height="24" stroke-width=".4" opacity=".17"/><rect x="46" y="46" width="8" height="8" fill="currentColor" opacity=".44"/></svg></div>
         <div class="card-nm" id="m-focus">Focus</div>
-        <div class="card-cnt" id="m-focusc">4 frequencies</div>
+        <div class="card-cnt" id="m-focusc">7 frequencies</div>
         <div class="card-desc" id="m-focus-d">clear the noise</div>
       </button>
       <button class="mode-card" onclick="openMode('abundance')">
@@ -1391,34 +1391,45 @@ if(window.location.hash==='#home'){
 }
 function showLibrary(){ 
   buildLibrary()
-  // Reset any mode filter
   show('library')
   setTimeout(()=>{
+    // Show all rows
     document.querySelectorAll('.lb-row').forEach(r=>r.style.display='')
+    document.querySelectorAll('.lb-grp').forEach(g=>g.style.display='')
+    // Restore group count badges
+    document.querySelectorAll('.lb-gc').forEach(el=>el.style.display='')
     const si=document.getElementById('lib-si')
     if(si) si.value=''
     const titleEl=document.getElementById('lib-title')
     if(titleEl) titleEl.textContent=lang==='he'?'ספריה · 21 תדרים':'Library · 21 Frequencies'
+    const subEl=document.getElementById('lib-sub')
+    if(subEl) subEl.textContent=lang==='he'?'21 תדרים · 3 קטגוריות':'21 frequencies · 3 categories'
+    const libBack=document.getElementById('lib-back')
+    if(libBack) libBack.textContent=lang==='he'?'← חזרה':'← Back'
   },50)
 }
 
 function openMode(mode){
-  const modeNames={
-    sleep:   {en:'Sleep · 4 frequencies',    he:'שינה · 4 תדרים'},
-    healing: {en:'Healing · 4 frequencies',  he:'ריפוי · 4 תדרים'},
-    focus:   {en:'Focus · 4 frequencies',    he:'ריכוז · 4 תדרים'},
-    abundance:{en:'Abundance · 4 frequencies',he:'שפע · 4 תדרים'},
+  const isHe=lang==='he'
+  const modeInfo={
+    sleep:    {en:'Sleep',    he:'שינה',    descEn:'calm your nervous system. prepare for deep rest.',       descHe:'הרגעת מערכת העצבים. הכנה לשינה עמוקה.'},
+    healing:  {en:'Healing',  he:'ריפוי',   descEn:'restore and release. let the frequencies do the work.',   descHe:'שחרור והתחדשות. תני לתדרים לעשות את שלהם.'},
+    focus:    {en:'Focus',    he:'ריכוז',   descEn:'clear the noise. sharpen your mind.',                     descHe:'נקי את הרעש. חדדי את המיקוד.'},
+    abundance:{en:'Abundance',he:'שפע',     descEn:'align your energy. open to receive.',                     descHe:'יישרי את האנרגיה שלך. פתחי לקבל.'},
   }
   buildLibrary()
   show('library')
   setTimeout(()=>{
-    // Filter rows to this mode only
+    // Filter rows — show only this mode
+    let count=0
     document.querySelectorAll('.lb-row').forEach(r=>{
       const fid=r.getAttribute('data-fid')
       const f=FREQS.find(x=>x.id===fid)
-      r.style.display=(f&&f.mode===mode)?'':'none'
+      const show=(f&&f.mode===mode)
+      r.style.display=show?'':'none'
+      if(show) count++
     })
-    // Also hide group headers that have no visible rows
+    // Hide group headers with no visible rows
     document.querySelectorAll('.lb-grp').forEach(grp=>{
       let next=grp.nextElementSibling
       let hasVisible=false
@@ -1428,13 +1439,21 @@ function openMode(mode){
       }
       grp.style.display=hasVisible?'':'none'
     })
-    // Update title
-    const mn=modeNames[mode]||{en:mode,he:mode}
+    // Hide the group count badges (the numbers like "5", "12", "4")
+    document.querySelectorAll('.lb-gc').forEach(el=>el.style.display='none')
+    // Update library header title
+    const mi=modeInfo[mode]||{en:mode,he:mode,descEn:'',descHe:''}
     const titleEl=document.getElementById('lib-title')
-    if(titleEl) titleEl.textContent=lang==='he'?mn.he:mn.en
+    if(titleEl) titleEl.textContent=(isHe?mi.he:mi.en)+' · '+count+' '+(isHe?'תדרים':'frequencies')
+    // Update sub label
+    const subEl=document.getElementById('lib-sub')
+    if(subEl) subEl.textContent=isHe?mi.descHe:mi.descEn
     // Clear search
     const si=document.getElementById('lib-si')
     if(si) si.value=''
+    // Update back button text
+    const libBack=document.getElementById('lib-back')
+    if(libBack) libBack.textContent=isHe?'← מצבים':'← modes'
   },60)
 }
 // FIX 4 — stop audio when leaving player
@@ -1591,7 +1610,7 @@ function changeFontSize(d){
 }
 const STR={
   en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
-  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
+  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
