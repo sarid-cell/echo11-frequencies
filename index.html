@@ -346,7 +346,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 /* Hz + Name — spacer zone, sits over image */
 .pl-freq-bar{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 22px 0;z-index:2;flex-shrink:0}
-.pl-fn{font-family:'Cormorant Garamond',Georgia,serif;font-size:72px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.88}
+.pl-fn{font-family:'Cormorant Garamond',Georgia,serif;font-size:80px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.88}
 .pl-fu{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;letter-spacing:.3em;color:var(--t4);margin-top:8px}
 .pl-fname{font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:var(--t2)}
 .pl-ftype{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.14em;color:var(--t3);background:none;border:.5px solid var(--b1);border-radius:20px;padding:3px 10px}
@@ -385,7 +385,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .pl-timer:hover{color:var(--t1)}.pl-timer.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
 .pl-vol{display:flex;align-items:center;gap:9px;margin-bottom:14px}
 .pl-vl,.pl-vn{font-size:10px;letter-spacing:.13em;color:var(--t3)}.pl-vn{min-width:20px;text-align:left}
-.pl-play{width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:all .25s}
+.pl-play{width:100%;padding:18px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:all .25s}
 .pl-play:hover{opacity:.82}
 .pl-play.stop-mode{background:var(--card);color:var(--t1);border:.5px solid var(--b2)}
 .elapsed-row{display:none;align-items:center;justify-content:center;gap:8px;padding:5px 0 0}
@@ -613,8 +613,12 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
   <!-- Scrollable middle content -->
   <div class="pl-scroll">
-    <div class="bs-row"><div class="bs-sec-lbl" id="bs-what">What's happening</div><div class="bs-live">Live</div></div>
-    <div class="brain-state">
+    <div class="bs-row" style="cursor:pointer;user-select:none" onclick="toggleBrainState()">
+      <div class="bs-sec-lbl" id="bs-what">What's happening</div>
+      <div class="bs-live">Live</div>
+      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▾</div>
+    </div>
+    <div class="brain-state" id="brain-state-card">
       <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
       <div class="bs-txt" id="bs-txt">Press play. Your nervous system will begin to respond within <em>90 seconds</em>.</div>
       <div class="bs-bar"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
@@ -1255,6 +1259,32 @@ function getCtx(){
     audioCtx=new(window.AudioContext||window.webkitAudioContext)()
   return audioCtx
 }
+// ── Screen Wake Lock — keeps screen on during playback ──────
+let wakeLockRef=null
+async function requestWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      wakeLockRef=await navigator.wakeLock.request('screen')
+      wakeLockRef.addEventListener('release',()=>{ wakeLockRef=null })
+    }
+  }catch(e){ /* wake lock not supported or denied */ }
+}
+function releaseWakeLock(){
+  if(wakeLockRef){ wakeLockRef.release().catch(()=>{}); wakeLockRef=null }
+}
+
+// Re-acquire wake lock when page becomes visible again
+document.addEventListener('visibilitychange',async()=>{
+  if(document.visibilityState==='visible'){
+    // Resume audio context (iOS Safari suspends it on background)
+    if(audioCtx&&audioCtx.state==='suspended'){
+      try{ await audioCtx.resume() }catch(e){}
+    }
+    // Re-acquire wake lock if playing
+    if(playing && !wakeLockRef) await requestWakeLock()
+  }
+})
+
 async function audioPlay(f){
   audioStopId(f.id)
   const ctx=getCtx()
@@ -1503,8 +1533,29 @@ function renderPlayer(){
   
   updatePlayBtn()
 }
+function toggleBrainState(){
+  const card=document.getElementById('brain-state-card')
+  const toggle=document.getElementById('bs-toggle')
+  if(!card) return
+  const hidden=card.style.display==='none'
+  card.style.display=hidden?'':'none'
+  if(toggle) toggle.textContent=hidden?'▾':'▸'
+}
 function setTab(i,el){ activeTab=i; document.querySelectorAll('.pl-tab').forEach(t=>t.classList.remove('on')); el.classList.add('on'); renderTab() }
-function renderTab(){ const f=FREQS[curIdx],t=f[lang]||f.en; document.getElementById('pl-txt').textContent=[t.desc,t.res,t.ideal][activeTab]||'' }
+function renderTab(){
+  const f=FREQS[curIdx],t=f[lang]||f.en
+  const texts=[t.desc,t.res,t.ideal]
+  const el=document.getElementById('pl-txt')
+  if(!el) return
+  // Research tab: add context prefix
+  if(activeTab===1){
+    const isHe=lang==='he'
+    const prefix=isHe?'מקורות ומחקר: ':'Sources & research: '
+    el.textContent=prefix+(t.res||'')
+  } else {
+    el.textContent=texts[activeTab]||''
+  }
+}
 function selTimer(el,s){ document.querySelectorAll('.pl-timer').forEach(t=>t.classList.remove('on')); el.classList.add('on'); selTimerSec=s }
 function handleVol(v){ volume=Number(v); document.getElementById('vol-n').textContent=v; if(playing) audioVol(FREQS[curIdx].id,volume) }
 // FIX 3 — no blue on stop button
@@ -1519,7 +1570,7 @@ function updatePlayBtn(){
   }
 }
 function doStop(){
-  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv)
+  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock()
   if(elapsed>5) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
@@ -1529,7 +1580,7 @@ function doStop(){
 async function togglePlay(){
   const f=FREQS[curIdx]
   if(playing){ doStop(); return }
-  await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0
+  await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
 
   // Show iOS screen lock notice once
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
