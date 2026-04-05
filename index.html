@@ -438,6 +438,18 @@ input[type=range]{accent-color:var(--t3);width:100%}
   </div>
 </div>
 
+<!-- ONBOARDING — first visit only -->
+<div id="onboarding" style="display:none;position:fixed;inset:0;background:rgba(26,26,24,.85);z-index:999;align-items:flex-end;justify-content:center">
+  <div style="background:var(--bg);border-radius:24px 24px 0 0;padding:32px 28px 48px;max-width:440px;width:100%;position:relative">
+    <div id="ob-dots" style="display:flex;gap:6px;justify-content:center;margin-bottom:24px"></div>
+    <div id="ob-icon" style="font-size:32px;text-align:center;margin-bottom:14px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:200;color:var(--t1)"></div>
+    <div id="ob-title" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:10px;line-height:1.2"></div>
+    <div id="ob-body" style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t2);text-align:center;line-height:1.75;margin-bottom:28px"></div>
+    <button id="ob-btn" onclick="obNext()" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer"></button>
+    <button onclick="obSkip()" style="width:100%;margin-top:12px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t4);cursor:pointer;padding:8px">skip →</button>
+  </div>
+</div>
+
 <!-- HOME -->
 <div id="home" class="scr">
 
@@ -507,7 +519,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
         </div>
       </div>
       <div id="streak-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-        <!-- filled by renderStreak() — empty state shown by JS -->
+        <!-- Mini shape canvas — shows current shape -->
+        <canvas id="home-shape-cv" width="60" height="60" style="width:30px;height:30px;opacity:.7"></canvas>
         <div class="sk-bars" id="sk-bars-wrap"></div>
         <div class="sk-days" id="sk-days-wrap"></div>
         <div id="streak-cta-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:2px">view history →</div>
@@ -718,28 +731,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
   </div>
 
-  <!-- AI Weekly Analysis -->
-  <div style="margin:16px 18px 0;background:var(--card);border:.5px solid var(--b1);border-radius:14px;overflow:hidden">
-    <div style="padding:14px 16px;border-bottom:.5px solid var(--b1);display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:2px" id="hist-ai-lbl">weekly insight</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t2)" id="hist-ai-sub">powered by echo.11 intelligence</div>
-      </div>
-      <div style="width:28px;height:28px;border-radius:50%;background:var(--t1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3" fill="#f5f4f0"/>
-          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#f5f4f0" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-    </div>
-    <div id="hist-ai-content" style="padding:14px 16px;min-height:80px">
-      <button id="hist-ai-btn"
-        style="width:100%;background:none;border:.5px solid var(--b2);border-radius:8px;padding:12px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.14em;color:var(--t2);cursor:pointer;transition:all .2s"
-        onclick="runAIAnalysis()">
-        analyse my week →
-      </button>
-    </div>
-  </div>
+  <!-- Weekly Reflection — static, poetic -->
+  <div id="hist-reflection" style="margin:16px 18px 0;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:16px 18px"></div>
 
   <!-- Session history list -->
   <div style="padding:20px 18px 60px" id="hist-list"></div>
@@ -758,6 +751,32 @@ const SHAPE_STAGES=[
   {days:6, name:'a hexagon.',nameHe:'משושה.',desc:'six days. you are almost whole.',descHe:'שישה ימים. כמעט שלמה.'},
   {days:7, name:'a circle.',nameHe:'מעגל.',desc:'seven days complete. you are the frequency.',descHe:'שבעה ימים שלמים. את התדר.'},
 ]
+
+// ── Monthly progression ─────────────────────────────────────
+// Total listening days this calendar month → 0..30
+function getMonthlyDays(){
+  const sessions=loadSessions()
+  const now=new Date()
+  const ym=`${now.getFullYear()}-${now.getMonth()+1}`
+  return Object.keys(sessions).filter(k=>k.startsWith(ym)&&(sessions[k].total||0)>0).length
+}
+
+// Monthly reflection texts — shown in history
+const MONTHLY_REFLECTIONS=[
+  {min:0,  en:'your journey is waiting. the first frequency changes everything.',                he:'המסע שלך מחכה. התדר הראשון משנה הכל.'},
+  {min:1,  en:'you showed up. that is everything.',                                             he:'הגעת. זה הכל.'},
+  {min:3,  en:'three days. your nervous system is beginning to remember.',                      he:'שלושה ימים. מערכת העצבים שלך מתחילה לזכור.'},
+  {min:7,  en:'a full week. you have drawn your first circle. keep going.',                     he:'שבוע שלם. ציירת את המעגל הראשון שלך. המשיכי.'},
+  {min:14, en:'two weeks in. the pattern is forming. your body knows this now.',                he:'שבועיים. הדפוס נוצר. גופך כבר יודע את זה.'},
+  {min:21, en:'twenty-one days. science says habits form here. you are proof.',                 he:'עשרים ואחד יום. המדע אומר שהרגלים נוצרים כאן. את ההוכחה.'},
+  {min:28, en:'a full month. you are the frequency. this is who you are now.',                  he:'חודש שלם. את התדר. זו את עכשיו.'},
+]
+
+function getMonthlyReflection(totalDays){
+  const isHe=lang==='he'
+  const r=[...MONTHLY_REFLECTIONS].reverse().find(r=>totalDays>=r.min)||MONTHLY_REFLECTIONS[0]
+  return isHe?r.he:r.en
+}
 
 function drawWeeklyShape(ctx, days, size){
   ctx.clearRect(0,0,size,size)
@@ -915,6 +934,17 @@ function buildHistory(){
       <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:200;color:var(--t1);line-height:1">${v}</div>
     </div>`).join('')
 
+  // ── Monthly stats ──
+  const monthlyDays=getMonthlyDays()
+  // Reflection
+  const reflEl=document.getElementById('hist-reflection')
+  if(reflEl){
+    const refl=getMonthlyReflection(monthlyDays)
+    const isHe=lang==='he'
+    reflEl.innerHTML=`
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">${isHe?'תובנת החודש':'this month'} · ${monthlyDays} ${isHe?'ימים':'days'}</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75">${refl}</div>`
+  }
   // ── Weekly Shape ──
   const daysThisWeek=Math.min(streak,7)
   const stage=SHAPE_STAGES[daysThisWeek]||SHAPE_STAGES[0]
@@ -1200,6 +1230,12 @@ function renderStreak(){
     }
   }
 
+  // ── Mini shape on home page ──
+  const homeCv=document.getElementById('home-shape-cv')
+  if(homeCv){
+    const hCtx=homeCv.getContext('2d')
+    drawWeeklyShape(hCtx,Math.min(streak,7),60)
+  }
   // ── Apply daily frequency ──
   applyDailyFrequency()
   // ── Update intention text ──
@@ -1258,11 +1294,46 @@ function audioStopId(id){
 }
 function audioVol(id,v){ const n=audioNodes[id]; if(!n) return; try{getCtx(); n.gain.gain.setTargetAtTime((v/100)*.3,getCtx().currentTime,.1)}catch(e){} }
 
+// ── Onboarding ───────────────────────────────────────────────
+const OB_STEPS=[
+  {icon:'◎',title:'a frequency for every day.',body:'each morning, echo.11 selects a healing frequency matched to the energy of the day. your nervous system will thank you.'},
+  {icon:'△',title:'your journey takes shape.',body:'every day you listen, your shape grows. a point becomes a line becomes a circle. seven days completes the cycle.'},
+  {icon:'♡',title:'use headphones for binaural.',body:'solfeggio tones work on any speaker. binaural beats (marked 🎧) need headphones — they use stereo separation to work.'},
+]
+let obStep=0
+
+function showOnboarding(){
+  if(localStorage.getItem('echo11_ob')) return
+  const el=document.getElementById('onboarding')
+  if(el){ el.style.display='flex'; renderOb() }
+}
+function renderOb(){
+  const s=OB_STEPS[obStep]
+  document.getElementById('ob-icon').textContent=s.icon
+  document.getElementById('ob-title').textContent=s.title
+  document.getElementById('ob-body').textContent=s.body
+  document.getElementById('ob-btn').textContent=obStep<OB_STEPS.length-1?'next →':'begin listening →'
+  const dots=document.getElementById('ob-dots')
+  if(dots) dots.innerHTML=OB_STEPS.map((_,i)=>
+    `<div style="width:${i===obStep?18:6}px;height:6px;border-radius:3px;background:${i===obStep?'var(--t1)':'var(--b2)'};transition:all .3s"></div>`
+  ).join('')
+}
+function obNext(){
+  if(obStep<OB_STEPS.length-1){ obStep++; renderOb() }
+  else obSkip()
+}
+function obSkip(){
+  localStorage.setItem('echo11_ob','1')
+  const el=document.getElementById('onboarding')
+  if(el){ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.style.display='none',300) }
+}
+
 async function enterApp(){
   try{ const c=new(window.AudioContext||window.webkitAudioContext)(); await c.resume(); c.close() }catch(e){}
   document.getElementById('splash').style.display='none'
   try{ renderStreak() }catch(e){ console.warn('renderStreak:',e) }
   showHome()
+  setTimeout(showOnboarding, 800)
 }
 function showHome(){
   show('home')
