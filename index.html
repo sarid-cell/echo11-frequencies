@@ -619,48 +619,55 @@ input[type=range]{accent-color:var(--t3);width:100%}
   <!-- Spacer — image breathes through here -->
   <div class="pl-spacer"></div>
 
-  <!-- Scrollable middle content -->
-  <div class="pl-scroll">
-    <div class="bs-row" style="cursor:pointer;user-select:none" onclick="toggleBrainState()">
-      <div class="bs-sec-lbl" id="bs-what">What's happening</div>
-      <div class="bs-live">Live</div>
-      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▸</div>
-    </div>
-    <div class="brain-state" id="brain-state-card" style="display:none">
-      <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
-      <div class="bs-txt" id="bs-txt">Press play. Your nervous system will begin to respond within <em>90 seconds</em>.</div>
-      <div class="bs-bar"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
-    </div>
-  
-    <div class="pl-audio" id="pl-audio">432 Hz · Both ears · No headphones needed</div>
-    <div class="pl-tabs">
-      <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
-      <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
-      <button class="pl-tab" onclick="setTab(2,this)" id="tab2">Ideal for</button>
-    </div>
-    <p class="pl-txt" id="pl-txt"></p>
-  </div>
-
-  <!-- Bottom controls — always pinned to bottom -->
-  <div class="pl-bottom">
-    <div class="timer-lbl" id="timer-lbl">Session duration</div>
-    <div class="pl-timers">
+  <!-- ══ PLAYER CONTROLS — CLEAN HIERARCHY ══ -->
+  <!-- LAYER 1 PRIMARY: Wave + Play + Timer -->
+  <div class="pl-bottom" style="gap:0">
+    <canvas id="wave-cv" class="wave-canvas" height="104"></canvas>
+    <button class="pl-play" id="play-btn" onclick="togglePlay()">&#9658;  Play · 432 Hz</button>
+    <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
+    <div class="pl-timers" style="margin-top:10px">
       <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
       <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
       <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
-      <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
+      <button class="pl-timer" onclick="selTimer(this,0)">&#8734;</button>
     </div>
-    <div class="pl-vol">
+
+    <!-- LAYER 2: Volume -->
+    <div class="pl-vol" style="margin-top:8px">
       <div class="pl-vl" id="vol-lbl">Vol</div>
       <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
       <div class="pl-vn" id="vol-n">40</div>
     </div>
-    <canvas id="wave-cv" class="wave-canvas" height="104"></canvas>
-    <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
-    <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
-    <!-- iOS screen lock notice -->
+
+    <!-- LAYER 3: Learn more — collapsed -->
+    <div style="margin-top:10px;border-top:.5px solid var(--b1);padding-top:10px">
+      <button onclick="toggleLearnMore()" style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:0;cursor:pointer;font-family:inherit">
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--t4);text-transform:uppercase" id="learn-more-lbl">about this frequency</span>
+        <span id="learn-more-toggle" style="font-size:9px;color:var(--t4)">&#9658;</span>
+      </button>
+      <div id="learn-more-panel" style="display:none;margin-top:10px">
+        <div class="pl-audio" id="pl-audio" style="margin-bottom:8px">432 Hz</div>
+        <div class="pl-tabs">
+          <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
+          <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
+          <button class="pl-tab" onclick="setTab(2,this)" id="tab2">Ideal for</button>
+        </div>
+        <p class="pl-txt" id="pl-txt"></p>
+        <div class="bs-row" style="cursor:pointer;user-select:none;margin-top:4px" onclick="toggleBrainState()">
+          <div class="bs-sec-lbl" id="bs-what">What's happening</div>
+          <div class="bs-live">Live</div>
+          <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">&#9658;</div>
+        </div>
+        <div class="brain-state" id="brain-state-card" style="display:none">
+          <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
+          <div class="bs-txt" id="bs-txt">Press play. Your nervous system will begin to respond within <em>90 seconds</em>.</div>
+          <div class="bs-bar"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
+        </div>
+      </div>
+    </div>
+
     <div id="lock-notice" style="display:none;align-items:center;gap:8px;padding:8px 0 0">
-      <span style="font-size:16px">🔒</span>
+      <span style="font-size:14px">&#128274;</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
     </div>
   </div>
@@ -1513,7 +1520,7 @@ function openMode(mode){
   },60)
 }
 // FIX 4 — stop audio when leaving player
-function leavePlayer(){ if(playing) doStop(); show('home') }
+function leavePlayer(){ if(playing) doStop(); if(typeof stopWave==='function') stopWave(); show('home') }
 function show(id){
   const prev=document.querySelector('.scr.on')
   const next=document.getElementById(id)
@@ -1527,7 +1534,8 @@ function show(id){
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
   if(idx>=0){ if(playing) doStop(); curIdx=idx; renderPlayer() }
-  show('player'); 
+  show('player')
+  if(typeof startWave==='function') setTimeout(startWave, 50)
 }
 function nextFreq(){ if(playing) doStop(); curIdx=(curIdx+1)%FREQS.length; renderPlayer();  }
 function prevFreq(){ if(playing) doStop(); curIdx=(curIdx-1+FREQS.length)%FREQS.length; renderPlayer();  }
@@ -1540,16 +1548,17 @@ function renderPlayer(){
     bg.src=f.img||'img_player.jpg'
     bg.style.objectPosition=f.imgPos||'center 28%'
   }
-  document.getElementById('pl-hz').textContent=f.hz
-  document.getElementById('pl-num').textContent=`${f.num} · ${f.cat}`
-  document.getElementById('pl-name').textContent=t.name
-  document.getElementById('pl-type').textContent=f.type==='binaural'?'🎧 Binaural':(f.noHp?'🔊 Pure Tone':'🔊 Pure Tone')
-  document.getElementById('pl-sub').textContent=t.sub?.toUpperCase()
-  // FIX 6 — clear binaural info
-  if(f.type==='binaural'){
-    document.getElementById('pl-audio').textContent=`🎧 ${f.cL}Hz (L) · ${f.cR}Hz (R) · Δ${f.beat}Hz · Needs headphones`
-  } else {
-    document.getElementById('pl-audio').textContent=`🔊 ${f.hz} Hz · No headphones needed`
+  const _setEl=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v }
+  _setEl('pl-hz', f.hz)
+  _setEl('pl-num', `${f.num} · ${f.cat}`)
+  _setEl('pl-name', t.name)
+  _setEl('pl-type', f.type==='binaural'?'🎧 Binaural':'🔊 Pure Tone')
+  _setEl('pl-sub', t.sub?.toUpperCase()||'')
+  const _plAudio=document.getElementById('pl-audio')
+  if(_plAudio){
+    _plAudio.textContent=f.type==='binaural'
+      ?`🎧 ${f.cL}Hz (L) · ${f.cR}Hz (R) · Δ${f.beat}Hz`
+      :`🔊 ${f.hz} Hz`
   }
   renderTab()
   document.getElementById('bs-txt').innerHTML=BRAIN[0][lang]
@@ -1558,6 +1567,17 @@ function renderPlayer(){
   document.getElementById('el-row').style.display='none'
   
   updatePlayBtn()
+}
+function toggleLearnMore(){
+  const panel=document.getElementById('learn-more-panel')
+  const toggle=document.getElementById('learn-more-toggle')
+  const lbl=document.getElementById('learn-more-lbl')
+  const isHe=lang==='he'
+  if(!panel) return
+  const hidden=panel.style.display==='none'
+  panel.style.display=hidden?'block':'none'
+  if(toggle) toggle.textContent=hidden?'\u25BE':'\u25B8'
+  if(lbl) lbl.textContent=hidden?(isHe?'\u05E2\u05DC \u05D4\u05EA\u05D3\u05E8 \u05D4\u05D6\u05D4':'about this frequency'):(isHe?'\u05E1\u05D2\u05D5\u05E8':'close')
 }
 function toggleBrainState(){
   const card=document.getElementById('brain-state-card')
@@ -1771,19 +1791,9 @@ function toggleLang(){
   }
   function startWave(){ if(!waveAnim){ waveActive=true; drawWave() } }
   function stopWave(){ if(waveAnim){ cancelAnimationFrame(waveAnim); waveAnim=null; waveActive=false } }
-  // Expose globally
+  // Expose globally — called directly from openPlayer
   window.startWave=startWave
   window.stopWave=stopWave
-  window.drawWave=drawWave
-  // Start on player open
-  const _origShow=window.show
-  window.show=function(id){
-    _origShow(id)
-    if(id==='player') startWave()
-    else if(id!=='player') { /* keep wave if player stays visible */ }
-  }
-  // Initial draw
-  setTimeout(()=>{ if(document.getElementById('player')?.classList.contains('on')) startWave() },200)
 })();
 
 ;(function(){
