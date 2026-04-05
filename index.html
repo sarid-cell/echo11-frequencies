@@ -526,6 +526,13 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <div id="streak-cta-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:2px">view history →</div>
       </div>
     </button>
+    <div id="quick-relief-card" style="margin:0 14px 10px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="openQuickRelief()">
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;margin-bottom:4px" id="quick-lbl">quick relief</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1)" id="quick-desc">feeling anxious? 3 minutes of calm.</div>
+      </div>
+      <div style="font-size:10px;color:var(--t3)">→</div>
+    </div>
     <div class="modes-lbl" id="modes-lbl">Choose a mode</div>
     <div class="grid">
       <button class="mode-card" onclick="openMode('sleep')">
@@ -1059,7 +1066,7 @@ function loadSessions(){
 }
 
 function saveSession(freqId, seconds){
-  if(seconds<5) return // ignore accidental taps
+  if(seconds<30) return // minimum 30s for meaningful session
   const sessions=loadSessions()
   const key=getTodayKey()
   if(!sessions[key]) sessions[key]={total:0,freqs:{}}
@@ -1439,6 +1446,23 @@ function showLibrary(){
   },50)
 }
 
+function openQuickRelief(){
+  const isHe=lang==='he'
+  const idx=FREQS.findIndex(f=>f.id==='theta')
+  if(idx<0) return
+  if(playing) doStop()
+  curIdx=idx; renderPlayer(); show('player')
+  setTimeout(()=>{
+    selTimerSec=180
+    document.querySelectorAll('.pl-timer').forEach(t=>t.classList.remove('on'))
+    const firstTimer=document.querySelector('.pl-timer')
+    if(firstTimer) firstTimer.classList.add('on')
+    const bsTxt=document.getElementById('bs-txt')
+    if(bsTxt) bsTxt.innerHTML=isHe
+      ?'נשמי. תוך <em>90 שניות</em> הגוף יתחיל להרגע.'
+      :'breathe. within <em>90 seconds</em>, your body will settle.'
+  },100)
+}
 function openMode(mode){
   const isHe=lang==='he'
   const modeInfo={
@@ -1571,7 +1595,7 @@ function updatePlayBtn(){
 }
 function doStop(){
   const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock()
-  if(elapsed>5) saveSession(f.id, elapsed)
+  if(elapsed>=30) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
   if('mediaSession' in navigator) navigator.mediaSession.playbackState='paused'
@@ -1580,7 +1604,19 @@ function doStop(){
 async function togglePlay(){
   const f=FREQS[curIdx]
   if(playing){ doStop(); return }
-  await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
+  try{
+    await audioPlay(f)
+    playing=true
+    audioVol(f.id,volume)
+    elapsed=0
+    await requestWakeLock()
+  }catch(audioErr){
+    console.warn('echo11 audio error:',audioErr)
+    playing=false
+    const btn=document.getElementById('play-btn')
+    if(btn){ btn.textContent=lang==='he'?'שגיאה — נסי שנית':'Error — please retry'; setTimeout(updatePlayBtn,2500) }
+    return
+  }
 
   // Show iOS screen lock notice once
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -1669,6 +1705,10 @@ function toggleLang(){
   document.querySelectorAll('.pl-tab').forEach((t,i)=>{ t.textContent=lang==='he'?['מה זה?','מחקר','מתאים ל'][i]:['What is it?','Research','Ideal for'][i] })
   document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['8 דק','20 דק','60 דק','∞'][i]:['8 min','20 min','60 min','∞'][i] })
   renderPlayer(); buildLibrary()
+  const ql=document.getElementById('quick-lbl')
+  if(ql) ql.textContent=lang==='he'?'הקלה מהירה':'quick relief'
+  const qd=document.getElementById('quick-desc')
+  if(qd) qd.textContent=lang==='he'?'חרדה? 3 דקות של שקט.':'feeling anxious? 3 minutes of calm.'
 }
 
 // Splash canvas
