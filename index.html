@@ -1105,22 +1105,23 @@ function renderStreak(){
 
   if(isNew){
     // New user — no numbers, just invitation
-    if(progLbl) progLbl.style.display='none'
+    if(progLbl) progLbl.style.display=''
     if(card){
       try{
       card.style.background='none'
       card.style.border='none'
       card.style.boxShadow='none'
       card.style.padding='4px 0 16px'
-      card.style.cursor='default'
-      card.onclick=null
+      card.style.cursor='pointer'
+      card.onclick=()=>show('history')
       }catch(e){}
     }
     if(skNum) skNum.style.display='none'
     if(skRight) skRight.innerHTML=''
     document.getElementById('sk-lbl').textContent=lang==='he'?'המסע שלך מתחיל היום':'your journey starts today'
     document.getElementById('sk-sub').textContent=lang==='he'?'האזיני לתדר הראשון שלך ←':'listen to your first frequency ←'
-    document.getElementById('streak-cta-lbl').style.display='none'
+    document.getElementById('streak-cta-lbl').style.display=''
+    document.getElementById('streak-cta-lbl').textContent=lang==='he'?'לצפות בהיסטוריה →':'view history →'
   } else {
     // Returning user — show streak
     if(progLbl) progLbl.style.display=''
