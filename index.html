@@ -528,7 +528,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </button>
     <div class="modes-lbl" id="modes-lbl">Choose a mode</div>
     <div class="grid">
-      <button class="mode-card" onclick="openPlayer('hz432')">
+      <button class="mode-card" onclick="openMode('sleep')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><circle cx="50" cy="50" r="40" stroke-width=".8" opacity=".44"/><circle cx="50" cy="50" r="27" stroke-width=".5" opacity=".27"/><circle cx="50" cy="50" r="14" stroke-width=".4" opacity=".17"/><circle cx="50" cy="50" r="4" fill="currentColor" opacity=".44"/></svg></div>
         <div class="card-nm" id="m-sleep">Sleep</div>
         <div class="card-cnt" id="m-sleepc">2 frequencies</div>
@@ -1307,7 +1307,7 @@ const OB_STEPS=[
 let obStep=0
 
 function showOnboarding(){
-  if(localStorage.getItem('echo11_ob')) return
+  if(sessionStorage.getItem('echo11_ob_session')) return
   const el=document.getElementById('onboarding')
   if(el){ el.style.display='flex'; renderOb() }
 }
@@ -1327,7 +1327,7 @@ function obNext(){
   else obSkip()
 }
 function obSkip(){
-  localStorage.setItem('echo11_ob','1')
+  sessionStorage.setItem('echo11_ob_session','1')
   const el=document.getElementById('onboarding')
   if(el){ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.style.display='none',300) }
 }
