@@ -136,7 +136,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
   width:100%;
   height:115%;            /* extra height for parallax travel */
   object-fit:cover;
-  object-position:center 28%;
+  object-position:center 18%;
   display:block;
 }
 .home-hero-bg::after{
@@ -487,6 +487,9 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <div class="home-freq-unit">Hz</div>
       </div>
       <div class="home-freq-name" id="today-name">The Universe · Deep Sleep · Release</div>
+      <div style="margin-top:4px;display:flex;align-items:center;gap:7px">
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4)" id="today-changes-lbl">changes daily</span>
+      </div>
     </div>
     <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openPlayer('hz432')">Listen →</button>
   </div>
@@ -667,13 +670,16 @@ input[type=range]{accent-color:var(--t3);width:100%}
 <div id="history" class="scr" style="overflow-y:auto;overflow-x:hidden">
 
   <!-- Hero image with dynamic message -->
-  <div style="position:relative;height:42vh;min-height:220px;overflow:hidden;flex-shrink:0">
+  <div style="position:relative;height:42vh;min-height:260px;overflow:hidden;flex-shrink:0">
     <img src="img_history.png" alt="" onerror="this.style.display='none'"
-      style="width:100%;height:115%;object-fit:cover;object-position:center 30%;display:block"/>
+      style="width:100%;height:115%;object-fit:cover;object-position:center 10%;display:block"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(245,243,238,0) 55%,var(--bg) 100%)"></div>
+    <!-- gradient so nav is always readable -->
+    <div style="position:absolute;top:0;left:0;right:0;height:90px;background:linear-gradient(to bottom,rgba(0,0,0,.45),transparent);z-index:2;pointer-events:none"></div>
     <!-- Back button -->
     <button class="pl-back" onclick="show('home');renderStreak()"
-      style="position:absolute;top:52px;left:22px;z-index:3">← Back</button>
+      style="position:absolute;top:22px;left:22px;z-index:3;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)">← Back</button>
+    <div style="position:absolute;top:22px;right:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.8);text-shadow:0 1px 6px rgba(0,0,0,.5)" id="hist-nav-lbl">Listening History</div>
     <!-- Dynamic emotional headline -->
     <div style="position:absolute;bottom:22px;left:22px;right:22px;z-index:3">
       <div id="hist-headline"
@@ -760,7 +766,16 @@ function drawWeeklyShape(ctx, days, size){
   const stroke=isDark?'rgba(245,243,238,.7)':'rgba(26,26,24,.55)'
   const fill=isDark?'rgba(245,243,238,.06)':'rgba(26,26,24,.04)'
 
-  ctx.strokeStyle=stroke
+  // ghost circle = target (full 7-day circle)
+  if(days>0 && days<7){
+    ctx.save()
+    ctx.setLineDash([size*.03,size*.025])
+    ctx.strokeStyle=isDark?'rgba(245,243,238,.15)':'rgba(26,26,24,.12)'
+    ctx.lineWidth=size*.008
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke()
+    ctx.restore()
+  }
+    ctx.strokeStyle=stroke
   ctx.fillStyle=fill
   ctx.lineWidth=size*.012
 
@@ -895,9 +910,9 @@ function buildHistory(){
     [totalMins, isHe?'דקות':'total min'],
     [keys.length, isHe?'ימים':'days active'],
   ].map(([v,l])=>`
-    <div style="background:var(--card);border:.5px solid var(--b1);border-radius:12px;padding:14px 10px;text-align:center">
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1)">${v}</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:3px">${l}</div>
+    <div style="background:var(--bg2);border-radius:12px;padding:12px 10px;text-align:center">
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:5px">${l}</div>
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:200;color:var(--t1);line-height:1">${v}</div>
     </div>`).join('')
 
   // ── Weekly Shape ──
@@ -940,12 +955,12 @@ function buildHistory(){
       return f?(f[lang]||f.en).name:fid
     }).join(', '):(isHe?'האזנה':'session')
     html+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
-      <div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:var(--t1);margin-bottom:3px">${day}/${m}/${y}</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3)">${freqName}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${freqName}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t4)">${day}/${m}/${y} &nbsp;·&nbsp; ${mins} ${isHe?'דק':'min'}</div>
       </div>
-      <div style="text-align:right">
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">${mins}</div>
+      <div style="text-align:right;flex-shrink:0;margin-left:12px">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t2)">${mins}</div>
         <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4)">${isHe?'דק':'min'}</div>
       </div>
     </div>`
@@ -1092,12 +1107,14 @@ function renderStreak(){
     // New user — no numbers, just invitation
     if(progLbl) progLbl.style.display='none'
     if(card){
+      try{
       card.style.background='none'
       card.style.border='none'
       card.style.boxShadow='none'
       card.style.padding='4px 0 16px'
       card.style.cursor='default'
       card.onclick=null
+      }catch(e){}
     }
     if(skNum) skNum.style.display='none'
     if(skRight) skRight.innerHTML=''
@@ -1203,7 +1220,7 @@ function audioVol(id,v){ const n=audioNodes[id]; if(!n) return; try{getCtx(); n.
 async function enterApp(){
   try{ const c=new(window.AudioContext||window.webkitAudioContext)(); await c.resume(); c.close() }catch(e){}
   document.getElementById('splash').style.display='none'
-  renderStreak()
+  try{ renderStreak() }catch(e){ console.warn('renderStreak:',e) }
   showHome()
 }
 function showHome(){
