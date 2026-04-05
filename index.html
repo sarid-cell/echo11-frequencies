@@ -475,7 +475,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
     <!-- Hero statement — orientation + value + action -->
     <div class="home-hero-center">
-      <span class="home-hero-tagline" id="hero-tagline">your nervous system<br>is listening.</span>
+      <span class="home-hero-tagline" id="hero-tagline">tune your<br>nervous system.</span>
       <span class="home-hero-sub" id="hero-sub">felt in seconds. backed by science.</span>
       <button class="home-hero-cta" onclick="document.getElementById('home-today').scrollIntoView({behavior:'smooth'})" id="hero-cta-btn">enter the frequency →</button>
     </div>
@@ -503,7 +503,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4)" id="today-changes-lbl">changes daily</span>
       </div>
     </div>
-    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openPlayer('hz432')">Listen →</button>
+    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openMode('sleep')">Listen →</button>
   </div>
 
   <!-- Rest of content — natural flow -->
@@ -534,19 +534,19 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <div class="card-cnt" id="m-sleepc">4 frequencies</div>
         <div class="card-desc" id="m-sleep-d">calm your nervous system</div>
       </button>
-      <button class="mode-card" onclick="openPlayer('hz528')">
+      <button class="mode-card" onclick="openMode('healing')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><path d="M10 50 Q25 28 40 50 Q55 72 70 50 Q85 28 90 50" stroke-width=".9" opacity=".5" stroke-linecap="round"/><path d="M10 62 Q25 40 40 62 Q55 84 70 62 Q85 40 90 62" stroke-width=".5" opacity=".22" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="currentColor" opacity=".4"/></svg></div>
         <div class="card-nm" id="m-heal">Healing</div>
         <div class="card-cnt" id="m-healc">4 frequencies</div>
         <div class="card-desc" id="m-heal-d">restore &amp; release</div>
       </button>
-      <button class="mode-card" onclick="openPlayer('gamma')">
+      <button class="mode-card" onclick="openMode('focus')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><rect x="10" y="10" width="80" height="80" stroke-width=".8" opacity=".44"/><rect x="24" y="24" width="52" height="52" stroke-width=".5" opacity=".27"/><rect x="38" y="38" width="24" height="24" stroke-width=".4" opacity=".17"/><rect x="46" y="46" width="8" height="8" fill="currentColor" opacity=".44"/></svg></div>
         <div class="card-nm" id="m-focus">Focus</div>
         <div class="card-cnt" id="m-focusc">4 frequencies</div>
         <div class="card-desc" id="m-focus-d">clear the noise</div>
       </button>
-      <button class="mode-card" onclick="openPlayer('hz963')">
+      <button class="mode-card" onclick="openMode('abundance')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><polygon points="50,6 94,50 50,94 6,50" stroke-width=".8" opacity=".44"/><polygon points="50,22 78,50 50,78 22,50" stroke-width=".5" opacity=".27"/><circle cx="50" cy="50" r="4" fill="currentColor" opacity=".44"/></svg></div>
         <div class="card-nm" id="m-abund">Abundance</div>
         <div class="card-cnt" id="m-abundc">4 frequencies</div>
@@ -706,7 +706,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
   <!-- Weekly Shape — the core visual -->
   <div style="padding:24px 18px 8px">
-    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.24em;color:var(--t3);text-transform:uppercase;margin-bottom:14px" id="hist-shape-lbl">this week's journey</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.24em;color:var(--t3);text-transform:uppercase;margin-bottom:14px" id="hist-shape-lbl"></div>
     <div style="display:flex;align-items:center;gap:20px">
       <!-- Shape canvas -->
       <div style="position:relative;width:90px;height:90px;flex-shrink:0">
@@ -722,7 +722,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <!-- Progress bar to next shape -->
     <div style="margin-top:14px">
       <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t4)" id="hist-prog-lbl">toward full circle</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t4)" id="hist-prog-lbl"></span>
         <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t3)" id="hist-prog-val"></span>
       </div>
       <div style="height:2px;background:var(--b1);border-radius:1px;overflow:hidden">
@@ -950,6 +950,8 @@ function buildHistory(){
   const stage=SHAPE_STAGES[daysThisWeek]||SHAPE_STAGES[0]
   const cv=document.getElementById('weekly-shape-cv')
   if(cv){ const ctx=cv.getContext('2d'); drawWeeklyShape(ctx,daysThisWeek,180) }
+  const shapeLblEl=document.getElementById('hist-shape-lbl')
+  if(shapeLblEl) shapeLblEl.textContent=isHe?"המסע השבועי":"this weeks journey"
   const shapeTitleEl=document.getElementById('hist-shape-title')
   if(shapeTitleEl) shapeTitleEl.textContent=isHe?stage.nameHe:stage.name
   const shapeDescEl=document.getElementById('hist-shape-desc')
@@ -963,6 +965,8 @@ function buildHistory(){
   const pct=Math.round((daysThisWeek/7)*100)
   const barEl=document.getElementById('hist-prog-bar')
   if(barEl) setTimeout(()=>barEl.style.width=pct+'%',100)
+  const progLblEl=document.getElementById('hist-prog-lbl')
+  if(progLblEl) progLblEl.textContent=isHe?'לעבר המעגל השלם':'toward full circle'
   const progVal=document.getElementById('hist-prog-val')
   if(progVal) progVal.textContent=`${daysThisWeek}/7`
 
@@ -1385,7 +1389,54 @@ if(window.location.hash==='#home'){
   renderStreak(); showHome()
   history.replaceState(null,'',window.location.pathname)
 }
-function showLibrary(){ buildLibrary(); show('library') }
+function showLibrary(){ 
+  buildLibrary()
+  // Reset any mode filter
+  show('library')
+  setTimeout(()=>{
+    document.querySelectorAll('.lb-row').forEach(r=>r.style.display='')
+    const si=document.getElementById('lib-si')
+    if(si) si.value=''
+    const titleEl=document.getElementById('lib-title')
+    if(titleEl) titleEl.textContent=lang==='he'?'ספריה · 21 תדרים':'Library · 21 Frequencies'
+  },50)
+}
+
+function openMode(mode){
+  const modeNames={
+    sleep:   {en:'Sleep · 4 frequencies',    he:'שינה · 4 תדרים'},
+    healing: {en:'Healing · 4 frequencies',  he:'ריפוי · 4 תדרים'},
+    focus:   {en:'Focus · 4 frequencies',    he:'ריכוז · 4 תדרים'},
+    abundance:{en:'Abundance · 4 frequencies',he:'שפע · 4 תדרים'},
+  }
+  buildLibrary()
+  show('library')
+  setTimeout(()=>{
+    // Filter rows to this mode only
+    document.querySelectorAll('.lb-row').forEach(r=>{
+      const fid=r.getAttribute('data-fid')
+      const f=FREQS.find(x=>x.id===fid)
+      r.style.display=(f&&f.mode===mode)?'':'none'
+    })
+    // Also hide group headers that have no visible rows
+    document.querySelectorAll('.lb-grp').forEach(grp=>{
+      let next=grp.nextElementSibling
+      let hasVisible=false
+      while(next&&!next.classList.contains('lb-grp')){
+        if(next.classList.contains('lb-row')&&next.style.display!=='none') hasVisible=true
+        next=next.nextElementSibling
+      }
+      grp.style.display=hasVisible?'':'none'
+    })
+    // Update title
+    const mn=modeNames[mode]||{en:mode,he:mode}
+    const titleEl=document.getElementById('lib-title')
+    if(titleEl) titleEl.textContent=lang==='he'?mn.he:mn.en
+    // Clear search
+    const si=document.getElementById('lib-si')
+    if(si) si.value=''
+  },60)
+}
 // FIX 4 — stop audio when leaving player
 function leavePlayer(){ if(playing) doStop(); show('home') }
 function show(id){
@@ -1507,7 +1558,7 @@ function renderLibRows(list){
     html+=`<div class="lb-grp"><div class="lb-gl">${lbls[cat][lang]}</div><div class="lb-gline"></div><div class="lb-gc">${g.length}</div></div>`
     g.forEach(f=>{
       const t=f[lang]||f.en,isP=!!audioNodes[f.id]
-      html+=`<button class="lb-row" onclick="openPlayer('${f.id}')">
+      html+=`<button class="lb-row" data-fid="${f.id}" onclick="openPlayer('${f.id}')">
         <div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--t1);opacity:0;transition:opacity .2s;border-radius:0 1px 1px 0" class="ra"></div>
         <div class="lb-hc"><span class="lb-hv">${f.hz}</span><span class="lb-hu">Hz</span></div>
         <div class="lb-mid"><div class="lb-nm">${t.name}</div><div class="lb-sb">${t.sub} · ${f.type==='binaural'?'🎧 Binaural':f.noHp?'🔊':'🔊'}</div></div>
@@ -1539,8 +1590,8 @@ function changeFontSize(d){
   })
 }
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
-  he:{'sp-sub':'תדרים','sp-desc':'מערכת העצבים שלך מקשיבה.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
+  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'4 תדרים','m-heal':'ריפוי','m-healc':'4 תדרים','m-focus':'ריכוז','m-focusc':'4 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
