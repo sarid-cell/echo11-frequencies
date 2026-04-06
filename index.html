@@ -335,10 +335,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .acc-bar{display:flex;align-items:center;gap:7px;padding:8px 14px;border-top:.5px solid var(--b1);flex-wrap:wrap;flex-shrink:0}
 
 /* Player bg image — Layer 0+1+2 */
-.pl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;z-index:0;transition:opacity .6s ease}
-@media(max-width:390px){.pl-bg{object-position:center 25%}}
-@media(min-width:768px){.pl-bg{object-position:center 20%}}
-.pl-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,.0) 22%,rgba(245,243,238,.0) 44%,rgba(245,243,238,.82) 62%,var(--bg) 75%);z-index:1;pointer-events:none}
+.pl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;z-index:0}
+.pl-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.28) 0%,rgba(0,0,0,.06) 38%,rgba(245,243,238,.88) 68%,var(--bg) 82%);z-index:1;pointer-events:none}
 .dark .pl-overlay{background:linear-gradient(to bottom,rgba(0,0,0,.0) 0%,rgba(0,0,0,.0) 22%,rgba(0,0,0,.42) 44%,rgba(0,0,0,.85) 62%,rgba(0,0,0,1) 75%)}
 .pl-astro{display:none}
 
@@ -350,7 +348,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 /* Hz + Name — spacer zone, sits over image */
 .pl-freq-bar{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 22px 0;z-index:2;flex-shrink:0}
-.pl-fn{font-family:'Cormorant Garamond',Georgia,serif;font-size:80px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.88}
+.pl-fn{font-family:'Cormorant Garamond',Georgia,serif;font-size:80px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.88;text-shadow:0 2px 16px rgba(245,243,238,.6)}
 .pl-fu{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;letter-spacing:.3em;color:var(--t4);margin-top:8px}
 .pl-fname{font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:var(--t2)}
 .pl-ftype{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.14em;color:var(--t3);background:none;border:.5px solid var(--b1);border-radius:20px;padding:3px 10px}
@@ -593,7 +591,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 <!-- PLAYER -->
 <div id="player" class="scr">
-  <img src="img_player.jpg" alt="echo.11" class="pl-bg" id="pl-bg-img"/>
+  <img src="img_player.jpg" alt="echo.11" class="pl-bg"/>
   <div class="pl-overlay"></div>
   <div class="pl-nav">
     <button class="pl-back" id="pl-back" onclick="leavePlayer()">← Back</button>
@@ -625,9 +623,9 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
   <!-- Scrollable middle content -->
   <div class="pl-scroll">
-    <div class="bs-row" style="cursor:pointer;user-select:none;margin-bottom:6px" onclick="toggleBrainState()">
-      <div class="bs-sec-lbl" id="bs-what" style="font-size:9px;letter-spacing:.14em;color:var(--t4)">What's happening</div>
-      <div class="bs-live" style="font-size:9px">Live</div>
+    <div class="bs-row" style="cursor:pointer;user-select:none" onclick="toggleBrainState()">
+      <div class="bs-sec-lbl" id="bs-what">What's happening</div>
+      <div class="bs-live">Live</div>
       <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▸</div>
     </div>
     <div class="brain-state" id="brain-state-card" style="display:none">
@@ -660,7 +658,6 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
       </div>
     </div>
-    <!-- TIMER SECTION — hidden while playing -->
     <div id="pl-timer-section">
       <div class="timer-lbl" id="timer-lbl">Session duration</div>
       <div class="pl-timers">
@@ -669,23 +666,12 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
         <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
         <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
-      </div><!-- /pl-timers -->
-    </div><!-- /pl-timer-section -->
+      </div>
+    </div>
     <div class="pl-vol">
       <div class="pl-vl" id="vol-lbl">Vol</div>
       <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
       <div class="pl-vn" id="vol-n">40</div>
-    </div>
-    <!-- TIME PROGRESS BAR — shown during playback -->
-    <div class="pl-prog-wrap" id="pl-prog-wrap" style="display:none;margin-bottom:8px">
-      <div class="pl-prog-labels" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
-        <span class="pl-prog-elapsed" id="pl-prog-elapsed" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">0:00</span>
-        <span id="pl-prog-remain" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">20:00</span>
-        <span id="pl-prog-total" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">/ 20:00</span>
-      </div>
-      <div style="height:2px;background:var(--b1);border-radius:2px;overflow:hidden">
-        <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
-      </div>
     </div>
     <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
@@ -694,7 +680,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <span style="font-size:16px">🔒</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
     </div>
-    <div style="display:flex;justify-content:center;gap:10px;padding:6px 0 2px;flex-wrap:wrap">
+    <div style="display:flex;justify-content:center;gap:10px;padding:8px 0 4px;border-top:.5px solid var(--b1);margin-top:6px">
       <a href="legal.html#access" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-access-lnk">Accessibility</a>
       <span style="color:var(--b2);font-size:9px">·</span>
       <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-terms-lnk">Terms</a>
@@ -706,10 +692,9 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 <!-- SESSION COMPLETE -->
 <div id="complete" class="scr" style="overflow-y:auto">
-  <div style="position:relative;height:45vh;min-height:260px;max-height:380px;overflow:hidden;flex-shrink:0">
+  <div style="position:relative;height:42vh;min-height:240px;max-height:340px;overflow:hidden;flex-shrink:0">
     <img src="img_complete.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,18,16,.15) 0%,rgba(20,18,16,.5) 100%)"></div>
-    <canvas id="complete-cv" width="300" height="300" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:150px;height:150px;opacity:.6"></canvas>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,18,16,.1) 0%,rgba(20,18,16,.45) 100%)"></div>
     <button onclick="show('home');renderStreak()" style="position:absolute;top:22px;left:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer" id="comp-back">← Back</button>
   </div>
   <div style="padding:28px 22px 20px">
@@ -722,10 +707,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
     <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px">
       <canvas id="comp-shape-cv" width="80" height="80" style="width:40px;height:40px;flex-shrink:0"></canvas>
-      <div>
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;color:var(--t1);margin-bottom:3px" id="comp-shape-name"></div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5" id="comp-shape-desc"></div>
-      </div>
+      <div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;color:var(--t1);margin-bottom:3px" id="comp-shape-name"></div><div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5" id="comp-shape-desc"></div></div>
     </div>
     <button onclick="replaySession()" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer;margin-bottom:10px" id="comp-replay">play again</button>
     <button onclick="show('home');renderStreak()" style="width:100%;padding:14px;background:none;border:.5px solid var(--b2);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--t2);cursor:pointer" id="comp-home">back to home</button>
@@ -872,11 +854,6 @@ function drawWeeklyShape(ctx, days, size){
     ctx.lineWidth=size*.008
     ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke()
     ctx.restore()
-  }
-    if(days>0&&days<7){
-    ctx.save(); ctx.setLineDash([size*.03,size*.025])
-    ctx.strokeStyle=isDark?'rgba(245,243,238,.15)':'rgba(26,26,24,.12)'
-    ctx.lineWidth=size*.008; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke(); ctx.restore()
   }
     ctx.strokeStyle=stroke
   ctx.fillStyle=fill
@@ -1139,7 +1116,7 @@ function loadSessions(){
 }
 
 function saveSession(freqId, seconds){
-  if(seconds<30) return // minimum 30s
+  if(seconds<30) return // min 30s
   const sessions=loadSessions()
   const key=getTodayKey()
   if(!sessions[key]) sessions[key]={total:0,freqs:{}}
@@ -1153,10 +1130,11 @@ function saveSession(freqId, seconds){
 }
 
 function calcStreak(sessions){
+  // A day counts toward the shape only if ≥ 3 minutes (180s) were listened
   let streak=0,d=new Date()
   while(true){
     const key=`${d.getFullYear()}-${(d.getMonth()+1)}-${d.getDate()}`
-    if(sessions[key]&&sessions[key].total>0){ streak++; d.setDate(d.getDate()-1) }
+    if(sessions[key]&&sessions[key].total>=180){ streak++; d.setDate(d.getDate()-1) }
     else break
   }
   return streak
@@ -1499,6 +1477,37 @@ if(window.location.hash==='#home'){
   renderStreak(); showHome()
   history.replaceState(null,'',window.location.pathname)
 }
+function openQuickRelief(){
+  const isHe=lang==='he', idx=FREQS.findIndex(f=>f.id==='theta')
+  if(idx<0) return
+  if(playing) doStop(); curIdx=idx; renderPlayer(); show('player')
+  setTimeout(()=>{
+    selTimerSec=180; document.querySelectorAll('.pl-timer').forEach(t=>t.classList.remove('on'))
+    const t3=document.getElementById('timer-3'); if(t3) t3.classList.add('on')
+    const bsTxt=document.getElementById('bs-txt')
+    if(bsTxt) bsTxt.innerHTML=isHe?'נשמי. תוך <em>90 שניות</em> הגוף יתחיל להרגע.':'breathe. within <em>90 seconds</em>, your body will settle.'
+  },100)
+}
+function openMode(mode){
+  const isHe=lang==='he'
+  buildLibrary(); show('library')
+  setTimeout(()=>{
+    let count=0
+    document.querySelectorAll('.lb-row').forEach(r=>{
+      const fid=r.getAttribute('data-fid'), f=FREQS.find(x=>x.id===fid)
+      const vis=f&&f.mode===mode; r.style.display=vis?'':'none'; if(vis) count++
+    })
+    document.querySelectorAll('.lb-grp').forEach(grp=>{
+      let next=grp.nextElementSibling, vis=false
+      while(next&&!next.classList.contains('lb-grp')){ if(next.classList.contains('lb-row')&&next.style.display!=='none') vis=true; next=next.nextElementSibling }
+      grp.style.display=vis?'':'none'
+    })
+    const modeNames={sleep:{en:'Sleep',he:'שינה'},healing:{en:'Healing',he:'ריפוי'},focus:{en:'Focus',he:'ריכוז'},abundance:{en:'Abundance',he:'שפע'}}
+    const mn=modeNames[mode]||{en:mode,he:mode}
+    const titleEl=document.getElementById('lib-title'); if(titleEl) titleEl.textContent=(isHe?mn.he:mn.en)+' · '+count+' '+(isHe?'תדרים':'frequencies')
+    const si=document.getElementById('lib-si'); if(si) si.value=''
+  },60)
+}
 function showLibrary(){ 
   buildLibrary()
   show('library')
@@ -1519,20 +1528,6 @@ function showLibrary(){
   },50)
 }
 
-function openQuickRelief(){
-  const isHe=lang==='he'
-  const idx=FREQS.findIndex(f=>f.id==='theta')
-  if(idx<0) return
-  if(playing) doStop()
-  curIdx=idx; renderPlayer(); show('player')
-  setTimeout(()=>{
-    selTimerSec=180
-    document.querySelectorAll('.pl-timer').forEach(t=>t.classList.remove('on'))
-    const t3=document.getElementById('timer-3'); if(t3) t3.classList.add('on')
-    const bsTxt=document.getElementById('bs-txt')
-    if(bsTxt) bsTxt.innerHTML=isHe?'נשמי. תוך <em>90 שניות</em> הגוף יתחיל להרגע.':'breathe. within <em>90 seconds</em>, your body will settle.'
-  },100)
-}
 function openMode(mode){
   const isHe=lang==='he'
   const modeInfo={
@@ -1601,23 +1596,12 @@ function nextFreq(){ if(playing) doStop(); curIdx=(curIdx+1)%FREQS.length; rende
 function prevFreq(){ if(playing) doStop(); curIdx=(curIdx-1+FREQS.length)%FREQS.length; renderPlayer();  }
 
 function renderPlayer(){
-  const f=FREQS[curIdx], t=f[lang]||f.en
-  const _s=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v }
-  _s('pl-hz', f.hz)
-  _s('pl-num', f.num+' · '+f.cat)
-  _s('pl-name', t.name)
-  _s('pl-sub',  (t.sub||'').toUpperCase())
-  _s('pl-hz-panel', f.hz)
-  _s('pl-name-panel', t.name)
+  const f=FREQS[curIdx],t=f[lang]||f.en
+  const _s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v}
+  _s('pl-hz',f.hz); _s('pl-num',f.num+'·'+f.cat); _s('pl-name',t.name)
+  _s('pl-sub',(t.sub||'').toUpperCase()); _s('pl-hz-panel',f.hz); _s('pl-name-panel',t.name)
   const bg=document.getElementById('pl-bg-img')||document.querySelector('.pl-bg')
-  if(bg){
-    const bgMap={'hz432':'bg_432.gif','hz528':'img_528.png'}
-    bg.src=bgMap[f.id]||f.img||'img_player.jpg'
-    bg.style.objectPosition=f.imgPos||'center 30%'
-    bg.style.objectFit='cover'
-    bg.style.width='100%'
-    bg.style.height='100%'
-  }
+  if(bg){ bg.src=f.img||'img_player.jpg'; bg.style.objectPosition='center 20%'; bg.style.objectFit='cover' }
   const typeEl=document.getElementById('pl-type')
   if(typeEl) typeEl.textContent=f.type==='binaural'?'🎧 Binaural':'🔊 Pure Tone'
   const audioTxt=document.getElementById('pl-audio-txt')
@@ -1632,17 +1616,15 @@ function renderPlayer(){
   renderTab()
   const bsEl=document.getElementById('bs-txt')
   if(bsEl) bsEl.innerHTML=BRAIN[0][lang]||BRAIN[0].en
-  const bsFill=document.getElementById('bs-fill')
-  if(bsFill) bsFill.style.width='0%'
+  const bsFill=document.getElementById('bs-fill'); if(bsFill) bsFill.style.width='0%'
   _s('bs-time','0:00')
-  const elRow=document.getElementById('el-row')
-  if(elRow) elRow.style.display='none'
+  const elRow=document.getElementById('el-row'); if(elRow) elRow.style.display='none'
   updatePlayBtn()
 }
 
 function setTab(i,el){ activeTab=i; document.querySelectorAll('.pl-tab').forEach(t=>t.classList.remove('on')); el.classList.add('on'); renderTab() }
 function renderTab(){
-  const f=FREQS[curIdx], t=f[lang]||f.en
+  const f=FREQS[curIdx],t=f[lang]||f.en
   const el=document.getElementById('pl-txt')
   if(!el) return
   const isHe=lang==='he'
@@ -1671,11 +1653,16 @@ function updatePlayBtn(){
     btn.className='pl-play'
   }
 }
+function toggleBrainState(){
+  const card=document.getElementById('brain-state-card')
+  const toggle=document.getElementById('bs-toggle')
+  if(!card) return
+  const hidden=card.style.display==='none'||card.style.display===''
+  card.style.display=hidden?'block':'none'
+  if(toggle) toggle.textContent=hidden?'▾':'▸'
+}
 function doStop(){
-  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock()
-  const pw=document.getElementById('pl-prog-wrap'); if(pw) pw.style.display='none'
-  const pf=document.getElementById('pl-prog-fill'); if(pf) pf.style.width='0%'
-  const ts=document.getElementById('pl-timer-section'); if(ts) ts.style.display=''
+  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock(); const _pw=document.getElementById('pl-prog-wrap'); if(_pw) _pw.style.display='none'
   if(elapsed>=30) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
@@ -1686,13 +1673,10 @@ async function togglePlay(){
   const f=FREQS[curIdx]
   if(playing){ doStop(); return }
   try{
-    if(!audioCtx||audioCtx.state==='closed')
-      audioCtx=new(window.AudioContext||window.webkitAudioContext)()
+    if(!audioCtx||audioCtx.state==='closed') audioCtx=new(window.AudioContext||window.webkitAudioContext)()
     if(audioCtx.state==='suspended') audioCtx.resume()
   }catch(e){}
   await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
-  const _pw3=document.getElementById('pl-prog-wrap'); if(_pw3) _pw3.style.display='block'
-  const _ts=document.getElementById('pl-timer-section'); if(_ts) _ts.style.display='none'
 
   // Show iOS screen lock notice once
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -1723,50 +1707,7 @@ async function togglePlay(){
     const s=[...BRAIN].reverse().find(b=>elapsed>=b.t); if(s) document.getElementById('bs-txt').innerHTML=s[lang]
     const er=document.getElementById('el-row'); er.style.display='flex'
     document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
-    // Update progress bar
-    const _pw=document.getElementById('pl-prog-wrap')
-    if(_pw) _pw.style.display='block'
-    const _pe=document.getElementById('pl-prog-elapsed')
-    const _pr=document.getElementById('pl-prog-remain')
-    const _pt=document.getElementById('pl-prog-total')
-    const _pf=document.getElementById('pl-prog-fill')
-    if(_pe) _pe.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
-    if(selTimerSec>0){
-      const _rem=Math.max(0,selTimerSec-elapsed)
-      if(_pr) _pr.textContent=Math.floor(_rem/60)+':'+String(_rem%60).padStart(2,'0')
-      if(_pt) _pt.textContent='/ '+Math.floor(selTimerSec/60)+':'+String(selTimerSec%60).padStart(2,'0')
-      if(_pf) _pf.style.width=Math.min(100,(elapsed/selTimerSec)*100)+'%'
-    } else {
-      if(_pr) _pr.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
-      if(_pt) _pt.textContent=''
-    }
-    // Progress bar update
-    ;(function(){
-      const pw=document.getElementById('pl-prog-wrap')
-      if(pw) pw.style.display=playing?'block':'none'
-      const pe=document.getElementById('pl-prog-elapsed')
-      const pr=document.getElementById('pl-prog-remain')
-      const pt=document.getElementById('pl-prog-total')
-      const pf=document.getElementById('pl-prog-fill')
-      if(pe) pe.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
-      if(selTimerSec>0){
-        const rem=Math.max(0,selTimerSec-elapsed)
-        if(pr) pr.textContent=Math.floor(rem/60)+':'+String(rem%60).padStart(2,'0')
-        if(pt) pt.textContent='/ '+Math.floor(selTimerSec/60)+':'+String(selTimerSec%60).padStart(2,'0')
-        if(pf) pf.style.width=Math.min(100,(elapsed/selTimerSec)*100)+'%'
-      } else {
-        if(pr) pr.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
-        if(pt) pt.textContent=''
-      }
-      // Hide timer section while playing
-      const ts=document.getElementById('pl-timer-section')
-      if(ts) ts.style.display='none'
-    })()
-    if(selTimerSec>0 && elapsed>=selTimerSec){
-      const _fid=FREQS[curIdx]?.id; const _secs=elapsed
-      doStop()
-      if(_secs>=30) setTimeout(()=>showComplete(_fid,_secs),400)
-    }
+    if(selTimerSec>0 && elapsed>=selTimerSec) doStop()
   },1000)
   updatePlayBtn()
 }
@@ -1828,13 +1769,12 @@ function toggleLang(){
 
 // Splash canvas
 
-// ── Session Complete ─────────────────────────────────────────
 const BRAIN_COMPLETE={
-  gamma:{en:"Your brain just ran 40 Hz synchronization — the same rhythm MIT's Picower Institute (Nature, 2016) found enhances memory and clears cognitive fog.",he:"המוח שלך רץ על סינכרון 40 Hz — אותו קצב שמכון Picower של MIT מצא שמשפר זיכרון ומנקה ערפל קוגניטיבי."},
-  alpha:{en:"Alpha waves at 8–12 Hz washed through your cortex — the state José Silva identified as the bridge to subconscious creativity.",he:"גלי אלפא 8–12 Hz שטפו את קליפת המוח — המצב שחוזה סילבה זיהה כגשר ליצירתיות תת-מודעת."},
-  theta:{en:"Deep Theta at 4–8 Hz — your nervous system shifted toward the edge of sleep, where emotional processing and healing happen.",he:"תטא עמוקה 4–8 Hz — מערכת העצבים שלך עברה לגבול השינה, שם מתרחש עיבוד רגשי וריפוי."},
-  delta:{en:"Delta waves below 4 Hz — the deepest sleep state. Cellular repair, immune strengthening, growth hormone. Your body did deep maintenance.",he:"גלי דלתא מתחת ל-4 Hz — מצב השינה העמוק ביותר. תיקון תאי, חיזוק חיסוני. הגוף שלך עשה תחזוקה."},
-  solfeggio:{en:"The Solfeggio frequencies work through resonance — exposing your cells to mathematically precise harmonic patterns from an ancient scale.",he:"תדרי הסולפג׳יו עובדים דרך רזוננס — חשיפת התאים לדפוסים הרמוניים ממוקדים מסולם עתיק."},
+  gamma:{en:"Your brain ran 40 Hz synchronization — the same rhythm MIT's Picower Institute (Nature, 2016) found enhances memory and clears cognitive fog.",he:"המוח שלך רץ על סינכרון 40 Hz — אותו קצב שמכון Picower מצא שמשפר זיכרון ומנקה ערפל קוגניטיבי."},
+  alpha:{en:"Alpha waves at 8–12 Hz washed through your cortex — the bridge to subconscious flow that José Silva identified.",he:"גלי אלפא 8–12 Hz שטפו את קליפת המוח — הגשר לזרימה תת-מודעת שחוזה סילבה זיהה."},
+  theta:{en:"Deep Theta 4–8 Hz — your nervous system shifted toward the edge of sleep, where emotional processing and healing happen.",he:"תטא עמוקה 4–8 Hz — מערכת העצבים שלך עברה לגבול השינה, שם מתרחש עיבוד רגשי וריפוי."},
+  delta:{en:"Delta below 4 Hz — the deepest sleep state. Cellular repair, immune strengthening, growth hormone release.",he:"דלתא מתחת ל-4 Hz — מצב השינה העמוק ביותר. תיקון תאי, חיזוק חיסוני, שחרור הורמון גדילה."},
+  solfeggio:{en:"Solfeggio frequencies work through resonance — exposing your cells to mathematically precise harmonic patterns from an ancient scale.",he:"תדרי הסולפג'יו עובדים דרך רזוננס — חשיפת התאים לדפוסים הרמוניים המדויקים מסולם עתיק."},
   echo11:{en:"The echo.11 original frequency. Where mathematics meets sound healing. Your system tuned to its own signal.",he:"התדר המקורי של echo.11. שם מתמטיקה פוגשת ריפוי קולי. המערכת שלך כוּונה לאות שלה עצמה."},
 }
 function getBrainComplete(f){
@@ -1856,7 +1796,7 @@ function showComplete(freqId,listenedSecs){
   const el=id=>document.getElementById(id)
   const hl=[[streak>=7,isHe?`${streak} ימים. את התדר.`:`${streak} days. you are the frequency.`],[mins>=20,isHe?`${mins} דקות של כוונון.`:`${mins} minutes. your system shifted.`],[mins>=3,isHe?'סשן הושלם. הגוף שלך יודע.':'session complete. your body knows.'],[true,isHe?'האזנת. זה מספיק.':'you listened. that is enough.']].find(([c])=>c)[1]
   if(el('comp-headline')) el('comp-headline').textContent=hl
-  if(el('comp-freq-lbl')) el('comp-freq-lbl').textContent=(f?.hz||'')+' Hz · '+(t.name||'')
+  if(el('comp-freq-lbl')) el('comp-freq-lbl').textContent=(f?.hz||'')+' Hz · '+(t.name||'').toUpperCase()
   if(el('comp-stats')) el('comp-stats').innerHTML=[[mins,isHe?'דקות':'minutes'],[streak,isHe?'ימים רצופים':'day streak'],[totalMins,isHe?'סה"כ':'total min']].map(([v,l])=>`<div style="background:var(--bg2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">${l}</div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1">${v}</div></div>`).join('')
   const bd=getBrainComplete(f)
   if(el('comp-brain-lbl')) el('comp-brain-lbl').textContent=isHe?'מה קרה':'what happened'
@@ -1866,11 +1806,9 @@ function showComplete(freqId,listenedSecs){
   if(compCv){const ctx=compCv.getContext('2d');drawWeeklyShape(ctx,dw,80)}
   if(el('comp-shape-name')) el('comp-shape-name').textContent=isHe?stage.nameHe:stage.name
   if(el('comp-shape-desc')) el('comp-shape-desc').textContent=isHe?stage.descHe:stage.desc
-  if(el('comp-replay')) el('comp-replay').textContent=isHe?`▶  שמע שוב · ${f?.hz||''} Hz`:`▶  listen again · ${f?.hz||''} Hz`
+  if(el('comp-replay')) el('comp-replay').textContent=isHe?`▶ שמע שוב · ${f?.hz||''} Hz`:`▶ listen again · ${f?.hz||''} Hz`
   if(el('comp-home')) el('comp-home').textContent=isHe?'← חזרה לבית':'← back to home'
   if(el('comp-back')) el('comp-back').textContent=isHe?'← חזרה':'← Back'
-  const cv=el('complete-cv')
-  if(cv){const ctx=cv.getContext('2d');let p=0;const dk=document.body.classList.contains('dark'),c=dk?'rgba(245,243,238,':'rgba(26,26,24,';function dc(){ctx.clearRect(0,0,300,300);ctx.beginPath();ctx.arc(150,150,110,0,Math.PI*2);ctx.strokeStyle=c+'0.08)';ctx.lineWidth=1;ctx.stroke();ctx.beginPath();ctx.arc(150,150,110,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(p,1));ctx.strokeStyle=c+'0.5)';ctx.lineWidth=2.5;ctx.stroke();if(p<1){p+=0.01;requestAnimationFrame(dc)}}dc()}
   show('complete')
 }
 
