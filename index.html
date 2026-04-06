@@ -606,92 +606,87 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
   </div>
 
-  <!-- PREV / NEXT — floating sides -->
-  <button class="pl-arr" onclick="prevFreq()" aria-label="Previous" style="position:absolute;left:4px;top:50%;transform:translateY(-50%);z-index:3;font-size:28px">‹</button>
-  <button class="pl-arr" onclick="nextFreq()" aria-label="Next" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);z-index:3;font-size:28px">›</button>
+  <!-- PREV / NEXT -->
+  <button class="pl-arr" onclick="prevFreq()" aria-label="Previous" style="position:absolute;left:4px;top:45%;transform:translateY(-50%);z-index:3;font-size:28px">‹</button>
+  <button class="pl-arr" onclick="nextFreq()" aria-label="Next" style="position:absolute;right:4px;top:45%;transform:translateY(-50%);z-index:3;font-size:28px">›</button>
 
-  <!-- FREQ IDENTITY — stopped state -->
-  <div class="pl-stopped-only" style="position:absolute;bottom:52%;left:0;right:0;padding:0 28px;z-index:3;text-align:center">
+  <!-- STOPPED: Hz identity over image -->
+  <div style="position:absolute;bottom:54%;left:0;right:0;padding:0 32px;z-index:3;text-align:center;pointer-events:none" id="pl-identity">
     <div style="display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:6px">
-      <div class="pl-fn" id="pl-hz" style="font-size:72px;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.4)">432</div>
+      <div class="pl-fn" id="pl-hz" style="color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.4)">432</div>
       <div class="pl-fu" style="color:rgba(255,255,255,.7);padding-bottom:6px">Hz</div>
     </div>
     <div class="pl-fname" id="pl-name" style="color:rgba(255,255,255,.9);font-size:18px;margin-bottom:4px">The Universe</div>
-    <div id="pl-tagline" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.08em;color:rgba(255,255,255,.6);margin-bottom:0"></div>
+    <div id="pl-tagline" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.08em;color:rgba(255,255,255,.6)"></div>
   </div>
 
-  <!-- ORB — playing state (centered, alive) -->
-  <div class="pl-playing-only" style="position:absolute;top:0;left:0;right:0;bottom:0;flex-direction:column;align-items:center;justify-content:center;z-index:2;pointer-events:none">
+  <!-- PLAYING: orb centered -->
+  <div id="pl-orb-wrap" style="position:absolute;top:0;left:0;right:0;bottom:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:2;pointer-events:none">
     <canvas id="pl-orb" width="300" height="300" style="width:180px;height:180px"></canvas>
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:48px;font-weight:200;color:var(--t1);line-height:1;margin-top:8px" id="pl-time-big">20:00</div>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:52px;font-weight:200;color:var(--t1);line-height:1;margin-top:10px" id="pl-time-big">20:00</div>
     <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);margin-top:4px" id="pl-time-lbl">remaining</div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:14px;animation:ph-fade 3s 5s ease forwards" id="pl-tap-hint-lbl">tap for details</div>
   </div>
 
-  <!-- BOTTOM CONTROLS -->
-  <div class="pl-bottom" style="position:relative;z-index:3;flex-shrink:0;background:linear-gradient(to bottom,transparent,var(--bg) 28px)">
+  <!-- SPACER -->
+  <div class="pl-spacer" style="flex:1;min-height:20px;z-index:2"></div>
 
-    <!-- PLAY BUTTON — always visible, primary action -->
+  <!-- BOTTOM — always visible -->
+  <div class="pl-bottom" style="position:relative;z-index:3;flex-shrink:0;background:linear-gradient(to bottom,transparent,var(--bg) 28px);gap:0">
+
+    <!-- PLAY BUTTON — PRIMARY, always visible -->
     <button class="pl-play" id="play-btn" onclick="togglePlay()" style="font-size:13px;letter-spacing:.2em;padding:18px;margin-bottom:8px">▶  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
 
-    <!-- STOPPED STATE: timer + vol -->
-    <div class="pl-stopped-only" style="flex-direction:column;gap:0">
-      <div class="pl-timers" style="margin-top:8px">
-        <button class="pl-timer" onclick="selTimer(this,180)" id="timer-3">3 min</button>
-        <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
-        <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
-        <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
-        <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
-      </div>
-      <div class="pl-vol" style="margin-top:8px">
-        <div class="pl-vl" id="vol-lbl">Vol</div>
-        <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)" step="1"/>
-        <div class="pl-vn" id="vol-n">40</div>
-      </div>
-      <!-- Learn more trigger — clearly a button -->
-      <button onclick="openInfoPanel()" style="width:100%;margin-top:10px;border-top:.5px solid var(--b1);padding-top:10px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;min-height:44px;border-radius:0" id="learn-more-btn">
-        <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t2)" id="learn-more-lbl">about this frequency</span>
-        <span style="font-size:11px;color:var(--t3)">↑</span>
-      </button>
+    <!-- TIMER — visible when stopped -->
+    <div id="pl-timer-row" class="pl-timers" style="margin-top:8px">
+      <button class="pl-timer" onclick="selTimer(this,180)" id="timer-3">3 min</button>
+      <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
+      <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
+      <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
+      <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
     </div>
 
-    <!-- PLAYING STATE: tap orb for info -->
-    <div class="pl-playing-only" style="flex-direction:column;align-items:center;gap:8px;padding-top:4px">
-      <button onclick="openInfoPanel()" style="background:none;border:.5px solid var(--b2);border-radius:20px;padding:6px 18px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);cursor:pointer;min-height:36px" id="pl-info-btn">what is this frequency? ↑</button>
+    <!-- VOL — visible when stopped -->
+    <div class="pl-vol" id="pl-vol-row" style="margin-top:8px">
+      <div class="pl-vl" id="vol-lbl">Vol</div>
+      <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)" step="1"/>
+      <div class="pl-vn" id="vol-n">40</div>
     </div>
 
-    <!-- Footer links -->
-    <div style="display:flex;justify-content:center;gap:10px;padding:8px 0 2px;flex-wrap:wrap">
-      <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-access-lnk">Accessibility</a>
+    <!-- INFO TRIGGER — changes text based on state -->
+    <button onclick="openInfoPanel()" id="pl-info-trigger" style="width:100%;margin-top:10px;border-top:.5px solid var(--b1);padding:10px 0 0;background:none;border-left:none;border-right:none;border-bottom:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;min-height:44px">
+      <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t2)" id="learn-more-lbl">about this frequency</span>
+      <span style="font-size:11px;color:var(--t3)">↑</span>
+    </button>
+
+    <!-- FOOTER -->
+    <div style="display:flex;justify-content:center;gap:10px;padding:6px 0 2px;flex-wrap:wrap">
+      <a href="legal.html#access" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-access-lnk">Accessibility</a>
       <span style="color:var(--b2);font-size:9px">·</span>
       <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-terms-lnk">Terms</a>
       <span style="color:var(--b2);font-size:9px">·</span>
       <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-privacy-lnk">Privacy</a>
     </div>
 
-    <!-- iOS lock notice -->
+    <!-- iOS lock -->
     <div id="lock-notice" style="display:none;align-items:center;gap:8px;padding:4px 0 0">
       <span style="font-size:13px">🔒</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
     </div>
   </div>
 
-  <!-- INFO PANEL — slides up, all details here -->
-  <div id="pl-info-panel" onclick="handlePanelClick(event)">
+  <!-- INFO PANEL — slides up -->
+  <div id="pl-info-panel" onclick="if(event.target===this)closeInfoPanel()">
     <div class="pl-info-handle"></div>
-    <!-- Hz + type — informational, NOT button -->
     <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:4px">
       <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:200;color:var(--t1)" id="pl-hz-panel">432</div>
       <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3)">Hz</div>
     </div>
     <div class="pl-fname" id="pl-name-panel" style="margin-bottom:6px">The Universe</div>
-    <!-- Headphone note — info only, styled differently -->
     <div class="pl-hp-note" id="pl-audio">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3z"/><path d="M3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
       <span id="pl-audio-txt">432 Hz · No headphones needed</span>
     </div>
-    <!-- 4 tabs -->
     <div class="pl-tabs" style="margin-bottom:10px">
       <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
       <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
@@ -700,7 +695,6 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
     <p class="pl-txt" id="pl-txt" style="font-size:14px;line-height:1.85;min-height:60px"></p>
     <div id="pl-recommended" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);padding-top:8px;border-top:.5px solid var(--b1);margin-top:4px;margin-bottom:16px"></div>
-    <!-- Brain state — inside panel, clearly labeled -->
     <div style="background:var(--bg2);border-radius:12px;padding:14px 16px">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
         <div class="bs-pulse"></div>
@@ -709,7 +703,6 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <div class="bs-txt" id="bs-txt" style="font-size:13px;line-height:1.7">Press play. Your nervous system will respond within <em>90 seconds</em>.</div>
       <div class="bs-bar" style="margin-top:10px"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
     </div>
-    <!-- Close panel -->
     <button onclick="closeInfoPanel()" style="width:100%;margin-top:14px;background:none;border:.5px solid var(--b1);border-radius:8px;padding:12px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t3);cursor:pointer;min-height:44px" id="pl-close-btn">close ↓</button>
   </div>
 </div>
@@ -1913,13 +1906,31 @@ function handlePanelClick(e){
 }
 
 // ── PLAYER STATE MANAGEMENT ───────────────────────────────────
-function setPlayerState(state){ // 'stopped' or 'playing'
+function setPlayerState(state){
   const pl=document.getElementById('player')
   if(!pl) return
   pl.classList.toggle('pl-state-stopped', state==='stopped')
   pl.classList.toggle('pl-state-playing', state==='playing')
   const bg=document.getElementById('pl-bg-img')
-  if(bg) bg.style.opacity=state==='playing'?'.35':'.9'
+  if(bg) bg.style.opacity=state==='playing'?'.3':'.9'
+  // Show/hide orb wrap
+  const orb=document.getElementById('pl-orb-wrap')
+  if(orb) orb.style.display=state==='playing'?'flex':'none'
+  // Show/hide timer+vol when playing (more breathing room)
+  const timerRow=document.getElementById('pl-timer-row')
+  const volRow=document.getElementById('pl-vol-row')
+  if(timerRow) timerRow.style.display=state==='playing'?'none':'flex'
+  if(volRow) volRow.style.display=state==='playing'?'none':'flex'
+  // Show/hide identity text
+  const identity=document.getElementById('pl-identity')
+  if(identity) identity.style.display=state==='playing'?'none':'block'
+  // Update info button text
+  const ib=document.getElementById('pl-info-trigger')
+  const isHe=lang==='he'
+  if(ib) ib.querySelector('#learn-more-lbl').textContent=
+    state==='playing'
+      ?(isHe?'מה קורה עכשיו? ↑':'what is happening? ↑')
+      :(isHe?'על התדר הזה ↑':'about this frequency ↑')
 }
 
 
