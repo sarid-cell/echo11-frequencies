@@ -593,7 +593,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 <!-- PLAYER -->
 <div id="player" class="scr">
-  <img src="img_player.jpg" alt="echo.11" class="pl-bg"/>
+  <img src="img_player.jpg" alt="echo.11" class="pl-bg" id="pl-bg-img"/>
   <div class="pl-overlay"></div>
   <div class="pl-nav">
     <button class="pl-back" id="pl-back" onclick="leavePlayer()">← Back</button>
@@ -625,10 +625,10 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
   <!-- Scrollable middle content -->
   <div class="pl-scroll">
-    <div class="bs-row" style="cursor:pointer;user-select:none" onclick="toggleBrainState()">
-      <div class="bs-sec-lbl" id="bs-what">What's happening</div>
-      <div class="bs-live">Live</div>
-      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▾</div>
+    <div class="bs-row" style="cursor:pointer;user-select:none;margin-bottom:6px" onclick="toggleBrainState()">
+      <div class="bs-sec-lbl" id="bs-what" style="font-size:9px;letter-spacing:.14em;color:var(--t4)">What's happening</div>
+      <div class="bs-live" style="font-size:9px">Live</div>
+      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▸</div>
     </div>
     <div class="brain-state" id="brain-state-card" style="display:none">
       <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
@@ -1609,15 +1609,14 @@ function renderPlayer(){
   _s('pl-sub',  (t.sub||'').toUpperCase())
   _s('pl-hz-panel', f.hz)
   _s('pl-name-panel', t.name)
-  const bg=document.getElementById('pl-bg-img')
+  const bg=document.getElementById('pl-bg-img')||document.querySelector('.pl-bg')
   if(bg){
-    // Per-frequency background
     const bgMap={'hz432':'bg_432.gif','hz528':'img_528.png'}
-    const bgSrc=bgMap[f.id]||f.img||'img_player.jpg'
-    bg.src=bgSrc
+    bg.src=bgMap[f.id]||f.img||'img_player.jpg'
     bg.style.objectPosition=f.imgPos||'center 30%'
-    // GIF: no object-fit issues, let it cover naturally
     bg.style.objectFit='cover'
+    bg.style.width='100%'
+    bg.style.height='100%'
   }
   const typeEl=document.getElementById('pl-type')
   if(typeEl) typeEl.textContent=f.type==='binaural'?'🎧 Binaural':'🔊 Pure Tone'
