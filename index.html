@@ -590,76 +590,67 @@ input[type=range]{accent-color:var(--t3);width:100%}
 </div>
 
 <!-- PLAYER -->
-<div id="player" class="scr">
-  <img src="img_player.jpg" alt="echo.11" class="pl-bg"/>
-  <div class="pl-overlay"></div>
-  <div class="pl-nav">
-    <button class="pl-back" id="pl-back" onclick="leavePlayer()">← Back</button>
-    <div class="pl-nav-r">
-      <button class="pill" id="lang-p" onclick="toggleLang()" style="font-size:10px;padding:5px 10px">עב</button>
-      <button class="pill" id="dark-p" onclick="toggleDark()" style="font-size:10px;padding:5px 10px">◐ Dark</button>
-      <div class="pl-num" id="pl-num">B5 · solfeggio</div>
+<div id="player" class="scr" style="overflow-y:auto;overflow-x:hidden">
+
+  <!-- ① IMAGE ZONE: 52vh, Ken Burns, nothing overlapping -->
+  <div style="position:relative;height:52vh;min-height:280px;max-height:420px;overflow:hidden;flex-shrink:0">
+    <img src="img_player.jpg" alt="" id="pl-bg-img"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;animation:kenBurns 18s ease-in-out infinite alternate"/>
+    <video id="pl-bg-video" autoplay loop muted playsinline
+      style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"></video>
+    <!-- top nav only -->
+    <div style="position:absolute;top:0;left:0;right:0;padding:env(safe-area-inset-top,14px) 18px 0;display:flex;justify-content:space-between;align-items:center;z-index:3">
+      <button class="pl-back" id="pl-back" onclick="leavePlayer()"
+        style="background:rgba(245,243,238,.15);backdrop-filter:blur(6px);border:none;border-radius:20px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:#fff;cursor:pointer">← Back</button>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="pill" id="lang-p" onclick="toggleLang()"
+          style="font-size:10px;padding:5px 10px;background:rgba(245,243,238,.15);backdrop-filter:blur(6px);border:.5px solid rgba(255,255,255,.25);color:#fff">עב</button>
+        <button class="pill" id="dark-p" onclick="toggleDark()"
+          style="font-size:10px;padding:5px 10px;background:rgba(245,243,238,.15);backdrop-filter:blur(6px);border:.5px solid rgba(255,255,255,.25);color:#fff">◐</button>
+        <div id="pl-num" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:rgba(255,255,255,.55)">B5 · solfeggio</div>
+      </div>
     </div>
+    <!-- prev / next -->
+    <button class="pl-arr" onclick="prevFreq()" aria-label="Previous"
+      style="position:absolute;left:6px;top:50%;transform:translateY(-50%);z-index:3;font-size:28px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer">‹</button>
+    <button class="pl-arr" onclick="nextFreq()" aria-label="Next"
+      style="position:absolute;right:6px;top:50%;transform:translateY(-50%);z-index:3;font-size:28px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer">›</button>
+    <!-- bottom fade -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,transparent,var(--bg))"></div>
   </div>
 
-  <!-- Hz number + freq nav — floats over image -->
-  <div class="pl-freq-bar">
-    <div style="display:flex;align-items:baseline;gap:5px">
-      <div class="pl-fn" id="pl-hz">432</div><div class="pl-fu">Hz</div>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-      <div class="pl-fname" id="pl-name">The Universe</div>
-      <div class="pl-ftype" id="pl-type">🔊 Pure Tone</div>
-      <div id="pl-tagline" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.06em;color:var(--t3);margin-top:3px;text-align:right;max-width:160px;line-height:1.4"></div>
-    </div>
-  </div>
-  <div style="position:relative;z-index:2;flex-shrink:0;display:flex;justify-content:space-between;padding:0 6px">
-    <button class="pl-arr" onclick="prevFreq()">‹</button>
-    <button class="pl-arr" onclick="nextFreq()">›</button>
-  </div>
+  <!-- ② CONTENT ZONE: white, scrollable, clean -->
+  <div style="background:var(--bg);padding:0 20px calc(20px + env(safe-area-inset-bottom));flex:1">
 
-  <!-- Spacer — image breathes through here -->
-  <div class="pl-spacer"></div>
+    <!-- Hz identity — clear, big, first thing you see -->
+    <div style="padding:18px 0 14px;border-bottom:.5px solid var(--b1);margin-bottom:16px">
+      <div style="display:flex;align-items:baseline;gap:7px;margin-bottom:3px">
+        <div class="pl-fn" id="pl-hz" style="font-size:64px;line-height:1">432</div>
+        <div class="pl-fu">Hz</div>
+        <div class="pl-ftype" id="pl-type" style="margin-left:auto;font-size:10px">🔊 Pure Tone</div>
+      </div>
+      <div class="pl-fname" id="pl-name" style="font-size:16px;margin-bottom:3px">The Universe</div>
+      <div id="pl-tagline" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.06em"></div>
+    </div>
 
-  <!-- Scrollable middle content -->
-  <div class="pl-scroll">
-    <div class="bs-row" style="cursor:pointer;user-select:none" onclick="toggleBrainState()">
-      <div class="bs-sec-lbl" id="bs-what">What's happening</div>
-      <div class="bs-live">Live</div>
-      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▸</div>
-    </div>
-    <div class="brain-state" id="brain-state-card" style="display:none">
-      <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
-      <div class="bs-txt" id="bs-txt">Press play. Your nervous system will begin to respond within <em>90 seconds</em>.</div>
-      <div class="bs-bar"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
-    </div>
-    <div class="pl-sub" id="pl-sub">DEEP SLEEP · RELEASE · ALIGN</div>
-    <div class="pl-audio" id="pl-audio"><span id="pl-audio-txt">432 Hz</span></div>
-    <div class="pl-tabs">
-      <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
-      <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
-      <button class="pl-tab" onclick="setTab(2,this)" id="tab2">Ideal for</button>
-      <button class="pl-tab" onclick="setTab(3,this)" id="tab3">How it feels</button>
-    </div>
-    <p class="pl-txt" id="pl-txt"></p>
-      <div id="pl-recommended" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);margin-top:6px;padding-top:8px;border-top:.5px solid var(--b1)"></div>
-  </div>
-
-  <!-- Bottom controls — always pinned to bottom -->
-  <div class="pl-bottom">
-    <!-- TIME PROGRESS BAR — visible while playing -->
-    <div id="pl-prog-wrap" style="display:none;margin-bottom:8px">
+    <!-- ③ PLAY BUTTON — primary action, unmissable -->
+    <!-- Progress bar (while playing) -->
+    <div id="pl-prog-wrap" style="display:none;margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
-        <span id="pl-prog-elapsed" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">0:00</span>
-        <span id="pl-prog-remain" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">20:00</span>
-        <span id="pl-prog-total" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">/ 20:00</span>
+        <span id="pl-prog-elapsed" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;color:var(--t4)">0:00</span>
+        <span id="pl-prog-remain" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1)">20:00</span>
+        <span id="pl-prog-total" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;color:var(--t4)">/ 20:00</span>
       </div>
       <div style="height:2px;background:var(--b1);border-radius:2px;overflow:hidden">
         <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
       </div>
     </div>
-    <div id="pl-timer-section">
-      <div class="timer-lbl" id="timer-lbl">Session duration</div>
+    <button class="pl-play" id="play-btn" onclick="togglePlay()" style="margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px">▶  Play · 432 Hz</button>
+    <div class="elapsed-row" id="el-row" style="display:none"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
+
+    <!-- ④ TIMER + VOL -->
+    <div id="pl-timer-section" style="margin-bottom:10px">
+      <div class="timer-lbl" id="timer-lbl" style="margin-bottom:5px">Session duration</div>
       <div class="pl-timers">
         <button class="pl-timer" onclick="selTimer(this,180)" id="timer-3">3 min</button>
         <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
@@ -668,27 +659,66 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
       </div>
     </div>
-    <div class="pl-vol">
+    <div class="pl-vol" id="pl-vol-row" style="margin-bottom:14px">
       <div class="pl-vl" id="vol-lbl">Vol</div>
-      <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
+      <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)" step="1"/>
       <div class="pl-vn" id="vol-n">40</div>
     </div>
-    <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
-    <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
-    <!-- iOS screen lock notice -->
-    <div id="lock-notice" style="display:none;align-items:center;gap:8px;padding:8px 0 0">
-      <span style="font-size:16px">🔒</span>
-      <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
+
+    <!-- ⑤ ABOUT — fully collapsed, user chooses to open -->
+    <div style="border-top:.5px solid var(--b1);padding-top:12px">
+      <button onclick="toggleLearnMore()" id="learn-more-btn"
+        style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:0;cursor:pointer;min-height:44px;font-family:inherit">
+        <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t2)" id="learn-more-lbl">about this frequency</span>
+        <span id="learn-more-toggle" style="font-size:11px;color:var(--t3)">▸</span>
+      </button>
+      <div id="learn-more-panel" style="display:none;padding-top:12px">
+        <!-- headphone note -->
+        <div class="pl-hp-note" id="pl-audio" style="margin-bottom:10px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3z"/><path d="M3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
+          <span id="pl-audio-txt" style="font-size:10px;color:var(--t3)">432 Hz · No headphones needed</span>
+        </div>
+        <!-- 4 tabs -->
+        <div class="pl-tabs" style="margin-bottom:10px">
+          <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
+          <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
+          <button class="pl-tab" onclick="setTab(2,this)" id="tab2">Ideal for</button>
+          <button class="pl-tab" onclick="setTab(3,this)" id="tab3">How it feels</button>
+        </div>
+        <p class="pl-txt" id="pl-txt" style="font-size:14px;line-height:1.85;min-height:60px"></p>
+        <div id="pl-recommended" style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3);padding:8px 0;border-top:.5px solid var(--b1);margin-bottom:16px"></div>
+        <!-- brain state -->
+        <div style="background:var(--bg2);border-radius:12px;padding:14px 16px">
+          <div class="bs-row" style="cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:6px" onclick="toggleBrainState()">
+            <div class="bs-pulse"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase" id="bs-lbl">Live · Brain State</span>
+            <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▸</div>
+          </div>
+          <div class="brain-state" id="brain-state-card" style="display:none">
+            <div class="bs-txt" id="bs-txt" style="font-size:13px;line-height:1.7">Press play. Your nervous system will respond within <em>90 seconds</em>.</div>
+            <div class="bs-bar" style="margin-top:8px"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div style="display:flex;justify-content:center;gap:10px;padding:8px 0 4px;border-top:.5px solid var(--b1);margin-top:6px">
+
+    <!-- footer -->
+    <div style="display:flex;justify-content:center;gap:10px;padding:16px 0 4px;flex-wrap:wrap">
       <a href="legal.html#access" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-access-lnk">Accessibility</a>
       <span style="color:var(--b2);font-size:9px">·</span>
       <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-terms-lnk">Terms</a>
       <span style="color:var(--b2);font-size:9px">·</span>
       <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-privacy-lnk">Privacy</a>
     </div>
+
+    <!-- iOS lock -->
+    <div id="lock-notice" style="display:none;align-items:center;gap:8px;padding:4px 0">
+      <span>🔒</span>
+      <span style="font-size:10px;color:var(--t3)" id="lock-txt">Keep screen on for continuous audio</span>
+    </div>
   </div>
 </div>
+
 
 <!-- SESSION COMPLETE -->
 <div id="complete" class="scr" style="overflow-y:auto">
