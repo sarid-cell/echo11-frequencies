@@ -630,13 +630,13 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <div class="bs-live">Live</div>
       <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▾</div>
     </div>
-    <div class="brain-state" id="brain-state-card">
+    <div class="brain-state" id="brain-state-card" style="display:none">
       <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
       <div class="bs-txt" id="bs-txt">Press play. Your nervous system will begin to respond within <em>90 seconds</em>.</div>
       <div class="bs-bar"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
     </div>
     <div class="pl-sub" id="pl-sub">DEEP SLEEP · RELEASE · ALIGN</div>
-    <div class="pl-audio" id="pl-audio">432 Hz · Both ears · No headphones needed</div>
+    <div class="pl-audio" id="pl-audio"><span id="pl-audio-txt">432 Hz</span></div>
     <div class="pl-tabs">
       <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
       <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
@@ -649,14 +649,28 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
   <!-- Bottom controls — always pinned to bottom -->
   <div class="pl-bottom">
-    <div class="timer-lbl" id="timer-lbl">Session duration</div>
-    <div class="pl-timers">
-      <button class="pl-timer" onclick="selTimer(this,180)" id="timer-3">3 min</button>
-      <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
-      <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
-      <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
-      <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
+    <!-- TIME PROGRESS BAR — visible while playing -->
+    <div id="pl-prog-wrap" style="display:none;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+        <span id="pl-prog-elapsed" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">0:00</span>
+        <span id="pl-prog-remain" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">20:00</span>
+        <span id="pl-prog-total" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">/ 20:00</span>
+      </div>
+      <div style="height:2px;background:var(--b1);border-radius:2px;overflow:hidden">
+        <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
+      </div>
     </div>
+    <!-- TIMER SECTION — hidden while playing -->
+    <div id="pl-timer-section">
+      <div class="timer-lbl" id="timer-lbl">Session duration</div>
+      <div class="pl-timers">
+        <button class="pl-timer" onclick="selTimer(this,180)" id="timer-3">3 min</button>
+        <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
+        <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
+        <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
+        <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
+      </div><!-- /pl-timers -->
+    </div><!-- /pl-timer-section -->
     <div class="pl-vol">
       <div class="pl-vl" id="vol-lbl">Vol</div>
       <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
@@ -1662,6 +1676,7 @@ function doStop(){
   const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock()
   const pw=document.getElementById('pl-prog-wrap'); if(pw) pw.style.display='none'
   const pf=document.getElementById('pl-prog-fill'); if(pf) pf.style.width='0%'
+  const ts=document.getElementById('pl-timer-section'); if(ts) ts.style.display=''
   if(elapsed>=30) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
@@ -1677,6 +1692,8 @@ async function togglePlay(){
     if(audioCtx.state==='suspended') audioCtx.resume()
   }catch(e){}
   await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
+  const _pw3=document.getElementById('pl-prog-wrap'); if(_pw3) _pw3.style.display='block'
+  const _ts=document.getElementById('pl-timer-section'); if(_ts) _ts.style.display='none'
 
   // Show iOS screen lock notice once
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -1724,6 +1741,28 @@ async function togglePlay(){
       if(_pr) _pr.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
       if(_pt) _pt.textContent=''
     }
+    // Progress bar update
+    ;(function(){
+      const pw=document.getElementById('pl-prog-wrap')
+      if(pw) pw.style.display=playing?'block':'none'
+      const pe=document.getElementById('pl-prog-elapsed')
+      const pr=document.getElementById('pl-prog-remain')
+      const pt=document.getElementById('pl-prog-total')
+      const pf=document.getElementById('pl-prog-fill')
+      if(pe) pe.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
+      if(selTimerSec>0){
+        const rem=Math.max(0,selTimerSec-elapsed)
+        if(pr) pr.textContent=Math.floor(rem/60)+':'+String(rem%60).padStart(2,'0')
+        if(pt) pt.textContent='/ '+Math.floor(selTimerSec/60)+':'+String(selTimerSec%60).padStart(2,'0')
+        if(pf) pf.style.width=Math.min(100,(elapsed/selTimerSec)*100)+'%'
+      } else {
+        if(pr) pr.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
+        if(pt) pt.textContent=''
+      }
+      // Hide timer section while playing
+      const ts=document.getElementById('pl-timer-section')
+      if(ts) ts.style.display='none'
+    })()
     if(selTimerSec>0 && elapsed>=selTimerSec){
       const _fid=FREQS[curIdx]?.id; const _secs=elapsed
       doStop()
