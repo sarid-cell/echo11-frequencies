@@ -593,9 +593,11 @@ input[type=range]{accent-color:var(--t3);width:100%}
 <div id="player" class="scr" style="overflow-y:auto;overflow-x:hidden">
 
   <!-- ① IMAGE ZONE: 52vh, Ken Burns, nothing overlapping -->
-  <div style="position:relative;height:52vh;min-height:280px;max-height:420px;overflow:hidden;flex-shrink:0">
+  <div style="position:relative;height:52vh;min-height:300px;max-height:600px;overflow:hidden;flex-shrink:0">
     <img src="img_player.jpg" alt="" id="pl-bg-img"
-      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;animation:kenBurns 18s ease-in-out infinite alternate"/>
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;animation:kenBurns 18s ease-in-out infinite alternate"/>
+    <video id="pl-bg-video" autoplay loop muted playsinline
+      style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%"></video>
   
     <!-- top nav only -->
     <div style="position:absolute;top:0;left:0;right:0;padding:env(safe-area-inset-top,14px) 18px 0;display:flex;justify-content:space-between;align-items:center;z-index:3">
@@ -634,7 +636,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
     <!-- ③ PLAY BUTTON — primary action, unmissable -->
     <!-- Progress bar (while playing) -->
-    <div id="pl-prog-wrap" style="display:none;margin-bottom:10px">
+    <div id="pl-prog-wrap" style="display:none;margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
         <span id="pl-prog-elapsed" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;color:var(--t4)">0:00</span>
         <span id="pl-prog-remain" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1)">20:00</span>
@@ -662,20 +664,22 @@ input[type=range]{accent-color:var(--t3);width:100%}
         <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
       </div>
     </div>
-    <div class="pl-vol" id="pl-vol-row" style="margin-bottom:14px">
-      <div class="pl-vl" id="vol-lbl">Vol</div>
-      <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)" step="1"/>
-      <div class="pl-vn" id="vol-n">40</div>
-    </div>
+    <!-- Vol moved to inside "about" panel — not cluttering main view -->
 
     <!-- ⑤ ABOUT — fully collapsed, user chooses to open -->
     <div style="border-top:.5px solid var(--b1);padding-top:12px">
       <button onclick="toggleLearnMore()" id="learn-more-btn"
         style="width:100%;background:var(--bg2);border:.5px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;min-height:44px;font-family:inherit;margin-top:2px">
         <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t2)" id="learn-more-lbl">about this frequency</span>
-        <span id="learn-more-toggle" style="font-size:11px;color:var(--t3)">▸</span>
+        <span id="learn-more-toggle" style="font-size:12px;color:var(--t2);font-weight:400">▸</span>
       </button>
       <div id="learn-more-panel" style="display:none;padding-top:12px">
+        <!-- Volume control — inside panel, not confusable with progress bar -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:.5px solid var(--b1)">
+          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t4)" id="vol-lbl">Vol</span>
+          <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)" step="1" style="flex:1"/>
+          <span style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);min-width:20px" id="vol-n">40</span>
+        </div>
         <!-- headphone note -->
         <div class="pl-hp-note" id="pl-audio" style="margin-bottom:10px">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3z"/><path d="M3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
@@ -1633,8 +1637,34 @@ function renderPlayer(){
   const _s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v}
   _s('pl-hz',f.hz); _s('pl-num',f.num+'·'+f.cat); _s('pl-name',t.name)
   _s('pl-sub',(t.sub||'').toUpperCase()); _s('pl-hz-panel',f.hz); _s('pl-name-panel',t.name)
-  const bg=document.getElementById('pl-bg-img')||document.querySelector('.pl-bg')
-  if(bg){ bg.src=f.img||'img_player.jpg'; bg.style.objectPosition='center 20%'; bg.style.objectFit='cover' }
+  // Per-frequency background — supports image & MP4
+  const _bgMap={
+    'hz432':'https://cdn.midjourney.com/video/05623642-dfbb-41d8-8ea8-83fb01e863c7/3.mp4',
+    'hz528':'img_528.png',
+    // When Cloudinary ready, replace URL above with:
+    // 'hz432':'https://res.cloudinary.com/YOUR/video/upload/bg_432.mp4',
+  }
+  const _bgSrc=_bgMap[f.id]||f.img||'img_player.jpg'
+  const _isVid=_bgSrc.includes('.mp4')||_bgSrc.includes('.webm')
+  const _imgEl=document.getElementById('pl-bg-img')
+  const _vidEl=document.getElementById('pl-bg-video')
+  if(_isVid&&_vidEl){
+    if(_imgEl) _imgEl.style.display='none'
+    _vidEl.style.display='block'
+    if(_vidEl.getAttribute('data-src')!==_bgSrc){
+      _vidEl.setAttribute('data-src',_bgSrc)
+      _vidEl.src=_bgSrc; _vidEl.load(); _vidEl.play().catch(()=>{})
+    }
+  } else {
+    if(_vidEl){ _vidEl.style.display='none'; try{_vidEl.pause()}catch(e){} }
+    if(_imgEl){
+      _imgEl.style.display='block'
+      _imgEl.src=_bgSrc
+      _imgEl.style.objectPosition='center 30%'
+      _imgEl.style.objectFit='cover'
+      _imgEl.classList.add('ken-burns')
+    }
+  }
   const typeEl=document.getElementById('pl-type')
   if(typeEl) typeEl.textContent=f.type==='binaural'?'🎧 Binaural':'🔊 Pure Tone'
   const audioTxt=document.getElementById('pl-audio-txt')
