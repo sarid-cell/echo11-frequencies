@@ -590,76 +590,83 @@ input[type=range]{accent-color:var(--t3);width:100%}
 </div>
 
 <!-- PLAYER -->
-<div id="player" class="scr pl-state-stopped" style="position:relative;overflow:hidden">
-
-  <!-- BG image -->
-  <img src="img_player.jpg" alt="" class="pl-bg" id="pl-bg-img" style="transition:opacity .6s"/>
-  <div class="pl-overlay" id="pl-overlay-el"></div>
-
-  <!-- TOP NAV -->
-  <div class="pl-nav" style="flex-shrink:0;position:relative;z-index:3">
+<div id="player" class="scr">
+  <img src="img_player.jpg" alt="echo.11" class="pl-bg"/>
+  <div class="pl-overlay"></div>
+  <div class="pl-nav">
     <button class="pl-back" id="pl-back" onclick="leavePlayer()">← Back</button>
     <div class="pl-nav-r">
-      <div class="pl-num" id="pl-num" style="letter-spacing:.14em">B5 · solfeggio</div>
       <button class="pill" id="lang-p" onclick="toggleLang()" style="font-size:10px;padding:5px 10px">עב</button>
-      <button class="pill" id="dark-p" onclick="toggleDark()" style="font-size:10px;padding:5px 10px">◐</button>
+      <button class="pill" id="dark-p" onclick="toggleDark()" style="font-size:10px;padding:5px 10px">◐ Dark</button>
+      <div class="pl-num" id="pl-num">B5 · solfeggio</div>
     </div>
   </div>
 
-  <!-- PREV / NEXT -->
-  <button class="pl-arr" onclick="prevFreq()" aria-label="Previous" style="position:absolute;left:4px;top:45%;transform:translateY(-50%);z-index:3;font-size:28px">‹</button>
-  <button class="pl-arr" onclick="nextFreq()" aria-label="Next" style="position:absolute;right:4px;top:45%;transform:translateY(-50%);z-index:3;font-size:28px">›</button>
-
-  <!-- STOPPED: Hz identity over image -->
-  <div style="position:absolute;bottom:54%;left:0;right:0;padding:0 32px;z-index:3;text-align:center;pointer-events:none" id="pl-identity">
-    <div style="display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:6px">
-      <div class="pl-fn" id="pl-hz" style="color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.4)">432</div>
-      <div class="pl-fu" style="color:rgba(255,255,255,.7);padding-bottom:6px">Hz</div>
+  <!-- Hz number + freq nav — floats over image -->
+  <div class="pl-freq-bar">
+    <div style="display:flex;align-items:baseline;gap:5px">
+      <div class="pl-fn" id="pl-hz">432</div><div class="pl-fu">Hz</div>
     </div>
-    <div class="pl-fname" id="pl-name" style="color:rgba(255,255,255,.9);font-size:18px;margin-bottom:4px">The Universe</div>
-    <div id="pl-tagline" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.08em;color:rgba(255,255,255,.6)"></div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+      <div class="pl-fname" id="pl-name">The Universe</div>
+      <div class="pl-ftype" id="pl-type">🔊 Pure Tone</div>
+      <div id="pl-tagline" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.06em;color:var(--t3);margin-top:3px;text-align:right;max-width:160px;line-height:1.4"></div>
+    </div>
+  </div>
+  <div style="position:relative;z-index:2;flex-shrink:0;display:flex;justify-content:space-between;padding:0 6px">
+    <button class="pl-arr" onclick="prevFreq()">‹</button>
+    <button class="pl-arr" onclick="nextFreq()">›</button>
   </div>
 
-  <!-- PLAYING: orb centered -->
-  <div id="pl-orb-wrap" style="position:absolute;top:0;left:0;right:0;bottom:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:2;pointer-events:none">
-    <canvas id="pl-orb" width="300" height="300" style="width:180px;height:180px"></canvas>
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:52px;font-weight:200;color:var(--t1);line-height:1;margin-top:10px" id="pl-time-big">20:00</div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);margin-top:4px" id="pl-time-lbl">remaining</div>
+  <!-- Spacer — image breathes through here -->
+  <div class="pl-spacer"></div>
+
+  <!-- Scrollable middle content -->
+  <div class="pl-scroll">
+    <div class="bs-row" style="cursor:pointer;user-select:none" onclick="toggleBrainState()">
+      <div class="bs-sec-lbl" id="bs-what">What's happening</div>
+      <div class="bs-live">Live</div>
+      <div id="bs-toggle" style="font-size:9px;color:var(--t4);margin-left:auto">▾</div>
+    </div>
+    <div class="brain-state" id="brain-state-card">
+      <div class="bs-top"><div class="bs-pulse"></div><span id="bs-lbl">Brain State</span></div>
+      <div class="bs-txt" id="bs-txt">Press play. Your nervous system will begin to respond within <em>90 seconds</em>.</div>
+      <div class="bs-bar"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
+    </div>
+    <div class="pl-sub" id="pl-sub">DEEP SLEEP · RELEASE · ALIGN</div>
+    <div class="pl-audio" id="pl-audio">432 Hz · Both ears · No headphones needed</div>
+    <div class="pl-tabs">
+      <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
+      <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
+      <button class="pl-tab" onclick="setTab(2,this)" id="tab2">Ideal for</button>
+      <button class="pl-tab" onclick="setTab(3,this)" id="tab3">How it feels</button>
+    </div>
+    <p class="pl-txt" id="pl-txt"></p>
+      <div id="pl-recommended" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);margin-top:6px;padding-top:8px;border-top:.5px solid var(--b1)"></div>
   </div>
 
-  <!-- SPACER -->
-  <div class="pl-spacer" style="flex:1;min-height:20px;z-index:2"></div>
-
-  <!-- BOTTOM — always visible -->
-  <div class="pl-bottom" style="position:relative;z-index:3;flex-shrink:0;background:linear-gradient(to bottom,transparent,var(--bg) 28px);gap:0">
-
-    <!-- PLAY BUTTON — PRIMARY, always visible -->
-    <button class="pl-play" id="play-btn" onclick="togglePlay()" style="font-size:13px;letter-spacing:.2em;padding:18px;margin-bottom:8px">▶  Play · 432 Hz</button>
-    <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
-
-    <!-- TIMER — visible when stopped -->
-    <div id="pl-timer-row" class="pl-timers" style="margin-top:8px">
+  <!-- Bottom controls — always pinned to bottom -->
+  <div class="pl-bottom">
+    <div class="timer-lbl" id="timer-lbl">Session duration</div>
+    <div class="pl-timers">
       <button class="pl-timer" onclick="selTimer(this,180)" id="timer-3">3 min</button>
       <button class="pl-timer" onclick="selTimer(this,480)">8 min</button>
       <button class="pl-timer on" onclick="selTimer(this,1200)">20 min</button>
       <button class="pl-timer" onclick="selTimer(this,3600)">60 min</button>
       <button class="pl-timer" onclick="selTimer(this,0)">∞</button>
     </div>
-
-    <!-- VOL — visible when stopped -->
-    <div class="pl-vol" id="pl-vol-row" style="margin-top:8px">
+    <div class="pl-vol">
       <div class="pl-vl" id="vol-lbl">Vol</div>
-      <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)" step="1"/>
+      <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
       <div class="pl-vn" id="vol-n">40</div>
     </div>
-
-    <!-- INFO TRIGGER — changes text based on state -->
-    <button onclick="openInfoPanel()" id="pl-info-trigger" style="width:100%;margin-top:10px;border-top:.5px solid var(--b1);padding:10px 0 0;background:none;border-left:none;border-right:none;border-bottom:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;min-height:44px">
-      <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t2)" id="learn-more-lbl">about this frequency</span>
-      <span style="font-size:11px;color:var(--t3)">↑</span>
-    </button>
-
-    <!-- FOOTER -->
+    <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
+    <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
+    <!-- iOS screen lock notice -->
+    <div id="lock-notice" style="display:none;align-items:center;gap:8px;padding:8px 0 0">
+      <span style="font-size:16px">🔒</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
+    </div>
     <div style="display:flex;justify-content:center;gap:10px;padding:6px 0 2px;flex-wrap:wrap">
       <a href="legal.html#access" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-access-lnk">Accessibility</a>
       <span style="color:var(--b2);font-size:9px">·</span>
@@ -667,46 +674,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <span style="color:var(--b2);font-size:9px">·</span>
       <a href="legal.html" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4);text-decoration:none" id="pl-privacy-lnk">Privacy</a>
     </div>
-
-    <!-- iOS lock -->
-    <div id="lock-notice" style="display:none;align-items:center;gap:8px;padding:4px 0 0">
-      <span style="font-size:13px">🔒</span>
-      <span style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3);line-height:1.5" id="lock-txt">Keep screen on for continuous audio</span>
-    </div>
-  </div>
-
-  <!-- INFO PANEL — slides up -->
-  <div id="pl-info-panel" onclick="if(event.target===this)closeInfoPanel()">
-    <div class="pl-info-handle"></div>
-    <div style="display:flex;align-items:baseline;gap:5px;margin-bottom:4px">
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:200;color:var(--t1)" id="pl-hz-panel">432</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3)">Hz</div>
-    </div>
-    <div class="pl-fname" id="pl-name-panel" style="margin-bottom:6px">The Universe</div>
-    <div class="pl-hp-note" id="pl-audio">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3z"/><path d="M3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
-      <span id="pl-audio-txt">432 Hz · No headphones needed</span>
-    </div>
-    <div class="pl-tabs" style="margin-bottom:10px">
-      <button class="pl-tab on" onclick="setTab(0,this)" id="tab0">What is it?</button>
-      <button class="pl-tab" onclick="setTab(1,this)" id="tab1">Research</button>
-      <button class="pl-tab" onclick="setTab(2,this)" id="tab2">Ideal for</button>
-      <button class="pl-tab" onclick="setTab(3,this)" id="tab3">How it feels</button>
-    </div>
-    <p class="pl-txt" id="pl-txt" style="font-size:14px;line-height:1.85;min-height:60px"></p>
-    <div id="pl-recommended" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);padding-top:8px;border-top:.5px solid var(--b1);margin-top:4px;margin-bottom:16px"></div>
-    <div style="background:var(--bg2);border-radius:12px;padding:14px 16px">
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-        <div class="bs-pulse"></div>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase" id="bs-lbl">Live · Brain State</span>
-      </div>
-      <div class="bs-txt" id="bs-txt" style="font-size:13px;line-height:1.7">Press play. Your nervous system will respond within <em>90 seconds</em>.</div>
-      <div class="bs-bar" style="margin-top:10px"><div class="bs-bw"><div class="bs-bf" id="bs-fill"></div></div><div class="bs-time" id="bs-time">0:00</div></div>
-    </div>
-    <button onclick="closeInfoPanel()" style="width:100%;margin-top:14px;background:none;border:.5px solid var(--b1);border-radius:8px;padding:12px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t3);cursor:pointer;min-height:44px" id="pl-close-btn">close ↓</button>
   </div>
 </div>
-
 
 <!-- SESSION COMPLETE -->
 <div id="complete" class="scr" style="overflow-y:auto">
@@ -718,13 +687,16 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,4vw,32px);font-weight:200;font-style:italic;color:var(--t1);line-height:1.2;margin-bottom:6px" id="comp-headline"></div>
     <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:24px" id="comp-freq-lbl"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px" id="comp-stats"></div>
-    <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px 18px 20px;margin-bottom:16px">
+    <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px;margin-bottom:16px">
       <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px" id="comp-brain-lbl">what happened</div>
       <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75" id="comp-brain-txt"></div>
     </div>
     <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px">
       <canvas id="comp-shape-cv" width="80" height="80" style="width:40px;height:40px;flex-shrink:0"></canvas>
-      <div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;color:var(--t1);margin-bottom:3px" id="comp-shape-name"></div><div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5" id="comp-shape-desc"></div></div>
+      <div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;color:var(--t1);margin-bottom:3px" id="comp-shape-name"></div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5" id="comp-shape-desc"></div>
+      </div>
     </div>
     <button onclick="replaySession()" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer;margin-bottom:10px" id="comp-replay">play again</button>
     <button onclick="show('home');renderStreak()" style="width:100%;padding:14px;background:none;border:.5px solid var(--b2);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--t2);cursor:pointer" id="comp-home">back to home</button>
@@ -871,6 +843,11 @@ function drawWeeklyShape(ctx, days, size){
     ctx.lineWidth=size*.008
     ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke()
     ctx.restore()
+  }
+    if(days>0&&days<7){
+    ctx.save(); ctx.setLineDash([size*.03,size*.025])
+    ctx.strokeStyle=isDark?'rgba(245,243,238,.15)':'rgba(26,26,24,.12)'
+    ctx.lineWidth=size*.008; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke(); ctx.restore()
   }
     ctx.strokeStyle=stroke
   ctx.fillStyle=fill
@@ -1087,8 +1064,8 @@ const FREQS=[
   {id:'theta', num:'A3',cat:'science', mode:'healing', type:'binaural',  hz:6,   cL:200, cR:206, beat:6,   wave:'Theta',morph:.015,en:{name:'Deep Theta',sub:'Meditation · Subconscious',desc:'Theta 4-8 Hz appear in deep meditation and REM sleep. Excellent for emotional processing and trauma release.',res:'Brainwave Research · Multiple studies',ideal:'Deep meditation · Emotional healing · Misophonia',feel:'Deep calm. May feel on the edge of sleep. Emotional release is common.',rec:'Recommended: 20–45 min. Lying down if possible.',tag:'deep theta. let go.'},he:{name:'Theta עמוק',sub:'מדיטציה · תת-מודע',desc:'גלי תטא 4-8 Hz מופיעים במדיטציה עמוקה ובREM. מעולה לעיבוד רגשי.',res:'מחקרי גלי מוח · מחקרים מאומתים',ideal:'מדיטציה עמוקה · ריפוי רגשי · מיסופוניה',feel:'שלווה עמוקה. על סף שינה. שחרור רגשי שכיח.',rec:'מומלץ: 20–45 דקות. רצוי לשכב.',tag:'תטא עמוקה. שחרר/י.'}},
   {id:'beta',  num:'A4',cat:'science', mode:'focus',   type:'binaural',  hz:18,  cL:300, cR:318, beat:18,  wave:'Beta', morph:.05, en:{name:'Beta Focus',sub:'Attention · ADHD',desc:'Beta 12-30 Hz characterize active focus and logical thinking. Neurofeedback-proven for ADHD.',res:'Neurofeedback Research · EEG studies',ideal:'Focus · ADHD · Analytical tasks'},he:{name:'Beta ריכוז',sub:'קשב · ADHD',desc:'גלי בטא 12-30 Hz אופייניים למצבי ריכוז פעיל. מוכח בנוירופידבק לADHD.',res:'מחקרי נוירופידבק · EEG',ideal:'ריכוז · ADHD · מטלות ניתוח'}},
   {id:'delta', num:'A5',cat:'science', mode:'sleep',   type:'binaural',  hz:2,   cL:200, cR:202, beat:2,   wave:'Delta',morph:.008,en:{name:'Delta Sleep',sub:'Deep Sleep · Renewal',desc:'Delta 0.5-4 Hz are the deepest sleep stages. Body regenerates, immune system strengthens.',res:'Sleep Research · AASM guidelines',ideal:'Deep sleep · Physical recovery · Immune boost',feel:'Extreme drowsiness. You may fall asleep — this is the goal.',rec:'Recommended: 30–60 min. For sleep only.',tag:'your body remembers how to rest.'},he:{name:'Delta שינה',sub:'שינה עמוקה · התחדשות',desc:'גלי דלתא 0.5-4 Hz — שלבי השינה העמוקה ביותר. הגוף מתחדש.',res:'מחקרי שינה · AASM',ideal:'שינה עמוקה · התחדשות פיזית',feel:'ישנוניות עמוקה. ייתכן שתירדם/י — זה המטרה.',rec:'מומלץ: 30–60 דקות. לשינה בלבד.',tag:'הגוף שלך זוכר איך לנוח.'}},
-  {id:'hz432', num:'B5',cat:'solfeggio',mode:'sleep',  type:'solfeggio',  hz:432, cL:432, cR:432, beat:null,wave:'Pure', morph:.022,noHp:true,en:{name:'The Universe',sub:'Deep Sleep · Release · Align',desc:'Mathematically aligned with the Golden Ratio and Fibonacci. Differs from standard 440 Hz — many report deeper sleep, greater calm, and natural alignment.',res:'Pythagorean tuning · Nature harmonics · Golden Ratio',ideal:'Deep sleep · Evening meditation · Emotional release · Nervous system reset',feel:'Warmth. Natural alignment. Calming of chest and shoulders.',rec:'Recommended: 20–60 min. Before sleep.',tag:'the universe is tuned to this.'},he:{name:'היקום',sub:'שינה עמוקה · שחרור · יישור',desc:'מיושר מתמטית עם מספר הזהב ופיבונאצ׳י. שונה מ-440 Hz הסטנדרטי.',res:'כוונון פיתגוראי · הרמוניות הטבע',ideal:'שינה עמוקה · מדיטציה · שחרור רגשי',feel:'חמימות. תחושת יישור טבעי. הרגעת החזה.',rec:'מומלץ: 20–60 דקות. אידיאלי לפני שינה.',tag:'היקום מכוון לזה.'}},
-  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',imgPos:'center 82%',en:{name:'The Love',sub:'Heart · Restoration',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone of the ancient Solfeggio scale. Used in sound healing traditions. Not a medical treatment. echo.11 is not a medical device.',res:'Dr. Leonard Horowitz · Solfeggio scale research · Traditional sound healing',ideal:'Heart opening · Self-love · Emotional restoration',feel:'Warmth in the chest. Emotional openness. Tears are common.',rec:'Recommended: 15–30 min. No headphones needed.',tag:'something opens.'},he:{name:'האהבה',sub:'ריפוי · לב · שחרור',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. נפוץ בסאונד היילינג. echo.11 אינה מכשיר רפואי.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון',feel:'חמימות בחזה. פתיחות רגשית. דמעות שכיחות.',rec:'מומלץ: 15–30 דקות. ללא אוזניות.',tag:'משהו נפתח.'}},
+  {id:'hz432', num:'B5',cat:'solfeggio',mode:'sleep',  type:'solfeggio',  hz:432, cL:432, cR:432, beat:null,wave:'Pure', morph:.022,noHp:true,en:{name:'The Universe',sub:'Deep Sleep · Release · Align',desc:'Mathematically aligned with the Golden Ratio and Fibonacci. Differs from standard 440 Hz — many report deeper sleep, greater calm, and natural alignment.',res:'Pythagorean tuning · Nature harmonics · Golden Ratio',ideal:'Deep sleep · Evening meditation · Emotional release · Nervous system reset',feel:'Warmth. Natural alignment. Calming of chest and shoulders.',rec:'Recommended: 20–60 min. Before sleep.',tag:'the universe is tuned to this.'},he:{name:'היקום',sub:'שינה עמוקה · שחרור · יישור',desc:'מיושר מתמטית עם מספר הזהב ופיבונאצ׳י. שונה מ-440 Hz הסטנדרטי.',res:'כוונון פיתגוראי · הרמוניות הטבע',ideal:'שינה עמוקה · מדיטציה · שחרור רגשי',feel:'חמימות. תחושת יישור טבעי.',rec:'מומלץ: 20–60 דקות. לפני שינה.',tag:'היקום מכוון לזה.'}},
+  {id:'hz528', num:'B6',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:528, cL:528, cR:528, beat:null,wave:'Pure', morph:.025,noHp:true,img:'img_528.png',imgPos:'center 82%',en:{name:'The Love',sub:'Heart · Restoration',desc:'Dr. Leonard Horowitz identified 528 Hz as the MI tone of the ancient Solfeggio scale. Used in sound healing traditions. Not a medical treatment. echo.11 is not a medical device.',res:'Dr. Leonard Horowitz · Solfeggio scale research',ideal:'Heart opening · Self-love · Emotional restoration',feel:'Warmth in the chest. Emotional openness. Tears are common.',rec:'Recommended: 15–30 min. No headphones needed.',tag:'something opens.'},he:{name:'האהבה',sub:'ריפוי · לב · שחרור',desc:'ד"ר הורוביץ זיהה 528 Hz כצליל MI. נפוץ בסאונד היילינג. echo.11 אינה מכשיר רפואי.',res:'ד"ר לאונרד הורוביץ · 2017',ideal:'ריפוי לב · אהבה עצמית · תיקון',feel:'חמימות בחזה. פתיחות רגשית. דמעות שכיחות.',rec:'מומלץ: 15–30 דקות. ללא אוזניות.',tag:'משהו נפתח.'}},
   {id:'hz396', num:'B3',cat:'solfeggio',mode:'healing',type:'solfeggio',  hz:396, cL:396, cR:396, beat:null,wave:'Pure', morph:.018,noHp:true,en:{name:'Liberation',sub:'Guilt · Trauma · Root',desc:'Solfeggio UT. Helps release fear, guilt and deep negative energy.',res:'Solfeggio UT · Ancient Gregorian chant',ideal:'Trauma release · Guilt processing · Emotional freedom'},he:{name:'שחרור עבר',sub:'אשמה · טראומה · שורש',desc:'סולפג׳יו UT. מסייע בשחרור פחד, אשמה ואנרגיה שלילית.',res:'סולפג׳יו UT · שירה גריגוריאנית עתיקה',ideal:'שחרור טראומה · אשמה · חופש רגשי'}},
   {id:'hz369', num:'B7',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:369, cL:369, cR:369, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Tesla 3-6-9',sub:'Energy · Alignment',desc:'"If you only knew the magnificence of 3, 6 and 9, you would have a key to the universe." — Nikola Tesla',res:'369 Hz · Tesla numerology philosophy',ideal:'Energy · Intention · Cosmic alignment'},he:{name:'טסלה 3-6-9',sub:'אנרגיה · יישור',desc:'״אם רק ידעת את גדולת 3, 6 ו-9, היית מחזיק בכל מפתחות היקום.״ — ניקולה טסלה',res:'בהשראת ניקולה טסלה',ideal:'אנרגיה · כוונה · יישור קוסמי'}},
   {id:'hz963', num:'B11',cat:'solfeggio',mode:'abundance',type:'solfeggio',hz:963,cL:963, cR:963, beat:null,wave:'Pure', morph:.028,noHp:true,en:{name:'Unity',sub:'Abundance · Awakening',desc:'Solfeggio SI — crown chakra. Known as the spiritual awakening frequency.',res:'Solfeggio SI · Ancient scale',ideal:'Abundance · Intention · Spiritual awakening'},he:{name:'אחדות',sub:'שפע · התעוררות',desc:'סולפג׳יו SI — צ׳אקרת הכתר. ידוע כתדר ההתעוררות הרוחנית.',res:'סולפג׳יו SI · צ׳אקרת הכתר',ideal:'שפע · כוונה · התעוררות'}},
@@ -1133,7 +1110,7 @@ function loadSessions(){
 }
 
 function saveSession(freqId, seconds){
-  if(seconds<5) return // ignore accidental taps
+  if(seconds<30) return // minimum 30s
   const sessions=loadSessions()
   const key=getTodayKey()
   if(!sessions[key]) sessions[key]={total:0,freqs:{}}
@@ -1519,16 +1496,12 @@ function openQuickRelief(){
   if(idx<0) return
   if(playing) doStop()
   curIdx=idx; renderPlayer(); show('player')
-  if(typeof startWave==='function') setTimeout(startWave,50)
   setTimeout(()=>{
     selTimerSec=180
     document.querySelectorAll('.pl-timer').forEach(t=>t.classList.remove('on'))
-    const t3=document.getElementById('timer-3')
-    if(t3) t3.classList.add('on')
+    const t3=document.getElementById('timer-3'); if(t3) t3.classList.add('on')
     const bsTxt=document.getElementById('bs-txt')
-    if(bsTxt) bsTxt.innerHTML=isHe
-      ?'נשמי. תוך <em>90 שניות</em> הגוף יתחיל להרגע.'
-      :'breathe. within <em>90 seconds</em>, your body will settle.'
+    if(bsTxt) bsTxt.innerHTML=isHe?'נשמי. תוך <em>90 שניות</em> הגוף יתחיל להרגע.':'breathe. within <em>90 seconds</em>, your body will settle.'
   },100)
 }
 function openMode(mode){
@@ -1599,50 +1572,47 @@ function nextFreq(){ if(playing) doStop(); curIdx=(curIdx+1)%FREQS.length; rende
 function prevFreq(){ if(playing) doStop(); curIdx=(curIdx-1+FREQS.length)%FREQS.length; renderPlayer();  }
 
 function renderPlayer(){
-  const f=FREQS[curIdx],t=f[lang]||f.en
-  // Switch player background image per frequency
+  const f=FREQS[curIdx], t=f[lang]||f.en
+  const _s=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v }
+  _s('pl-hz', f.hz)
+  _s('pl-num', f.num+' · '+f.cat)
+  _s('pl-name', t.name)
+  _s('pl-sub',  (t.sub||'').toUpperCase())
+  _s('pl-hz-panel', f.hz)
+  _s('pl-name-panel', t.name)
   const bg=document.querySelector('.pl-bg')
-  if(bg){
-    bg.src=f.img||'img_player.jpg'
-    bg.style.objectPosition=f.imgPos||'center 28%'
+  if(bg){ bg.src=f.img||'img_player.jpg'; bg.style.objectPosition=f.imgPos||'center 28%' }
+  const typeEl=document.getElementById('pl-type')
+  if(typeEl) typeEl.textContent=f.type==='binaural'?'🎧 Binaural':'🔊 Pure Tone'
+  const audioTxt=document.getElementById('pl-audio-txt')
+  if(audioTxt){
+    const isHe2=lang==='he'
+    audioTxt.textContent=f.type==='binaural'
+      ?f.cL+'Hz (L) · '+f.cR+'Hz (R) · Δ'+f.beat+'Hz · '+(isHe2?'נדרשות אוזניות':'Headphones required')
+      :f.hz+' Hz · '+(isHe2?'ללא אוזניות':'No headphones needed')
   }
-  document.getElementById('pl-hz').textContent=f.hz
-  document.getElementById('pl-num').textContent=`${f.num} · ${f.cat}`
-  document.getElementById('pl-name').textContent=t.name
-  document.getElementById('pl-type').textContent=f.type==='binaural'?'🎧 Binaural':(f.noHp?'🔊 Pure Tone':'🔊 Pure Tone')
-  document.getElementById('pl-sub').textContent=t.sub?.toUpperCase()
-  // FIX 6 — clear binaural info
-  if(f.type==='binaural'){
-    document.getElementById('pl-audio').textContent=`🎧 ${f.cL}Hz (L) · ${f.cR}Hz (R) · Δ${f.beat}Hz · Needs headphones`
-  } else {
-    document.getElementById('pl-audio').textContent=`🔊 ${f.hz} Hz · No headphones needed`
-  }
+  const tagEl=document.getElementById('pl-tagline')
+  if(tagEl) tagEl.textContent=t.tag||''
   renderTab()
-  document.getElementById('bs-txt').innerHTML=BRAIN[0][lang]
-  document.getElementById('bs-fill').style.width='0%'
-  document.getElementById('bs-time').textContent='0:00'
-  document.getElementById('el-row').style.display='none'
-  
+  const bsEl=document.getElementById('bs-txt')
+  if(bsEl) bsEl.innerHTML=BRAIN[0][lang]||BRAIN[0].en
+  const bsFill=document.getElementById('bs-fill')
+  if(bsFill) bsFill.style.width='0%'
+  _s('bs-time','0:00')
+  const elRow=document.getElementById('el-row')
+  if(elRow) elRow.style.display='none'
   updatePlayBtn()
 }
-function toggleBrainState(){
-  const card=document.getElementById('brain-state-card')
-  const toggle=document.getElementById('bs-toggle')
-  if(!card) return
-  const hidden=card.style.display==='none'
-  card.style.display=hidden?'':'none'
-  if(toggle) toggle.textContent=hidden?'▾':'▸'
-}
+
 function setTab(i,el){ activeTab=i; document.querySelectorAll('.pl-tab').forEach(t=>t.classList.remove('on')); el.classList.add('on'); renderTab() }
 function renderTab(){
-  const f=FREQS[curIdx],t=f[lang]||f.en
+  const f=FREQS[curIdx], t=f[lang]||f.en
   const el=document.getElementById('pl-txt')
   if(!el) return
   const isHe=lang==='he'
   if(activeTab===0) el.innerHTML=t.desc||''
   else if(activeTab===1){
-    const warn=isHe?'· echo.11 אינה מכשיר רפואי':'· echo.11 is not a medical device'
-    el.innerHTML='<em style="font-size:10px;color:var(--t4)">'+(isHe?'מקורות:':'Sources:')+'</em> '+(t.res||'')+' '+warn
+    el.innerHTML='<em style="font-size:10px;color:var(--t4)">'+(isHe?'מקורות:':'Sources:')+'</em> '+(t.res||'')+' <em style="font-size:10px;color:var(--t4)">· '+(isHe?'echo.11 אינה מכשיר רפואי':'echo.11 is not a medical device')+'</em>'
   }
   else if(activeTab===2) el.textContent=t.ideal||''
   else if(activeTab===3) el.textContent=t.feel||(isHe?'האזיני ותרגישי.':'listen and notice.')
@@ -1651,6 +1621,7 @@ function renderTab(){
   const tagEl=document.getElementById('pl-tagline')
   if(tagEl) tagEl.textContent=t.tag||''
 }
+
 function selTimer(el,s){ document.querySelectorAll('.pl-timer').forEach(t=>t.classList.remove('on')); el.classList.add('on'); selTimerSec=s }
 function handleVol(v){ volume=Number(v); document.getElementById('vol-n').textContent=v; if(playing) audioVol(FREQS[curIdx].id,volume) }
 // FIX 3 — no blue on stop button
@@ -1665,8 +1636,8 @@ function updatePlayBtn(){
   }
 }
 function doStop(){
-  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock(); setPlayerState('stopped'); stopOrb(); closeInfoPanel()
-  if(elapsed>5) saveSession(f.id, elapsed)
+  const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock()
+  if(elapsed>=30) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
   if('mediaSession' in navigator) navigator.mediaSession.playbackState='paused'
@@ -1680,9 +1651,7 @@ async function togglePlay(){
       audioCtx=new(window.AudioContext||window.webkitAudioContext)()
     if(audioCtx.state==='suspended') audioCtx.resume()
   }catch(e){}
-  await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0
-  setPlayerState('playing')
-  startOrb(); await requestWakeLock()
+  await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
 
   // Show iOS screen lock notice once
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -1766,14 +1735,14 @@ function changeFontSize(d){
   })
 }
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'pl-info-btn':'מה זה התדר הזה? ↑','pl-close-btn':'סגירה ↓','learn-more-lbl':'על התדר הזה','today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
   he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
   Object.entries(STR[lang]).forEach(([id,v])=>{ const e=document.getElementById(id); if(!e) return; e.tagName==='INPUT'?e.placeholder=v:e.textContent=v })
   document.querySelectorAll('.pl-tab').forEach((t,i)=>{ t.textContent=lang==='he'?['מה זה?','מחקר','מתאים ל','תחושה'][i]:['What is it?','Research','Ideal for','How it feels'][i] })
-  document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['8 דק','20 דק','60 דק','∞'][i]:['8 min','20 min','60 min','∞'][i] })
+  document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['3 דק','8 דק','20 דק','60 דק','∞'][i]:['3 min','8 min','20 min','60 min','∞'][i] })
   renderPlayer(); buildLibrary()
 }
 
@@ -1781,11 +1750,11 @@ function toggleLang(){
 
 // ── Session Complete ─────────────────────────────────────────
 const BRAIN_COMPLETE={
-  gamma:{en:"Your brain just ran 40 Hz synchronization — the same rhythm MIT's Picower Institute (Nature, 2016) found enhances memory and clears cognitive fog.",he:"המוח שלך הרגע רץ על סינכרון 40 Hz — אותו קצב שמכון Picower של MIT מצא (Nature, 2016) שמשפר זיכרון ומנקה ערפל קוגניטיבי."},
-  alpha:{en:"Alpha waves washed through your cortex at 8–12 Hz. The bridge between conscious thinking and subconscious flow opened — the state José Silva called the creative mind.",he:"גלי אלפא 8–12 Hz שטפו את קליפת המוח שלך. הגשר בין החשיבה המודעת לזרימה התת-מודעת נפתח."},
-  theta:{en:"Deep Theta at 4–8 Hz. Your nervous system shifted toward the edge of sleep — where emotional processing happens and the body heals itself.",he:"תטא עמוקה 4–8 Hz. מערכת העצבים שלך עברה לגבול השינה — שם מתרחש עיבוד רגשי, שם הגוף מרפא את עצמו."},
-  delta:{en:"Delta waves below 4 Hz — the deepest sleep state. Cellular repair, immune strengthening, growth hormone. Your body did deep maintenance.",he:"גלי דלתא מתחת ל-4 Hz — מצב השינה העמוק ביותר. תיקון תאי, חיזוק חיסוני. הגוף שלך עשה תחזוקה עמוקה."},
-  solfeggio:{en:"The Solfeggio frequencies work through resonance — exposing your cells to mathematically precise harmonic patterns from an ancient scale.",he:"תדרי הסולפג׳יו עובדים דרך רזוננס — חשיפת התאים לדפוסים הרמוניים מדויקים מסולם עתיק."},
+  gamma:{en:"Your brain just ran 40 Hz synchronization — the same rhythm MIT's Picower Institute (Nature, 2016) found enhances memory and clears cognitive fog.",he:"המוח שלך רץ על סינכרון 40 Hz — אותו קצב שמכון Picower של MIT מצא שמשפר זיכרון ומנקה ערפל קוגניטיבי."},
+  alpha:{en:"Alpha waves at 8–12 Hz washed through your cortex — the state José Silva identified as the bridge to subconscious creativity.",he:"גלי אלפא 8–12 Hz שטפו את קליפת המוח — המצב שחוזה סילבה זיהה כגשר ליצירתיות תת-מודעת."},
+  theta:{en:"Deep Theta at 4–8 Hz — your nervous system shifted toward the edge of sleep, where emotional processing and healing happen.",he:"תטא עמוקה 4–8 Hz — מערכת העצבים שלך עברה לגבול השינה, שם מתרחש עיבוד רגשי וריפוי."},
+  delta:{en:"Delta waves below 4 Hz — the deepest sleep state. Cellular repair, immune strengthening, growth hormone. Your body did deep maintenance.",he:"גלי דלתא מתחת ל-4 Hz — מצב השינה העמוק ביותר. תיקון תאי, חיזוק חיסוני. הגוף שלך עשה תחזוקה."},
+  solfeggio:{en:"The Solfeggio frequencies work through resonance — exposing your cells to mathematically precise harmonic patterns from an ancient scale.",he:"תדרי הסולפג׳יו עובדים דרך רזוננס — חשיפת התאים לדפוסים הרמוניים ממוקדים מסולם עתיק."},
   echo11:{en:"The echo.11 original frequency. Where mathematics meets sound healing. Your system tuned to its own signal.",he:"התדר המקורי של echo.11. שם מתמטיקה פוגשת ריפוי קולי. המערכת שלך כוּונה לאות שלה עצמה."},
 }
 function getBrainComplete(f){
@@ -1797,7 +1766,7 @@ function getBrainComplete(f){
   if(f.cat==='echo11') return BRAIN_COMPLETE.echo11
   return BRAIN_COMPLETE.solfeggio
 }
-function replaySession(){ show('player'); if(typeof startWave==='function') setTimeout(startWave,50) }
+function replaySession(){ show('player') }
 function showComplete(freqId,listenedSecs){
   const f=FREQS.find(x=>x.id===freqId)||FREQS[curIdx]
   const t=f?f[lang]||f.en:{}
@@ -1824,115 +1793,6 @@ function showComplete(freqId,listenedSecs){
   if(cv){const ctx=cv.getContext('2d');let p=0;const dk=document.body.classList.contains('dark'),c=dk?'rgba(245,243,238,':'rgba(26,26,24,';function dc(){ctx.clearRect(0,0,300,300);ctx.beginPath();ctx.arc(150,150,110,0,Math.PI*2);ctx.strokeStyle=c+'0.08)';ctx.lineWidth=1;ctx.stroke();ctx.beginPath();ctx.arc(150,150,110,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(p,1));ctx.strokeStyle=c+'0.5)';ctx.lineWidth=2.5;ctx.stroke();if(p<1){p+=0.01;requestAnimationFrame(dc)}}dc()}
   show('complete')
 }
-
-
-// ── ORB VISUALIZATION ────────────────────────────────────────
-// Breathing orb that responds to frequency type
-let orbAnim=null, orbT=0
-const ORB_PARAMS={
-  gamma: {speed:2.8, rings:4, glow:.55, r:70},
-  beta:  {speed:2.0, rings:3, glow:.45, r:68},
-  alpha: {speed:1.1, rings:3, glow:.42, r:72},
-  theta: {speed:.65, rings:2, glow:.38, r:75},
-  delta: {speed:.35, rings:2, glow:.32, r:78},
-  solfeggio:{speed:.85,rings:3,glow:.40,r:73},
-}
-function getOrbParams(f){
-  if(!f) return ORB_PARAMS.alpha
-  const w=f.wave||''
-  if(w==='Gamma') return ORB_PARAMS.gamma
-  if(w==='Beta')  return ORB_PARAMS.beta
-  if(w==='Alpha') return ORB_PARAMS.alpha
-  if(w==='Theta') return ORB_PARAMS.theta
-  if(w==='Delta') return ORB_PARAMS.delta
-  return ORB_PARAMS.solfeggio
-}
-function drawOrb(){
-  const cv=document.getElementById('pl-orb')
-  if(!cv||!playing) return
-  const ctx=cv.getContext('2d')
-  const W=150, H=150  // display size * 2 for retina
-  ctx.clearRect(0,0,300,300)
-  const f=FREQS[curIdx]||null
-  const p=getOrbParams(f)
-  const isDark=document.body.classList.contains('dark')
-  const cx=150, cy=150
-  const breathe=Math.sin(orbT*p.speed)*8
-  const baseR=p.r*2+breathe
-
-  // Outer glow rings
-  for(let i=p.rings;i>0;i--){
-    const rr=baseR+i*18, alpha=p.glow*(1-(i/p.rings)*.7)*(playing?.9:.3)
-    const g=ctx.createRadialGradient(cx,cy,rr*.3,cx,cy,rr)
-    const col=isDark?`rgba(245,243,238,${alpha})`:`rgba(26,26,24,${alpha*.6})`
-    g.addColorStop(0,'rgba(0,0,0,0)')
-    g.addColorStop(1,col)
-    ctx.beginPath(); ctx.arc(cx,cy,rr,0,Math.PI*2)
-    ctx.fillStyle=g; ctx.fill()
-  }
-  // Core
-  const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,baseR)
-  if(isDark){
-    cg.addColorStop(0,'rgba(245,243,238,.18)')
-    cg.addColorStop(.6,'rgba(245,243,238,.08)')
-    cg.addColorStop(1,'rgba(245,243,238,0)')
-  } else {
-    cg.addColorStop(0,'rgba(26,26,24,.12)')
-    cg.addColorStop(.6,'rgba(26,26,24,.05)')
-    cg.addColorStop(1,'rgba(26,26,24,0)')
-  }
-  ctx.beginPath(); ctx.arc(cx,cy,baseR,0,Math.PI*2)
-  ctx.fillStyle=cg; ctx.fill()
-
-  orbT+=0.025
-  orbAnim=requestAnimationFrame(drawOrb)
-}
-function startOrb(){ if(!orbAnim){ orbT=0; drawOrb() } }
-function stopOrb(){ if(orbAnim){ cancelAnimationFrame(orbAnim); orbAnim=null } const cv=document.getElementById('pl-orb'); if(cv) cv.getContext('2d').clearRect(0,0,300,300) }
-window.startOrb=startOrb; window.stopOrb=stopOrb
-
-// ── INFO PANEL ────────────────────────────────────────────────
-function openInfoPanel(){
-  const panel=document.getElementById('pl-info-panel')
-  if(panel) panel.classList.add('open')
-}
-function closeInfoPanel(){
-  const panel=document.getElementById('pl-info-panel')
-  if(panel) panel.classList.remove('open')
-}
-function handlePanelClick(e){
-  // Close if clicking backdrop (the panel itself, not its children)
-  if(e.target.id==='pl-info-panel') closeInfoPanel()
-}
-
-// ── PLAYER STATE MANAGEMENT ───────────────────────────────────
-function setPlayerState(state){
-  const pl=document.getElementById('player')
-  if(!pl) return
-  pl.classList.toggle('pl-state-stopped', state==='stopped')
-  pl.classList.toggle('pl-state-playing', state==='playing')
-  const bg=document.getElementById('pl-bg-img')
-  if(bg) bg.style.opacity=state==='playing'?'.3':'.9'
-  // Show/hide orb wrap
-  const orb=document.getElementById('pl-orb-wrap')
-  if(orb) orb.style.display=state==='playing'?'flex':'none'
-  // Show/hide timer+vol when playing (more breathing room)
-  const timerRow=document.getElementById('pl-timer-row')
-  const volRow=document.getElementById('pl-vol-row')
-  if(timerRow) timerRow.style.display=state==='playing'?'none':'flex'
-  if(volRow) volRow.style.display=state==='playing'?'none':'flex'
-  // Show/hide identity text
-  const identity=document.getElementById('pl-identity')
-  if(identity) identity.style.display=state==='playing'?'none':'block'
-  // Update info button text
-  const ib=document.getElementById('pl-info-trigger')
-  const isHe=lang==='he'
-  if(ib) ib.querySelector('#learn-more-lbl').textContent=
-    state==='playing'
-      ?(isHe?'מה קורה עכשיו? ↑':'what is happening? ↑')
-      :(isHe?'על התדר הזה ↑':'about this frequency ↑')
-}
-
 
 ;(function(){
   const cv=document.getElementById('splashCv'),ctx=cv.getContext('2d')
