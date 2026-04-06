@@ -335,7 +335,9 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .acc-bar{display:flex;align-items:center;gap:7px;padding:8px 14px;border-top:.5px solid var(--b1);flex-wrap:wrap;flex-shrink:0}
 
 /* Player bg image — Layer 0+1+2 */
-.pl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;z-index:0}
+.pl-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;z-index:0;transition:opacity .6s ease}
+@media(max-width:390px){.pl-bg{object-position:center 25%}}
+@media(min-width:768px){.pl-bg{object-position:center 20%}}
 .pl-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,.0) 22%,rgba(245,243,238,.0) 44%,rgba(245,243,238,.82) 62%,var(--bg) 75%);z-index:1;pointer-events:none}
 .dark .pl-overlay{background:linear-gradient(to bottom,rgba(0,0,0,.0) 0%,rgba(0,0,0,.0) 22%,rgba(0,0,0,.42) 44%,rgba(0,0,0,.85) 62%,rgba(0,0,0,1) 75%)}
 .pl-astro{display:none}
@@ -660,6 +662,17 @@ input[type=range]{accent-color:var(--t3);width:100%}
       <input type="range" min="0" max="100" value="40" id="vol-s" oninput="handleVol(this.value)"/>
       <div class="pl-vn" id="vol-n">40</div>
     </div>
+    <!-- TIME PROGRESS BAR — shown during playback -->
+    <div class="pl-prog-wrap" id="pl-prog-wrap" style="display:none;margin-bottom:8px">
+      <div class="pl-prog-labels" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+        <span class="pl-prog-elapsed" id="pl-prog-elapsed" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">0:00</span>
+        <span id="pl-prog-remain" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">20:00</span>
+        <span id="pl-prog-total" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.1em;color:var(--t4)">/ 20:00</span>
+      </div>
+      <div style="height:2px;background:var(--b1);border-radius:2px;overflow:hidden">
+        <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
+      </div>
+    </div>
     <button class="pl-play" id="play-btn" onclick="togglePlay()">▶  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
     <!-- iOS screen lock notice -->
@@ -679,7 +692,9 @@ input[type=range]{accent-color:var(--t3);width:100%}
 
 <!-- SESSION COMPLETE -->
 <div id="complete" class="scr" style="overflow-y:auto">
-  <div style="position:relative;height:38vh;min-height:220px;overflow:hidden;flex-shrink:0;background:linear-gradient(160deg,#1a1a18 0%,#3a3530 50%,#6b5e50 100%)">
+  <div style="position:relative;height:45vh;min-height:260px;max-height:380px;overflow:hidden;flex-shrink:0">
+    <img src="img_complete.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,18,16,.15) 0%,rgba(20,18,16,.5) 100%)"></div>
     <canvas id="complete-cv" width="300" height="300" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:150px;height:150px;opacity:.6"></canvas>
     <button onclick="show('home');renderStreak()" style="position:absolute;top:22px;left:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer" id="comp-back">← Back</button>
   </div>
@@ -1580,8 +1595,16 @@ function renderPlayer(){
   _s('pl-sub',  (t.sub||'').toUpperCase())
   _s('pl-hz-panel', f.hz)
   _s('pl-name-panel', t.name)
-  const bg=document.querySelector('.pl-bg')
-  if(bg){ bg.src=f.img||'img_player.jpg'; bg.style.objectPosition=f.imgPos||'center 28%' }
+  const bg=document.getElementById('pl-bg-img')
+  if(bg){
+    // Per-frequency background
+    const bgMap={'hz432':'bg_432.gif','hz528':'img_528.png'}
+    const bgSrc=bgMap[f.id]||f.img||'img_player.jpg'
+    bg.src=bgSrc
+    bg.style.objectPosition=f.imgPos||'center 30%'
+    // GIF: no object-fit issues, let it cover naturally
+    bg.style.objectFit='cover'
+  }
   const typeEl=document.getElementById('pl-type')
   if(typeEl) typeEl.textContent=f.type==='binaural'?'🎧 Binaural':'🔊 Pure Tone'
   const audioTxt=document.getElementById('pl-audio-txt')
@@ -1637,6 +1660,8 @@ function updatePlayBtn(){
 }
 function doStop(){
   const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock()
+  const pw=document.getElementById('pl-prog-wrap'); if(pw) pw.style.display='none'
+  const pf=document.getElementById('pl-prog-fill'); if(pf) pf.style.width='0%'
   if(elapsed>=30) saveSession(f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
@@ -1682,6 +1707,23 @@ async function togglePlay(){
     const s=[...BRAIN].reverse().find(b=>elapsed>=b.t); if(s) document.getElementById('bs-txt').innerHTML=s[lang]
     const er=document.getElementById('el-row'); er.style.display='flex'
     document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
+    // Update progress bar
+    const _pw=document.getElementById('pl-prog-wrap')
+    if(_pw) _pw.style.display='block'
+    const _pe=document.getElementById('pl-prog-elapsed')
+    const _pr=document.getElementById('pl-prog-remain')
+    const _pt=document.getElementById('pl-prog-total')
+    const _pf=document.getElementById('pl-prog-fill')
+    if(_pe) _pe.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
+    if(selTimerSec>0){
+      const _rem=Math.max(0,selTimerSec-elapsed)
+      if(_pr) _pr.textContent=Math.floor(_rem/60)+':'+String(_rem%60).padStart(2,'0')
+      if(_pt) _pt.textContent='/ '+Math.floor(selTimerSec/60)+':'+String(selTimerSec%60).padStart(2,'0')
+      if(_pf) _pf.style.width=Math.min(100,(elapsed/selTimerSec)*100)+'%'
+    } else {
+      if(_pr) _pr.textContent=Math.floor(elapsed/60)+':'+String(elapsed%60).padStart(2,'0')
+      if(_pt) _pt.textContent=''
+    }
     if(selTimerSec>0 && elapsed>=selTimerSec){
       const _fid=FREQS[curIdx]?.id; const _secs=elapsed
       doStop()
