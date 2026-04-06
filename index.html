@@ -1683,6 +1683,17 @@ function updatePlayBtn(){
     btn.className='pl-play'
   }
 }
+function toggleLearnMore(){
+  const panel=document.getElementById('learn-more-panel')
+  const toggle=document.getElementById('learn-more-toggle')
+  const lbl=document.getElementById('learn-more-lbl')
+  const isHe=lang==='he'
+  if(!panel) return
+  const hidden=panel.style.display==='none'||panel.style.display===''
+  panel.style.display=hidden?'block':'none'
+  if(toggle) toggle.textContent=hidden?'▾':'▸'
+  if(lbl) lbl.textContent=hidden?(isHe?'על התדר הזה':'about this frequency'):(isHe?'סגור':'close')
+}
 function toggleBrainState(){
   const card=document.getElementById('brain-state-card')
   const toggle=document.getElementById('bs-toggle')
@@ -1815,6 +1826,11 @@ function getBrainComplete(f){
   if(f.wave==='Delta') return BRAIN_COMPLETE.delta
   if(f.cat==='echo11') return BRAIN_COMPLETE.echo11
   return BRAIN_COMPLETE.solfeggio
+}
+function setPlayerState(state){
+  // Minimal: just update bg opacity
+  const bg=document.getElementById('pl-bg-img')
+  if(bg) bg.style.opacity=state==='playing'?'0.7':'1'
 }
 function replaySession(){ show('player') }
 function showComplete(freqId,listenedSecs){
