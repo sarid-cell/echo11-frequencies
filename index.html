@@ -596,8 +596,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
   <div style="position:relative;height:52vh;min-height:280px;max-height:420px;overflow:hidden;flex-shrink:0">
     <img src="img_player.jpg" alt="" id="pl-bg-img"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;animation:kenBurns 18s ease-in-out infinite alternate"/>
-    <video id="pl-bg-video" autoplay loop muted playsinline
-      style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"></video>
+  
     <!-- top nav only -->
     <div style="position:absolute;top:0;left:0;right:0;padding:env(safe-area-inset-top,14px) 18px 0;display:flex;justify-content:space-between;align-items:center;z-index:3">
       <button class="pl-back" id="pl-back" onclick="leavePlayer()"
@@ -647,6 +646,10 @@ input[type=range]{accent-color:var(--t3);width:100%}
     </div>
     <button class="pl-play" id="play-btn" onclick="togglePlay()" style="margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px">▶  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row" style="display:none"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
+    <div id="hp-notice" style="display:none;align-items:center;gap:6px;padding:6px 10px;background:var(--bg2);border-radius:6px;margin-top:6px">
+      <span style="font-size:13px">🎧</span>
+      <span id="hp-notice-txt" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t2);letter-spacing:.06em">Use headphones for best experience</span>
+    </div>
 
     <!-- ④ TIMER + VOL -->
     <div id="pl-timer-section" style="margin-bottom:10px">
@@ -668,7 +671,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
     <!-- ⑤ ABOUT — fully collapsed, user chooses to open -->
     <div style="border-top:.5px solid var(--b1);padding-top:12px">
       <button onclick="toggleLearnMore()" id="learn-more-btn"
-        style="width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:0;cursor:pointer;min-height:44px;font-family:inherit">
+        style="width:100%;background:var(--bg2);border:.5px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;min-height:44px;font-family:inherit;margin-top:2px">
         <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t2)" id="learn-more-lbl">about this frequency</span>
         <span id="learn-more-toggle" style="font-size:11px;color:var(--t3)">▸</span>
       </button>
@@ -1675,6 +1678,9 @@ function handleVol(v){ volume=Number(v); document.getElementById('vol-n').textCo
 // FIX 3 — no blue on stop button
 function updatePlayBtn(){
   const f=FREQS[curIdx], btn=document.getElementById('play-btn')
+  // Show headphone notice for binaural freqs
+  const hpNote=document.getElementById('hp-notice')
+  if(hpNote) hpNote.style.display=(f&&f.type==='binaural'&&!playing)?'flex':'none'
   if(playing){
     btn.textContent=lang==='he'?`◼  עצור · ${f.hz} Hz`:`◼  Stop · ${f.hz} Hz`
     btn.className='pl-play stop-mode'
@@ -1748,7 +1754,12 @@ async function togglePlay(){
     const s=[...BRAIN].reverse().find(b=>elapsed>=b.t); if(s) document.getElementById('bs-txt').innerHTML=s[lang]
     const er=document.getElementById('el-row'); er.style.display='flex'
     document.getElementById('el-txt').textContent=`${lang==='he'?'מאזינים':'Listening'} · ${timerDisplay}`
-    if(selTimerSec>0 && elapsed>=selTimerSec) doStop()
+    if(selTimerSec>0 && elapsed>=selTimerSec){
+      const _fid=FREQS[curIdx]?.id
+      const _secs=elapsed
+      doStop()
+      if(_secs>=30) setTimeout(()=>showComplete(_fid,_secs), 400)
+    }
   },1000)
   updatePlayBtn()
 }
@@ -1856,6 +1867,7 @@ function showComplete(freqId,listenedSecs){
   if(el('comp-home')) el('comp-home').textContent=isHe?'← חזרה לבית':'← back to home'
   if(el('comp-back')) el('comp-back').textContent=isHe?'← חזרה':'← Back'
   show('complete')
+  try{ renderStreak() }catch(e){}
 }
 
 ;(function(){
