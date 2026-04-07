@@ -4,6 +4,14 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KSCG5KS848"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KSCG5KS848');
+</script>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="echo.11"/>
 <meta name="theme-color" content="#f5f4f0"/>
@@ -1458,6 +1466,7 @@ function obSkip(){
 }
 
 async function enterApp(){
+  gtag&&gtag('event','app_enter',{event_category:'engagement'})
   try{ const c=new(window.AudioContext||window.webkitAudioContext)(); await c.resume(); c.close() }catch(e){}
   document.getElementById('splash').style.display='none'
   try{ renderStreak() }catch(e){ console.warn('renderStreak:',e) }
@@ -1875,6 +1884,7 @@ function setPlayerState(state){
 }
 function replaySession(){ show('player') }
 function showComplete(freqId,listenedSecs){
+  gtag&&gtag('event','session_complete',{event_category:'audio',event_label:freqId,value:Math.round(listenedSecs/60)})
   const f=FREQS.find(x=>x.id===freqId)||FREQS[curIdx]
   const t=f?f[lang]||f.en:{}
   const isHe=lang==='he', mins=Math.max(1,Math.round(listenedSecs/60))
