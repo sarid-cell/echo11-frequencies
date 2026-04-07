@@ -1161,7 +1161,7 @@ function loadSessions(){
 }
 
 function saveSession(freqId, seconds){
-  if(seconds<30) return // min 30s
+  if(seconds<60) return // min 60s — 1 minute
   const sessions=loadSessions()
   const key=getTodayKey()
   if(!sessions[key]) sessions[key]={total:0,freqs:{}}
@@ -1175,11 +1175,17 @@ function saveSession(freqId, seconds){
 }
 
 function calcStreak(sessions){
-  // A day counts toward the shape only if ≥ 3 minutes (180s) were listened
-  let streak=0,d=new Date()
+  // Count consecutive days with >= 60s listened (1 minute minimum)
+  // Start from today; if today not yet listened, start from yesterday
+  let streak=0, d=new Date()
+  const todayKey=`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+  // If today has no session yet, start checking from yesterday
+  if(!sessions[todayKey]||sessions[todayKey].total<60){
+    d.setDate(d.getDate()-1)
+  }
   while(true){
-    const key=`${d.getFullYear()}-${(d.getMonth()+1)}-${d.getDate()}`
-    if(sessions[key]&&sessions[key].total>=180){ streak++; d.setDate(d.getDate()-1) }
+    const key=`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+    if(sessions[key]&&sessions[key].total>=60){ streak++; d.setDate(d.getDate()-1) }
     else break
   }
   return streak
@@ -1434,7 +1440,7 @@ function audioVol(id,v){ const n=audioNodes[id]; if(!n) return; try{getCtx(); n.
 // ── Onboarding ───────────────────────────────────────────────
 const OB_STEPS=[
   {icon:'◎',title:'a frequency for every day.',body:'each morning, echo.11 selects a healing frequency matched to the energy of the day. your nervous system will thank you.'},
-  {icon:'△',title:'your journey takes shape.',body:'every day you listen, your shape grows. a point becomes a line becomes a circle. seven days completes the cycle.'},
+  {icon:'△',title:'your journey takes shape.',body:'listen for at least 1 minute each day. your shape grows — a point becomes a line becomes a circle. seven days completes the cycle.'},
   {icon:'♡',title:'use headphones for binaural.',body:'solfeggio tones work on any speaker. binaural beats (marked 🎧) need headphones — they use stereo separation to work.'},
 ]
 let obStep=0
@@ -1797,7 +1803,7 @@ async function togglePlay(){
       const _fid=FREQS[curIdx]?.id
       const _secs=elapsed
       doStop()
-      if(_secs>=30) setTimeout(()=>showComplete(_fid,_secs), 400)
+      if(_secs>=60) setTimeout(()=>showComplete(_fid,_secs), 400)
     }
   },1000)
   updatePlayBtn()
