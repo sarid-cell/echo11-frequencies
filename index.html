@@ -69,7 +69,6 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-btn{animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
 .sp-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
 .sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1}
-video#splash-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;z-index:0}
 .sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02)}
 .sp-top{position:absolute;top:0;left:0;right:0;height:22%;background:linear-gradient(to bottom,rgba(0,0,0,.18),transparent);pointer-events:none;z-index:2}
 .sp-bot{position:absolute;bottom:0;left:0;right:0;height:62%;background:linear-gradient(to bottom,transparent,var(--bg) 52%,var(--bg));pointer-events:none;z-index:2}
@@ -142,6 +141,7 @@ video#splash-video{position:absolute;inset:0;width:100%;height:100%;object-fit:c
   overflow:hidden;
   margin-top:-60px;   /* pull up behind sticky nav */
 }
+video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;z-index:0}
 .home-hero-bg{
   position:absolute;
   inset:0;
@@ -436,12 +436,7 @@ video#splash-video{position:absolute;inset:0;width:100%;height:100%;object-fit:c
 <div id="splash">
   <canvas class="sp-cv" id="splashCv"></canvas>
   <div class="sp-img-wrap">
-    <video id="splash-video" autoplay loop muted playsinline
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;z-index:0">
-  <source src="https://cdn.midjourney.com/video/b431454b-3a1e-49fb-ba57-15576450ce2b/1.mp4" type="video/mp4"/>
-  <!-- Fallback to image if video fails -->
-  <img class="sp-img" src="astronaut.jpg" alt="echo.11"/>
-</video>
+    <img class="sp-img" src="astronaut.jpg" alt="echo.11 · a figure walking through an alien desert" onerror="this.style.display='none'"/>
   </div>
   <div class="sp-top"></div><div class="sp-bot"></div>
   <div class="sp-ui">
@@ -490,7 +485,11 @@ video#splash-video{position:absolute;inset:0;width:100%;height:100%;object-fit:c
 
     <!-- Parallax image layer -->
     <div class="home-hero-bg" id="hero-bg">
-      <img src="img_home.jpg" alt="echo.11 · astronaut in desert" id="hero-img"/>
+      <video id="hero-video" autoplay loop muted playsinline
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%">
+  <source src="https://cdn.midjourney.com/video/b431454b-3a1e-49fb-ba57-15576450ce2b/1.mp4" type="video/mp4"/>
+  <img src="img_home.jpg" alt="echo.11" style="width:100%;height:100%;object-fit:cover"/>
+</video>
     </div>
 
     <!-- Hero statement — orientation + value + action -->
@@ -1881,12 +1880,21 @@ function changeFontSize(d){
   try{localStorage.setItem('echo11_font',baseFontSize)}catch(e){}
 }
 
+const STR={
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
+  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
+}
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
   Object.entries(STR[lang]).forEach(([id,v])=>{ const e=document.getElementById(id); if(!e) return; e.tagName==='INPUT'?e.placeholder=v:e.textContent=v })
   document.querySelectorAll('.pl-tab').forEach((t,i)=>{ t.textContent=lang==='he'?['מה זה?','מחקר','מתאים ל','תחושה'][i]:['What is it?','Research','Ideal for','How it feels'][i] })
   document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['3 דק','8 דק','20 דק','60 דק','∞'][i]:['3 min','8 min','20 min','60 min','∞'][i] })
   renderPlayer(); buildLibrary()
+  // Update all lang toggle buttons text
+  const isHeL=lang==='he'
+  document.querySelectorAll('#lang-h,#lang-p').forEach(b=>{
+    b.textContent=isHeL?'EN':'עב'
+  })
 }
 
 // Splash canvas
