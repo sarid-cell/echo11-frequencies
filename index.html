@@ -445,29 +445,43 @@ vercel-live-feedback,
 <body>
 
 <!-- SPLASH -->
-<div id="splash">
-  <canvas class="sp-cv" id="splashCv"></canvas>
-  <div class="sp-img-wrap">
-    <img class="sp-img" src="astronaut.jpg" alt="echo.11 · a figure walking through an alien desert" onerror="this.style.display='none'"/>
-  </div>
-  <div class="sp-top"></div><div class="sp-bot"></div>
-  <div class="sp-ui">
-    <div class="sp-icon"><span class="sp-ib"></span><span class="sp-it"></span><span class="sp-is"></span><span class="sp-it"></span><span class="sp-ib"></span></div>
-    <div class="sp-title">echo.11</div>
-    <p class="sp-sub" id="sp-sub">frequencies</p>
-    <div class="sp-line"></div>
-    <p class="sp-desc" id="sp-desc">tune your nervous system.<br>felt in seconds. backed by science.</p>
-    <!-- Primary CTA -->
-    <button class="sp-btn" id="sp-btn" onclick="enterApp()" style="pointer-events:auto!important;cursor:pointer;position:relative;z-index:20">
-      <span id="sp-btn-hp">enter the frequency</span>
-    </button>
-    <!-- Secondary: no headphones path -->
-    <div style="margin-top:10px;text-align:center">
-      <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.4)">no headphones?</span>
-      <button onclick="openPlayerDirect('hz528')" style="pointer-events:auto!important;position:relative;z-index:11"
-        style="display:inline;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.65);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0 0 0 4px"
-        id="sp-btn-no-hp">start with 528 Hz →</button>
+<div id="splash" style="position:fixed;inset:0;z-index:100;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:#f5f4f0">
+
+  <!-- Background image — lowest layer, pointer-events:none -->
+  <img src="astronaut.jpg" alt=""
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;pointer-events:none;z-index:0;animation:sp-fade-up .8s ease both"/>
+
+  <!-- Gradient overlays — pointer-events:none -->
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.05) 0%,rgba(245,243,238,0) 30%,rgba(245,243,238,.9) 65%,var(--bg,#f5f4f0) 80%);pointer-events:none;z-index:1"></div>
+
+  <!-- CONTENT — on top, pointer-events:auto -->
+  <div style="position:relative;z-index:10;pointer-events:auto;padding:0 28px 52px;text-align:center">
+
+    <!-- Logo -->
+    <div style="display:flex;justify-content:center;gap:10px;margin-bottom:10px">
+      <span style="font-family:'DM Sans',sans-serif;font-size:34px;font-weight:200;letter-spacing:.02em;color:var(--t1,#1a1a18)">echo.11</span>
     </div>
+    <p style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3,#525250);text-transform:uppercase;margin:0 0 22px">frequencies</p>
+
+    <div style="width:32px;height:.5px;background:var(--b2,rgba(0,0,0,.16));margin:0 auto 22px"></div>
+
+    <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;font-style:italic;color:var(--t1,#1a1a18);margin:0 0 6px">tune your nervous system.</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.1em;color:var(--t3,#525250);margin:0 0 28px">felt in seconds. backed by science.</p>
+
+    <!-- PRIMARY BUTTON — nothing on top of this -->
+    <button
+      onclick="enterApp()"
+      style="display:block;width:100%;padding:18px 24px;background:#1a1a18;color:#f5f4f0;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.22em;cursor:pointer;margin-bottom:14px;-webkit-tap-highlight-color:transparent;touch-action:manipulation">
+      enter the frequency
+    </button>
+
+    <!-- SECONDARY — no headphones -->
+    <button
+      onclick="openPlayerDirect('hz528')"
+      style="display:block;width:100%;padding:10px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.12em;color:var(--t3,#525250);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation">
+      no headphones? start with 528 Hz →
+    </button>
+
   </div>
 </div>
 
