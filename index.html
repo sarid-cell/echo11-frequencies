@@ -462,6 +462,9 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 <style>
 /* Hide Vercel toolbar */
 vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{display:none!important;visibility:hidden!important}
+/* Force play icon to render as text, not emoji */
+.play-icon{font-style:normal;font-variant-emoji:text}
+button{font-variant-emoji:text}
 </style>
 </head>
 <body>
@@ -542,7 +545,7 @@ vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{dis
       <!-- Sub -->
       <span class="home-hero-sub" id="hero-sub">felt in seconds. headphones elevate the experience.</span>
       <!-- CTA -->
-      <button class="home-hero-cta" onclick="openTodayFreq()" id="hero-cta-btn" style="pointer-events:all">▶  play today's frequency</button>
+      <button class="home-hero-cta" onclick="openTodayFreq()" id="hero-cta-btn" style="pointer-events:all"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>  play today's frequency</button>
     </div>
 
     <!-- Scroll arrow -->
@@ -578,7 +581,7 @@ vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{dis
       </div>
       </div>
     </div>
-    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openTodayFreq()" style="background:#1a1a18;color:#f5f4f0">▶  listen</button>
+    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openTodayFreq()" style="background:#1a1a18;color:#f5f4f0"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>  listen</button>
   </div>
 
   <!-- Rest of content — natural flow -->
@@ -718,7 +721,7 @@ vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{dis
         <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
       </div>
     </div>
-    <button class="pl-play" id="play-btn" onclick="togglePlay()" style="touch-action:manipulation" style="margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px">▶  Play · 432 Hz</button>
+    <button class="pl-play" id="play-btn" onclick="togglePlay()" style="touch-action:manipulation" style="margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row" style="display:none"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
     <div id="hp-notice" style="display:none;align-items:center;gap:6px;padding:6px 10px;background:var(--bg2);border-radius:6px;margin-top:6px">
       <span style="font-size:13px">🎧</span>
@@ -1328,7 +1331,7 @@ function applyDailyFrequency(){
   if(hpBadge) hpBadge.style.display=f&&f.type==='binaural'?'inline':'none'
   // Update hero CTA text
   const heroCta=document.getElementById('hero-cta-btn')
-  if(heroCta) heroCta.textContent=(isHe?"▶  השמע את תדר היום":"▶  play today's frequency")
+  if(heroCta) heroCta.textContent=(isHe?"► השמע את תדר היום":"► play today's frequency")
 }
 
 // Intentions per mode — emotional hook before technical number
@@ -1888,7 +1891,7 @@ function updatePlayBtn(){
     btn.textContent=lang==='he'?`◼  עצור · ${f.hz} Hz`:`◼  Stop · ${f.hz} Hz`
     btn.className='pl-play stop-mode'
   } else {
-    btn.textContent=lang==='he'?`▶  הפעל · ${f.hz} Hz`:`▶  Play · ${f.hz} Hz`
+    btn.textContent=lang==='he'?`► הפעל · ${f.hz} Hz`:`► Play · ${f.hz} Hz`
     btn.className='pl-play'
   }
 }
