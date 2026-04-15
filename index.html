@@ -507,8 +507,8 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
     <!-- Hero statement — orientation + value + action -->
     <div class="home-hero-center">
       <span class="home-hero-tagline" id="hero-tagline">tune your<br>nervous system.</span>
-      <span class="home-hero-sub" id="hero-sub">felt in seconds. no equipment required.</span>
-      <button class="home-hero-cta" onclick="document.getElementById('home-today').scrollIntoView({behavior:'smooth'})" id="hero-cta-btn">start listening →</button>
+      <span class="home-hero-sub" id="hero-sub">felt in seconds. headphones unlock more.</span>
+      <button class="home-hero-cta" onclick="openTodayFreq()" id="hero-cta-btn">▶  play today's frequency</button>
     </div>
 
     <!-- Scroll arrow -->
@@ -532,9 +532,19 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
       <div class="home-freq-name" id="today-name">The Universe · Deep Sleep · Release</div>
       <div style="margin-top:4px;display:flex;align-items:center;gap:7px">
         <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4)" id="today-changes-lbl">changes daily</span>
+      <div style="display:flex;gap:4px;align-items:center;margin-top:8px" id="home-mini-dots">
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--t1)"></div>
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-left:4px" id="home-day-lbl">day 1 of 7</span>
+      </div>
       </div>
     </div>
-    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openTodayFreq()" style="background:#1a1a18;color:#f5f4f0">▶  listen now →</button>
+    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openTodayFreq()" style="background:#1a1a18;color:#f5f4f0">▶  listen</button>
   </div>
 
   <!-- Rest of content — natural flow -->
@@ -1280,6 +1290,12 @@ function applyDailyFrequency(){
   if(ctaEl){ ctaEl.setAttribute('data-freq',f.id); ctaEl.onclick=()=>openPlayer(f.id) }
   // Update play button text
   const playBtn=document.getElementById('today-cta')
+  // 🎧 Binaural badge — shows inline next to Hz for binaural freqs
+  const hpBadge=document.getElementById('home-hp-badge')
+  if(hpBadge) hpBadge.style.display=f&&f.type==='binaural'?'inline':'none'
+  // Update hero CTA text
+  const heroCta=document.getElementById('hero-cta-btn')
+  if(heroCta) heroCta.textContent=(isHe?"▶  השמע את תדר היום":"▶  play today's frequency")
 }
 
 // Intentions per mode — emotional hook before technical number
@@ -1391,6 +1407,14 @@ function renderStreak(){
   }
   // ── Apply daily frequency ──
   applyDailyFrequency()
+  // ── Update 7-dot progress inline ──
+  const miniDots=document.getElementById('home-mini-dots')
+  const dayLbl=document.getElementById('home-day-lbl')
+  if(miniDots){
+    const dots=miniDots.querySelectorAll('div')
+    dots.forEach((d,i)=>{ d.style.background=i<Math.min(streak,7)?'var(--t1)':'var(--b1)' })
+  }
+  if(dayLbl) dayLbl.textContent=lang==='he'?`יום ${Math.min(streak+1,7)} מתוך 7`:`day ${Math.min(streak+1,7)} of 7`
   // ── Update intention text ──
   const intentEl=document.getElementById('today-intention')
   if(intentEl){
