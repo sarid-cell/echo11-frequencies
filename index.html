@@ -459,6 +459,10 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   window.va = window.va || function(){(window.vaq = window.vaq || []).push(arguments)};
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
+<style>
+/* Hide Vercel toolbar */
+vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{display:none!important;visibility:hidden!important}
+</style>
 </head>
 <body>
 
@@ -2328,7 +2332,6 @@ body.no-anim *{
 <div id="hp-toast">
   <span id="hp-toast-msg">no sound? add headphones for binaural</span>
   <a href="#" onclick="event.preventDefault();switchTo528()" id="hp-toast-link">try 528 Hz →</a>
-  <span onclick="document.getElementById('hp-toast').style.display='none'" style="cursor:pointer;opacity:.5;font-size:14px">✕</span>
 </div>
 
 <script>
