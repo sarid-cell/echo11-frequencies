@@ -450,11 +450,20 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
     <p class="sp-sub" id="sp-sub">frequencies</p>
     <div class="sp-line"></div>
     <p class="sp-desc" id="sp-desc">felt in seconds. backed by science..<br>Tune your nervous system.</p>
-    <div class="sp-hp">
-      <span style="font-size:20px;flex-shrink:0">🎧</span>
-      <div><p class="sp-hp-m" id="sp-hp-m">Headphones required</p><p class="sp-hp-s" id="sp-hp-s">BINAURAL BEATS · STEREO SEPARATION</p></div>
+    <!-- Dual path: headphones vs speakers -->
+    <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px;margin:0 auto 4px">
+      <button class="sp-btn" id="sp-btn" onclick="enterApp()"
+        style="display:flex;align-items:center;justify-content:center;gap:8px">
+        <span>🎧</span>
+        <span id="sp-btn-hp">I have headphones — enter</span>
+      </button>
+      <button onclick="openPlayerDirect('hz528')"
+        style="width:100%;padding:14px;background:transparent;border:.5px solid rgba(245,243,238,.3);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.18em;color:rgba(245,243,238,.75);cursor:pointer"
+        id="sp-btn-no-hp">
+        <span>🔊 no headphones — try 528 Hz</span>
+      </button>
     </div>
-    <button class="sp-btn" id="sp-btn" onclick="enterApp()">Enter echo.11 →</button>
+    <p style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.12em;color:rgba(245,243,238,.35);text-align:center;margin-top:4px" id="sp-hp-note-small">binaural beats need headphones · solfeggio tones don't</p>
   </div>
 </div>
 
@@ -501,8 +510,8 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
     <!-- Hero statement — orientation + value + action -->
     <div class="home-hero-center">
       <span class="home-hero-tagline" id="hero-tagline">tune your<br>nervous system.</span>
-      <span class="home-hero-sub" id="hero-sub">felt in seconds. backed by science.</span>
-      <button class="home-hero-cta" onclick="document.getElementById('home-today').scrollIntoView({behavior:'smooth'})" id="hero-cta-btn">enter the frequency →</button>
+      <span class="home-hero-sub" id="hero-sub">felt in seconds. no equipment required.</span>
+      <button class="home-hero-cta" onclick="document.getElementById('home-today').scrollIntoView({behavior:'smooth'})" id="hero-cta-btn">start listening →</button>
     </div>
 
     <!-- Scroll arrow -->
@@ -1486,6 +1495,12 @@ function obSkip(){
   if(el){ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.style.display='none',300) }
 }
 
+async function openPlayerDirect(fid){
+  // For users without headphones — go straight to solfeggio freq
+  const idx=FREQS.findIndex(f=>f.id===fid)
+  if(idx>=0){ curIdx=idx; renderPlayer() }
+  show('player')
+}
 async function enterApp(){
   gtag&&gtag('event','app_enter',{event_category:'engagement'})
   try{ const c=new(window.AudioContext||window.webkitAudioContext)(); await c.resume(); c.close() }catch(e){}
@@ -1887,7 +1902,7 @@ function changeFontSize(d){
 }
 
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','sp-btn-hp':'I have headphones — enter','sp-btn-no-hp':'🔊 no headphones — try 528 Hz','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
   he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
 function toggleLang(){
