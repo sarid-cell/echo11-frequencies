@@ -66,13 +66,13 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-line{animation:sp-line-grow .6s 1.05s ease both}
 .sp-desc{animation:sp-fade-up .8s 1.0s ease both}
 .sp-hp{animation:sp-fade-up .8s 1.15s ease both}
-.sp-btn{animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
+.sp-btn{animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both;pointer-events:auto!important;position:relative;z-index:11;cursor:pointer}
 .sp-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
 .sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1;pointer-events:none}
-.sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02)}
+.sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02);pointer-events:none}
 .sp-top{position:absolute;top:0;left:0;right:0;height:22%;background:linear-gradient(to bottom,rgba(0,0,0,.18),transparent);pointer-events:none;z-index:2}
 .sp-bot{position:absolute;bottom:0;left:0;right:0;height:62%;background:linear-gradient(to bottom,transparent,var(--bg) 52%,var(--bg));pointer-events:none;z-index:2}
-.sp-ui{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;padding:0 22px 44px;margin-top:auto}
+.sp-ui{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;padding:0 22px 44px;margin-top:auto;pointer-events:auto}
 .sp-icon{display:flex;align-items:center;gap:4px;margin-bottom:13px}
 .sp-ib{display:block;width:1.5px;height:22px;background:var(--t1);opacity:.65}
 .sp-it{display:block;width:.5px;height:22px;background:var(--t1);opacity:.2}
@@ -458,13 +458,13 @@ vercel-live-feedback,
     <div class="sp-line"></div>
     <p class="sp-desc" id="sp-desc">tune your nervous system.<br>felt in seconds. backed by science.</p>
     <!-- Primary CTA -->
-    <button class="sp-btn" id="sp-btn" onclick="enterApp()">
+    <button class="sp-btn" id="sp-btn" onclick="enterApp()" style="pointer-events:auto!important;cursor:pointer;position:relative;z-index:20">
       <span id="sp-btn-hp">enter the frequency</span>
     </button>
     <!-- Secondary: no headphones path -->
     <div style="margin-top:10px;text-align:center">
       <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.4)">no headphones?</span>
-      <button onclick="openPlayerDirect('hz528')"
+      <button onclick="openPlayerDirect('hz528')" style="pointer-events:auto!important;position:relative;z-index:11"
         style="display:inline;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.65);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0 0 0 4px"
         id="sp-btn-no-hp">start with 528 Hz →</button>
     </div>
@@ -2001,13 +2001,7 @@ function changeFontSize(d){
   document.documentElement.style.setProperty('--font-scale',scale.toString())
   // Force-update key text elements that use px directly
   const px=(size)=>Math.round(size*scale)+'px'
-  document.querySelectorAll('p,span,div,button,a,label,input').forEach(el=>{
-    const cs=window.getComputedStyle(el)
-    const fs=parseFloat(cs.fontSize)
-    if(fs>0 && fs<30){
-      el.style.fontSize=Math.round(fs*((baseFontSize)/16))+'px'
-    }
-  })
+  // Font scale via CSS variable only — no DOM iteration
   try{localStorage.setItem('echo11_font',baseFontSize)}catch(e){}
 }
 
