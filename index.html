@@ -141,7 +141,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
   overflow:hidden;
   margin-top:-60px;   /* pull up behind sticky nav */
 }
-video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;z-index:0}
+video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;z-index:0}
 .home-hero-bg{
   position:absolute;
   inset:0;
@@ -490,6 +490,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   <source src="https://cdn.midjourney.com/video/b431454b-3a1e-49fb-ba57-15576450ce2b/1.mp4" type="video/mp4"/>
   <img src="img_home.jpg" alt="echo.11" style="width:100%;height:100%;object-fit:cover"/>
 </video>
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.45) 0%,rgba(0,0,0,.1) 50%,transparent 100%);z-index:1"></div>
     </div>
 
     <!-- Hero statement — orientation + value + action -->
@@ -1932,7 +1933,7 @@ function showComplete(freqId,listenedSecs){
   const el=id=>document.getElementById(id)
   const hl=[[streak>=7,isHe?`${streak} ימים. את התדר.`:`${streak} days. you are the frequency.`],[mins>=20,isHe?`${mins} דקות של כוונון.`:`${mins} minutes. your system shifted.`],[mins>=3,isHe?'סשן הושלם. הגוף שלך יודע.':'session complete. your body knows.'],[true,isHe?'האזנת. זה מספיק.':'you listened. that is enough.']].find(([c])=>c)[1]
   if(el('comp-headline')) el('comp-headline').textContent=hl
-  if(el('comp-freq-lbl')) el('comp-freq-lbl').textContent=(f?.hz||'')+' Hz · '+(t.name||'').toUpperCase()
+  if(el('comp-freq-lbl')) el('comp-freq-lbl').textContent=(f?.hz||'')+' Hz · '+(t.name||'')
   if(el('comp-stats')) el('comp-stats').innerHTML=[[mins,isHe?'דקות':'minutes'],[streak,isHe?'ימים רצופים':'day streak'],[totalMins,isHe?'סה"כ':'total min']].map(([v,l])=>`<div style="background:var(--bg2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">${l}</div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1">${v}</div></div>`).join('')
   const bd=getBrainComplete(f)
   if(el('comp-brain-lbl')) el('comp-brain-lbl').textContent=isHe?'מה קרה':'what happened'
