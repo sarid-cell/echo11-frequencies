@@ -28,7 +28,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f5f4f0;--bg2:#eeedea;--card:#fff;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672}
+:root{--bg:#F5F0E8;--bg2:#EDE8DC;--card:#FDFAF5;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672}
 .dark{--bg:#000;--bg2:#0c0c0a;--card:#111110;--b1:rgba(255,255,255,.14);--b2:rgba(255,255,255,.24);--b3:rgba(255,255,255,.38);--t1:#f5f5f0;--t2:#c8c6c0;--t3:#a0a09a;--t4:#787872}
 html,body{width:100%;height:100%;background:var(--bg);color:var(--t1);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color .35s;font-weight:300}
@@ -66,7 +66,25 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-line{animation:sp-line-grow .6s 1.05s ease both}
 .sp-desc{animation:sp-fade-up .8s 1.0s ease both}
 .sp-hp{animation:sp-fade-up .8s 1.15s ease both}
-.sp-btn{animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
+.sp-btn{
+  width:100%;
+  padding:16px 28px;
+  background:#C9A96E;
+  color:#1a1208;
+  border:none;
+  border-radius:50px;
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  transition:background .2s;
+  animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both;
+}
+.sp-btn:hover{background:#b8945a}
 .sp-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
 .sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1;pointer-events:none}
 .sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02)}
@@ -98,6 +116,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .brand-tag{font-size:10px;letter-spacing:.2em;color:var(--t3)}
 .hdr-r{display:flex;align-items:center;gap:6px}
 .pill{font-size:9px;letter-spacing:.12em;color:var(--t3);border:.5px solid var(--b2);border-radius:20px;padding:4px 10px;cursor:pointer;background:var(--card);font-family:inherit;transition:all .2s}
+.lang-pill{transition:all .2s;border-radius:50px!important}
 .pill:hover{color:var(--t1)}.pill.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
 
 /* ══════════════════════════════════════
@@ -223,20 +242,21 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 .home-hero-cta{
   display:inline-block;
   font-family:'DM Sans',sans-serif;
-  font-size:11px;font-weight:300;
+  font-size:11px;font-weight:400;
   letter-spacing:.22em;
-  color:#1a1a18;
-  background:rgba(201,169,110,.9);
+  text-transform:uppercase;
+  color:#1a1208;
+  background:#C9A96E;
   border:none;
-  border-radius:2px;
-  padding:14px 30px;
+  border-radius:50px;
+  padding:15px 32px;
   cursor:pointer;
   transition:all .25s;
   pointer-events:all;
-  text-decoration:none;
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
 }
+.home-hero-cta:hover{background:#b8945a;transform:translateY(-1px)}
 .home-hero-cta:hover,.home-hero-cta:focus{
   background:#ffffff;
   outline:none;
@@ -486,7 +506,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
       <div><div class="brand-name">echo.11</div><div class="brand-tag" id="hm-tag">tune your mind</div></div>
     </div>
     <div class="hdr-r">
-      <button class="pill" id="lang-h" onclick="toggleLang()">עב</button>
+      <button class="pill lang-pill" id="lang-en" onclick="setLang('en')" style="font-size:10px;padding:5px 10px">EN</button><button class="pill lang-pill" id="lang-he" onclick="setLang('he')" style="font-size:10px;padding:5px 10px">עב</button>
       <button class="pill" id="dark-h" onclick="toggleDark()">◐ Dark</button>
     </div>
   </nav>
@@ -648,8 +668,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
       <button class="pl-back" id="pl-back" onclick="leavePlayer()"
         style="background:rgba(245,243,238,.15);backdrop-filter:blur(6px);border:none;border-radius:20px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:#fff;cursor:pointer">← Back</button>
       <div style="display:flex;gap:6px;align-items:center">
-        <button class="pill" id="lang-p" onclick="toggleLang()"
-          style="font-size:10px;padding:5px 10px;background:rgba(245,243,238,.15);backdrop-filter:blur(6px);border:.5px solid rgba(255,255,255,.25);color:#fff">עב</button>
+        <button class="pill lang-pill" onclick="setLang('en')" style="font-size:10px;padding:5px 10px" id="lang-p-en">EN</button><button class="pill lang-pill" onclick="setLang('he')" style="font-size:10px;padding:5px 10px" id="lang-p-he">עב</button>
         <button class="pill" id="dark-p" onclick="toggleDark()"
           style="font-size:10px;padding:5px 10px;background:rgba(245,243,238,.15);backdrop-filter:blur(6px);border:.5px solid rgba(255,255,255,.25);color:#fff">◐</button>
         <div id="pl-num" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:rgba(255,255,255,.55)">B5 · solfeggio</div>
@@ -805,7 +824,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
       <button class="pl-back" id="lib-back" onclick="showHome()" style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)">← Back</button>
       <div style="font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.7);text-shadow:0 1px 6px rgba(0,0,0,.3)" id="lib-title">Library · 21 Frequencies</div>
       <div style="display:flex;gap:6px">
-        <button class="pill" onclick="toggleLang()" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)">עב</button>
+        <button class="pill" onclick="setLang(lang==='en'?'he':'en')" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)">עב</button>
         <button class="pill" onclick="toggleDark()" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(8px)">◐</button>
       </div>
     </div>
@@ -2023,16 +2042,22 @@ const STR={
   en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'enter echo.11 →','sp-btn-hp':'enter the frequency','sp-btn-no-hp':'start with 528 Hz →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
   he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
 }
-function toggleLang(){
-  lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
+function setLang(l){
+  if(lang===l) return
+  lang=l; document.body.dir=lang==='he'?'rtl':'ltr'
   Object.entries(STR[lang]).forEach(([id,v])=>{ const e=document.getElementById(id); if(!e) return; e.tagName==='INPUT'?e.placeholder=v:e.textContent=v })
   document.querySelectorAll('.pl-tab').forEach((t,i)=>{ t.textContent=lang==='he'?['מה זה?','מחקר','מתאים ל','תחושה'][i]:['What is it?','Research','Ideal for','How it feels'][i] })
   document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['3 דק','8 דק','20 דק','60 דק','∞'][i]:['3 min','8 min','20 min','60 min','∞'][i] })
   renderPlayer(); buildLibrary()
   // Update all lang toggle buttons text
   const isHeL=lang==='he'
-  document.querySelectorAll('#lang-h,#lang-p').forEach(b=>{
-    b.textContent=isHeL?'EN':'עב'
+    // Update all lang pill buttons — active state
+  document.querySelectorAll('.lang-pill').forEach(b=>{
+    const isEnBtn=b.textContent.trim()==='EN'
+    const active=isHeL?!isEnBtn:isEnBtn
+    b.style.background=active?'rgba(201,169,110,.15)':'transparent'
+    b.style.color=active?'var(--t1)':'var(--t4)'
+    b.style.fontWeight=active?'500':'300'
   })
 }
 
