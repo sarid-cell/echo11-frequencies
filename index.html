@@ -1847,19 +1847,34 @@ function toggleDark(){
   ;['dark-h','dark-p'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=txt})
 }
 let baseFontSize=16
+// Restore saved font size
+try{
+  const saved=localStorage.getItem('echo11_font')
+  if(saved){ baseFontSize=parseInt(saved)||16 }
+}catch(e){}
 function changeFontSize(d){
   baseFontSize=Math.max(13,Math.min(22,baseFontSize+d))
-  document.documentElement.style.setProperty('--base-font',baseFontSize+'px')
+  // Scale the entire page using root font-size
+  // This affects all rem + em units AND sets a base for px scaling
+  const scale=baseFontSize/16 // 16 = default
+  document.documentElement.style.fontSize=baseFontSize+'px'
+  // Also update body for px-based text
   document.body.style.fontSize=baseFontSize+'px'
-  // Force re-render of em-based sizes
-  document.querySelectorAll('.pl-fn,.home-freq-num,.pl-fname,.home-freq-name').forEach(el=>{
-    el.style.opacity='0.99'; setTimeout(()=>el.style.opacity='',50)
+  // Apply zoom-style scaling to all text via CSS variable
+  document.documentElement.style.setProperty('--base-font',baseFontSize+'px')
+  document.documentElement.style.setProperty('--font-scale',scale.toString())
+  // Force-update key text elements that use px directly
+  const px=(size)=>Math.round(size*scale)+'px'
+  document.querySelectorAll('p,span,div,button,a,label,input').forEach(el=>{
+    const cs=window.getComputedStyle(el)
+    const fs=parseFloat(cs.fontSize)
+    if(fs>0 && fs<30){
+      el.style.fontSize=Math.round(fs*((baseFontSize)/16))+'px'
+    }
   })
+  try{localStorage.setItem('echo11_font',baseFontSize)}catch(e){}
 }
-const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'Enter echo.11 →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
-  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
-}
+
 function toggleLang(){
   lang=lang==='en'?'he':'en'; document.body.dir=lang==='he'?'rtl':'ltr'
   Object.entries(STR[lang]).forEach(([id,v])=>{ const e=document.getElementById(id); if(!e) return; e.tagName==='INPUT'?e.placeholder=v:e.textContent=v })
