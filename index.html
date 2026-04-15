@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.midjourney.com">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <!-- Google Analytics -->
@@ -31,6 +34,8 @@
 :root{--bg:#F5F0E8;--bg2:#EDE8DC;--card:#FDFAF5;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672}
 .dark{--bg:#000;--bg2:#0c0c0a;--card:#111110;--b1:rgba(255,255,255,.14);--b2:rgba(255,255,255,.24);--b3:rgba(255,255,255,.38);--t1:#f5f5f0;--t2:#c8c6c0;--t3:#a0a09a;--t4:#787872}
 html,body{width:100%;height:100%;background:var(--bg);color:var(--t1);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+button,a,[onclick]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+
 body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color .35s;font-weight:300}
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
 input[type=range]{accent-color:var(--t3);width:100%}
@@ -159,7 +164,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
   min-height:500px;
   overflow:hidden;
   margin-top:-60px;   /* pull up behind sticky nav */
-}
+;will-change:transform}
 video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;z-index:0}
 .home-hero-bg{
   position:absolute;
@@ -1789,8 +1794,9 @@ function show(id){
 }
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
-  if(idx>=0){ if(playing) doStop(); curIdx=idx; renderPlayer() }
-  show('player'); 
+  if(idx>=0){ if(playing) doStop(); curIdx=idx }
+  show('player')  // Show immediately — UI responds at once
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ renderPlayer() })) // Double rAF: paint first, then render
 }
 function nextFreq(){ if(playing) doStop(); curIdx=(curIdx+1)%FREQS.length; renderPlayer();  }
 function prevFreq(){ if(playing) doStop(); curIdx=(curIdx-1+FREQS.length)%FREQS.length; renderPlayer();  }
