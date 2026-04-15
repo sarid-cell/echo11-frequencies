@@ -35,7 +35,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
 input[type=range]{accent-color:var(--t3);width:100%}
 ::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.scr{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);overflow:hidden;opacity:0;transition:opacity .35s ease;height:100dvh}
+.scr{display:none;position:fixed;inset:0;flex-direction:column;background:var(--bg);overflow-y:auto;overflow-x:hidden;opacity:0;transition:opacity .35s ease;height:100dvh}
 .scr.on{display:flex;opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .scr.on > *{animation:fadeUp .45s ease both}
@@ -68,7 +68,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-hp{animation:sp-fade-up .8s 1.15s ease both}
 .sp-btn{animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
 .sp-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
-.sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1}
+.sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1;pointer-events:none}
 .sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02)}
 .sp-top{position:absolute;top:0;left:0;right:0;height:22%;background:linear-gradient(to bottom,rgba(0,0,0,.18),transparent);pointer-events:none;z-index:2}
 .sp-bot{position:absolute;bottom:0;left:0;right:0;height:62%;background:linear-gradient(to bottom,transparent,var(--bg) 52%,var(--bg));pointer-events:none;z-index:2}
@@ -136,7 +136,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 /* Hero — tall, parallax container */
 .home-hero{
   position:relative;
-  height:100vh;
+  height:90vh;
   min-height:500px;
   overflow:hidden;
   margin-top:-60px;   /* pull up behind sticky nav */
@@ -400,7 +400,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 .pl-timer:hover{color:var(--t1)}.pl-timer.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
 .pl-vol{display:flex;align-items:center;gap:9px;margin-bottom:14px}
 .pl-vl,.pl-vn{font-size:10px;letter-spacing:.13em;color:var(--t3)}.pl-vn{min-width:20px;text-align:left}
-.pl-play{width:100%;padding:18px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:all .25s}
+.pl-play{width:100%;padding:18px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:all .25s;position:relative;z-index:50}
 .pl-play:hover{opacity:.82}
 .pl-play.stop-mode{background:var(--card);color:var(--t1);border:.5px solid var(--b2)}
 .elapsed-row{display:none;align-items:center;justify-content:center;gap:8px;padding:5px 0 0}
@@ -495,19 +495,19 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   <div class="home-hero" id="home-hero">
 
     <!-- Parallax image layer -->
-    <div class="home-hero-bg" id="hero-bg">
+    <div class="home-hero-bg" id="hero-bg" style="pointer-events:none">
       <video id="hero-video" autoplay loop muted playsinline
-      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%">
+      style=;pointer-events:none"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;pointer-events:none">
   <source src="https://cdn.midjourney.com/video/b431454b-3a1e-49fb-ba57-15576450ce2b/1.mp4" type="video/mp4"/>
   <img src="img_home.jpg" alt="echo.11" style="width:100%;height:100%;object-fit:cover"/>
 </video>
-    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.45) 0%,rgba(0,0,0,.1) 50%,transparent 100%);z-index:1"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.45) 0%,rgba(0,0,0,.1) 50%,transparent 100%);z-index:1;pointer-events:none;pointer-events:none"></div>
     </div>
 
     <!-- Hero statement — orientation + value + action -->
-    <div class="home-hero-center">
+    <div class="home-hero-center" style="position:relative;z-index:5;pointer-events:auto">
       <span class="home-hero-tagline" id="hero-tagline">tune your<br>nervous system.</span>
-      <span class="home-hero-sub" id="hero-sub">felt in seconds. headphones unlock more.</span>
+      <span class="home-hero-sub" id="hero-sub">felt in seconds. headphones elevate the experience.</span>
       <button class="home-hero-cta" onclick="openTodayFreq()" id="hero-cta-btn">▶  play today's frequency</button>
     </div>
 
@@ -685,7 +685,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
         <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
       </div>
     </div>
-    <button class="pl-play" id="play-btn" onclick="togglePlay()" style="margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px">▶  Play · 432 Hz</button>
+    <button class="pl-play" id="play-btn" onclick="togglePlay()" style="touch-action:manipulation" style="margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px">▶  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row" style="display:none"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
     <div id="hp-notice" style="display:none;align-items:center;gap:6px;padding:6px 10px;background:var(--bg2);border-radius:6px;margin-top:6px">
       <span style="font-size:13px">🎧</span>
@@ -1571,6 +1571,12 @@ function openPlayerDirect(fid){
   setTimeout(showOnboarding, 1000)
 }
 async function enterApp(){
+  // Pre-init AudioContext on splash tap (iOS requires user gesture)
+  try{
+    if(!audioCtx||audioCtx.state==='closed')
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)()
+    if(audioCtx.state==='suspended') await audioCtx.resume()
+  }catch(e){}
   gtag&&gtag('event','app_enter',{event_category:'engagement'})
   // Live counter: increment on enter, show if >= 2
   try{
@@ -1901,6 +1907,11 @@ async function togglePlay(){
     if(audioCtx.state==='suspended') audioCtx.resume()
   }catch(e){}
   await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
+  // Headphone nudge for binaural
+  if(f.type==='binaural'){
+    const _ht=document.getElementById('hp-toast')
+    if(_ht){ _ht.style.display='block'; setTimeout(()=>_ht.style.display='none',5000) }
+  }
 
   // Show iOS screen lock notice once
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
