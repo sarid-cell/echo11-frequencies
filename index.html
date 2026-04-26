@@ -454,20 +454,381 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 .lb-arr{font-size:13px;color:var(--t4);transition:color .2s}
 .pl-dot{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pd 2s infinite}
 </style>
-<!-- Vercel Analytics -->
+<!-- Vercel Analytics: active on Vercel only -->
 <script>
-  window.va = window.va || function(){(window.vaq = window.vaq || []).push(arguments)};
+  // window.va stub for non-Vercel environments
+  window.va = window.va || function(){};
 </script>
-<script defer src="/_vercel/insights/script.js"></script>
 <style>
 /* Hide Vercel toolbar */
 vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{display:none!important;visibility:hidden!important}
 /* Force play icon to render as text, not emoji */
 .play-icon{font-style:normal;font-variant-emoji:text}
 button{font-variant-emoji:text}
+
+/* ═══════════════════════════════════
+   PROTOCOL SCREEN
+═══════════════════════════════════ */
+#protocol{
+  position:fixed;inset:0;z-index:9000;
+  background:#0e0d0c;
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  display:none;
+  opacity:0;
+  transition:opacity .5s ease;
+}
+#protocol.on{display:block}
+#protocol.visible{opacity:1}
+
+/* Sections */
+.pr-section{
+  position:relative;
+  width:100%;min-height:100dvh;
+  display:flex;align-items:flex-end;
+  overflow:hidden;
+}
+.pr-bg{
+  position:absolute;
+  top:-20%;left:0;right:0;bottom:-20%;
+  background-size:cover;background-position:center;
+  will-change:transform;
+  filter:grayscale(1) brightness(0.35);
+  transition:filter 1s ease;
+}
+.pr-section.pr-active .pr-bg{filter:grayscale(1) brightness(0.48)}
+.pr-section::after{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to top,rgba(14,13,12,0.96) 0%,rgba(14,13,12,0.5) 35%,rgba(14,13,12,0.05) 100%);
+}
+.pr-content{
+  position:relative;z-index:2;
+  padding:0 26px 60px;width:100%;
+  max-width:520px;
+  opacity:0;transform:translateY(28px);
+  transition:opacity .8s cubic-bezier(.4,0,.2,1),transform .8s cubic-bezier(.4,0,.2,1);
+}
+.pr-section.pr-active .pr-content{opacity:1;transform:translateY(0)}
+
+/* Skip button */
+#pr-skip{
+  position:fixed;top:20px;right:20px;z-index:9100;
+  font-family:'DM Sans',sans-serif;
+  font-size:9px;letter-spacing:.22em;
+  color:rgba(245,243,238,.3);
+  background:none;border:none;cursor:pointer;
+  padding:10px;
+  transition:color .2s;
+}
+#pr-skip:hover{color:rgba(245,243,238,.6)}
+
+/* Progress */
+#pr-prog{
+  position:fixed;top:0;left:0;width:0%;height:1px;
+  background:rgba(201,169,110,0.6);
+  z-index:9100;transition:width .15s linear;
+}
+
+/* Nav dots */
+#pr-dots{
+  position:fixed;right:14px;top:50%;
+  transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:8px;
+  z-index:9100;
+}
+.pr-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:rgba(245,243,238,.18);
+  transition:background .3s,transform .3s;
+  cursor:pointer;border:none;padding:0;
+}
+.pr-dot.active{background:rgba(201,169,110,.8);transform:scale(1.5)}
+
+/* Typography — echo11 style */
+.pr-eyebrow{
+  font-family:'DM Sans',sans-serif;
+  font-size:9px;letter-spacing:.45em;
+  color:rgba(245,243,238,.25);
+  margin-bottom:18px;text-transform:uppercase;
+}
+.pr-display{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(44px,13vw,80px);
+  font-weight:200;line-height:.95;
+  letter-spacing:.02em;
+  color:#f5f3ee;
+  margin-bottom:14px;
+}
+.pr-display em{font-style:italic;color:#C9A96E}
+.pr-sub-he{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(15px,4.5vw,18px);
+  font-weight:300;color:rgba(245,243,238,.45);
+  direction:rtl;line-height:1.7;
+  margin-bottom:20px;
+}
+.pr-divider{width:26px;height:.5px;background:rgba(245,243,238,.2);margin:0 0 18px}
+
+/* Step cards */
+.pr-code{
+  font-family:'DM Sans',sans-serif;
+  font-size:9px;letter-spacing:.4em;
+  color:rgba(245,243,238,.25);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.pr-code::after{content:'';flex:1;max-width:40px;height:.5px;background:rgba(245,243,238,.15)}
+.pr-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(32px,10vw,52px);
+  font-weight:200;line-height:1;
+  color:#f5f3ee;margin-bottom:6px;
+  letter-spacing:.03em;
+}
+.pr-title-he{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(18px,5vw,24px);
+  font-weight:300;color:rgba(245,243,238,.4);
+  margin-bottom:18px;direction:rtl;
+}
+.pr-body{
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;line-height:1.85;
+  color:rgba(245,243,238,.5);
+  margin-bottom:8px;letter-spacing:.02em;
+}
+.pr-body-he{
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;font-weight:300;line-height:1.8;
+  color:rgba(245,243,238,.62);direction:rtl;
+}
+
+/* Scroll hint */
+.pr-scroll-hint{
+  position:absolute;bottom:22px;left:50%;
+  transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:0;transition:opacity .6s 1.2s;
+}
+.pr-section.pr-active .pr-scroll-hint{opacity:1}
+.pr-scroll-line{
+  width:1px;height:24px;
+  background:linear-gradient(to bottom,rgba(201,169,110,.5),transparent);
+  animation:prLine 1.8s ease-in-out infinite;
+}
+@keyframes prLine{
+  0%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  51%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+.pr-scroll-hint span{
+  font-family:'DM Sans',sans-serif;
+  font-size:8px;letter-spacing:.35em;
+  color:rgba(245,243,238,.2);
+}
+
+/* What is echo section */
+.pr-what-tag{
+  display:inline-block;
+  font-family:'DM Sans',sans-serif;
+  font-size:8px;letter-spacing:.4em;
+  color:rgba(245,243,238,.3);
+  border:.5px solid rgba(245,243,238,.12);
+  padding:5px 12px;border-radius:20px;
+  margin-bottom:18px;
+}
+.pr-what-body{
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;font-weight:300;
+  line-height:1.85;color:rgba(245,243,238,.58);
+  direction:rtl;margin-bottom:12px;
+}
+.pr-what-accent{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:13px;font-style:italic;
+  color:rgba(201,169,110,.7);
+  letter-spacing:.04em;
+}
+
+/* CTA section */
+.pr-cta-pre{
+  font-family:'DM Sans',sans-serif;
+  font-size:8px;letter-spacing:.45em;
+  color:rgba(245,243,238,.22);margin-bottom:18px;
+}
+.pr-cta-display{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(48px,14vw,88px);
+  font-weight:200;line-height:.88;
+  color:#f5f3ee;margin-bottom:6px;
+  direction:rtl;
+}
+.pr-cta-sub{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(13px,3.5vw,16px);
+  font-weight:300;letter-spacing:.12em;
+  color:rgba(245,243,238,.28);
+  margin-bottom:36px;
+}
+.pr-cta-btn{
+  display:block;width:100%;
+  padding:18px 24px;
+  background:#C9A96E;
+  border:none;border-radius:3px;
+  color:#1a1208;
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;font-weight:400;
+  letter-spacing:.24em;text-transform:uppercase;
+  cursor:pointer;text-align:center;
+  transition:background .25s,transform .2s;
+  margin-bottom:12px;
+  -webkit-tap-highlight-color:transparent;
+}
+.pr-cta-btn:hover{background:#b8945a;transform:translateY(-1px)}
+.pr-cta-skip{
+  display:block;width:100%;
+  padding:14px;background:none;
+  border:.5px solid rgba(245,243,238,.15);
+  border-radius:3px;
+  color:rgba(245,243,238,.35);
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;letter-spacing:.2em;
+  cursor:pointer;text-align:center;
+  transition:all .25s;
+}
+.pr-cta-skip:hover{border-color:rgba(245,243,238,.3);color:rgba(245,243,238,.6)}
+.pr-footnote{
+  margin-top:20px;
+  font-family:'DM Sans',sans-serif;
+  font-size:9px;letter-spacing:.1em;
+  color:rgba(245,243,238,.15);line-height:1.9;
+}
 </style>
 </head>
 <body>
+
+<!-- PROTOCOL — shown on first visit -->
+<div id="protocol">
+  <div id="pr-prog"></div>
+  <button id="pr-skip" onclick="skipProtocol()">skip →</button>
+  <div id="pr-dots"></div>
+
+  <!-- 0: Intro -->
+  <div class="pr-section" data-pr="0">
+    <div class="pr-bg" style="background-image:url('astronaut.jpg');background-position:center 20%"></div>
+    <div class="pr-content">
+      <div class="pr-eyebrow">echo.11 · pre-session protocol</div>
+      <div class="pr-display">before<br>you<br><em>enter.</em></div>
+      <div class="pr-sub-he">לפני שנכנסים לשדה — יש להכין את הגוף, המוח והנשמה.</div>
+      <div class="pr-divider"></div>
+      <div class="pr-body">six steps. two minutes. everything changes.</div>
+    </div>
+    <div class="pr-scroll-hint"><span>scroll</span><div class="pr-scroll-line"></div></div>
+  </div>
+
+  <!-- 1: What is echo11 -->
+  <div class="pr-section" data-pr="1">
+    <div class="pr-bg" style="background-image:url('assets/img-what.png');background-position:center 30%"></div>
+    <div class="pr-content">
+      <div class="pr-what-tag">מה זה בעצם · what is echo.11</div>
+      <div class="pr-display" style="font-size:clamp(34px,10vw,58px)">echo.11<br>& the<br><em>CIA file.</em></div>
+      <div class="pr-what-body">ב-1983 חקרה ה-CIA פרויקט סודי בשם Gateway Experience — ניסויים במצבי תודעה מורחבים באמצעות תדרים בינאורליים. echo.11 מביאה את הפרוטוקול הזה לאפליקציה מודרנית.</div>
+      <div class="pr-what-body">22 תדרים. מדע אמיתי. לא מוסיקה — <strong style="color:rgba(245,243,238,.85)">צליל מובנה לעצבים.</strong></div>
+      <div class="pr-what-accent">not music. not meditation. structured sound — for a disordered world.</div>
+    </div>
+  </div>
+
+  <!-- 2: Step 01 -->
+  <div class="pr-section" data-pr="2">
+    <div class="pr-bg" style="background-image:url('assets/img-s1.png');background-position:center 25%"></div>
+    <div class="pr-content">
+      <div class="pr-code">01 / 06</div>
+      <div class="pr-title">Head-<br>phones</div>
+      <div class="pr-title-he">אוזניות</div>
+      <div class="pr-body">For binaural beats: stereo headphones only. Other echo.11 frequencies work without.</div>
+      <div class="pr-body-he">לתדרים בינאורליים: אוזניות סטריאו בלבד. לשאר התדרים — גם בלי.</div>
+    </div>
+  </div>
+
+  <!-- 3: Step 02 -->
+  <div class="pr-section" data-pr="3">
+    <div class="pr-bg" style="background-image:url('assets/img-s2.png');background-position:center 20%"></div>
+    <div class="pr-content">
+      <div class="pr-code">02 / 06</div>
+      <div class="pr-title">Environ-<br>ment</div>
+      <div class="pr-title-he">סביבה</div>
+      <div class="pr-body">Quiet. Darkened. Devices silenced. This is your launchpad.</div>
+      <div class="pr-body-he">שקט. חשוך. מכשירים מושתקים. זהו בסיס השיגור שלך.</div>
+    </div>
+  </div>
+
+  <!-- 4: Step 03 -->
+  <div class="pr-section" data-pr="4">
+    <div class="pr-bg" style="background-image:url('assets/img-s3.png');background-position:center 30%"></div>
+    <div class="pr-content">
+      <div class="pr-code">03 / 06</div>
+      <div class="pr-title">Body<br>Position</div>
+      <div class="pr-title-he">תנוחת הגוף</div>
+      <div class="pr-body">Lie flat or sit upright — both work. Loosen clothing. Let your body settle.</div>
+      <div class="pr-body-he">שכב שטוח או שב זקוף — שניהם עובדים. שחרר את הבגדים.</div>
+    </div>
+  </div>
+
+  <!-- 5: Step 04 -->
+  <div class="pr-section" data-pr="5">
+    <div class="pr-bg" style="background-image:url('assets/img-s4.png');background-position:center 40%"></div>
+    <div class="pr-content">
+      <div class="pr-code">04 / 06</div>
+      <div class="pr-title">Resonant<br>Tuning</div>
+      <div class="pr-title-he">כיוון רזוננס</div>
+      <div class="pr-body">Inhale deeply. Exhale — hum until breath runs out. Three times.</div>
+      <div class="pr-body-he">שאף עמוק. נשוף — זמזם עד שנגמרת הנשימה. שלוש פעמים.</div>
+    </div>
+  </div>
+
+  <!-- 6: Step 05 -->
+  <div class="pr-section" data-pr="6">
+    <div class="pr-bg" style="background-image:url('assets/img-s5.png');background-position:center 20%"></div>
+    <div class="pr-content">
+      <div class="pr-code">05 / 06</div>
+      <div class="pr-title">Release</div>
+      <div class="pr-title-he">שחרור</div>
+      <div class="pr-body">Scan body from feet to crown. Find tension. Breathe into it. Release.</div>
+      <div class="pr-body-he">סרוק מהרגליים לקודקוד. מצא מתח. נשום אליו. שחרר.</div>
+    </div>
+  </div>
+
+  <!-- 7: Step 06 + CTA -->
+  <div class="pr-section" data-pr="7">
+    <div class="pr-bg" style="background-image:url('assets/img-cta.png');background-position:center 25%"></div>
+    <div class="pr-content" style="max-width:none">
+      <div class="pr-code">06 / 06</div>
+      <div class="pr-title">Set<br>Intention</div>
+      <div class="pr-title-he">כוונה</div>
+      <div class="pr-body" style="margin-bottom:32px">Before entering — decide what you seek. State it silently. The field responds to direction.</div>
+      <div class="pr-cta-pre">— you are ready —</div>
+      <div class="pr-cta-display">כניסה<br>לשדה</div>
+      <div class="pr-cta-sub">ENTER THE FIELD</div>
+      <button class="pr-cta-btn" onclick="enterFromProtocol()">
+        ▸ &nbsp; enter echo.11
+      </button>
+      <button class="pr-cta-skip" onclick="skipProtocol()">
+        skip protocol → enter directly
+      </button>
+      <div class="pr-footnote">echo.11 · 22 healing frequencies<br>based on CIA gateway experience protocol · declassified 1983</div>
+    </div>
+  </div>
+</div>
+
+<!-- RE-SHOW PROTOCOL BUTTON (floating) -->
+<button id="show-protocol-btn" onclick="localStorage.removeItem('echo11_protocol_seen');showProtocol()" style="
+  position:fixed;bottom:80px;left:14px;z-index:200;
+  font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.2em;
+  color:var(--t4);background:var(--card);border:.5px solid var(--b1);
+  border-radius:20px;padding:6px 12px;cursor:pointer;
+  display:none;
+" id="proto-replay-btn">↺ Protocol</button>
 
 <!-- SPLASH -->
 <div id="splash">
@@ -481,10 +842,10 @@ button{font-variant-emoji:text}
     <div class="sp-title">echo.11</div>
     <p class="sp-sub" id="sp-sub">frequencies</p>
     <div class="sp-line"></div>
-    <p class="sp-desc" id="sp-desc">tune your nervous system.<br>felt in seconds. backed by science.</p>
+    <p class="sp-desc" id="sp-desc">22 healing frequencies. Not music.<br>Real science — backed by the CIA Gateway protocol.</p>
     <!-- Primary CTA -->
     <button class="sp-btn" id="sp-btn" onclick="enterApp()">
-      <span id="sp-btn-hp">enter the frequency</span>
+      <span id="sp-btn-hp">▸ &nbsp; enter the frequency</span>
     </button>
     <!-- Secondary: no headphones path -->
     <div style="margin-top:10px;text-align:center">
@@ -541,9 +902,9 @@ button{font-variant-emoji:text}
       <!-- Label -->
       <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.32em;color:rgba(255,255,255,.45);text-transform:uppercase;display:block;margin-bottom:16px">echo · 11</span>
       <!-- Main tagline -->
-      <span class="home-hero-tagline" id="hero-tagline">tune your<br><em style="font-style:italic;color:#C9A96E">nervous system.</em></span>
+      <span class="home-hero-tagline" id="hero-tagline" style="font-size:clamp(48px,13vw,96px)">tune your<br><em style="font-style:italic;color:#C9A96E">nervous system.</em></span>
       <!-- Sub -->
-      <span class="home-hero-sub" id="hero-sub">felt in seconds. headphones elevate the experience.</span>
+      <span class="home-hero-sub" id="hero-sub" style="font-size:clamp(11px,1.8vw,14px);letter-spacing:.22em">22 frequencies · not music · real science · CIA gateway protocol</span>
       <!-- CTA -->
       <button class="home-hero-cta" onclick="openTodayFreq()" id="hero-cta-btn" style="pointer-events:all"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>  play today's frequency</button>
     </div>
@@ -584,6 +945,47 @@ button{font-variant-emoji:text}
     <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openTodayFreq()" style="background:#1a1a18;color:#f5f4f0"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>  listen</button>
   </div>
 
+  <!-- ══ CONSCIOUSNESS JOURNEY CARD ══ -->
+  <div id="consciousness-card" style="margin:0 14px 16px;background:var(--card);border:.5px solid var(--b1);border-radius:18px;overflow:hidden;cursor:pointer" onclick="show('history')">
+    <!-- Header -->
+    <div style="padding:16px 18px 12px;border-bottom:.5px solid var(--b1);display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase;margin-bottom:4px" id="cs-label">30-Day Consciousness Journey</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1)" id="cs-level-name">Begin your ascent</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3)" id="cs-day-label">day 0 / 30</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="cs-score">0</div>
+      </div>
+    </div>
+    <!-- Hawkins Scale -->
+    <div style="padding:14px 18px 16px">
+      <div id="cs-scale" style="position:relative;height:8px;background:var(--b1);border-radius:4px;margin-bottom:22px;overflow:visible">
+        <div id="cs-fill" style="height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1);background:linear-gradient(to right,#6b7280,#9ca3af,#C9A96E);width:0%;position:relative;z-index:1"></div>
+        <div id="cs-marker" style="position:absolute;top:-18px;left:28.5%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:#C9A96E;white-space:nowrap">✦ Courage · 200</div>
+        <div style="position:absolute;top:0;bottom:0;left:28.5%;width:1px;background:rgba(201,169,110,.3)"></div>
+      </div>
+      <!-- Level labels -->
+      <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:var(--t4)">Shame</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:var(--t3)" id="cs-marker">▲ Courage</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:var(--t4)">Enlightenment</span>
+      </div>
+      <!-- Daily dots -->
+      <div id="cs-dots" style="display:flex;gap:4px;flex-wrap:wrap"></div>
+      <div style="margin-top:10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t2);line-height:1.6" id="cs-message">20 min/day · 30 days · real change.</div>
+    </div>
+  </div>
+
+  <!-- ══ BINAURAL SPOTLIGHT ══ -->
+  <div style="margin:0 14px 14px">
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase;margin-bottom:10px" id="bin-lbl">🎧 Binaural Beats · CIA Protocol</div>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none" id="binaural-strip">
+      <!-- filled by JS -->
+    </div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-top:6px;letter-spacing:.06em">Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research</div>
+  </div>
+
   <!-- Rest of content — natural flow -->
   <div class="home-content">
     <div class="prog-lbl" id="prog-lbl">Your progress</div>
@@ -611,7 +1013,7 @@ button{font-variant-emoji:text}
       </div>
       <div style="font-size:10px;color:var(--t3)">→</div>
     </div>
-    <div class="modes-lbl" id="modes-lbl">Choose a mode</div>
+    <div class="modes-lbl" id="modes-lbl" style="margin-top:8px">Choose a mode</div>
     <div class="grid">
       <button class="mode-card" onclick="openMode('sleep')">
         <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><circle cx="50" cy="50" r="40" stroke-width=".8" opacity=".44"/><circle cx="50" cy="50" r="27" stroke-width=".5" opacity=".27"/><circle cx="50" cy="50" r="14" stroke-width=".4" opacity=".17"/><circle cx="50" cy="50" r="4" fill="currentColor" opacity=".44"/></svg></div>
@@ -656,6 +1058,10 @@ button{font-variant-emoji:text}
       <a href="legal.html?from=home" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;display:inline-block;padding:6px 0">
         Privacy · Terms · echo.11 © 2026
       </a>
+    </div>
+    <!-- Re-show protocol -->
+    <div style="text-align:center;padding:0 14px 20px">
+      <button onclick="localStorage.removeItem('echo11_protocol_seen');location.reload()" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);background:none;border:none;cursor:pointer;padding:6px">↺ view pre-session protocol</button>
     </div>
     <div style="display:flex;align-items:center;gap:6px;padding:0 14px 4px">
       <span style="font-size:9px;letter-spacing:.18em;color:var(--t4);font-family:'DM Sans',sans-serif">text size</span>
@@ -707,6 +1113,31 @@ button{font-variant-emoji:text}
       </div>
       <div class="pl-fname" id="pl-name" style="font-size:16px;margin-bottom:3px">The Universe</div>
       <div id="pl-tagline" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.06em"></div>
+      <!-- Binaural ear detail -->
+      <div id="pl-ear-detail" style="display:none;margin-top:12px;background:var(--bg2);border:.5px solid var(--b1);border-radius:10px;padding:12px 14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="text-align:center;flex:1">
+            <div style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.25em;color:var(--t4);margin-bottom:4px">LEFT EAR</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="pl-ear-l">200</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:8px;color:var(--t4);letter-spacing:.1em">Hz</div>
+          </div>
+          <div style="text-align:center;padding:0 12px">
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-bottom:2px">=</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:var(--t3)" id="pl-ear-wave">Alpha</div>
+          </div>
+          <div style="text-align:center;flex:1">
+            <div style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.25em;color:var(--t4);margin-bottom:4px">RIGHT EAR</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="pl-ear-r">210</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:8px;color:var(--t4);letter-spacing:.1em">Hz</div>
+          </div>
+        </div>
+        <div style="border-top:.5px solid var(--b1);padding-top:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+          <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t3);letter-spacing:.06em">brain perceives</div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1)" id="pl-ear-beat">10 Hz</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t3)">·</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t3);letter-spacing:.06em" id="pl-ear-state">Alpha wave · relaxation</div>
+        </div>
+      </div>
     </div>
 
     <!-- ③ PLAY BUTTON — primary action, unmissable -->
@@ -805,7 +1236,7 @@ button{font-variant-emoji:text}
 <!-- SESSION COMPLETE -->
 <div id="complete" class="scr" style="overflow-y:auto">
   <div style="position:relative;height:42vh;min-height:240px;max-height:340px;overflow:hidden;flex-shrink:0">
-    <img src="img_complete.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
+    <img src="img_complete.png" alt="" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,18,16,.1) 0%,rgba(20,18,16,.45) 100%)"></div>
     <button onclick="show('home');renderStreak()" style="position:absolute;top:22px;left:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer" id="comp-back">← Back</button>
   </div>
@@ -841,7 +1272,7 @@ button{font-variant-emoji:text}
       </div>
     </div>
     <div style="position:absolute;bottom:14px;left:18px">
-      <div style="font-size:9px;letter-spacing:.28em;color:rgba(255,255,255,.6);text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.3)" id="lib-sub">21 frequencies · 3 categories</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:rgba(255,255,255,.6);text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.3)" id="lib-sub">21 frequencies · binaural · solfeggio · echo.11</div>
     </div>
   </div>
   <div class="lb-search">
@@ -1614,6 +2045,12 @@ function openPlayerDirect(fid){
   setTimeout(showOnboarding, 1000)
 }
 async function enterApp(){
+  // Show protocol on first visit, otherwise go straight in
+  const seen = localStorage.getItem('echo11_protocol_seen');
+  if(!seen){
+    showProtocol();
+    return;
+  }
   // Pre-init AudioContext on splash tap (iOS requires user gesture)
   try{
     if(!audioCtx||audioCtx.state==='closed')
@@ -1649,6 +2086,8 @@ async function enterApp(){
 function showHome(){
   show('home')
   renderStreak()
+  try{ renderConsciousnessCard() }catch(e){ console.warn('cs:',e) }
+  try{ renderBinauralStrip() }catch(e){ console.warn('bin:',e) }
   // Reset scroll to top
   const homeEl = document.getElementById('home')
   if(homeEl) homeEl.scrollTop = 0
@@ -1689,6 +2128,12 @@ function showHome(){
       initHomeScroll()
   })
 })();
+
+// Init consciousness + binaural on every page load
+document.addEventListener('DOMContentLoaded', ()=>{
+  try{ renderConsciousnessCard() }catch(e){}
+  try{ renderBinauralStrip() }catch(e){}
+})
 
 // Handle return from legal.html — skip splash if #home in URL
 if(window.location.hash==='#home'){
@@ -1850,6 +2295,22 @@ function renderPlayer(){
   }
   const typeEl=document.getElementById('pl-type')
   if(typeEl) typeEl.textContent=f.type==='binaural'?'🎧 Binaural':'🔊 Pure Tone'
+
+  // Show/hide ear detail panel
+  const earDetail=document.getElementById('pl-ear-detail')
+  if(earDetail){
+    if(f.type==='binaural'){
+      earDetail.style.display='block'
+      const waveNames={Gamma:'Gamma · focus & cognition',Alpha:'Alpha · relaxation & creativity',Theta:'Theta · deep meditation',Beta:'Beta · active focus',Delta:'Delta · deep sleep'}
+      const el=document.getElementById('pl-ear-l');    if(el) el.textContent=f.cL
+      const er=document.getElementById('pl-ear-r');    if(er) er.textContent=f.cR
+      const eb=document.getElementById('pl-ear-beat'); if(eb) eb.textContent=f.beat+' Hz'
+      const ew=document.getElementById('pl-ear-wave'); if(ew) ew.textContent=f.wave+' wave'
+      const es=document.getElementById('pl-ear-state'); if(es) es.textContent=waveNames[f.wave]||f.wave
+    } else {
+      earDetail.style.display='none'
+    }
+  }
   const audioTxt=document.getElementById('pl-audio-txt')
   if(audioTxt){
     const isHe2=lang==='he'
@@ -2000,27 +2461,321 @@ async function togglePlay(){
 function filterLib(q){ renderLibRows(q.trim()===''?FREQS:FREQS.filter(f=>{const t=f[lang]||f.en;return `${f.hz} ${t.name} ${t.sub}`.toLowerCase().includes(q.toLowerCase())})) }
 function buildLibrary(){ document.getElementById('lib-si').value=''; renderLibRows(FREQS) }
 function renderLibRows(list){
-  const cats=['science','solfeggio','echo11']
-  const lbls={science:{en:'Science',he:'מדע מוכח'},solfeggio:{en:'Solfeggio',he:'סולפג׳יו'},echo11:{en:'echo.11',he:'echo.11'}}
-  let html=''
-  cats.forEach(cat=>{
-    const g=list.filter(f=>f.cat===cat); if(!g.length) return
-    html+=`<div class="lb-grp"><div class="lb-gl">${lbls[cat][lang]}</div><div class="lb-gline"></div><div class="lb-gc">${g.length}</div></div>`
-    g.forEach(f=>{
-      const t=f[lang]||f.en,isP=!!audioNodes[f.id]
+  // Group: binaural first, then solfeggio, then echo11
+  const groups = [
+    {
+      key:'binaural',
+      label:{en:'🎧 Binaural Beats',he:'🎧 תדרים בינאורליים'},
+      note:{en:'Headphones required · two-channel brain entrainment',he:'נדרשות אוזניות · סנכרון מוחי דו-ערוצי'},
+      items: list.filter(f=>f.type==='binaural')
+    },
+    {
+      key:'solfeggio',
+      label:{en:'◯ Solfeggio & Tonal',he:'◯ סולפג׳יו ותדרים טונליים'},
+      note:{en:'No headphones needed · works on speakers too',he:'ללא אוזניות · עובד גם ברמקולים'},
+      items: list.filter(f=>f.type==='solfeggio')
+    },
+    {
+      key:'echo11',
+      label:{en:'∥ echo.11 Originals',he:'∥ echo.11 מקוריים'},
+      note:{en:'Unique echo.11 blends · binaural + solfeggio',he:'שילובים ייחודיים · בינאורלי + סולפג׳יו'},
+      items: list.filter(f=>f.cat==='echo11')
+    }
+  ];
+
+  let html='';
+  groups.forEach(group=>{
+    if(!group.items.length) return;
+    html+=`
+      <div style="padding:16px 16px 6px;border-top:.5px solid var(--b1);margin-top:4px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t2);font-weight:400">${group.label[lang]||group.label.en}</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4)">${group.items.length}</span>
+        </div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t4);letter-spacing:.06em">${group.note[lang]||group.note.en}</div>
+      </div>`;
+    group.items.forEach(f=>{
+      const t=f[lang]||f.en;
+      const isP=!!audioNodes[f.id];
+      const hpTag = f.type==='binaural'
+        ? `<span style="font-size:8px;letter-spacing:.1em;color:var(--t3);border:.5px solid var(--b2);border-radius:10px;padding:2px 7px">🎧 headphones</span>`
+        : `<span style="font-size:8px;letter-spacing:.1em;color:var(--t4)">🔊 speakers ok</span>`;
       html+=`<button class="lb-row" data-fid="${f.id}" onclick="openPlayer('${f.id}')">
         <div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--t1);opacity:0;transition:opacity .2s;border-radius:0 1px 1px 0" class="ra"></div>
-        <div class="lb-hc"><span class="lb-hv">${f.hz}</span><span class="lb-hu">Hz</span></div>
-        <div class="lb-mid"><div class="lb-nm">${t.name}</div><div class="lb-sb">${t.sub} · ${f.type==='binaural'?'🎧 Binaural':f.noHp?'🔊':'🔊'}</div></div>
+        <div class="lb-hc"><span class="lb-hv" style="font-size:18px">${f.hz}</span><span class="lb-hu">Hz</span></div>
+        <div class="lb-mid">
+          <div class="lb-nm" style="font-size:14px;margin-bottom:3px">${t.name}</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3);margin-bottom:5px">${t.sub}</div>
+          ${hpTag}
+        </div>
         <div class="lb-r">${isP?'<div class="pl-dot"></div>':''}<span class="lb-arr">›</span></div>
-      </button>`
-    })
-  })
-  document.getElementById('lib-rows').innerHTML=html
+      </button>`;
+    });
+  });
+
+  document.getElementById('lib-rows').innerHTML=html;
   document.querySelectorAll('.lb-row').forEach(r=>{
     r.addEventListener('mouseenter',()=>{const a=r.querySelector('.ra');if(a)a.style.opacity='1'})
     r.addEventListener('mouseleave',()=>{const a=r.querySelector('.ra');if(a)a.style.opacity='0'})
   })
+}
+
+// ═══════════════════════════════════
+// CONSCIOUSNESS JOURNEY
+// ═══════════════════════════════════
+const HAWKINS = [
+  {score:0,   name:'Shame',      nameHe:'בושה',        color:'#374151'},
+  {score:20,  name:'Guilt',      nameHe:'אשמה',        color:'#4b5563'},
+  {score:30,  name:'Apathy',     nameHe:'אדישות',      color:'#6b7280'},
+  {score:50,  name:'Grief',      nameHe:'אבל',         color:'#78716c'},
+  {score:75,  name:'Fear',       nameHe:'פחד',         color:'#92400e'},
+  {score:100, name:'Desire',     nameHe:'תשוקה',       color:'#b45309'},
+  {score:125, name:'Anger',      nameHe:'כעס',         color:'#c2410c'},
+  {score:150, name:'Pride',      nameHe:'גאווה',       color:'#b45309'},
+  {score:200, name:'Courage ✦',  nameHe:'אומץ ✦',     color:'#C9A96E'},
+  {score:250, name:'Neutrality', nameHe:'ניטרליות',    color:'#a3a3a3'},
+  {score:310, name:'Willingness',nameHe:'נכונות',      color:'#d1d5db'},
+  {score:350, name:'Acceptance', nameHe:'קבלה',        color:'#e5e7eb'},
+  {score:400, name:'Reason',     nameHe:'שכל',         color:'#f3f4f6'},
+  {score:500, name:'Love',       nameHe:'אהבה',        color:'#fde68a'},
+  {score:540, name:'Joy',        nameHe:'שמחה',        color:'#fef3c7'},
+  {score:600, name:'Peace',      nameHe:'שלום',        color:'#ffffff'},
+  {score:700, name:'Enlightenment',nameHe:'הארה',      color:'#ffffff'},
+];
+
+function getConsciousnessData(){
+  const sessions = loadSessions();
+  const keys = Object.keys(sessions).sort();
+  let totalDays = 0, streak = 0, lastDate = null;
+  const today = getTodayKey();
+
+  // Count days with 20+ min listening
+  keys.forEach(k => {
+    const mins = Math.round((sessions[k].total||0)/60);
+    if(mins >= 20){
+      totalDays++;
+      // check streak
+      if(!lastDate){
+        streak = 1;
+      } else {
+        const prev = new Date(lastDate.replace(/-/g,'/'));
+        const curr = new Date(k.replace(/-/g,'/'));
+        const diff = (curr - prev) / (1000*60*60*24);
+        if(diff <= 1) streak++;
+        else streak = 1;
+      }
+      lastDate = k;
+    }
+  });
+
+  // Score: each qualifying day = +20 points (maps toward Courage at day 10 = 200)
+  const score = Math.min(700, totalDays * 20);
+  const level = HAWKINS.slice().reverse().find(h => score >= h.score) || HAWKINS[0];
+  const pct = Math.min(100, (score / 700) * 100);
+
+  return { score, level, pct, totalDays, streak };
+}
+
+function renderConsciousnessCard(){
+  const { score, level, pct, totalDays, streak } = getConsciousnessData();
+
+  const scoreEl = document.getElementById('cs-score');
+  const nameEl  = document.getElementById('cs-level-name');
+  const fillEl  = document.getElementById('cs-fill');
+  const dayEl   = document.getElementById('cs-day-label');
+  const msgEl   = document.getElementById('cs-message');
+  const dotsEl  = document.getElementById('cs-dots');
+  const markerEl= document.getElementById('cs-marker');
+
+  if(scoreEl) scoreEl.textContent = score;
+  if(nameEl)  nameEl.textContent  = lang==='he' ? level.nameHe : level.name;
+  if(fillEl)  fillEl.style.width  = pct + '%';
+  if(dayEl)   dayEl.textContent   = `day ${totalDays} / 30`;
+
+  // Marker position
+  if(markerEl){
+    const courage200pct = (200/700*100).toFixed(1);
+    markerEl.style.cssText = `
+      position:absolute;top:-18px;
+      left:${courage200pct}%;
+      transform:translateX(-50%);
+      font-family:'DM Sans',sans-serif;
+      font-size:8px;letter-spacing:.1em;
+      color:#C9A96E;white-space:nowrap;
+    `;
+    if(fillEl) fillEl.style.background = score >= 200
+      ? 'linear-gradient(to right,#6b7280,#C9A96E,#fde68a)'
+      : 'linear-gradient(to right,#6b7280,#9ca3af,#C9A96E)';
+  }
+
+  // Message
+  if(msgEl){
+    const daysLeft = Math.max(0, 30 - totalDays);
+    if(totalDays === 0)
+      msgEl.textContent = lang==='he'
+        ? '20 דקות ביום · 30 יום · שינוי אמיתי. תתחיל היום.'
+        : '20 min/day · 30 days · real change. Start today.';
+    else if(score >= 200)
+      msgEl.textContent = lang==='he'
+        ? `✦ הגעת לתדר האומץ! ${daysLeft} ימים נותרו לסיום המסע.`
+        : `✦ You reached the Courage frequency! ${daysLeft} days remaining.`;
+    else
+      msgEl.textContent = lang==='he'
+        ? `${daysLeft} ימים לתדר ה-200 — האומץ. ${streak} ימי רצף.`
+        : `${10 - Math.min(10, totalDays)} days to Courage (200). ${streak}-day streak.`;
+  }
+
+  // Dots — 30 days
+  if(dotsEl){
+    const sessions = loadSessions();
+    let html = '';
+    for(let i=0; i<30; i++){
+      const d = new Date(); d.setDate(d.getDate() - (29-i));
+      const k = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+      const mins = Math.round(((sessions[k]||{}).total||0)/60);
+      const done = mins >= 20;
+      const today2 = i === 29;
+      html += `<div style="width:10px;height:10px;border-radius:2px;
+        background:${done ? '#C9A96E' : 'var(--b1)'};
+        border:${today2 ? '.5px solid var(--t3)' : 'none'};
+        flex-shrink:0;transition:background .3s"></div>`;
+    }
+    dotsEl.innerHTML = html;
+  }
+}
+
+// ═══════════════════════════════════
+// BINAURAL STRIP
+// ═══════════════════════════════════
+function renderBinauralStrip(){
+  const strip = document.getElementById('binaural-strip');
+  if(!strip) return;
+  const binaurals = FREQS.filter(f => f.type === 'binaural');
+  strip.innerHTML = binaurals.map(f => {
+    const t = f[lang] || f.en;
+    return `<button onclick="openPlayer('${f.id}')" style="
+      flex-shrink:0;
+      background:var(--card);
+      border:.5px solid var(--b1);
+      border-radius:14px;
+      padding:14px 16px;
+      min-width:120px;
+      text-align:left;
+      cursor:pointer;
+      font-family:inherit;
+      transition:all .2s;
+    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t1);line-height:1;margin-bottom:4px">${f.hz}<span style="font-size:10px;color:var(--t3);font-family:'DM Sans',sans-serif;letter-spacing:.1em">Hz</span></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t2);margin-bottom:2px">${t.name}</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);letter-spacing:.06em">${f.wave} wave</div>
+    </button>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// PROTOCOL SCREEN
+// ═══════════════════════════════════
+function showProtocol(){
+  const el = document.getElementById('protocol');
+  const splash = document.getElementById('splash');
+  if(!el) return;
+  if(splash) splash.style.display = 'none';
+  el.classList.add('on');
+  requestAnimationFrame(()=>{ el.classList.add('visible'); });
+
+  // Build nav dots
+  const sections = el.querySelectorAll('.pr-section');
+  const dotsEl = document.getElementById('pr-dots');
+  if(dotsEl){
+    dotsEl.innerHTML = '';
+    sections.forEach((_,i)=>{
+      const btn = document.createElement('button');
+      btn.className = 'pr-dot';
+      btn.addEventListener('click',()=>{
+        sections[i].scrollIntoView({behavior:'smooth'});
+      });
+      dotsEl.appendChild(btn);
+    });
+  }
+
+  // IntersectionObserver for section activation
+  const dots = el.querySelectorAll('.pr-dot');
+  const progEl = document.getElementById('pr-prog');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('pr-active');
+        const idx = parseInt(entry.target.getAttribute('data-pr')||'0');
+        dots.forEach(d=>d.classList.remove('active'));
+        if(dots[idx]) dots[idx].classList.add('active');
+      }
+    });
+  },{threshold:0.4});
+
+  sections.forEach(s=>observer.observe(s));
+
+  // Parallax on scroll
+  let ticking = false;
+  el.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const scrollY = el.scrollTop;
+        const winH = el.clientHeight;
+        const docH = el.scrollHeight - winH;
+        if(progEl) progEl.style.width = Math.min(100, scrollY/docH*100)+'%';
+        sections.forEach(sec=>{
+          const bg = sec.querySelector('.pr-bg');
+          if(!bg) return;
+          const rect = sec.getBoundingClientRect();
+          const progress = -(rect.top) / (rect.height + winH);
+          bg.style.transform = `translate3d(0,${progress*90}px,0)`;
+        });
+        ticking = false;
+      });
+      ticking = true;
+    }
+  },{passive:true});
+
+  // Activate first section
+  setTimeout(()=>{ if(sections[0]) sections[0].classList.add('pr-active'); }, 200);
+}
+
+function enterFromProtocol(){
+  localStorage.setItem('echo11_protocol_seen','1');
+  const el = document.getElementById('protocol');
+  if(el){ el.style.transition='opacity .6s ease'; el.style.opacity='0'; }
+  setTimeout(()=>{
+    if(el) el.classList.remove('on');
+    _doEnterApp();
+  }, 650);
+}
+
+function skipProtocol(){
+  localStorage.setItem('echo11_protocol_seen','1');
+  const el = document.getElementById('protocol');
+  if(el){ el.style.transition='opacity .4s ease'; el.style.opacity='0'; }
+  setTimeout(()=>{
+    if(el) el.classList.remove('on');
+    _doEnterApp();
+  }, 420);
+}
+
+async function _doEnterApp(){
+  // Resume AudioContext
+  try{
+    if(!audioCtx||audioCtx.state==='closed')
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+  }catch(e){}
+  gtag&&gtag('event','app_enter',{event_category:'engagement'});
+  const splash = document.getElementById('splash');
+  if(splash){ splash.style.transition='opacity .4s'; splash.style.opacity='0'; }
+  setTimeout(()=>{
+    if(splash) splash.style.display='none';
+    try{ renderStreak(); }catch(e){}
+    showHome();
+    setTimeout(showOnboarding, 800);
+  }, 420);
 }
 
 // Theme / Lang
