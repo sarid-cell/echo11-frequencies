@@ -28,7 +28,7 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <link rel="manifest" href="manifest.json"/>
 <title>echo.11 · frequencies</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#F5F0E8;--bg2:#EDE8DC;--card:#FDFAF5;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672}
@@ -546,7 +546,7 @@ button{font-variant-emoji:text}
 
 /* Typography — echo11 style */
 .pr-eyebrow{
-  font-family:'DM Sans',sans-serif;
+  font-family:'Space Mono',monospace;
   font-size:9px;letter-spacing:.45em;
   color:rgba(245,243,238,.25);
   margin-bottom:18px;text-transform:uppercase;
@@ -571,8 +571,8 @@ button{font-variant-emoji:text}
 
 /* Step cards */
 .pr-code{
-  font-family:'DM Sans',sans-serif;
-  font-size:9px;letter-spacing:.4em;
+  font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:.4em;
   color:rgba(245,243,238,.25);
   margin-bottom:12px;
   display:flex;align-items:center;gap:12px;
@@ -622,6 +622,7 @@ button{font-variant-emoji:text}
   51%{transform:scaleY(1);transform-origin:bottom}
   100%{transform:scaleY(0);transform-origin:bottom}
 }
+@keyframes glowPulse{0%,100%{opacity:0.4}50%{opacity:1}}
 .pr-scroll-hint span{
   font-family:'DM Sans',sans-serif;
   font-size:8px;letter-spacing:.35em;
@@ -716,13 +717,13 @@ button{font-variant-emoji:text}
 
   <!-- 0: Intro -->
   <div class="pr-section" data-pr="0">
-    <div class="pr-bg" style="background-image:url('astronaut.jpg');background-position:center 20%"></div>
+    <div class="pr-bg" style="background-image:url('astronaut.png');background-position:center 20%"></div>
     <div class="pr-content">
-      <div class="pr-eyebrow">echo.11 · pre-session protocol</div>
-      <div class="pr-display">before<br>you<br><em>enter.</em></div>
-      <div class="pr-sub-he">לפני שנכנסים לשדה — יש להכין את הגוף, המוח והנשמה.</div>
+      <div class="pr-eyebrow">echo11 · pre-session protocol · classified</div>
+      <div class="pr-display" style="font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(40px,13vw,76px);line-height:0.9;letter-spacing:0.03em;font-style:normal">PRE-<br>SESSION<br>PROTOCOL</div>
+      <div class="pr-sub-he" style="font-size:clamp(17px,5vw,22px)">לפני שנכנסים לשדה —<br>יש להכין את הגוף, המוח והנשמה.</div>
       <div class="pr-divider"></div>
-      <div class="pr-body">six steps. two minutes. everything changes.</div>
+      <div class="pr-body">six steps before initiating your echo11 session.<br>scroll down to begin.</div>
     </div>
     <div class="pr-scroll-hint"><span>scroll</span><div class="pr-scroll-line"></div></div>
   </div>
@@ -739,72 +740,121 @@ button{font-variant-emoji:text}
     </div>
   </div>
 
-  <!-- 2: Step 01 -->
+  <!-- 2: Binaural Viz -->
   <div class="pr-section" data-pr="2">
+    <div class="pr-bg" style="background-image:url('img-s4.png');background-position:center 40%"></div>
+    <div class="pr-content" style="max-width:540px">
+      <div class="pr-eyebrow">how it works · איך זה עובד</div>
+      <div class="pr-display" style="font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(26px,8vw,40px);direction:rtl">מה קורה<br>במוח?</div>
+
+      <div style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:22px 18px 18px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px">
+          <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 12px;text-align:center">
+            <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.3em;color:rgba(255,255,255,0.3);margin-bottom:8px">LEFT EAR · אוזן שמאל</div>
+            <div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px">200<span style="font-size:12px">Hz</span></div>
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3)">carrier frequency</div>
+            <div style="margin-top:10px;width:100%;height:28px;overflow:hidden"><canvas id="prWaveL" height="28"></canvas></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 4px">
+            <div style="font-size:20px;color:rgba(255,255,255,0.2)">→</div>
+            <div style="font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,0.2);letter-spacing:0.2em;text-align:center">BRAIN<br>SYNTH</div>
+            <div style="font-size:20px;color:rgba(255,255,255,0.2)">←</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 12px;text-align:center">
+            <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.3em;color:rgba(255,255,255,0.3);margin-bottom:8px">RIGHT EAR · אוזן ימין</div>
+            <div style="font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px">210<span style="font-size:12px">Hz</span></div>
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,0.3)">carrier frequency</div>
+            <div style="margin-top:10px;width:100%;height:28px;overflow:hidden"><canvas id="prWaveR" height="28"></canvas></div>
+          </div>
+        </div>
+        <div style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:14px 12px;text-align:center;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(180,200,255,0.08),transparent 70%);animation:glowPulse 3s ease-in-out infinite"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.35em;color:rgba(255,255,255,0.3);margin-bottom:6px;position:relative;z-index:1">BRAIN PERCEIVES · המוח תופס</div>
+          <div style="font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:#fff;line-height:1;margin-bottom:3px;position:relative;z-index:1;text-shadow:0 0 20px rgba(180,200,255,0.6)">10 Hz</div>
+          <div style="font-size:15px;font-weight:700;color:rgba(180,200,255,0.8);position:relative;z-index:1;margin-bottom:8px">גל אלפא — Alpha Wave</div>
+          <div style="position:relative;z-index:1;width:100%;height:36px;overflow:hidden"><canvas id="prWaveResult" height="36"></canvas></div>
+        </div>
+      </div>
+
+      <div class="pr-what-body">שתי אוזניות שומעות תדרים שונים — המוח מחשב את ה<strong style="color:rgba(245,243,238,.85)">הפרש</strong> ביניהם ומייצר תדר פנימי. 200Hz + 210Hz = גל פנימי של <strong style="color:rgba(245,243,238,.85)">10Hz בדיוק</strong>. זהו תדר אלפא — מצב שנקשר להרפיה עמוקה, יצירתיות וכניסה למדיטציה.</div>
+      <div class="pr-what-body"><strong style="color:rgba(245,243,238,.85)">מה תשמעי?</strong> לא מוסיקה — <strong style="color:rgba(245,243,238,.85)">צליל נקי, יציב ומנוסר</strong>. כמו צליל סינוסואידלי עם פעימה עדינה. זה נורמלי לגמרי — זה עצמו הטיפול.</div>
+
+      <div style="margin-top:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.3em;color:rgba(255,255,255,0.3);margin-bottom:12px;text-transform:uppercase">TIMELINE · כמה זמן לצפות</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.35);flex-shrink:0"></div><div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);direction:rtl;flex:1">מרגישים את הפעימה הבינאורלית</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);flex-shrink:0">1–2 min</div></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);flex-shrink:0"></div><div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);direction:rtl;flex:1">הגוף מתחיל להירגע, הנשימה מאטה</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);flex-shrink:0">3–5 min</div></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:6px;height:6px;border-radius:50%;background:rgba(180,200,255,0.7);flex-shrink:0"></div><div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);direction:rtl;flex:1">כניסה למצב אלפא — מדיטציה עמוקה</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);flex-shrink:0">8–12 min</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:6px;height:6px;border-radius:50%;background:rgba(180,200,255,0.9);flex-shrink:0"></div><div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);direction:rtl;flex:1">שינוי מצב הכרה מורחב</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);flex-shrink:0">15–20 min</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3: Step 01 -->
+  <div class="pr-section" data-pr="3">
     <div class="pr-bg" style="background-image:url('img-s1.png');background-position:center 25%"></div>
     <div class="pr-content">
       <div class="pr-code">01 / 06</div>
-      <div class="pr-title">Head-<br>phones</div>
+      <div class="pr-title" style="font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase">HEAD-<br>PHONES</div>
       <div class="pr-title-he">אוזניות</div>
       <div class="pr-body">For binaural beats: stereo headphones only. Other echo.11 frequencies work without.</div>
       <div class="pr-body-he">לתדרים בינאורליים: אוזניות סטריאו בלבד. לשאר התדרים — גם בלי.</div>
     </div>
   </div>
 
-  <!-- 3: Step 02 -->
-  <div class="pr-section" data-pr="3">
+  <!-- 4: Step 02 -->
+  <div class="pr-section" data-pr="4">
     <div class="pr-bg" style="background-image:url('img-s2.png');background-position:center 20%"></div>
     <div class="pr-content">
       <div class="pr-code">02 / 06</div>
-      <div class="pr-title">Environ-<br>ment</div>
+      <div class="pr-title" style="font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase">ENVIRON-<br>MENT</div>
       <div class="pr-title-he">סביבה</div>
       <div class="pr-body">Quiet. Darkened. Devices silenced. This is your launchpad.</div>
       <div class="pr-body-he">שקט. חשוך. מכשירים מושתקים. זהו בסיס השיגור שלך.</div>
     </div>
   </div>
 
-  <!-- 4: Step 03 -->
-  <div class="pr-section" data-pr="4">
+  <!-- 5: Step 03 -->
+  <div class="pr-section" data-pr="5">
     <div class="pr-bg" style="background-image:url('img-s3.png');background-position:center 30%"></div>
     <div class="pr-content">
       <div class="pr-code">03 / 06</div>
-      <div class="pr-title">Body<br>Position</div>
+      <div class="pr-title" style="font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase">BODY<br>POSITION</div>
       <div class="pr-title-he">תנוחת הגוף</div>
       <div class="pr-body">Lie flat or sit upright — both work. Loosen clothing. Let your body settle.</div>
       <div class="pr-body-he">שכב שטוח או שב זקוף — שניהם עובדים. שחרר את הבגדים.</div>
     </div>
   </div>
 
-  <!-- 5: Step 04 -->
-  <div class="pr-section" data-pr="5">
+  <!-- 6: Step 04 -->
+  <div class="pr-section" data-pr="6">
     <div class="pr-bg" style="background-image:url('img-s4.png');background-position:center 40%"></div>
     <div class="pr-content">
       <div class="pr-code">04 / 06</div>
-      <div class="pr-title">Resonant<br>Tuning</div>
+      <div class="pr-title" style="font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase">RESONANT<br>TUNING</div>
       <div class="pr-title-he">כיוון רזוננס</div>
       <div class="pr-body">Inhale deeply. Exhale — hum until breath runs out. Three times.</div>
       <div class="pr-body-he">שאף עמוק. נשוף — זמזם עד שנגמרת הנשימה. שלוש פעמים.</div>
     </div>
   </div>
 
-  <!-- 6: Step 05 -->
-  <div class="pr-section" data-pr="6">
+  <!-- 7: Step 05 -->
+  <div class="pr-section" data-pr="7">
     <div class="pr-bg" style="background-image:url('img-s5.png');background-position:center 20%"></div>
     <div class="pr-content">
       <div class="pr-code">05 / 06</div>
-      <div class="pr-title">Release</div>
+      <div class="pr-title" style="font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase">RELEASE</div>
       <div class="pr-title-he">שחרור</div>
       <div class="pr-body">Scan body from feet to crown. Find tension. Breathe into it. Release.</div>
       <div class="pr-body-he">סרוק מהרגליים לקודקוד. מצא מתח. נשום אליו. שחרר.</div>
     </div>
   </div>
 
-  <!-- 7: Step 06 + CTA -->
-  <div class="pr-section" data-pr="7">
+  <!-- 8: Step 06 + CTA -->
+  <div class="pr-section" data-pr="8">
     <div class="pr-bg" style="background-image:url('img-cta.png');background-position:center 25%"></div>
     <div class="pr-content" style="max-width:none">
       <div class="pr-code">06 / 06</div>
-      <div class="pr-title">Set<br>Intention</div>
+      <div class="pr-title" style="font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase">SET<br>INTENTION</div>
       <div class="pr-title-he">כוונה</div>
       <div class="pr-body" style="margin-bottom:32px">Before entering — decide what you seek. State it silently. The field responds to direction.</div>
       <div class="pr-cta-pre">— you are ready —</div>
@@ -2046,11 +2096,9 @@ function openPlayerDirect(fid){
 }
 async function enterApp(){
   // Show protocol on first visit, otherwise go straight in
-  const seen = localStorage.getItem('echo11_protocol_seen');
-  if(!seen){
-    showProtocol();
-    return;
-  }
+  // Always show protocol on every visit
+  showProtocol();
+  return;
   // Pre-init AudioContext on splash tap (iOS requires user gesture)
   try{
     if(!audioCtx||audioCtx.state==='closed')
@@ -2683,6 +2731,37 @@ function showProtocol(){
   el.classList.add('on');
   requestAnimationFrame(()=>{ el.classList.add('visible'); });
 
+  // Binaural wave animations
+  function drawPrWave(canvasId, freq, color, amp){
+    const cv = document.getElementById(canvasId);
+    if(!cv) return;
+    const ctx = cv.getContext('2d');
+    cv.width = (cv.offsetWidth||200) * (window.devicePixelRatio||1);
+    cv.height = (canvasId==='prWaveResult'?36:28) * (window.devicePixelRatio||1);
+    ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+    const w = cv.offsetWidth||200, h = canvasId==='prWaveResult'?18:14;
+    let phase = 0;
+    function frame(){
+      ctx.clearRect(0,0,w,canvasId==='prWaveResult'?36:28);
+      ctx.beginPath();
+      for(let x=0;x<=w;x++){
+        const y = h + Math.sin((x/w)*Math.PI*freq + phase) * amp;
+        x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      phase += 0.06;
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+  setTimeout(()=>{
+    drawPrWave('prWaveL', 4, 'rgba(255,255,255,0.35)', 8);
+    drawPrWave('prWaveR', 5, 'rgba(255,255,255,0.35)', 8);
+    drawPrWave('prWaveResult', 1.5, 'rgba(180,200,255,0.6)', 12);
+  }, 300);
+
   // Build nav dots
   const sections = el.querySelectorAll('.pr-section');
   const dotsEl = document.getElementById('pr-dots');
@@ -2741,7 +2820,6 @@ function showProtocol(){
 }
 
 function enterFromProtocol(){
-  localStorage.setItem('echo11_protocol_seen','1');
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .6s ease'; el.style.opacity='0'; }
   setTimeout(()=>{
@@ -2751,7 +2829,6 @@ function enterFromProtocol(){
 }
 
 function skipProtocol(){
-  localStorage.setItem('echo11_protocol_seen','1');
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .4s ease'; el.style.opacity='0'; }
   setTimeout(()=>{
