@@ -3,131 +3,77 @@
 > *A solitary figure. A white desert. An unknown planet.*
 > *This is where healing begins.*
 
+![echo.11 Astronaut](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/astronaut-image.jpg)
+*(Replace the link above with the actual path to your astronaut image file in the repository)*
+
 ---
 
-## what is echo.11
+## What is echo.11
 
-echo.11 is a science-backed sound therapy web app built for people who need to find quiet in the noise.
+echo.11 is a science-backed sound therapy web application architected for cognitive focus and nervous system regulation. It translates complex neuro-biological concepts into a minimalist, accessible user experience[cite: 1].
 
-22 healing frequencies. Real binaural beats. A nervous system that remembers every session.
+**22 healing frequencies. Real binaural beats. A nervous system that remembers.**
 
 Not music. Not meditation.  
 **Structured sound — for a disordered world.**
 
 ---
 
-## the astronaut
+## The Science: How it Works · איך זה עובד
 
-The visual identity of echo.11 is a lone figure in a white spacesuit, walking alone through an alien desert of sand and salt.
+### מה קורה במוח? | What happens in the brain?
+שתי אוזניות שומעות תדרים שונים — המוח מחשב את ההפרש ביניהם ומייצר תדר פנימי. 200Hz + 210Hz = גל פנימי של 10Hz בדיוק. זהו תדר אלפא — מצב שנקשר להרפיה עמוקה, יצירתיות וכניסה למדיטציה.[cite: 1]
 
-She is not lost.  
-She chose to be here.
+*Two ears hear different frequencies — your brain calculates the difference between them and produces an internal tone. 200Hz + 210Hz = an internal wave of exactly 10Hz. This is an alpha wave — a state linked to deep relaxation, creativity, and entry into meditation.*[cite: 1]
 
+מה תשמעי? לא מוסיקה — צליל נקי, יציב ומנוסר. כמו צליל סינוסואידלי עם פעימה עדינה. זה נורמלי לגמרי — זה עצמו הטיפול.[cite: 1]
+
+*What will you hear? Not music — a clean, steady, ringing tone. Like a pure sine wave with a soft pulse. This is completely normal — the tone itself is the treatment.*[cite: 1]
+
+---
+
+## The Astronaut
+
+The visual identity of echo.11 follows a **Tech-Noir** aesthetic: a lone figure in a white spacesuit, walking through an alien desert of sand and salt.
+
+She is not lost. She chose to be here.
 This is the metaphor of echo.11 — finding your own frequency, far from the noise of the world.
 
 ---
 
-## 22 frequencies · 3 categories
+## Key Features
 
-```
-A · Science          MIT-proven · EEG-verified · Peer-reviewed
-B · Solfeggio        Ancient scales · 174 Hz → 963 Hz
-C · echo.11          Original blends · Born from personal discovery
-```
-
-**Featured:**
-
-| Hz | Name | Use |
-|---|---|---|
-| 432 | The Universe | Deep sleep · Alignment |
-| 528 | The Love | Heart healing · DNA |
-| 111 | The Echo | echo.11 home frequency |
-| 40  | Gamma MIT | Focus · Brain health |
+*   **Brain State Engine:** Real-time updates on nervous system response (e.g., "Parasympathetic system activating" after 90 seconds)[cite: 1].
+*   **Binaural Precision:** Accurate L/R stereo separation using the Web Audio API.
+*   **Minimalist Architecture:** Zero dependencies, high-end visual language, and "quiet" UI.
+*   **Intentionality:** "Set Intention" protocol before every session.
+    *   *Before entering — decide what you seek. State it silently. The field responds to direction.*
+    *   *לפני הכניסה — החליטי מה את מחפשת. הצהירי על כך בשקט. השדה מגיב לכוונה.*[cite: 1]
 
 ---
 
-## technology
+## Technical Stack
 
-- **Web Audio API** — real binaural L/R stereo separation
-- **localStorage** — tracks every session, builds real streak
-- **Canvas API** — live wave animations that respond to listening
-- **Brain State engine** — shows what's happening in your nervous system in real time
-- **Zero dependencies** — single HTML file, no frameworks, no build step
-
----
-
-## screens
-
-```
-Splash  →  Home  →  Player  →  Library
-                ↘  Legal
-```
-
-**Splash** — full-bleed astronaut image · particle starfield · enter
-
-**Home** — 7-day real streak · today's frequency · 4 modes
-
-**Player** — wave animation · compass timer · brain state · binaural info
-
-**Library** — all 22 frequencies · search · 3 categories
+*   **Core:** Vanilla JS, HTML5, CSS3 (No frameworks, just frequency).
+*   **Audio:** Web Audio API for real-time frequency generation.
+*   **Visuals:** Canvas API for dynamic wave animations.
+*   **Storage:** localStorage for session tracking and user streaks.
 
 ---
 
-## brain state engine
+## Creator
 
-The most unique feature of echo.11.
+**Shira Sarid**
+*Strategist & Product Architect*
+Specializing in the intersection of Generative AI and Consumer Psychology.
 
-While you listen, the app shows exactly what is happening in your nervous system — updated in real time, based on elapsed listening time.
-
-```
-0:00  →  "Your nervous system will begin to respond within 90 seconds."
-0:30  →  "The brainstem is beginning to entrain to the rhythm."
-1:30  →  "Parasympathetic system activating. Heart rate naturally slowing."
-5:00  →  "Natural recovery processes are now active."
-```
-
-No other sound app does this.
+[LinkedIn](https://www.linkedin.com/in/shira-sarid/) · [Substack](https://shirasarid.substack.com/)
 
 ---
 
-## legal & accessibility
+## Legal
 
-- Privacy Policy — no personal data collected. ever.
-- Accessibility Statement — WCAG 2.1 AA · Israeli Law Amendment 35
-- Terms of Use — medical disclaimer · IP protection · Israeli law
-
-All documents available at `/legal.html` in two languages.
-
----
-
-## stack
-
-```
-HTML · CSS · Vanilla JS
-Web Audio API · Canvas API · localStorage
-Hosted on Vercel · Source on GitHub
-```
-
-No React. No Node. No database.  
-Just a file and a frequency.
-
----
-
-## creator
-
-**Shira Sarid**  
-Israel · 2024–2026
-
-echo11frequencies@gmail.com
-
----
-
-## legal
-
-© 2024–2026 Shira Sarid / echo.11  
-All content, design, frequencies, and visual identity are protected.  
-The echo.11 name, logo (‖ ‖), and astronaut identity may not be reproduced without written permission.
-
----
+© 2024–2026 Shira Sarid / echo.11[cite: 1]
+All content, design, frequencies, and visual identity are protected. The echo.11 name, logo (‖ ‖), and astronaut identity may not be reproduced without written permission.
 
 *‖ ‖ tune your mind*
