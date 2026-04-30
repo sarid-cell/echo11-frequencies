@@ -3,8 +3,7 @@
 > *A solitary figure. A white desert. An unknown planet.*
 > *This is where healing begins.*
 
-![echo.11 Astronaut](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/astronaut-image.jpg)
-
+img-s1.png
 ---
 
 ## What is echo.11
