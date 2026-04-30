@@ -4,6 +4,7 @@
 > *This is where healing begins.*
 
 ![echo.11 Astronaut](https://raw.githubusercontent.com/sarid-cell/echo11-frequencies/main/astronaut.jpg)
+
 ---
 
 ## What is echo.11
@@ -65,7 +66,7 @@ This is the metaphor of echo.11 — finding your own frequency, far from the noi
 *Strategist & Product Architect*
 Specializing in the intersection of Generative AI and Consumer Psychology.
 
-[LinkedIn](https://www.linkedin.com/in/shira-sarid/) · [Substack](https://shirasarid.substack.com/)
+[LinkedIn](https://www.linkedin.com/in/shirasarid/) · [Substack](https://shirasarid.substack.com/)
 
 ---
 
