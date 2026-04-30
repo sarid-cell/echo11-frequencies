@@ -3,7 +3,7 @@
 > *A solitary figure. A white desert. An unknown planet.*
 > *This is where healing begins.*
 
-img-s1.png
+![echo.11 Astronaut](https://raw.githubusercontent.com/sarid-cell/echo11-frequencies/main/astronaut.jpg)
 ---
 
 ## What is echo.11
