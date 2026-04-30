@@ -4,7 +4,6 @@
 > *This is where healing begins.*
 
 ![echo.11 Astronaut](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/astronaut-image.jpg)
-*(Replace the link above with the actual path to your astronaut image file in the repository)*
 
 ---
 
