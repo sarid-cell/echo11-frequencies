@@ -884,7 +884,15 @@ button{font-variant-emoji:text}
 <div id="splash">
   <canvas class="sp-cv" id="splashCv"></canvas>
   <div class="sp-img-wrap">
-    <img class="sp-img" src="astronaut.jpg" alt="echo.11 · a figure walking through an alien desert" onerror="this.style.display='none'"/>
+    <picture>
+      <source srcset="astronaut.webp" type="image/webp">
+      <img class="sp-img" 
+           src="astronaut.jpg" 
+           alt="echo.11 · a figure walking through an alien desert" 
+           fetchpriority="high" 
+           loading="eager"
+           onerror="this.style.display='none'"/>
+    </picture>
   </div>
   <div class="sp-top"></div><div class="sp-bot"></div>
   <div class="sp-ui">
