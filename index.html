@@ -474,13 +474,58 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 <style>
 /* Hide Vercel toolbar */
 vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{display:none!important;visibility:hidden!important}
-/* Force play icon to render as text, not emoji */
 .play-icon{font-style:normal;font-variant-emoji:text}
 button{font-variant-emoji:text}
 
-/* ═══════════════════════════════════
+/* --- echo.11 Glassmorphism Layer --- */
+:root {
+  --glass-bg: rgba(20, 20, 24, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(20px) saturate(140%);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.mode-card, 
+.streak-card, 
+#consciousness-card, 
+.brain-state, 
+.lb-search, 
+.lb-row,
+.card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--glass-shadow) !important;
+  transition: transform 0.3s ease, border-color 0.3s ease !important;
+}
+
+.mode-card:hover, .streak-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.sp-btn, .home-hero-cta, .pr-cta-btn, .pl-play {
+  background: rgba(201, 169, 110, 0.9) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50px !important;
+  color: #1a1208 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: all 0.3s ease !important;
+}
+
+.sp-btn:hover, .home-hero-cta:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ===================================
    PROTOCOL SCREEN
-═══════════════════════════════════ */
+   =================================== */
 #protocol{
   position:fixed;inset:0;z-index:9000;
   background:#0e0d0c;
