@@ -477,139 +477,50 @@ vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{dis
 .play-icon{font-style:normal;font-variant-emoji:text}
 button{font-variant-emoji:text}
 
-/* ============================================================
-   echo.11 · Light Glass v2 · Adapts to Light/Dark mode
-   Works WITH existing images and video.
-   Keeps text readable. Doesn't break performance.
-   ============================================================ */
-
+/* --- echo.11 Glassmorphism Layer --- */
 :root {
-  /* Light mode glass — soft white with strong blur */
-  --glass-tint: rgba(255, 255, 255, 0.55);
-  --glass-tint-hover: rgba(255, 255, 255, 0.72);
-  --glass-edge: rgba(255, 255, 255, 0.45);
-  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  --glass-shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.08);
-  --glass-shadow-strong: 0 8px 28px rgba(0, 0, 0, 0.14);
-  --glass-blur-strong: blur(22px) saturate(170%);
-  --glass-blur-soft: blur(14px) saturate(140%);
+  --glass-bg: rgba(20, 20, 24, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(20px) saturate(140%);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
 }
 
-/* Dark mode — automatically applied when .dark class is on body */
-body.dark, .dark {
-  --glass-tint: rgba(20, 22, 28, 0.50);
-  --glass-tint-hover: rgba(30, 34, 42, 0.65);
-  --glass-edge: rgba(255, 255, 255, 0.10);
-  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --glass-shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.30);
-  --glass-shadow-strong: 0 8px 28px rgba(0, 0, 0, 0.45);
-}
-
-/* ─── Cards: Mode, Streak, Consciousness, Brain State, Library rows ─── */
-.mode-card,
-.streak-card,
-#consciousness-card,
-.brain-state,
-.lb-search,
+.mode-card, 
+.streak-card, 
+#consciousness-card, 
+.brain-state, 
+.lb-search, 
 .lb-row,
-#quick-relief-card,
 .card {
-  background: var(--glass-tint) !important;
-  backdrop-filter: var(--glass-blur-strong) !important;
-  -webkit-backdrop-filter: var(--glass-blur-strong) !important;
-  border: 1px solid var(--glass-edge) !important;
-  border-radius: 18px !important;
-  box-shadow: var(--glass-shadow-soft), var(--glass-inner) !important;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease !important;
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--glass-shadow) !important;
+  transition: transform 0.3s ease, border-color 0.3s ease !important;
 }
 
-.mode-card:hover,
-.streak-card:hover,
-#consciousness-card:hover,
-#quick-relief-card:hover {
-  background: var(--glass-tint-hover) !important;
-  box-shadow: var(--glass-shadow-strong), var(--glass-inner) !important;
+.mode-card:hover, .streak-card:hover {
   transform: translateY(-2px) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
-/* Library rows — full width, less rounded */
-.lb-row {
-  border-radius: 12px !important;
-  margin-bottom: 6px !important;
-}
-
-/* ─── Primary CTAs: Splash, Hero, Protocol, Play button ─── */
-.sp-btn,
-.home-hero-cta,
-.pr-cta-btn,
-.pl-play {
-  background: rgba(201, 169, 110, 0.92) !important;
-  backdrop-filter: blur(8px) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(140%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+.sp-btn, .home-hero-cta, .pr-cta-btn, .pl-play {
+  background: rgba(201, 169, 110, 0.9) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 50px !important;
   color: #1a1208 !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  box-shadow: 0 4px 16px rgba(201, 169, 110, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
   transition: all 0.3s ease !important;
 }
 
-.sp-btn:hover,
-.home-hero-cta:hover,
-.pr-cta-btn:hover,
-.pl-play:hover {
-  background: rgba(255, 255, 255, 0.95) !important;
-  color: #1a1208 !important;
+.sp-btn:hover, .home-hero-cta:hover {
+  background: rgba(255, 255, 255, 1) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
-}
-
-/* Stop mode — keeps glass treatment but darker */
-.pl-play.stop-mode {
-  background: rgba(26, 26, 24, 0.85) !important;
-  color: #f5f4f0 !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-}
-
-/* ─── Mobile fallback for browsers without backdrop-filter ─── */
-@supports not (backdrop-filter: blur(20px)) {
-  .mode-card,
-  .streak-card,
-  #consciousness-card,
-  .brain-state,
-  .lb-search,
-  .lb-row,
-  #quick-relief-card,
-  .card {
-    background: rgba(255, 255, 255, 0.92) !important;
-  }
-  body.dark .mode-card,
-  body.dark .streak-card,
-  body.dark #consciousness-card,
-  body.dark .brain-state,
-  body.dark .lb-search,
-  body.dark .lb-row,
-  body.dark #quick-relief-card,
-  body.dark .card {
-    background: rgba(20, 22, 28, 0.92) !important;
-  }
-}
-
-/* ─── Reduced motion preference ─── */
-@media (prefers-reduced-motion: reduce) {
-  .mode-card,
-  .streak-card,
-  #consciousness-card,
-  .brain-state,
-  .lb-row,
-  .sp-btn,
-  .home-hero-cta,
-  .pr-cta-btn,
-  .pl-play {
-    transition: none !important;
-  }
 }
 
 /* ===================================
@@ -1217,34 +1128,31 @@ body.dark, .dark {
       </div>
       <div style="font-size:10px;color:var(--t3)">→</div>
     </div>
-    <div class="modes-lbl" id="modes-lbl" style="margin-top:8px">Choose a mode</div>
-    <div class="grid">
-      <button class="mode-card" onclick="openMode('sleep')">
-        <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><circle cx="50" cy="50" r="40" stroke-width=".8" opacity=".44"/><circle cx="50" cy="50" r="27" stroke-width=".5" opacity=".27"/><circle cx="50" cy="50" r="14" stroke-width=".4" opacity=".17"/><circle cx="50" cy="50" r="4" fill="currentColor" opacity=".44"/></svg></div>
-        <div class="card-nm" id="m-sleep">Sleep</div>
-        <div class="card-cnt" id="m-sleepc">2 frequencies</div>
-        <div class="card-desc" id="m-sleep-d">calm your nervous system</div>
-      </button>
-      <button class="mode-card" onclick="openMode('healing')">
-        <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><path d="M10 50 Q25 28 40 50 Q55 72 70 50 Q85 28 90 50" stroke-width=".9" opacity=".5" stroke-linecap="round"/><path d="M10 62 Q25 40 40 62 Q55 84 70 62 Q85 40 90 62" stroke-width=".5" opacity=".22" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="currentColor" opacity=".4"/></svg></div>
-        <div class="card-nm" id="m-heal">Healing</div>
-        <div class="card-cnt" id="m-healc">8 frequencies</div>
-        <div class="card-desc" id="m-heal-d">restore &amp; release</div>
-      </button>
-      <button class="mode-card" onclick="openMode('focus')">
-        <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><rect x="10" y="10" width="80" height="80" stroke-width=".8" opacity=".44"/><rect x="24" y="24" width="52" height="52" stroke-width=".5" opacity=".27"/><rect x="38" y="38" width="24" height="24" stroke-width=".4" opacity=".17"/><rect x="46" y="46" width="8" height="8" fill="currentColor" opacity=".44"/></svg></div>
-        <div class="card-nm" id="m-focus">Focus</div>
-        <div class="card-cnt" id="m-focusc">7 frequencies</div>
-        <div class="card-desc" id="m-focus-d">clear the noise</div>
-      </button>
-      <button class="mode-card" onclick="openMode('abundance')">
-        <div class="geo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor"><polygon points="50,6 94,50 50,94 6,50" stroke-width=".8" opacity=".44"/><polygon points="50,22 78,50 50,78 22,50" stroke-width=".5" opacity=".27"/><circle cx="50" cy="50" r="4" fill="currentColor" opacity=".44"/></svg></div>
-        <div class="card-nm" id="m-abund">Abundance</div>
-        <div class="card-cnt" id="m-abundc">4 frequencies</div>
-        <div class="card-desc" id="m-abund-d">align &amp; attract</div>
+    <!-- Library CTA — single, clear, beautiful -->
+    <div style="margin:8px 14px 16px">
+      <button id="lib-link" onclick="showLibrary()" style="
+        width:100%;
+        padding:24px 22px;
+        background:var(--card);
+        border:.5px solid var(--b1);
+        border-radius:18px;
+        cursor:pointer;
+        font-family:inherit;
+        text-align:left;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:14px;
+        transition:all .25s;
+      " onmouseover="this.style.borderColor='var(--b2)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,.08)'" onmouseout="this.style.borderColor='var(--b1)';this.style.transform='translateY(0)';this.style.boxShadow='none'">
+        <div style="flex:1">
+          <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase;margin-bottom:6px" id="lib-cta-lbl">Explore the Library</div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:200;color:var(--t1);line-height:1.2;margin-bottom:4px" id="lib-cta-title">21 frequencies. 4 moods.</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.04em" id="lib-cta-sub">Sleep · Healing · Focus · Abundance</div>
+        </div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:200;color:var(--t2);flex-shrink:0">→</div>
       </button>
     </div>
-    <button class="lib-link" id="lib-link" onclick="showLibrary()">← Full Library · 21 Frequencies</button>
     <div style="text-align:center;padding:6px 14px 14px">
       <a href="legal.html?from=home#access" style="display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;padding:6px 0">
         <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;display:block">
@@ -1483,6 +1391,86 @@ body.dark, .dark {
     <span style="font-size:12px;color:var(--t4)">⌕</span>
     <input class="lb-si" id="lib-si" placeholder="Search frequencies..." oninput="filterLib(this.value)"/>
   </div>
+
+  <!-- Mood Filter Pills — relocated from home page -->
+  <div id="mood-filters" style="display:flex;gap:8px;padding:8px 14px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none">
+    <button class="mood-pill on" data-mood="all" onclick="filterByMood('all',this)" style="
+      flex-shrink:0;
+      font-family:'DM Sans',sans-serif;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      padding:8px 16px;
+      border-radius:50px;
+      border:.5px solid var(--t1);
+      background:var(--t1);
+      color:var(--bg);
+      cursor:pointer;
+      transition:all .2s;
+      font-weight:400;
+    " id="mood-all">All</button>
+    <button class="mood-pill" data-mood="sleep" onclick="filterByMood('sleep',this)" style="
+      flex-shrink:0;
+      font-family:'DM Sans',sans-serif;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      padding:8px 16px;
+      border-radius:50px;
+      border:.5px solid var(--b2);
+      background:var(--card);
+      color:var(--t2);
+      cursor:pointer;
+      transition:all .2s;
+      font-weight:300;
+    " id="mood-sleep">◯ Sleep</button>
+    <button class="mood-pill" data-mood="healing" onclick="filterByMood('healing',this)" style="
+      flex-shrink:0;
+      font-family:'DM Sans',sans-serif;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      padding:8px 16px;
+      border-radius:50px;
+      border:.5px solid var(--b2);
+      background:var(--card);
+      color:var(--t2);
+      cursor:pointer;
+      transition:all .2s;
+      font-weight:300;
+    " id="mood-healing">∿ Healing</button>
+    <button class="mood-pill" data-mood="focus" onclick="filterByMood('focus',this)" style="
+      flex-shrink:0;
+      font-family:'DM Sans',sans-serif;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      padding:8px 16px;
+      border-radius:50px;
+      border:.5px solid var(--b2);
+      background:var(--card);
+      color:var(--t2);
+      cursor:pointer;
+      transition:all .2s;
+      font-weight:300;
+    " id="mood-focus">□ Focus</button>
+    <button class="mood-pill" data-mood="abundance" onclick="filterByMood('abundance',this)" style="
+      flex-shrink:0;
+      font-family:'DM Sans',sans-serif;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      padding:8px 16px;
+      border-radius:50px;
+      border:.5px solid var(--b2);
+      background:var(--card);
+      color:var(--t2);
+      cursor:pointer;
+      transition:all .2s;
+      font-weight:300;
+    " id="mood-abundance">◇ Abundance</button>
+  </div>
+
   <div class="lb-scroll" id="lib-rows"></div>
 </div>
 
@@ -2391,6 +2379,16 @@ function showLibrary(){
     if(subEl) subEl.textContent=lang==='he'?'21 תדרים · 3 קטגוריות':'21 frequencies · 3 categories'
     const libBack=document.getElementById('lib-back')
     if(libBack) libBack.textContent=lang==='he'?'← חזרה':'← Back'
+    // Reset mood pills to "All"
+    activeMood='all'
+    document.querySelectorAll('.mood-pill').forEach(p=>{
+      const isAll=p.getAttribute('data-mood')==='all'
+      p.style.background=isAll?'var(--t1)':'var(--card)'
+      p.style.color=isAll?'var(--bg)':'var(--t2)'
+      p.style.borderColor=isAll?'var(--t1)':'var(--b2)'
+      p.style.fontWeight=isAll?'400':'300'
+      p.classList.toggle('on',isAll)
+    })
   },50)
 }
 
@@ -2405,6 +2403,16 @@ function openMode(mode){
   buildLibrary()
   show('library')
   setTimeout(()=>{
+    // Update mood pills — activate the matching one
+    activeMood=mode
+    document.querySelectorAll('.mood-pill').forEach(p=>{
+      const isActive=p.getAttribute('data-mood')===mode
+      p.style.background=isActive?'var(--t1)':'var(--card)'
+      p.style.color=isActive?'var(--bg)':'var(--t2)'
+      p.style.borderColor=isActive?'var(--t1)':'var(--b2)'
+      p.style.fontWeight=isActive?'400':'300'
+      p.classList.toggle('on',isActive)
+    })
     // Filter rows — show only this mode
     let count=0
     document.querySelectorAll('.lb-row').forEach(r=>{
@@ -2662,6 +2670,31 @@ async function togglePlay(){
 // Library
 function filterLib(q){ renderLibRows(q.trim()===''?FREQS:FREQS.filter(f=>{const t=f[lang]||f.en;return `${f.hz} ${t.name} ${t.sub}`.toLowerCase().includes(q.toLowerCase())})) }
 function buildLibrary(){ document.getElementById('lib-si').value=''; renderLibRows(FREQS) }
+
+// ── Mood filter pills ────────────────────────────────────────
+let activeMood = 'all'
+function filterByMood(mood, btn){
+  activeMood = mood
+  // Update pill visual state
+  document.querySelectorAll('.mood-pill').forEach(p=>{
+    const isActive = p.getAttribute('data-mood') === mood
+    p.style.background = isActive ? 'var(--t1)' : 'var(--card)'
+    p.style.color = isActive ? 'var(--bg)' : 'var(--t2)'
+    p.style.borderColor = isActive ? 'var(--t1)' : 'var(--b2)'
+    p.style.fontWeight = isActive ? '400' : '300'
+    p.classList.toggle('on', isActive)
+  })
+  // Filter library rows
+  if(mood === 'all'){
+    renderLibRows(FREQS)
+  } else {
+    const filtered = FREQS.filter(f => f.mode === mood)
+    renderLibRows(filtered)
+  }
+  // Clear search
+  const si = document.getElementById('lib-si')
+  if(si) si.value = ''
+}
 function renderLibRows(list){
   // Group: binaural first, then solfeggio, then echo11
   const groups = [
@@ -3055,6 +3088,20 @@ function setLang(l){
   document.querySelectorAll('.pl-tab').forEach((t,i)=>{ t.textContent=lang==='he'?['מה זה?','מחקר','מתאים ל','תחושה'][i]:['What is it?','Research','Ideal for','How it feels'][i] })
   document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['3 דק','8 דק','20 דק','60 דק','∞'][i]:['3 min','8 min','20 min','60 min','∞'][i] })
   renderPlayer(); buildLibrary()
+  // Update Library CTA on home
+  const isHe=lang==='he'
+  const lcLbl=document.getElementById('lib-cta-lbl')
+  if(lcLbl) lcLbl.textContent=isHe?'הספרייה המלאה':'Explore the Library'
+  const lcTitle=document.getElementById('lib-cta-title')
+  if(lcTitle) lcTitle.textContent=isHe?'21 תדרים. 4 מצבים.':'21 frequencies. 4 moods.'
+  const lcSub=document.getElementById('lib-cta-sub')
+  if(lcSub) lcSub.textContent=isHe?'שינה · ריפוי · ריכוז · שפע':'Sleep · Healing · Focus · Abundance'
+  // Update mood pills
+  const moodMap={all:{en:'All',he:'הכל'},sleep:{en:'◯ Sleep',he:'◯ שינה'},healing:{en:'∿ Healing',he:'∿ ריפוי'},focus:{en:'□ Focus',he:'□ ריכוז'},abundance:{en:'◇ Abundance',he:'◇ שפע'}}
+  document.querySelectorAll('.mood-pill').forEach(p=>{
+    const m=p.getAttribute('data-mood')
+    const t=moodMap[m]; if(t) p.textContent=isHe?t.he:t.en
+  })
   // Update all lang toggle buttons text
   const isHeL=lang==='he'
     // Update all lang pill buttons — active state
