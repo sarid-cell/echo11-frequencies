@@ -996,6 +996,29 @@ button{font-variant-emoji:text}
     <div class="hdr-r">
       <button class="pill lang-pill" id="lang-en" onclick="setLang('en')" style="font-size:10px;padding:5px 10px">EN</button><button class="pill lang-pill" id="lang-he" onclick="setLang('he')" style="font-size:10px;padding:5px 10px">עב</button>
       <button class="pill" id="dark-h" onclick="toggleDark()">◐ Dark</button>
+      <!-- Profile icon button -->
+      <button id="profile-btn" onclick="showProfile()" aria-label="Profile" style="
+        background:var(--card);
+        border:.5px solid var(--b1);
+        border-radius:50%;
+        width:34px;
+        height:34px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        padding:0;
+        transition:all .2s;
+        margin-left:4px;
+      " onmouseover="this.style.borderColor='var(--b2)';this.style.transform='scale(1.05)'" onmouseout="this.style.borderColor='var(--b1)';this.style.transform='scale(1)'">
+        <span id="profile-avatar-mini" style="
+          font-family:'DM Sans',sans-serif;
+          font-size:11px;
+          font-weight:500;
+          letter-spacing:.05em;
+          color:var(--t1);
+        ">+</span>
+      </button>
     </div>
   </nav>
 
@@ -1532,6 +1555,234 @@ button{font-variant-emoji:text}
 
   <!-- Session history list -->
   <div style="padding:20px 18px 60px" id="hist-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PROFILE SCREEN — Local Profile (rmA)
+═══════════════════════════════════ -->
+<div id="profile" class="scr" style="overflow-y:auto;overflow-x:hidden">
+
+  <!-- Top nav -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:calc(20px + env(safe-area-inset-top)) 22px 14px">
+    <button class="pl-back" onclick="show('home');renderStreak()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3);background:none;border:none;cursor:pointer">← Back</button>
+    <button onclick="editProfile()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t3);background:none;border:.5px solid var(--b2);border-radius:50px;padding:6px 14px;cursor:pointer" id="prof-edit-btn">Edit</button>
+  </div>
+
+  <!-- Avatar + Greeting -->
+  <div style="text-align:center;padding:20px 22px 28px;display:flex;flex-direction:column;align-items:center;gap:14px;position:relative">
+    <!-- Avatar circle -->
+    <div id="profile-avatar" style="
+      width:80px;height:80px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#a78bfa 0%,#7c6ee0 100%);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'DM Sans',sans-serif;
+      font-size:24px;font-weight:400;color:#fff;
+      letter-spacing:.05em;
+      box-shadow:0 6px 24px rgba(167,139,250,.25);
+    ">+</div>
+    <!-- Sparkle indicator -->
+    <div style="position:absolute;top:46px;right:38%;width:24px;height:24px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;box-shadow:0 2px 8px rgba(16,185,129,.4)">✦</div>
+    <!-- Name + tagline -->
+    <div>
+      <div id="prof-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1);margin-bottom:5px;line-height:1">Hi, Beautiful Soul</div>
+      <div id="prof-sub" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.16em;text-transform:lowercase">Your quiet space is here</div>
+    </div>
+  </div>
+
+  <!-- Today's Affirmation -->
+  <div style="margin:0 22px 14px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px 20px;text-align:center">
+    <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:10px">
+      <span style="color:#ec4899;font-size:13px">♡</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase" id="prof-aff-lbl">Today's Affirmation</span>
+    </div>
+    <div id="prof-affirmation" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.5">"Your sensitivity is your superpower"</div>
+  </div>
+
+  <!-- Quiet moments stat -->
+  <div style="margin:0 22px 22px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#10b981"></span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-month-lbl">This month</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:5px">
+      <span id="prof-month-count" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t1)">0</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3)" id="prof-month-unit">quiet moments</span>
+    </div>
+  </div>
+
+  <!-- Your Healing Tones -->
+  <div style="margin:0 22px 22px">
+    <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
+      <span style="color:#ec4899;font-size:13px">♡</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;color:var(--t1)" id="prof-tones-lbl">Your Healing Tones</span>
+    </div>
+    <div id="prof-tones-list" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+
+  <!-- 4 Action Cards Grid -->
+  <div style="margin:0 22px 22px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <!-- Mood Log -->
+    <button onclick="show('history');setTimeout(buildHistory,50)" style="
+      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
+      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      transition:all .2s;
+    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:14px">📅</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-moodlog-title">Mood Log</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-moodlog-sub">Track your emotional journey</div>
+    </button>
+    <!-- Downloads -->
+    <button onclick="alert('Downloads coming soon')" style="
+      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
+      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      transition:all .2s;
+    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(59,130,246,.12);display:flex;align-items:center;justify-content:center;color:#3b82f6;font-size:14px">↓</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-dl-title">Downloads</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-dl-sub">Your saved healing tones</div>
+    </button>
+    <!-- Support -->
+    <button onclick="alert('Support: hello@echo11.space')" style="
+      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
+      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      transition:all .2s;
+    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(20,184,166,.12);display:flex;align-items:center;justify-content:center;color:#14b8a6;font-size:14px">💬</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-supp-title">Support</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-supp-sub">We're here to help</div>
+    </button>
+    <!-- Settings -->
+    <button onclick="openSettings()" style="
+      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
+      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      transition:all .2s;
+    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:14px">⚙</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-set-title">Settings</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-set-sub">Personalize your sanctuary</div>
+    </button>
+  </div>
+
+  <!-- Sign Out -->
+  <div style="margin:0 22px 18px">
+    <button onclick="signOutGently()" style="
+      width:100%;
+      padding:14px;
+      background:var(--card);
+      border:.5px solid var(--b2);
+      border-radius:50px;
+      font-family:'DM Sans',sans-serif;
+      font-size:11px;
+      font-weight:300;
+      letter-spacing:.16em;
+      color:var(--t2);
+      cursor:pointer;
+      transition:all .2s;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    " id="prof-signout">→ Sign Out Gently</button>
+  </div>
+
+  <!-- Footer line -->
+  <div style="text-align:center;padding:14px 22px 40px;border-top:.5px solid var(--b1);margin:0 22px">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12px;font-weight:200;font-style:italic;color:var(--t4)" id="prof-footer">A space to return to. Always.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     EDIT PROFILE MODAL
+═══════════════════════════════════ -->
+<div id="prof-modal" style="display:none;position:fixed;inset:0;background:rgba(20,18,16,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:9500;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--bg);border-radius:20px;padding:28px 24px;max-width:380px;width:100%;border:.5px solid var(--b1);box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:6px" id="prof-modal-title">Tell us your name</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);text-align:center;margin-bottom:24px;letter-spacing:.04em" id="prof-modal-sub">It's how we'll greet you</div>
+
+    <!-- Name input -->
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:6px" id="prof-modal-name-lbl">Your Name</label>
+      <input type="text" id="prof-input-name" placeholder="Beautiful Soul" style="
+        width:100%;
+        padding:13px 16px;
+        background:var(--card);
+        border:.5px solid var(--b2);
+        border-radius:10px;
+        font-family:'DM Sans',sans-serif;
+        font-size:14px;
+        color:var(--t1);
+        outline:none;
+        transition:border-color .2s;
+      " onfocus="this.style.borderColor='var(--t3)'" onblur="this.style.borderColor='var(--b2)'"/>
+    </div>
+
+    <!-- Avatar color picker -->
+    <div style="margin-bottom:24px">
+      <label style="display:block;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:8px" id="prof-modal-color-lbl">Avatar Color</label>
+      <div id="color-pickers" style="display:flex;gap:10px;justify-content:center"></div>
+    </div>
+
+    <!-- Buttons -->
+    <div style="display:flex;gap:10px">
+      <button onclick="closeProfileModal()" style="
+        flex:1;padding:13px;background:none;border:.5px solid var(--b2);
+        border-radius:10px;font-family:'DM Sans',sans-serif;font-size:11px;
+        letter-spacing:.16em;color:var(--t2);cursor:pointer;
+      " id="prof-modal-cancel">Cancel</button>
+      <button onclick="saveProfile()" style="
+        flex:1;padding:13px;background:var(--t1);color:var(--bg);
+        border:none;border-radius:10px;font-family:'DM Sans',sans-serif;
+        font-size:11px;letter-spacing:.16em;cursor:pointer;font-weight:400;
+      " id="prof-modal-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SETTINGS MODAL
+═══════════════════════════════════ -->
+<div id="settings-modal" style="display:none;position:fixed;inset:0;background:rgba(20,18,16,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:9500;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--bg);border-radius:20px;padding:28px 24px;max-width:380px;width:100%;border:.5px solid var(--b1);box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:24px" id="settings-title">Settings</div>
+
+    <!-- Language -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
+      <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="settings-lang-lbl">Language</span>
+      <div style="display:flex;gap:6px">
+        <button class="pill lang-pill" onclick="setLang('en')" style="font-size:10px;padding:5px 10px">EN</button>
+        <button class="pill lang-pill" onclick="setLang('he')" style="font-size:10px;padding:5px 10px">עב</button>
+      </div>
+    </div>
+
+    <!-- Theme -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
+      <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="settings-theme-lbl">Theme</span>
+      <button class="pill" onclick="toggleDark()" id="settings-dark-btn">◐ Dark</button>
+    </div>
+
+    <!-- Reset Data -->
+    <div style="padding:18px 0 6px">
+      <button onclick="if(confirm('Reset all your listening data?')){localStorage.clear();location.reload()}" style="
+        width:100%;padding:13px;background:none;border:.5px solid var(--b2);
+        border-radius:10px;font-family:'DM Sans',sans-serif;font-size:11px;
+        letter-spacing:.16em;color:var(--t3);cursor:pointer;
+      " id="settings-reset">↺ Reset all data</button>
+    </div>
+
+    <!-- Close -->
+    <div style="margin-top:14px">
+      <button onclick="closeSettingsModal()" style="
+        width:100%;padding:13px;background:var(--t1);color:var(--bg);
+        border:none;border-radius:10px;font-family:'DM Sans',sans-serif;
+        font-size:11px;letter-spacing:.16em;cursor:pointer;font-weight:400;
+      " id="settings-close">Close</button>
+    </div>
+  </div>
 </div>
 
 <!-- Headphone toast — shown when binaural plays without headphones -->
@@ -2273,11 +2524,314 @@ async function enterApp(){
   showHome()
   setTimeout(showOnboarding, 800)
 }
+// ═══════════════════════════════════
+// PROFILE SYSTEM — Local Profile (rmA)
+// ═══════════════════════════════════
+const PROFILE_KEY = 'echo11_profile'
+const AVATAR_GRADIENTS = [
+  {id:'violet', g:'linear-gradient(135deg,#a78bfa 0%,#7c6ee0 100%)'},
+  {id:'rose',   g:'linear-gradient(135deg,#f9a8d4 0%,#ec4899 100%)'},
+  {id:'sky',    g:'linear-gradient(135deg,#7dd3fc 0%,#3b82f6 100%)'},
+  {id:'emerald',g:'linear-gradient(135deg,#86efac 0%,#10b981 100%)'},
+  {id:'amber',  g:'linear-gradient(135deg,#fcd34d 0%,#C9A96E 100%)'},
+  {id:'slate',  g:'linear-gradient(135deg,#cbd5e1 0%,#475569 100%)'},
+]
+const AFFIRMATIONS = [
+  {en:'"Your sensitivity is your superpower"',                he:'"הרגישות שלך היא הכוח העל שלך"'},
+  {en:'"You are exactly where you need to be"',               he:'"את בדיוק במקום הנכון"'},
+  {en:'"Your nervous system remembers safety"',               he:'"מערכת העצבים שלך זוכרת ביטחון"'},
+  {en:'"Healing is not linear. Your pace is sacred"',         he:'"הריפוי אינו קווי. הקצב שלך קדוש"'},
+  {en:'"You are allowed to take up space"',                   he:'"מותר לך לתפוס מקום"'},
+  {en:'"Rest is also progress"',                              he:'"מנוחה היא גם התקדמות"'},
+  {en:'"Your stillness is a form of strength"',               he:'"השקט שלך הוא צורה של עוצמה"'},
+  {en:'"You came to your body. That is everything"',          he:'"חזרת לגוף שלך. זה הכל"'},
+]
+
+function loadProfile(){
+  try{
+    const p = JSON.parse(localStorage.getItem(PROFILE_KEY)||'null')
+    return p || { name:'', avatarColor:'violet', createdAt:Date.now() }
+  } catch(e){ return { name:'', avatarColor:'violet', createdAt:Date.now() } }
+}
+
+function saveProfileData(profile){
+  try{ localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)) } catch(e){}
+}
+
+function getInitials(name){
+  if(!name) return '+'
+  const parts = name.trim().split(/\s+/)
+  if(parts.length === 1) return parts[0].slice(0,2).toUpperCase()
+  return (parts[0][0] + parts[parts.length-1][0]).toUpperCase()
+}
+
+function getAvatarGradient(colorId){
+  return AVATAR_GRADIENTS.find(g => g.id === colorId)?.g || AVATAR_GRADIENTS[0].g
+}
+
+function getTodayAffirmation(){
+  // Pick based on day of year so it changes daily
+  const day = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000)
+  return AFFIRMATIONS[day % AFFIRMATIONS.length]
+}
+
+function getMonthlyMomentsCount(){
+  const sessions = loadSessions()
+  const now = new Date()
+  const ym = `${now.getFullYear()}-${now.getMonth()+1}`
+  return Object.keys(sessions).filter(k => k.startsWith(ym) && (sessions[k].total||0) >= 60).length
+}
+
+function showProfile(){
+  show('profile')
+  renderProfile()
+  // If first time, open edit modal
+  const p = loadProfile()
+  if(!p.name){
+    setTimeout(editProfile, 400)
+  }
+}
+
+function renderProfile(){
+  const isHe = lang === 'he'
+  const p = loadProfile()
+  const sessions = loadSessions()
+
+  // Update mini avatar in nav
+  const miniAvatar = document.getElementById('profile-avatar-mini')
+  const profileBtn = document.getElementById('profile-btn')
+  if(miniAvatar){
+    miniAvatar.textContent = getInitials(p.name)
+    if(p.name && profileBtn){
+      profileBtn.style.background = getAvatarGradient(p.avatarColor)
+      miniAvatar.style.color = '#fff'
+    }
+  }
+
+  // Avatar
+  const avatar = document.getElementById('profile-avatar')
+  if(avatar){
+    avatar.style.background = getAvatarGradient(p.avatarColor)
+    avatar.textContent = getInitials(p.name)
+  }
+
+  // Name greeting
+  const nameEl = document.getElementById('prof-name')
+  if(nameEl){
+    if(p.name){
+      nameEl.textContent = isHe ? `שלום, ${p.name}` : `Hi, ${p.name}`
+    } else {
+      nameEl.textContent = isHe ? 'שלום, נשמה יפה' : 'Hi, Beautiful Soul'
+    }
+  }
+
+  // Sub label
+  const subEl = document.getElementById('prof-sub')
+  if(subEl) subEl.textContent = isHe ? 'המרחב השקט שלך כאן' : 'Your quiet space is here'
+
+  // Affirmation
+  const affLbl = document.getElementById('prof-aff-lbl')
+  if(affLbl) affLbl.textContent = isHe ? 'אישור היום' : "Today's Affirmation"
+  const affEl = document.getElementById('prof-affirmation')
+  if(affEl){
+    const aff = getTodayAffirmation()
+    affEl.textContent = isHe ? aff.he : aff.en
+  }
+
+  // Monthly count
+  const monthCount = getMonthlyMomentsCount()
+  const monthCountEl = document.getElementById('prof-month-count')
+  if(monthCountEl) monthCountEl.textContent = monthCount
+  const monthLbl = document.getElementById('prof-month-lbl')
+  if(monthLbl) monthLbl.textContent = isHe ? 'החודש' : 'This month'
+  const monthUnit = document.getElementById('prof-month-unit')
+  if(monthUnit) monthUnit.textContent = isHe ? 'רגעים שקטים' : 'quiet moments'
+
+  // Healing tones — last 3 listened
+  const tonesLbl = document.getElementById('prof-tones-lbl')
+  if(tonesLbl) tonesLbl.textContent = isHe ? 'התדרים שלך' : 'Your Healing Tones'
+  const tonesList = document.getElementById('prof-tones-list')
+  if(tonesList){
+    const recent = []
+    Object.keys(sessions).sort((a,b)=>b.localeCompare(a)).forEach(date => {
+      const day = sessions[date]
+      Object.keys(day.freqs||{}).forEach(fid => {
+        if(!recent.find(r => r.id === fid)){
+          const f = FREQS.find(x => x.id === fid)
+          if(f) recent.push({ id:fid, freq:f, date })
+        }
+      })
+    })
+    const top3 = recent.slice(0,3)
+    if(top3.length === 0){
+      tonesList.innerHTML = `<div style="text-align:center;padding:18px;background:var(--card);border:.5px dashed var(--b2);border-radius:12px;font-family:'Cormorant Garamond',Georgia,serif;font-size:13px;font-weight:200;font-style:italic;color:var(--t3)">${isHe?'התדרים שתאזיני להם יופיעו כאן':'frequencies you listen to will appear here'}</div>`
+    } else {
+      const colors = [
+        {bg:'linear-gradient(90deg,rgba(16,185,129,.18),rgba(20,184,166,.08))', border:'rgba(16,185,129,.3)'},
+        {bg:'linear-gradient(90deg,rgba(167,139,250,.18),rgba(124,110,224,.08))', border:'rgba(167,139,250,.3)'},
+        {bg:'linear-gradient(90deg,rgba(201,169,110,.18),rgba(184,148,90,.08))', border:'rgba(201,169,110,.3)'},
+      ]
+      tonesList.innerHTML = top3.map((r,i) => {
+        const t = r.freq[lang] || r.freq.en
+        const c = colors[i] || colors[0]
+        const today = getTodayKey()
+        const yest = (()=>{ const d=new Date(); d.setDate(d.getDate()-1); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}` })()
+        const dateLabel = r.date === today ? (isHe?'היום':'Today')
+                        : r.date === yest ? (isHe?'אתמול':'Yesterday')
+                        : (()=>{const [y,m,d]=r.date.split('-');return isHe?`לפני ${Math.floor((Date.now()-new Date(y,m-1,d))/86400000)} ימים`:`${Math.floor((Date.now()-new Date(y,m-1,d))/86400000)} days ago`})()
+        return `<button onclick="openPlayer('${r.id}')" style="
+          width:100%;
+          background:${c.bg};
+          border:.5px solid ${c.border};
+          border-radius:12px;
+          padding:14px 18px;
+          display:flex;align-items:center;justify-content:space-between;
+          cursor:pointer;font-family:inherit;text-align:left;
+          transition:transform .2s;
+        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--t1);letter-spacing:.16em;margin-bottom:4px;text-transform:uppercase">${(t.name||'').split(' ').slice(0,2).join(' ')}</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t2)">${r.freq.hz}Hz</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+            <span style="color:#fbbf24;font-size:13px">★</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3)">${dateLabel}</span>
+          </div>
+        </button>`
+      }).join('')
+    }
+  }
+
+  // Translations for action cards
+  const labels = {
+    'prof-moodlog-title': {en:'Mood Log', he:'יומן מצבי רוח'},
+    'prof-moodlog-sub':   {en:'Track your emotional journey', he:'עקבי אחר המסע הרגשי שלך'},
+    'prof-dl-title':      {en:'Downloads', he:'הורדות'},
+    'prof-dl-sub':        {en:'Your saved healing tones', he:'התדרים השמורים שלך'},
+    'prof-supp-title':    {en:'Support', he:'תמיכה'},
+    'prof-supp-sub':      {en:"We're here to help", he:'אנחנו כאן בשבילך'},
+    'prof-set-title':     {en:'Settings', he:'הגדרות'},
+    'prof-set-sub':       {en:'Personalize your sanctuary', he:'התאם את המקדש שלך'},
+    'prof-signout':       {en:'→ Sign Out Gently', he:'← התנתק בעדינות'},
+    'prof-footer':        {en:'A space to return to. Always.', he:'מקום לחזור אליו. תמיד.'},
+    'prof-edit-btn':      {en:'Edit', he:'ערוך'},
+  }
+  Object.keys(labels).forEach(id => {
+    const el = document.getElementById(id)
+    if(el) el.textContent = isHe ? labels[id].he : labels[id].en
+  })
+}
+
+function editProfile(){
+  const p = loadProfile()
+  const isHe = lang === 'he'
+  // Set current values
+  const nameInput = document.getElementById('prof-input-name')
+  if(nameInput) nameInput.value = p.name || ''
+
+  // Build color picker
+  const picker = document.getElementById('color-pickers')
+  if(picker){
+    picker.innerHTML = AVATAR_GRADIENTS.map(g => `
+      <button onclick="selectAvatarColor('${g.id}')" data-cid="${g.id}" style="
+        width:38px;height:38px;border-radius:50%;
+        background:${g.g};
+        border:${p.avatarColor === g.id ? '2.5px solid var(--t1)' : '.5px solid var(--b2)'};
+        cursor:pointer;padding:0;
+        transition:transform .15s;
+        box-shadow:${p.avatarColor === g.id ? '0 4px 12px rgba(0,0,0,.2)' : 'none'};
+      " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+    `).join('')
+  }
+
+  // Modal labels
+  document.getElementById('prof-modal-title').textContent  = isHe ? 'איך לקרוא לך?' : 'Tell us your name'
+  document.getElementById('prof-modal-sub').textContent    = isHe ? 'איך נברך אותך' : "It's how we'll greet you"
+  document.getElementById('prof-modal-name-lbl').textContent  = isHe ? 'שמך' : 'Your Name'
+  document.getElementById('prof-modal-color-lbl').textContent = isHe ? 'צבע אווטאר' : 'Avatar Color'
+  document.getElementById('prof-modal-cancel').textContent = isHe ? 'ביטול' : 'Cancel'
+  document.getElementById('prof-modal-save').textContent   = isHe ? 'שמור' : 'Save'
+  if(nameInput) nameInput.placeholder = isHe ? 'נשמה יפה' : 'Beautiful Soul'
+
+  // Show modal
+  const modal = document.getElementById('prof-modal')
+  if(modal) modal.style.display = 'flex'
+}
+
+function selectAvatarColor(cid){
+  const p = loadProfile()
+  p.avatarColor = cid
+  saveProfileData(p)
+  // Re-render color picker
+  document.querySelectorAll('#color-pickers button').forEach(b => {
+    const isSel = b.getAttribute('data-cid') === cid
+    b.style.border = isSel ? '2.5px solid var(--t1)' : '.5px solid var(--b2)'
+    b.style.boxShadow = isSel ? '0 4px 12px rgba(0,0,0,.2)' : 'none'
+  })
+}
+
+function saveProfile(){
+  const nameInput = document.getElementById('prof-input-name')
+  const p = loadProfile()
+  p.name = (nameInput?.value || '').trim()
+  saveProfileData(p)
+  closeProfileModal()
+  renderProfile()
+}
+
+function closeProfileModal(){
+  const modal = document.getElementById('prof-modal')
+  if(modal) modal.style.display = 'none'
+}
+
+function openSettings(){
+  const isHe = lang === 'he'
+  document.getElementById('settings-title').textContent     = isHe ? 'הגדרות' : 'Settings'
+  document.getElementById('settings-lang-lbl').textContent  = isHe ? 'שפה' : 'Language'
+  document.getElementById('settings-theme-lbl').textContent = isHe ? 'ערכת נושא' : 'Theme'
+  document.getElementById('settings-reset').textContent     = isHe ? '↺ אפס את כל הנתונים' : '↺ Reset all data'
+  document.getElementById('settings-close').textContent     = isHe ? 'סגור' : 'Close'
+  document.getElementById('settings-modal').style.display = 'flex'
+}
+
+function closeSettingsModal(){
+  document.getElementById('settings-modal').style.display = 'none'
+}
+
+function signOutGently(){
+  const isHe = lang === 'he'
+  if(confirm(isHe ? 'להתנתק בעדינות? המידע שלך יישמר.' : 'Sign out gently? Your data will be saved.')){
+    // For local profile — just go back to splash (data stays in localStorage)
+    show('home')
+    setTimeout(()=>{
+      const splash = document.getElementById('splash')
+      if(splash) splash.style.display = 'flex'
+    }, 100)
+  }
+}
+
+// ═══════════════════════════════════
+// END PROFILE SYSTEM
+// ═══════════════════════════════════
+
 function showHome(){
   show('home')
   renderStreak()
   try{ renderConsciousnessCard() }catch(e){ console.warn('cs:',e) }
   try{ renderBinauralStrip() }catch(e){ console.warn('bin:',e) }
+  // Update profile mini avatar in nav
+  try{ 
+    const p = loadProfile()
+    const miniAvatar = document.getElementById('profile-avatar-mini')
+    const profileBtn = document.getElementById('profile-btn')
+    if(miniAvatar){
+      miniAvatar.textContent = getInitials(p.name)
+      if(p.name && profileBtn){
+        profileBtn.style.background = getAvatarGradient(p.avatarColor)
+        miniAvatar.style.color = '#fff'
+      }
+    }
+  } catch(e){ console.warn('prof:',e) }
   // Reset scroll to top
   const homeEl = document.getElementById('home')
   if(homeEl) homeEl.scrollTop = 0
@@ -3088,6 +3642,8 @@ function setLang(l){
   document.querySelectorAll('.pl-tab').forEach((t,i)=>{ t.textContent=lang==='he'?['מה זה?','מחקר','מתאים ל','תחושה'][i]:['What is it?','Research','Ideal for','How it feels'][i] })
   document.querySelectorAll('.pl-timer').forEach((t,i)=>{ t.textContent=lang==='he'?['3 דק','8 דק','20 דק','60 דק','∞'][i]:['3 min','8 min','20 min','60 min','∞'][i] })
   renderPlayer(); buildLibrary()
+  // Re-render profile if visible
+  try{ if(document.getElementById('profile')?.classList.contains('on')) renderProfile() }catch(e){}
   // Update Library CTA on home
   const isHe=lang==='he'
   const lcLbl=document.getElementById('lib-cta-lbl')
