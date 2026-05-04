@@ -2,51 +2,47 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+
+<!-- Critical: preconnect to font hosts (fast TLS handshake) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.midjourney.com">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+
+<!-- LCP: preload the splash hero image with high priority -->
+<link rel="preload" as="image" href="astronaut.webp" type="image/webp" fetchpriority="high">
+
+<!-- Meta tags -->
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<!-- Google Analytics — deferred for performance -->
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-KSCG5KS848');
-
-  window.addEventListener('load', function() {
-    setTimeout(function() {
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-KSCG5KS848';
-      document.head.appendChild(s);
-    }, 1500);
-  });
-</script>
-
-<!-- Vercel Speed Insights -->
-<script defer src="/_vercel/speed-insights/script.js"></script>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="echo.11"/>
 <meta name="theme-color" content="#f5f4f0"/>
 <meta name="description" content="22 healing frequencies. Tune your nervous system."/>
+<meta name="mobile-web-app-capable" content="yes"/>
+
+<!-- Icons -->
 <link rel="apple-touch-icon" href="astronaut.jpg"/>
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="shortcut icon" href="/favicon.ico"/>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <link rel="manifest" href="/site.webmanifest"/>
-<meta name="mobile-web-app-capable" content="yes"/>
 <link rel="manifest" href="manifest.json"/>
+
 <title>echo.11 · frequencies</title>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" media="all">
+
+<!-- Fonts: load asynchronously with font-display: swap (already in URL).
+     Using the print/onload pattern for non-blocking CSS loading. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"></noscript>
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#F5F0E8;--bg2:#EDE8DC;--card:#FDFAF5;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672}
 .dark{--bg:#111110;--bg2:#1C1C1A;--card:#262622;--b1:rgba(255,255,255,.10);--b2:rgba(255,255,255,.18);--b3:rgba(255,255,255,.30);--t1:#F5F3EE;--t2:#C8C4BA;--t3:#9A9690;--t4:#6A6862}
 html,body{width:100%;height:100%;background:var(--bg);color:var(--t1);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 button,a,[onclick]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+
 
 body{font-family:'DM Sans',system-ui,sans-serif;transition:background .35s,color .35s;font-weight:300}
 button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
@@ -946,8 +942,10 @@ button{font-variant-emoji:text}
       <img class="sp-img" 
            src="astronaut.jpg" 
            alt="echo.11 · a figure walking through an alien desert" 
+           width="1170" height="1500"
            fetchpriority="high" 
            loading="eager"
+           decoding="async"
            onerror="this.style.display='none'"/>
     </picture>
   </div>
@@ -1027,12 +1025,12 @@ button{font-variant-emoji:text}
 
     <!-- Parallax image layer -->
     <div class="home-hero-bg" id="hero-bg" style="pointer-events:none">
-      <video id="hero-video" autoplay loop muted playsinline
-      style=;pointer-events:none"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;pointer-events:none">
+      <video id="hero-video" autoplay loop muted playsinline preload="metadata" poster="img_home.jpg"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;pointer-events:none">
   <source src="https://cdn.midjourney.com/video/b431454b-3a1e-49fb-ba57-15576450ce2b/1.mp4" type="video/mp4"/>
-  <img src="img_home.jpg" alt="echo.11" style="width:100%;height:100%;object-fit:cover"/>
+  <img src="img_home.jpg" alt="echo.11" width="1170" height="2000" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"/>
 </video>
-    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.45) 0%,rgba(0,0,0,.1) 50%,transparent 100%);z-index:1;pointer-events:none;pointer-events:none"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.45) 0%,rgba(0,0,0,.1) 50%,transparent 100%);z-index:1;pointer-events:none"></div>
     </div>
 
     <!-- Hero statement — orientation + value + action -->
@@ -1212,8 +1210,10 @@ button{font-variant-emoji:text}
   <!-- ① IMAGE ZONE: 52vh, Ken Burns, nothing overlapping -->
   <div style="position:relative;height:52vh;min-height:300px;max-height:600px;overflow:hidden;flex-shrink:0">
     <img src="img_player.jpg" alt="" id="pl-bg-img"
+      width="1170" height="900"
+      loading="lazy" decoding="async"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;animation:kenBurns 18s ease-in-out infinite alternate"/>
-    <video id="pl-bg-video" autoplay loop muted playsinline
+    <video id="pl-bg-video" autoplay loop muted playsinline preload="none"
       style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%"></video>
   
     <!-- top nav only -->
@@ -1371,7 +1371,7 @@ button{font-variant-emoji:text}
 <!-- SESSION COMPLETE -->
 <div id="complete" class="scr" style="overflow-y:auto">
   <div style="position:relative;height:42vh;min-height:240px;max-height:340px;overflow:hidden;flex-shrink:0">
-    <img src="img_complete.png" alt="" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
+    <img src="img_complete.png" alt="" width="1170" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,18,16,.1) 0%,rgba(20,18,16,.45) 100%)"></div>
     <button onclick="show('home');renderStreak()" style="position:absolute;top:22px;left:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer" id="comp-back">← Back</button>
   </div>
@@ -1396,7 +1396,7 @@ button{font-variant-emoji:text}
 <div id="library" class="scr">
   <!-- Library hero image -->
   <div style="position:relative;height:190px;overflow:hidden;flex-shrink:0;border-bottom:.5px solid var(--b1)">
-    <img src="img_library.jpg" alt="echo.11" style="width:100%;height:100%;object-fit:cover;object-position:center 35%"/>
+    <img src="img_library.jpg" alt="echo.11" width="1170" height="500" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 35%"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,transparent 40%,var(--bg) 100%)"></div>
     <div style="position:absolute;top:0;left:0;right:0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
       <button class="pl-back" id="lib-back" onclick="showHome()" style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)">← Back</button>
@@ -1503,7 +1503,7 @@ button{font-variant-emoji:text}
 
   <!-- Hero image with dynamic message -->
   <div style="position:relative;height:42vh;min-height:260px;overflow:hidden;flex-shrink:0">
-    <img src="img_history.png" alt="" onerror="this.style.display='none'"
+    <img src="img_history.png" alt="" width="1170" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'"
       style="width:100%;height:115%;object-fit:cover;object-position:center 10%;display:block"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(245,243,238,0) 55%,var(--bg) 100%)"></div>
     <!-- gradient so nav is always readable -->
@@ -4037,5 +4037,28 @@ if(_origToggleLang){
 }
 syncA11yPos()
 </script>
+
+<!-- ════════════════════════════════════════════
+     Google Analytics — non-blocking, end of body
+     Loads 1.5s after window.load to never block render
+════════════════════════════════════════════ -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KSCG5KS848');
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-KSCG5KS848';
+      document.head.appendChild(s);
+    }, 1500);
+  });
+</script>
+
+<!-- Vercel Speed Insights — deferred -->
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
