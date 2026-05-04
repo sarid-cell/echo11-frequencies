@@ -477,50 +477,139 @@ vercel-live-feedback,#vercel-toolbar,[data-vercel-toolbar],.__vercel-toolbar{dis
 .play-icon{font-style:normal;font-variant-emoji:text}
 button{font-variant-emoji:text}
 
-/* --- echo.11 Glassmorphism Layer --- */
+/* ============================================================
+   echo.11 · Light Glass v2 · Adapts to Light/Dark mode
+   Works WITH existing images and video.
+   Keeps text readable. Doesn't break performance.
+   ============================================================ */
+
 :root {
-  --glass-bg: rgba(20, 20, 24, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-blur: blur(20px) saturate(140%);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  /* Light mode glass — soft white with strong blur */
+  --glass-tint: rgba(255, 255, 255, 0.55);
+  --glass-tint-hover: rgba(255, 255, 255, 0.72);
+  --glass-edge: rgba(255, 255, 255, 0.45);
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --glass-shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --glass-shadow-strong: 0 8px 28px rgba(0, 0, 0, 0.14);
+  --glass-blur-strong: blur(22px) saturate(170%);
+  --glass-blur-soft: blur(14px) saturate(140%);
 }
 
-.mode-card, 
-.streak-card, 
-#consciousness-card, 
-.brain-state, 
-.lb-search, 
+/* Dark mode — automatically applied when .dark class is on body */
+body.dark, .dark {
+  --glass-tint: rgba(20, 22, 28, 0.50);
+  --glass-tint-hover: rgba(30, 34, 42, 0.65);
+  --glass-edge: rgba(255, 255, 255, 0.10);
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --glass-shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.30);
+  --glass-shadow-strong: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* ─── Cards: Mode, Streak, Consciousness, Brain State, Library rows ─── */
+.mode-card,
+.streak-card,
+#consciousness-card,
+.brain-state,
+.lb-search,
 .lb-row,
+#quick-relief-card,
 .card {
-  background: var(--glass-bg) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 20px !important;
-  box-shadow: var(--glass-shadow) !important;
-  transition: transform 0.3s ease, border-color 0.3s ease !important;
+  background: var(--glass-tint) !important;
+  backdrop-filter: var(--glass-blur-strong) !important;
+  -webkit-backdrop-filter: var(--glass-blur-strong) !important;
+  border: 1px solid var(--glass-edge) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--glass-shadow-soft), var(--glass-inner) !important;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease !important;
 }
 
-.mode-card:hover, .streak-card:hover {
+.mode-card:hover,
+.streak-card:hover,
+#consciousness-card:hover,
+#quick-relief-card:hover {
+  background: var(--glass-tint-hover) !important;
+  box-shadow: var(--glass-shadow-strong), var(--glass-inner) !important;
   transform: translateY(-2px) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
-.sp-btn, .home-hero-cta, .pr-cta-btn, .pl-play {
-  background: rgba(201, 169, 110, 0.9) !important;
-  backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+/* Library rows — full width, less rounded */
+.lb-row {
+  border-radius: 12px !important;
+  margin-bottom: 6px !important;
+}
+
+/* ─── Primary CTAs: Splash, Hero, Protocol, Play button ─── */
+.sp-btn,
+.home-hero-cta,
+.pr-cta-btn,
+.pl-play {
+  background: rgba(201, 169, 110, 0.92) !important;
+  backdrop-filter: blur(8px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
   border-radius: 50px !important;
   color: #1a1208 !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(201, 169, 110, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
   transition: all 0.3s ease !important;
 }
 
-.sp-btn:hover, .home-hero-cta:hover {
-  background: rgba(255, 255, 255, 1) !important;
+.sp-btn:hover,
+.home-hero-cta:hover,
+.pr-cta-btn:hover,
+.pl-play:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #1a1208 !important;
   transform: translateY(-2px) !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Stop mode — keeps glass treatment but darker */
+.pl-play.stop-mode {
+  background: rgba(26, 26, 24, 0.85) !important;
+  color: #f5f4f0 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ─── Mobile fallback for browsers without backdrop-filter ─── */
+@supports not (backdrop-filter: blur(20px)) {
+  .mode-card,
+  .streak-card,
+  #consciousness-card,
+  .brain-state,
+  .lb-search,
+  .lb-row,
+  #quick-relief-card,
+  .card {
+    background: rgba(255, 255, 255, 0.92) !important;
+  }
+  body.dark .mode-card,
+  body.dark .streak-card,
+  body.dark #consciousness-card,
+  body.dark .brain-state,
+  body.dark .lb-search,
+  body.dark .lb-row,
+  body.dark #quick-relief-card,
+  body.dark .card {
+    background: rgba(20, 22, 28, 0.92) !important;
+  }
+}
+
+/* ─── Reduced motion preference ─── */
+@media (prefers-reduced-motion: reduce) {
+  .mode-card,
+  .streak-card,
+  #consciousness-card,
+  .brain-state,
+  .lb-row,
+  .sp-btn,
+  .home-hero-cta,
+  .pr-cta-btn,
+  .pl-play {
+    transition: none !important;
+  }
 }
 
 /* ===================================
