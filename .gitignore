@@ -1,5 +1,7 @@
 node_modules/
-package.json
 package-lock.json
 optimize-images.js
 .DS_Store
+.vercel
+.env
+.env.local
