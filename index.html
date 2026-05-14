@@ -2125,7 +2125,7 @@ button{font-variant-emoji:text}
       <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-share-sub">Pass it on to a friend</div>
     </button>
     <!-- Support -->
-    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="try{gtag&&gtag('event','support_click',{event_category:'engagement'})}catch(e){}" style="
+    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="track('support_click',{event_category:'engagement'})" style="
       background:var(--card);border:.5px solid var(--b1);border-radius:14px;
       padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;
       display:flex;flex-direction:column;align-items:center;gap:8px;
@@ -2168,6 +2168,37 @@ button{font-variant-emoji:text}
       justify-content:center;
       gap:8px;
     " id="prof-signout">→ Sign Out Gently</button>
+  </div>
+
+  <!-- Tip Jar -->
+  <div style="margin:0 22px 22px;padding:22px 20px;background:linear-gradient(135deg,rgba(201,169,110,.06),rgba(167,139,250,.04));border:.5px solid var(--b1);border-radius:14px">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px">
+        <span style="color:#C9A96E;font-size:13px">◇</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase" id="prof-tip-lbl">Keep echo.11 free</span>
+      </div>
+      <div id="prof-tip-headline" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1);line-height:1.4;margin-bottom:4px">Leave a tip, however small.</div>
+      <div id="prof-tip-sub" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5">No subscription. No paywall. Just gratitude.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <button onclick="startTip(3)" data-tip="3" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$3</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="3">a coffee</span>
+      </button>
+      <button onclick="startTip(7)" data-tip="7" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid #C9A96E;border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+        <span style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#C9A96E;color:#1a1208;font-family:'DM Sans',sans-serif;font-size:8px;font-weight:500;letter-spacing:.14em;padding:2px 7px;border-radius:8px;text-transform:uppercase" data-tip-badge>most chosen</span>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$7</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="7">a week</span>
+      </button>
+      <button onclick="startTip(14)" data-tip="14" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$14</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="14">a moon cycle</span>
+      </button>
+    </div>
+    <div id="prof-tip-status" style="margin-top:12px;text-align:center;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);min-height:14px"></div>
+    <div style="margin-top:10px;text-align:center;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;color:var(--t4);letter-spacing:.1em">
+      <span id="prof-tip-secure">secure checkout · Stripe · one-time</span>
+    </div>
   </div>
 
   <!-- Footer line -->
@@ -2272,6 +2303,59 @@ button{font-variant-emoji:text}
   <button onclick="openPlayerDirect('hz528');hideHpToast()" style="background:none;border:none;color:rgba(245,243,238,.75);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0" id="hp-toast-switch">switch to 528 Hz →</button>
 </div>
 <script>
+// ─────────────────────────────────────────────────────────────
+// Analytics: track() wrapper + lightweight bot detection
+// gtag() is defined later (load script at bottom) but dataLayer is
+// buffered — so calls made early are queued safely.
+// ─────────────────────────────────────────────────────────────
+const TRACK_ONCE = new Set()
+function detectBotSignals(){
+  try{
+    const reasons = []
+    const ua = (navigator.userAgent || '').toLowerCase()
+    if(/headlesschrome|phantomjs|selenium|puppeteer|playwright|electron|bot|spider|crawler|slurp|bingpreview|googlebot|lighthouse|chrome-lighthouse|pingdom|datadog|ahrefs|semrush/i.test(ua)) reasons.push('ua')
+    if(navigator.webdriver === true) reasons.push('webdriver')
+    if(!navigator.languages || navigator.languages.length === 0) reasons.push('no_lang')
+    if(!navigator.cookieEnabled) reasons.push('no_cookies')
+    // Headless Chrome often has no plugins AND is not mobile
+    const isMobile = /android|iphone|ipad|ipod|mobile/i.test(ua)
+    if(!isMobile && navigator.plugins && navigator.plugins.length === 0) reasons.push('no_plugins')
+    // Screen size that hints at headless
+    if(window.outerWidth === 0 || window.outerHeight === 0) reasons.push('no_window')
+    return { isBot: reasons.length >= 2, reasons }
+  }catch(e){ return { isBot:false, reasons:['err'] } }
+}
+const ECHO_BOT = detectBotSignals()
+window.__echoBot = ECHO_BOT
+const ECHO_SESSION_ID = (()=>{
+  try{
+    let id = sessionStorage.getItem('echo11_sess_id')
+    if(!id){ id = Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4); sessionStorage.setItem('echo11_sess_id', id) }
+    return id
+  }catch(e){ return 'nosess' }
+})()
+
+// Track an event. `opts.once` = true → fire only first time per session.
+function track(eventName, params, opts){
+  try{
+    if(opts && opts.once){
+      if(TRACK_ONCE.has(eventName)) return
+      TRACK_ONCE.add(eventName)
+    }
+    const payload = Object.assign({
+      is_bot: ECHO_BOT.isBot ? 1 : 0,
+      bot_reasons: ECHO_BOT.reasons.join(',') || 'none',
+      session_id: ECHO_SESSION_ID,
+    }, params || {})
+    if(typeof gtag === 'function'){
+      gtag('event', eventName, payload)
+    } else if(window.dataLayer){
+      // gtag stub not yet defined — push directly so it's flushed on load
+      window.dataLayer.push(['event', eventName, payload])
+    }
+  }catch(e){ /* analytics must never break the app */ }
+}
+
 // ── Weekly Shape system ──────────────────────────────────────
 // 7 days = 7 stages, each stage = a more complete geometric form
 const SHAPE_STAGES=[
@@ -2710,6 +2794,19 @@ function getIntention(freqId){
 function renderStreak(){
   const sessions=loadSessions()
   const streak=calcStreak(sessions)
+  // Fire streak milestone events once per milestone reached, persisted in localStorage
+  try{
+    const milestones = [3, 7, 14, 30, 60, 90]
+    const raw = localStorage.getItem('echo11_streak_milestones_fired')
+    const fired = raw ? JSON.parse(raw) : []
+    milestones.forEach(m => {
+      if(streak >= m && !fired.includes(m)){
+        fired.push(m)
+        track('streak_milestone', { event_category:'engagement', value:m, event_label:`day_${m}` })
+      }
+    })
+    localStorage.setItem('echo11_streak_milestones_fired', JSON.stringify(fired))
+  }catch(e){}
   const days=get7Days()
   const maxSecs=Math.max(...days.map(d=>d.secs),1)
   const top=getMostPlayed(sessions)
@@ -2978,7 +3075,7 @@ async function enterApp(){
       audioCtx=new(window.AudioContext||window.webkitAudioContext)()
     if(audioCtx.state==='suspended') await audioCtx.resume()
   }catch(e){}
-  gtag&&gtag('event','app_enter',{event_category:'engagement'})
+  track('app_enter', { event_category:'funnel', source:'splash' })
   // Live counter: increment on enter, show if >= 2
   try{
     let n=parseInt(sessionStorage.getItem('echo11_live')||'0')
@@ -3113,7 +3210,7 @@ function shuffleAffirmation(){
         affEl.style.opacity = '1'
       }, 180)
     }
-    try{ gtag && gtag('event','affirmation_shuffle',{event_category:'engagement'}) }catch(e){}
+    track('affirmation_shuffle', { event_category:'engagement' })
   }catch(e){}
 }
 
@@ -3320,6 +3417,9 @@ function renderProfile(){
     const el = document.getElementById(id)
     if(el) el.textContent = isHe ? labels[id].he : labels[id].en
   })
+
+  // Tip Jar labels
+  try{ translateTipJar() }catch(e){}
 }
 
 function editProfile(){
@@ -3410,6 +3510,92 @@ function signOutGently(){
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// Tip Jar — Stripe Checkout via /api/create-checkout-session
+// ─────────────────────────────────────────────────────────────
+async function startTip(amount){
+  if(![3,7,14].includes(amount)) return
+  const isHe = lang === 'he'
+  const statusEl = document.getElementById('prof-tip-status')
+  const btns = document.querySelectorAll('.tip-btn')
+  btns.forEach(b => { b.disabled = true; b.style.opacity = '0.55'; b.style.cursor = 'wait' })
+  if(statusEl) statusEl.textContent = isHe ? 'מעבירים אותך לתשלום מאובטח…' : 'Taking you to secure checkout…'
+
+  track('tip_clicked', { event_category:'tip_jar', event_label:`usd_${amount}`, value:amount, currency:'USD' })
+
+  try{
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount, sessionId: ECHO_SESSION_ID }),
+    })
+    const data = await res.json().catch(()=>({}))
+    if(!res.ok || !data.url){
+      throw new Error(data.error || `HTTP ${res.status}`)
+    }
+    window.location.href = data.url
+  }catch(err){
+    console.error('[tip] checkout failed:', err)
+    track('tip_error', { event_category:'tip_jar', event_label:err.message || 'unknown' })
+    if(statusEl) statusEl.textContent = isHe
+      ? 'משהו השתבש. נסי שוב בעוד רגע.'
+      : 'Something went wrong. Try again in a moment.'
+    btns.forEach(b => { b.disabled = false; b.style.opacity = '1'; b.style.cursor = 'pointer' })
+  }
+}
+
+// Tip Jar translations — applied when profile renders
+function translateTipJar(){
+  const isHe = lang === 'he'
+  const map = {
+    'prof-tip-lbl':      { en:'Keep echo.11 free',                he:'שמרי על echo.11 בחינם' },
+    'prof-tip-headline': { en:'Leave a tip, however small.',      he:'השאירי טיפ, יהיה אשר יהיה.' },
+    'prof-tip-sub':      { en:'No subscription. No paywall. Just gratitude.', he:'בלי מנוי. בלי חומה. רק הכרת תודה.' },
+    'prof-tip-secure':   { en:'secure checkout · Stripe · one-time', he:'תשלום מאובטח · Stripe · חד-פעמי' },
+  }
+  Object.keys(map).forEach(id => {
+    const el = document.getElementById(id)
+    if(el) el.textContent = isHe ? map[id].he : map[id].en
+  })
+  const subs = { 3: { en:'a coffee', he:'קפה' }, 7: { en:'a week', he:'שבוע' }, 14: { en:'a moon cycle', he:'מחזור ירח' } }
+  document.querySelectorAll('[data-tip-sub]').forEach(el => {
+    const amt = el.getAttribute('data-tip-sub')
+    if(subs[amt]) el.textContent = isHe ? subs[amt].he : subs[amt].en
+  })
+  const badge = document.querySelector('[data-tip-badge]')
+  if(badge) badge.textContent = isHe ? 'הכי נבחר' : 'most chosen'
+}
+
+// Detect ?tip=success on load → thank-you toast + tip_success event
+function handleTipReturn(){
+  try{
+    const params = new URLSearchParams(window.location.search)
+    const tip = params.get('tip')
+    if(!tip) return
+    const amount = Number(params.get('amount') || 0)
+    if(tip === 'success'){
+      track('tip_success', { event_category:'tip_jar', event_label:`usd_${amount}`, value:amount, currency:'USD' })
+      // Clean URL so refresh doesn't re-fire the event
+      history.replaceState(null, '', window.location.pathname)
+      // Show gratitude message — defer so app has booted
+      setTimeout(()=>{
+        const isHe = lang === 'he'
+        const msg = isHe
+          ? `תודה. ${amount}$ הגיעו. echo.11 ממשיכה להיות חינם בזכותך. 🌙`
+          : `Thank you. $${amount} received. echo.11 stays free because of you. 🌙`
+        if(typeof showHpToast === 'function'){
+          showHpToast(msg)
+        } else {
+          alert(msg)
+        }
+      }, 600)
+    } else if(tip === 'cancelled'){
+      track('tip_cancelled', { event_category:'tip_jar' })
+      history.replaceState(null, '', window.location.pathname)
+    }
+  }catch(e){}
+}
+
 // Share — Web Share API with clipboard fallback
 async function shareEcho(){
   const isHe = lang === 'he'
@@ -3421,7 +3607,7 @@ async function shareEcho(){
   try{
     if(navigator.share){
       await navigator.share({ title, text, url })
-      try{ gtag && gtag('event','share',{event_category:'engagement',method:'native'}) }catch(e){}
+      track('share', { event_category:'engagement', method:'native' })
       return
     }
   }catch(e){ /* user cancelled or share failed — fall through */ }
@@ -3430,7 +3616,7 @@ async function shareEcho(){
     await navigator.clipboard.writeText(url)
     const msg = isHe ? 'הקישור הועתק ✓' : 'Link copied ✓'
     if(typeof showHpToast === 'function'){ showHpToast(msg) } else { alert(msg) }
-    try{ gtag && gtag('event','share',{event_category:'engagement',method:'clipboard'}) }catch(e){}
+    track('share', { event_category:'engagement', method:'clipboard' })
   }catch(e){
     window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text+' '+url)}`
   }
@@ -3503,6 +3689,19 @@ function showHome(){
 document.addEventListener('DOMContentLoaded', ()=>{
   try{ renderConsciousnessCard() }catch(e){}
   try{ renderBinauralStrip() }catch(e){}
+  // Funnel entry — fires once at the very top of the funnel
+  try{
+    const splash = document.getElementById('splash')
+    const splashVisible = splash && getComputedStyle(splash).display !== 'none'
+    track('splash_view', {
+      event_category: 'funnel',
+      referrer: document.referrer ? new URL(document.referrer).hostname : 'direct',
+      lang: (document.documentElement.lang || lang || 'en'),
+      shown: splashVisible ? 1 : 0,
+    }, { once: true })
+  }catch(e){}
+  // Tip Jar — detect return from Stripe Checkout
+  try{ handleTipReturn() }catch(e){}
 })
 
 // Handle return from legal.html — skip splash if #home in URL
@@ -3646,7 +3845,12 @@ function show(id){
 }
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
-  if(idx>=0){ if(playing) doStop(); curIdx=idx }
+  if(idx>=0){
+    if(playing) doStop()
+    curIdx=idx
+    const f=FREQS[idx]
+    track('frequency_opened', { event_category:'funnel', event_label:fid, freq_hz:f.hz, freq_mode:f.mode, freq_type:f.type||'tone' })
+  }
   show('player')  // Show immediately — UI responds at once
   requestAnimationFrame(()=>requestAnimationFrame(()=>{ renderPlayer() })) // Double rAF: paint first, then render
 }
@@ -3805,6 +4009,7 @@ async function togglePlay(){
     if(audioCtx.state==='suspended') await audioCtx.resume()
   }catch(e){}
   await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
+  track('audio_started', { event_category:'audio', event_label:f.id, freq_hz:f.hz, freq_mode:f.mode, freq_type:f.type||'tone' })
   // Headphone nudge for binaural
   if(f.type==='binaural'){
     const _ht=document.getElementById('hp-toast')
@@ -3822,6 +4027,17 @@ async function togglePlay(){
   clearInterval(elapsedIv)
   elapsedIv=setInterval(()=>{
     elapsed++
+    // Funnel milestones — fire once per audio session
+    if(elapsed === 30){
+      const _f=FREQS[curIdx]
+      track('audio_30s', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+    } else if(elapsed === 60){
+      const _f=FREQS[curIdx]
+      track('audio_60s', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+    } else if(elapsed === 300){
+      const _f=FREQS[curIdx]
+      track('audio_5min', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+    }
     const ts=`${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}`
     let timerDisplay=ts
     if(selTimerSec>0){
@@ -4097,6 +4313,7 @@ function showProtocol(){
   const el = document.getElementById('protocol');
   const splash = document.getElementById('splash');
   if(!el) return;
+  track('protocol_started', { event_category: 'funnel' }, { once: true })
   if(splash) splash.style.display = 'none';
   el.classList.add('on');
   requestAnimationFrame(()=>{ el.classList.add('visible'); });
@@ -4190,6 +4407,7 @@ function showProtocol(){
 }
 
 function enterFromProtocol(){
+  track('protocol_completed', { event_category: 'funnel', method: 'cta' })
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .6s ease'; el.style.opacity='0'; }
   setTimeout(()=>{
@@ -4199,6 +4417,7 @@ function enterFromProtocol(){
 }
 
 function skipProtocol(){
+  track('protocol_skipped', { event_category: 'funnel' })
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .4s ease'; el.style.opacity='0'; }
   setTimeout(()=>{
@@ -4214,7 +4433,7 @@ async function _doEnterApp(){
       audioCtx=new(window.AudioContext||window.webkitAudioContext)();
     if(audioCtx.state==='suspended') await audioCtx.resume();
   }catch(e){}
-  gtag&&gtag('event','app_enter',{event_category:'engagement'});
+  track('app_enter', { event_category:'funnel', source:'protocol' })
   const splash = document.getElementById('splash');
   if(splash){ splash.style.transition='opacity .4s'; splash.style.opacity='0'; }
   setTimeout(()=>{
@@ -4325,7 +4544,8 @@ function setPlayerState(state){
 }
 function replaySession(){ show('player') }
 function showComplete(freqId,listenedSecs){
-  gtag&&gtag('event','session_complete',{event_category:'audio',event_label:freqId,value:Math.round(listenedSecs/60)})
+  const _f = FREQS.find(x=>x.id===freqId)
+  track('audio_complete', { event_category:'audio', event_label:freqId, freq_hz:_f?.hz, freq_mode:_f?.mode, value:Math.round(listenedSecs/60), seconds:listenedSecs })
   const f=FREQS.find(x=>x.id===freqId)||FREQS[curIdx]
   const t=f?f[lang]||f.en:{}
   const isHe=lang==='he', mins=Math.max(1,Math.round(listenedSecs/60))
