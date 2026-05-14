@@ -2022,20 +2022,29 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- Avatar + Greeting -->
-  <div style="text-align:center;padding:20px 22px 28px;display:flex;flex-direction:column;align-items:center;gap:14px;position:relative">
-    <!-- Avatar circle -->
-    <div id="profile-avatar" style="
-      width:80px;height:80px;
-      border-radius:50%;
-      background:linear-gradient(135deg,#a78bfa 0%,#7c6ee0 100%);
-      display:flex;align-items:center;justify-content:center;
-      font-family:'DM Sans',sans-serif;
-      font-size:24px;font-weight:400;color:#fff;
-      letter-spacing:.05em;
-      box-shadow:0 6px 24px rgba(167,139,250,.25);
-    ">+</div>
-    <!-- Sparkle indicator -->
-    <div style="position:absolute;top:46px;right:38%;width:24px;height:24px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;box-shadow:0 2px 8px rgba(16,185,129,.4)">✦</div>
+  <div style="text-align:center;padding:20px 22px 28px;display:flex;flex-direction:column;align-items:center;gap:14px">
+    <!-- Avatar wrapper with mood ring dot -->
+    <div style="position:relative;width:88px;height:88px">
+      <div id="profile-avatar" aria-label="Profile avatar" style="
+        width:88px;height:88px;
+        border-radius:50%;
+        background:linear-gradient(135deg,#a78bfa 0%,#7c6ee0 100%);
+        display:flex;align-items:center;justify-content:center;
+        font-family:'DM Sans',sans-serif;
+        font-size:26px;font-weight:300;color:#fff;
+        letter-spacing:.05em;
+        box-shadow:0 6px 24px rgba(167,139,250,.25);
+        transition:box-shadow .4s ease;
+      ">✦</div>
+      <div id="profile-mood-dot" title="Last frequency" style="
+        position:absolute;bottom:2px;right:2px;
+        width:22px;height:22px;border-radius:50%;
+        background:#10b981;
+        border:2.5px solid var(--bg);
+        box-shadow:0 2px 6px rgba(0,0,0,.18);
+        display:none;
+      "></div>
+    </div>
     <!-- Name + tagline -->
     <div>
       <div id="prof-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1);margin-bottom:5px;line-height:1">Hi, Beautiful Soul</div>
@@ -2043,17 +2052,18 @@ button{font-variant-emoji:text}
     </div>
   </div>
 
-  <!-- Today's Affirmation -->
-  <div style="margin:0 22px 14px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px 20px;text-align:center">
+  <!-- Today's Affirmation — tap to shuffle -->
+  <button onclick="shuffleAffirmation()" aria-label="Shuffle affirmation" style="display:block;width:calc(100% - 44px);margin:0 22px 14px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px 20px;text-align:center;cursor:pointer;font-family:inherit;transition:border-color .15s,transform .15s" onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
     <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:10px">
       <span style="color:#ec4899;font-size:13px">♡</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase" id="prof-aff-lbl">Today's Affirmation</span>
     </div>
-    <div id="prof-affirmation" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.5">"Your sensitivity is your superpower"</div>
-  </div>
+    <div id="prof-affirmation" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.5;transition:opacity .25s">"Your sensitivity is your superpower"</div>
+    <div id="prof-aff-hint" style="margin-top:8px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);text-transform:lowercase">tap for another ↻</div>
+  </button>
 
   <!-- Quiet moments stat -->
-  <div style="margin:0 22px 22px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
+  <div style="margin:0 22px 12px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
     <div style="display:flex;align-items:center;gap:8px">
       <span style="width:8px;height:8px;border-radius:50%;background:#10b981"></span>
       <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-month-lbl">This month</span>
@@ -2061,6 +2071,23 @@ button{font-variant-emoji:text}
     <div style="display:flex;align-items:baseline;gap:5px">
       <span id="prof-month-count" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t1)">0</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3)" id="prof-month-unit">quiet moments</span>
+    </div>
+  </div>
+
+  <!-- Frequencies Explored progress -->
+  <div style="margin:0 22px 22px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#C9A96E"></span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-explored-lbl">Frequencies explored</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:4px;font-family:'Cormorant Garamond',Georgia,serif;color:var(--t1)">
+        <span id="prof-explored-count" style="font-size:20px;font-weight:200">0</span>
+        <span style="font-size:11px;color:var(--t3)" id="prof-explored-total">of 21</span>
+      </div>
+    </div>
+    <div style="width:100%;height:4px;background:rgba(0,0,0,.06);border-radius:4px;overflow:hidden">
+      <div id="prof-explored-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#C9A96E,#10b981);transition:width .6s ease"></div>
     </div>
   </div>
 
@@ -2086,28 +2113,28 @@ button{font-variant-emoji:text}
       <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-moodlog-title">Mood Log</div>
       <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-moodlog-sub">Track your emotional journey</div>
     </button>
-    <!-- Downloads -->
-    <button onclick="alert('Downloads coming soon')" style="
+    <!-- Share echo.11 -->
+    <button onclick="shareEcho()" style="
       background:var(--card);border:.5px solid var(--b1);border-radius:14px;
       padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
       display:flex;flex-direction:column;align-items:center;gap:8px;
       transition:all .2s;
     " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(59,130,246,.12);display:flex;align-items:center;justify-content:center;color:#3b82f6;font-size:14px">↓</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-dl-title">Downloads</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-dl-sub">Your saved healing tones</div>
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(59,130,246,.12);display:flex;align-items:center;justify-content:center;color:#3b82f6;font-size:14px">↗</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-share-title">Share echo.11</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-share-sub">Pass it on to a friend</div>
     </button>
     <!-- Support -->
-    <button onclick="alert('Support: hello@echo11.space')" style="
+    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="try{gtag&&gtag('event','support_click',{event_category:'engagement'})}catch(e){}" style="
       background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
+      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;
       display:flex;flex-direction:column;align-items:center;gap:8px;
       transition:all .2s;
     " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(20,184,166,.12);display:flex;align-items:center;justify-content:center;color:#14b8a6;font-size:14px">💬</div>
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(20,184,166,.12);display:flex;align-items:center;justify-content:center;color:#14b8a6;font-size:14px">✉</div>
       <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-supp-title">Support</div>
       <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-supp-sub">We're here to help</div>
-    </button>
+    </a>
     <!-- Settings -->
     <button onclick="openSettings()" style="
       background:var(--card);border:.5px solid var(--b1);border-radius:14px;
@@ -2998,7 +3025,97 @@ const AFFIRMATIONS = [
   {en:'"Rest is also progress"',                              he:'"מנוחה היא גם התקדמות"'},
   {en:'"Your stillness is a form of strength"',               he:'"השקט שלך הוא צורה של עוצמה"'},
   {en:'"You came to your body. That is everything"',          he:'"חזרת לגוף שלך. זה הכל"'},
+  {en:'"Coming back to yourself is the practice"',            he:'"החזרה אל עצמך היא התרגול"'},
+  {en:'"You are softer than you think. And stronger"',        he:'"את רכה יותר ממה שאת חושבת. וחזקה יותר"'},
+  {en:'"Slowing down is a kind of arrival"',                  he:'"להאט זו צורה של הגעה"'},
+  {en:'"Your breath is always here"',                         he:'"הנשימה שלך תמיד כאן"'},
 ]
+
+// Time-of-day greeting (5-11 morning, 12-17 day, 18-22 evening, else night)
+function getTimeGreeting(isHe){
+  const h = new Date().getHours()
+  if(h >= 5 && h < 12)  return isHe ? 'בוקר טוב' : 'Good morning'
+  if(h >= 12 && h < 18) return isHe ? 'צהריים טובים' : 'Good afternoon'
+  if(h >= 18 && h < 23) return isHe ? 'ערב טוב' : 'Good evening'
+  return isHe ? 'לילה רגוע' : 'Quiet night'
+}
+
+// Color per mode — used for avatar mood ring
+const MODE_COLORS = {
+  focus:     '#3b82f6',
+  healing:   '#10b981',
+  abundance: '#C9A96E',
+  sleep:     '#7c6ee0',
+}
+
+// Find the mode of the most recently played frequency
+function getLastFreqMode(){
+  try{
+    const sessions = loadSessions()
+    const dates = Object.keys(sessions).sort((a,b)=>b.localeCompare(a))
+    for(const date of dates){
+      const freqIds = Object.keys(sessions[date].freqs||{})
+      for(const fid of freqIds){
+        const f = FREQS.find(x => x.id === fid)
+        if(f) return f.mode
+      }
+    }
+  }catch(e){}
+  return null
+}
+
+// Count unique frequencies the user has explored (any session ≥ 1 min)
+function countFreqsExplored(){
+  try{
+    const sessions = loadSessions()
+    const ids = new Set()
+    Object.keys(sessions).forEach(date => {
+      Object.keys(sessions[date].freqs||{}).forEach(fid => ids.add(fid))
+    })
+    return ids.size
+  }catch(e){ return 0 }
+}
+
+// Affirmation: respects manual override saved for today, else daily rotation
+function getTodayAffirmationWithOverride(){
+  try{
+    const today = getTodayKey()
+    const raw = localStorage.getItem('echo11_aff_override')
+    if(raw){
+      const o = JSON.parse(raw)
+      if(o.date === today && typeof o.idx === 'number' && AFFIRMATIONS[o.idx]){
+        return AFFIRMATIONS[o.idx]
+      }
+    }
+  }catch(e){}
+  return getTodayAffirmation()
+}
+
+function shuffleAffirmation(){
+  try{
+    const today = getTodayKey()
+    const current = document.getElementById('prof-affirmation')?.textContent || ''
+    // Pick a different one
+    let idx = Math.floor(Math.random() * AFFIRMATIONS.length)
+    for(let tries = 0; tries < 8; tries++){
+      const a = AFFIRMATIONS[idx]
+      if(a.en !== current && a.he !== current) break
+      idx = (idx + 1) % AFFIRMATIONS.length
+    }
+    localStorage.setItem('echo11_aff_override', JSON.stringify({date:today, idx}))
+    const affEl = document.getElementById('prof-affirmation')
+    if(affEl){
+      const isHe = lang === 'he'
+      const a = AFFIRMATIONS[idx]
+      affEl.style.opacity = '0'
+      setTimeout(()=>{
+        affEl.textContent = isHe ? a.he : a.en
+        affEl.style.opacity = '1'
+      }, 180)
+    }
+    try{ gtag && gtag('event','affirmation_shuffle',{event_category:'engagement'}) }catch(e){}
+  }catch(e){}
+}
 
 function loadProfile(){
   try{
@@ -3012,7 +3129,7 @@ function saveProfileData(profile){
 }
 
 function getInitials(name){
-  if(!name) return '+'
+  if(!name) return '✦'
   const parts = name.trim().split(/\s+/)
   if(parts.length === 1) return parts[0].slice(0,2).toUpperCase()
   return (parts[0][0] + parts[parts.length-1][0]).toUpperCase()
@@ -3061,21 +3178,32 @@ function renderProfile(){
     }
   }
 
-  // Avatar
+  // Avatar — initials (or ✦ when empty) + mood ring tinted by last freq
   const avatar = document.getElementById('profile-avatar')
+  const moodDot = document.getElementById('profile-mood-dot')
   if(avatar){
     avatar.style.background = getAvatarGradient(p.avatarColor)
-    avatar.textContent = getInitials(p.name)
+    avatar.textContent = p.name ? getInitials(p.name) : '✦'
+    const lastMode = getLastFreqMode()
+    if(lastMode && MODE_COLORS[lastMode]){
+      const c = MODE_COLORS[lastMode]
+      avatar.style.boxShadow = `0 6px 24px ${c}40, 0 0 0 3px ${c}30`
+      if(moodDot){
+        moodDot.style.background = c
+        moodDot.style.display = 'block'
+      }
+    } else {
+      avatar.style.boxShadow = '0 6px 24px rgba(167,139,250,.25)'
+      if(moodDot) moodDot.style.display = 'none'
+    }
   }
 
-  // Name greeting
+  // Name greeting — time-of-day aware
   const nameEl = document.getElementById('prof-name')
   if(nameEl){
-    if(p.name){
-      nameEl.textContent = isHe ? `שלום, ${p.name}` : `Hi, ${p.name}`
-    } else {
-      nameEl.textContent = isHe ? 'שלום, נשמה יפה' : 'Hi, Beautiful Soul'
-    }
+    const greet = getTimeGreeting(isHe)
+    const who = p.name || (isHe ? 'נשמה יפה' : 'Beautiful Soul')
+    nameEl.textContent = isHe ? `${greet}, ${who}` : `${greet}, ${who}`
   }
 
   // Sub label
@@ -3087,9 +3215,12 @@ function renderProfile(){
   if(affLbl) affLbl.textContent = isHe ? 'אישור היום' : "Today's Affirmation"
   const affEl = document.getElementById('prof-affirmation')
   if(affEl){
-    const aff = getTodayAffirmation()
+    const aff = getTodayAffirmationWithOverride()
     affEl.textContent = isHe ? aff.he : aff.en
+    affEl.style.opacity = '1'
   }
+  const affHint = document.getElementById('prof-aff-hint')
+  if(affHint) affHint.textContent = isHe ? 'הקישי לעוד אחד ↻' : 'tap for another ↻'
 
   // Monthly count
   const monthCount = getMonthlyMomentsCount()
@@ -3099,6 +3230,22 @@ function renderProfile(){
   if(monthLbl) monthLbl.textContent = isHe ? 'החודש' : 'This month'
   const monthUnit = document.getElementById('prof-month-unit')
   if(monthUnit) monthUnit.textContent = isHe ? 'רגעים שקטים' : 'quiet moments'
+
+  // Frequencies explored progress
+  const total = FREQS.length
+  const explored = countFreqsExplored()
+  const pct = total > 0 ? Math.min(100, Math.round((explored / total) * 100)) : 0
+  const exploredCountEl = document.getElementById('prof-explored-count')
+  if(exploredCountEl) exploredCountEl.textContent = explored
+  const exploredTotalEl = document.getElementById('prof-explored-total')
+  if(exploredTotalEl) exploredTotalEl.textContent = isHe ? `מתוך ${total}` : `of ${total}`
+  const exploredLblEl = document.getElementById('prof-explored-lbl')
+  if(exploredLblEl) exploredLblEl.textContent = isHe ? 'תדרים שגילית' : 'Frequencies explored'
+  const exploredBarEl = document.getElementById('prof-explored-bar')
+  if(exploredBarEl){
+    // Defer to next frame so transition animates
+    requestAnimationFrame(()=>{ exploredBarEl.style.width = pct + '%' })
+  }
 
   // Healing tones — last 3 listened
   const tonesLbl = document.getElementById('prof-tones-lbl')
@@ -3159,8 +3306,8 @@ function renderProfile(){
   const labels = {
     'prof-moodlog-title': {en:'Mood Log', he:'יומן מצבי רוח'},
     'prof-moodlog-sub':   {en:'Track your emotional journey', he:'עקבי אחר המסע הרגשי שלך'},
-    'prof-dl-title':      {en:'Downloads', he:'הורדות'},
-    'prof-dl-sub':        {en:'Your saved healing tones', he:'התדרים השמורים שלך'},
+    'prof-share-title':   {en:'Share echo.11', he:'שתפי את echo.11'},
+    'prof-share-sub':     {en:'Pass it on to a friend', he:'העבירי הלאה לחברה'},
     'prof-supp-title':    {en:'Support', he:'תמיכה'},
     'prof-supp-sub':      {en:"We're here to help", he:'אנחנו כאן בשבילך'},
     'prof-set-title':     {en:'Settings', he:'הגדרות'},
@@ -3260,6 +3407,32 @@ function signOutGently(){
       const splash = document.getElementById('splash')
       if(splash) splash.style.display = 'flex'
     }, 100)
+  }
+}
+
+// Share — Web Share API with clipboard fallback
+async function shareEcho(){
+  const isHe = lang === 'he'
+  const url = 'https://echo11.space/'
+  const title = 'echo.11'
+  const text = isHe
+    ? '22 תדרי ריפוי בהשראת מחקר ה-CIA Gateway. רגעי שקט במתנה.'
+    : '22 healing frequencies inspired by the declassified CIA Gateway research. Free quiet moments.'
+  try{
+    if(navigator.share){
+      await navigator.share({ title, text, url })
+      try{ gtag && gtag('event','share',{event_category:'engagement',method:'native'}) }catch(e){}
+      return
+    }
+  }catch(e){ /* user cancelled or share failed — fall through */ }
+  // Fallback: copy link
+  try{
+    await navigator.clipboard.writeText(url)
+    const msg = isHe ? 'הקישור הועתק ✓' : 'Link copied ✓'
+    if(typeof showHpToast === 'function'){ showHpToast(msg) } else { alert(msg) }
+    try{ gtag && gtag('event','share',{event_category:'engagement',method:'clipboard'}) }catch(e){}
+  }catch(e){
+    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text+' '+url)}`
   }
 }
 
