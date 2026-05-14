@@ -2125,7 +2125,7 @@ button{font-variant-emoji:text}
       <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-share-sub">Pass it on to a friend</div>
     </button>
     <!-- Support -->
-    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="try{gtag&&gtag('event','support_click',{event_category:'engagement'})}catch(e){}" style="
+    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="track('support_click',{event_category:'engagement'})" style="
       background:var(--card);border:.5px solid var(--b1);border-radius:14px;
       padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;
       display:flex;flex-direction:column;align-items:center;gap:8px;
@@ -2272,6 +2272,59 @@ button{font-variant-emoji:text}
   <button onclick="openPlayerDirect('hz528');hideHpToast()" style="background:none;border:none;color:rgba(245,243,238,.75);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0" id="hp-toast-switch">switch to 528 Hz →</button>
 </div>
 <script>
+// ─────────────────────────────────────────────────────────────
+// Analytics: track() wrapper + lightweight bot detection
+// gtag() is defined later (load script at bottom) but dataLayer is
+// buffered — so calls made early are queued safely.
+// ─────────────────────────────────────────────────────────────
+const TRACK_ONCE = new Set()
+function detectBotSignals(){
+  try{
+    const reasons = []
+    const ua = (navigator.userAgent || '').toLowerCase()
+    if(/headlesschrome|phantomjs|selenium|puppeteer|playwright|electron|bot|spider|crawler|slurp|bingpreview|googlebot|lighthouse|chrome-lighthouse|pingdom|datadog|ahrefs|semrush/i.test(ua)) reasons.push('ua')
+    if(navigator.webdriver === true) reasons.push('webdriver')
+    if(!navigator.languages || navigator.languages.length === 0) reasons.push('no_lang')
+    if(!navigator.cookieEnabled) reasons.push('no_cookies')
+    // Headless Chrome often has no plugins AND is not mobile
+    const isMobile = /android|iphone|ipad|ipod|mobile/i.test(ua)
+    if(!isMobile && navigator.plugins && navigator.plugins.length === 0) reasons.push('no_plugins')
+    // Screen size that hints at headless
+    if(window.outerWidth === 0 || window.outerHeight === 0) reasons.push('no_window')
+    return { isBot: reasons.length >= 2, reasons }
+  }catch(e){ return { isBot:false, reasons:['err'] } }
+}
+const ECHO_BOT = detectBotSignals()
+window.__echoBot = ECHO_BOT
+const ECHO_SESSION_ID = (()=>{
+  try{
+    let id = sessionStorage.getItem('echo11_sess_id')
+    if(!id){ id = Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4); sessionStorage.setItem('echo11_sess_id', id) }
+    return id
+  }catch(e){ return 'nosess' }
+})()
+
+// Track an event. `opts.once` = true → fire only first time per session.
+function track(eventName, params, opts){
+  try{
+    if(opts && opts.once){
+      if(TRACK_ONCE.has(eventName)) return
+      TRACK_ONCE.add(eventName)
+    }
+    const payload = Object.assign({
+      is_bot: ECHO_BOT.isBot ? 1 : 0,
+      bot_reasons: ECHO_BOT.reasons.join(',') || 'none',
+      session_id: ECHO_SESSION_ID,
+    }, params || {})
+    if(typeof gtag === 'function'){
+      gtag('event', eventName, payload)
+    } else if(window.dataLayer){
+      // gtag stub not yet defined — push directly so it's flushed on load
+      window.dataLayer.push(['event', eventName, payload])
+    }
+  }catch(e){ /* analytics must never break the app */ }
+}
+
 // ── Weekly Shape system ──────────────────────────────────────
 // 7 days = 7 stages, each stage = a more complete geometric form
 const SHAPE_STAGES=[
@@ -2710,6 +2763,19 @@ function getIntention(freqId){
 function renderStreak(){
   const sessions=loadSessions()
   const streak=calcStreak(sessions)
+  // Fire streak milestone events once per milestone reached, persisted in localStorage
+  try{
+    const milestones = [3, 7, 14, 30, 60, 90]
+    const raw = localStorage.getItem('echo11_streak_milestones_fired')
+    const fired = raw ? JSON.parse(raw) : []
+    milestones.forEach(m => {
+      if(streak >= m && !fired.includes(m)){
+        fired.push(m)
+        track('streak_milestone', { event_category:'engagement', value:m, event_label:`day_${m}` })
+      }
+    })
+    localStorage.setItem('echo11_streak_milestones_fired', JSON.stringify(fired))
+  }catch(e){}
   const days=get7Days()
   const maxSecs=Math.max(...days.map(d=>d.secs),1)
   const top=getMostPlayed(sessions)
@@ -2978,7 +3044,7 @@ async function enterApp(){
       audioCtx=new(window.AudioContext||window.webkitAudioContext)()
     if(audioCtx.state==='suspended') await audioCtx.resume()
   }catch(e){}
-  gtag&&gtag('event','app_enter',{event_category:'engagement'})
+  track('app_enter', { event_category:'funnel', source:'splash' })
   // Live counter: increment on enter, show if >= 2
   try{
     let n=parseInt(sessionStorage.getItem('echo11_live')||'0')
@@ -3113,7 +3179,7 @@ function shuffleAffirmation(){
         affEl.style.opacity = '1'
       }, 180)
     }
-    try{ gtag && gtag('event','affirmation_shuffle',{event_category:'engagement'}) }catch(e){}
+    track('affirmation_shuffle', { event_category:'engagement' })
   }catch(e){}
 }
 
@@ -3421,7 +3487,7 @@ async function shareEcho(){
   try{
     if(navigator.share){
       await navigator.share({ title, text, url })
-      try{ gtag && gtag('event','share',{event_category:'engagement',method:'native'}) }catch(e){}
+      track('share', { event_category:'engagement', method:'native' })
       return
     }
   }catch(e){ /* user cancelled or share failed — fall through */ }
@@ -3430,7 +3496,7 @@ async function shareEcho(){
     await navigator.clipboard.writeText(url)
     const msg = isHe ? 'הקישור הועתק ✓' : 'Link copied ✓'
     if(typeof showHpToast === 'function'){ showHpToast(msg) } else { alert(msg) }
-    try{ gtag && gtag('event','share',{event_category:'engagement',method:'clipboard'}) }catch(e){}
+    track('share', { event_category:'engagement', method:'clipboard' })
   }catch(e){
     window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text+' '+url)}`
   }
@@ -3503,6 +3569,17 @@ function showHome(){
 document.addEventListener('DOMContentLoaded', ()=>{
   try{ renderConsciousnessCard() }catch(e){}
   try{ renderBinauralStrip() }catch(e){}
+  // Funnel entry — fires once at the very top of the funnel
+  try{
+    const splash = document.getElementById('splash')
+    const splashVisible = splash && getComputedStyle(splash).display !== 'none'
+    track('splash_view', {
+      event_category: 'funnel',
+      referrer: document.referrer ? new URL(document.referrer).hostname : 'direct',
+      lang: (document.documentElement.lang || lang || 'en'),
+      shown: splashVisible ? 1 : 0,
+    }, { once: true })
+  }catch(e){}
 })
 
 // Handle return from legal.html — skip splash if #home in URL
@@ -3646,7 +3723,12 @@ function show(id){
 }
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
-  if(idx>=0){ if(playing) doStop(); curIdx=idx }
+  if(idx>=0){
+    if(playing) doStop()
+    curIdx=idx
+    const f=FREQS[idx]
+    track('frequency_opened', { event_category:'funnel', event_label:fid, freq_hz:f.hz, freq_mode:f.mode, freq_type:f.type||'tone' })
+  }
   show('player')  // Show immediately — UI responds at once
   requestAnimationFrame(()=>requestAnimationFrame(()=>{ renderPlayer() })) // Double rAF: paint first, then render
 }
@@ -3805,6 +3887,7 @@ async function togglePlay(){
     if(audioCtx.state==='suspended') await audioCtx.resume()
   }catch(e){}
   await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
+  track('audio_started', { event_category:'audio', event_label:f.id, freq_hz:f.hz, freq_mode:f.mode, freq_type:f.type||'tone' })
   // Headphone nudge for binaural
   if(f.type==='binaural'){
     const _ht=document.getElementById('hp-toast')
@@ -3822,6 +3905,17 @@ async function togglePlay(){
   clearInterval(elapsedIv)
   elapsedIv=setInterval(()=>{
     elapsed++
+    // Funnel milestones — fire once per audio session
+    if(elapsed === 30){
+      const _f=FREQS[curIdx]
+      track('audio_30s', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+    } else if(elapsed === 60){
+      const _f=FREQS[curIdx]
+      track('audio_60s', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+    } else if(elapsed === 300){
+      const _f=FREQS[curIdx]
+      track('audio_5min', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+    }
     const ts=`${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}`
     let timerDisplay=ts
     if(selTimerSec>0){
@@ -4097,6 +4191,7 @@ function showProtocol(){
   const el = document.getElementById('protocol');
   const splash = document.getElementById('splash');
   if(!el) return;
+  track('protocol_started', { event_category: 'funnel' }, { once: true })
   if(splash) splash.style.display = 'none';
   el.classList.add('on');
   requestAnimationFrame(()=>{ el.classList.add('visible'); });
@@ -4190,6 +4285,7 @@ function showProtocol(){
 }
 
 function enterFromProtocol(){
+  track('protocol_completed', { event_category: 'funnel', method: 'cta' })
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .6s ease'; el.style.opacity='0'; }
   setTimeout(()=>{
@@ -4199,6 +4295,7 @@ function enterFromProtocol(){
 }
 
 function skipProtocol(){
+  track('protocol_skipped', { event_category: 'funnel' })
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .4s ease'; el.style.opacity='0'; }
   setTimeout(()=>{
@@ -4214,7 +4311,7 @@ async function _doEnterApp(){
       audioCtx=new(window.AudioContext||window.webkitAudioContext)();
     if(audioCtx.state==='suspended') await audioCtx.resume();
   }catch(e){}
-  gtag&&gtag('event','app_enter',{event_category:'engagement'});
+  track('app_enter', { event_category:'funnel', source:'protocol' })
   const splash = document.getElementById('splash');
   if(splash){ splash.style.transition='opacity .4s'; splash.style.opacity='0'; }
   setTimeout(()=>{
@@ -4325,7 +4422,8 @@ function setPlayerState(state){
 }
 function replaySession(){ show('player') }
 function showComplete(freqId,listenedSecs){
-  gtag&&gtag('event','session_complete',{event_category:'audio',event_label:freqId,value:Math.round(listenedSecs/60)})
+  const _f = FREQS.find(x=>x.id===freqId)
+  track('audio_complete', { event_category:'audio', event_label:freqId, freq_hz:_f?.hz, freq_mode:_f?.mode, value:Math.round(listenedSecs/60), seconds:listenedSecs })
   const f=FREQS.find(x=>x.id===freqId)||FREQS[curIdx]
   const t=f?f[lang]||f.en:{}
   const isHe=lang==='he', mins=Math.max(1,Math.round(listenedSecs/60))
