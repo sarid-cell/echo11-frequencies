@@ -2181,9 +2181,9 @@ button{font-variant-emoji:text}
       <div id="prof-tip-sub" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5">No subscription. No paywall. Just gratitude.</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <button onclick="startTip(3)" data-tip="3" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$3</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="3">a coffee</span>
+      <button onclick="startTip(5)" data-tip="5" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$5</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="5">a coffee</span>
       </button>
       <button onclick="startTip(7)" data-tip="7" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid #C9A96E;border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
         <span style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#C9A96E;color:#1a1208;font-family:'DM Sans',sans-serif;font-size:8px;font-weight:500;letter-spacing:.14em;padding:2px 7px;border-radius:8px;text-transform:uppercase" data-tip-badge>most chosen</span>
@@ -2192,7 +2192,7 @@ button{font-variant-emoji:text}
       </button>
       <button onclick="startTip(14)" data-tip="14" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
         <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$14</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="14">a moon cycle</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="14">a month</span>
       </button>
     </div>
     <div id="prof-tip-hint" style="margin-top:12px;text-align:center;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);font-style:italic;line-height:1.4">You'll choose the exact amount on Ko-fi</div>
@@ -3492,7 +3492,7 @@ function signOutGently(){
 const KOFI_URL = 'https://ko-fi.com/echo11'
 
 function startTip(amount){
-  const label = [3,7,14].includes(amount) ? `usd_${amount}_suggested` : 'kofi'
+  const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'kofi'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
   window.open(KOFI_URL, '_blank', 'noopener,noreferrer')
 }
@@ -3511,7 +3511,7 @@ function translateTipJar(){
     const el = document.getElementById(id)
     if(el) el.textContent = isHe ? map[id].he : map[id].en
   })
-  const subs = { 3: { en:'a coffee', he:'קפה' }, 7: { en:'a week', he:'שבוע' }, 14: { en:'a moon cycle', he:'מחזור ירח' } }
+  const subs = { 5: { en:'a coffee', he:'קפה' }, 7: { en:'a week', he:'שבוע' }, 14: { en:'a month', he:'חודש' } }
   document.querySelectorAll('[data-tip-sub]').forEach(el => {
     const amt = el.getAttribute('data-tip-sub')
     if(subs[amt]) el.textContent = isHe ? subs[amt].he : subs[amt].en
