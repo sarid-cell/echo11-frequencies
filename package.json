@@ -1,0 +1,12 @@
+{
+  "name": "echo11-frequencies",
+  "version": "1.0.0",
+  "private": true,
+  "description": "echo.11 — 22 healing frequencies (static site + Vercel serverless API for tips)",
+  "dependencies": {
+    "stripe": "^17.5.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
