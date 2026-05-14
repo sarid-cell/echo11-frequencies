@@ -207,78 +207,78 @@
    Mobile-first · Glass · Multi-layer shadows · Spring physics
 ══════════════════════════════════════════════════════════ */
 .dark{
-  /* ── legacy tokens, rewired to premium dark palette ── */
-  --bg:#0A0908;
-  --bg2:#15120F;
-  --card:#15120F;
-  --b1:rgba(245,240,225,.06);
-  --b2:rgba(245,240,225,.10);
-  --b3:rgba(245,240,225,.18);
-  --t1:rgba(245,240,225,.96);
-  --t2:rgba(245,240,225,.78);
-  --t3:rgba(245,240,225,.52);
-  --t4:rgba(245,240,225,.32);
+  /* ── legacy tokens, rewired to pure-black premium dark ── */
+  --bg:#000000;
+  --bg2:#0A0A0A;
+  --card:#0A0A0A;
+  --b1:rgba(255,255,255,.06);
+  --b2:rgba(255,255,255,.10);
+  --b3:rgba(255,255,255,.18);
+  --t1:rgba(255,255,255,.96);
+  --t2:rgba(255,255,255,.78);
+  --t3:rgba(255,255,255,.52);
+  --t4:rgba(255,255,255,.32);
 
   /* ── new design tokens (—echo prefix to avoid collisions) ── */
-  /* Surfaces — deep dark with warm undertones */
-  --echo-bg-0:#08070A;            /* deepest atmosphere */
-  --echo-bg-1:#0E0C0B;            /* base */
-  --echo-bg-2:#15120F;            /* card */
-  --echo-bg-3:#1F1B16;            /* elevated */
-  --echo-glass-1:rgba(255,255,255,.05);
-  --echo-glass-2:rgba(255,255,255,.08);
-  --echo-glass-3:rgba(255,255,255,.12);
+  /* Surfaces — pure black base, glass surfaces lift visually */
+  --echo-bg-0:#000000;            /* pure black */
+  --echo-bg-1:#050505;            /* near-black */
+  --echo-bg-2:#0A0A0A;            /* card matte fallback */
+  --echo-bg-3:#0F0F0F;            /* elevated matte fallback */
+  --echo-glass-1:rgba(255,255,255,.03);
+  --echo-glass-2:rgba(255,255,255,.06);
+  --echo-glass-3:rgba(255,255,255,.10);
 
-  /* Ink — bone-white with warmth, layered opacity */
-  --echo-ink-1:rgba(247,242,228,.96);
-  --echo-ink-2:rgba(247,242,228,.72);
-  --echo-ink-3:rgba(247,242,228,.50);
-  --echo-ink-4:rgba(247,242,228,.30);
-  --echo-ink-5:rgba(247,242,228,.16);
+  /* Ink — pure white with layered opacity */
+  --echo-ink-1:rgba(255,255,255,.96);
+  --echo-ink-2:rgba(255,255,255,.72);
+  --echo-ink-3:rgba(255,255,255,.50);
+  --echo-ink-4:rgba(255,255,255,.30);
+  --echo-ink-5:rgba(255,255,255,.14);
 
-  /* Hairlines — Apple-grade visible-but-restrained */
-  --echo-line-1:rgba(255,255,255,.08);
-  --echo-line-2:rgba(255,255,255,.13);
-  --echo-line-3:rgba(255,255,255,.20);
+  /* Hairlines — minimum-visible Apple-grade */
+  --echo-line-1:rgba(255,255,255,.10);
+  --echo-line-2:rgba(255,255,255,.14);
+  --echo-line-3:rgba(255,255,255,.22);
 
   /* Brand accents */
   --echo-gold:#D4B27A;            /* slightly brighter on dark */
   --echo-gold-soft:rgba(212,178,122,.16);
-  --echo-gold-glow:rgba(212,178,122,.28);
+  --echo-gold-glow:rgba(212,178,122,.32);
   --echo-violet:#B19CFB;
   --echo-violet-soft:rgba(177,156,251,.14);
 
-  /* Multi-layer shadows — atmospheric depth */
+  /* Multi-layer shadows — atmospheric depth on pure black */
   --echo-lift-1:
-    0 1px 1px rgba(0,0,0,.40),
-    0 2px 6px rgba(0,0,0,.18),
-    inset 0 1px 0 rgba(247,242,228,.04);
+    0 1px 1px rgba(0,0,0,.6),
+    0 2px 8px rgba(0,0,0,.40),
+    inset 0 1px 0 rgba(255,255,255,.04);
   --echo-lift-2:
-    0 1px 2px rgba(0,0,0,.45),
-    0 4px 12px rgba(0,0,0,.28),
-    0 12px 32px rgba(0,0,0,.22),
-    inset 0 1px 0 rgba(247,242,228,.05);
+    0 1px 2px rgba(0,0,0,.7),
+    0 4px 16px rgba(0,0,0,.5),
+    0 16px 40px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.06);
   --echo-lift-3:
-    0 2px 4px rgba(0,0,0,.5),
-    0 8px 24px rgba(0,0,0,.35),
-    0 24px 64px rgba(0,0,0,.30),
-    inset 0 1px 0 rgba(247,242,228,.06);
+    0 2px 4px rgba(0,0,0,.7),
+    0 12px 32px rgba(0,0,0,.55),
+    0 32px 80px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.08);
   --echo-lift-gold:
-    0 1px 2px rgba(0,0,0,.4),
-    0 4px 14px rgba(0,0,0,.3),
-    0 0 32px rgba(212,178,122,.10),
-    inset 0 1px 0 rgba(247,242,228,.10);
+    0 1px 2px rgba(0,0,0,.5),
+    0 6px 24px rgba(0,0,0,.4),
+    0 0 40px rgba(212,178,122,.18),
+    inset 0 1px 0 rgba(255,255,255,.14);
 
   /* Glow rings for focus & press */
   --echo-ring-gold:0 0 0 1px rgba(212,178,122,.4), 0 0 0 4px rgba(212,178,122,.12);
-  --echo-ring-ink:0 0 0 1px rgba(247,242,228,.18), 0 0 0 4px rgba(247,242,228,.05);
+  --echo-ring-ink:0 0 0 1px rgba(255,255,255,.18), 0 0 0 4px rgba(255,255,255,.05);
 }
 .dark body{
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,178,122,.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 50% 110%, rgba(177,156,251,.04) 0%, transparent 60%),
-    var(--echo-bg-0);
+  background:#000000;
 }
+.dark .scr,
+.dark .home-content,
+.dark .home-today-block{background:transparent !important}
 
 /* ── Spacing / Type / Motion — global, not theme-scoped ── */
 :root{
@@ -312,6 +312,77 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 
 /* Smooth touch scroll for all screens + prevent overscroll bounce */
 .scr{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+
+/* ══ Global type refinements ══
+   Cormorant Garamond as DISPLAY type — weight 300, tight tracking
+   Captures both literal "Cormorant Garamond" and var(--font-serif) styles */
+.dark [style*="Cormorant Garamond"]:not([style*="weight:500"]):not([style*="weight:600"]):not([style*="weight:700"]),
+.dark [style*="--font-serif"],
+.dark .home-hero-tagline,
+.dark .home-freq-name,
+.dark #cs-level-name,
+.dark #prof-name,
+.dark #prof-affirmation,
+.dark #prof-tip-headline,
+.dark #lib-cta-title,
+.dark #quick-desc,
+.dark #today-intention,
+.dark .pl-fname,
+.dark .echo-display,
+.dark .echo-headline{
+  font-weight:300 !important;
+  letter-spacing:-0.02em !important;
+}
+
+/* Big numbers — DM Sans Medium 500, tabular, tight tracking */
+.dark .home-freq-num,
+.dark .pl-fn,
+.dark #cs-score,
+.dark #hero-hz-num,
+.dark #sk-num,
+.dark .sk-n,
+.dark #prof-month-count,
+.dark #prof-explored-count{
+  font-family:var(--font-sans) !important;
+  font-weight:500 !important;
+  font-variant-numeric:tabular-nums !important;
+  letter-spacing:-0.03em !important;
+  line-height:.92 !important;
+}
+/* Big-number size bumps on mobile (72-80) and tablet+ (96) */
+.dark .home-freq-num{font-size:72px !important;color:var(--echo-ink-1) !important}
+.dark .pl-fn{font-size:80px !important}
+.dark .sk-n,.dark #sk-num{font-size:36px !important}
+.dark #cs-score{font-size:34px !important}
+.dark #prof-month-count,.dark #prof-explored-count{font-size:34px !important}
+@media(min-width:768px){
+  .dark .home-freq-num{font-size:96px !important}
+  .dark .pl-fn{font-size:104px !important}
+}
+
+/* Universal tap micro-interaction — scale down on press, spring back */
+.dark button:active,
+.dark a[onclick]:active,
+.dark [role="button"]:active,
+.dark .echo-card.interactive:active,
+.dark .echo-pill:active,
+.dark .echo-icon-btn:active,
+.dark .echo-avatar-btn:active,
+.dark .streak-card:active,
+.dark #consciousness-card:active,
+.dark #quick-relief-card:active,
+.dark #lib-link:active,
+.dark .pl-play:active,
+.dark .pl-back:active,
+.dark .home-play-btn:active,
+.dark .home-hero-cta:active,
+.dark .tip-btn:active{
+  transform:scale(.97) !important;
+  transition:transform 100ms cubic-bezier(.4,0,.2,1) !important;
+}
+
+/* Disable tap highlight (iOS) — we have our own */
+.dark button, .dark a{-webkit-tap-highlight-color:transparent}
 
 /* ── Primitive classes — composable building blocks ── */
 .echo-eyebrow{
@@ -571,6 +642,114 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .echo-icon.lg{width:22px;height:22px}
 .echo-icon.xl{width:28px;height:28px}
 
+/* ──────────────────────────────────────────────────────────
+   Stack-card list — horizontal rows with icon + content + arrow
+   Replaces 2x2 grid pattern (felt like a website, not an app)
+────────────────────────────────────────────────────────── */
+.echo-stack-list{
+  display:flex;flex-direction:column;
+  gap:var(--s-4);                  /* 16px between cards */
+  margin:0 var(--s-5) var(--s-5);  /* 24px sides + bottom */
+}
+.echo-stack-card{
+  display:flex;align-items:center;gap:var(--s-4);
+  padding:var(--s-4) var(--s-5);
+  background:rgba(255,255,255,.03);
+  border:.5px solid rgba(255,255,255,.10);
+  border-radius:28px;
+  text-decoration:none;
+  cursor:pointer;
+  font-family:var(--font-sans);
+  text-align:start;
+  width:100%;
+  color:inherit;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,.6),
+    0 4px 14px rgba(0,0,0,.40),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  transition:
+    background var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--spring-gentle);
+  position:relative;
+  overflow:hidden;
+}
+.echo-stack-card:hover{
+  background:rgba(255,255,255,.05);
+  border-color:rgba(255,255,255,.16);
+  transform:translateY(-2px);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.7),
+    0 8px 24px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+.echo-stack-icon{
+  flex-shrink:0;
+  width:48px;height:48px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-full);
+  background:linear-gradient(135deg, rgba(212,178,122,.18) 0%, rgba(212,178,122,.06) 100%);
+  color:var(--echo-gold);
+  box-shadow:
+    inset 0 0 0 .5px rgba(212,178,122,.20),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  transition:all var(--dur-base) var(--spring-gentle);
+}
+.echo-stack-icon svg{width:20px;height:20px;stroke-width:1.5}
+.echo-stack-card:hover .echo-stack-icon{
+  background:linear-gradient(135deg, rgba(212,178,122,.28) 0%, rgba(212,178,122,.10) 100%);
+  box-shadow:
+    inset 0 0 0 .5px rgba(212,178,122,.32),
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 0 20px rgba(212,178,122,.18);
+}
+.echo-stack-content{
+  flex:1;min-width:0;
+  display:flex;flex-direction:column;gap:2px;
+}
+.echo-stack-title{
+  font-family:var(--font-sans);
+  font-size:var(--t-md);          /* 16px */
+  font-weight:500;
+  color:var(--echo-ink-1);
+  letter-spacing:-0.005em;
+  line-height:1.3;
+}
+.echo-stack-sub{
+  font-family:var(--font-sans);
+  font-size:var(--t-sm);          /* 14px */
+  font-weight:400;
+  color:var(--echo-ink-3);
+  line-height:1.4;
+}
+.echo-stack-preview{
+  margin-top:var(--s-2);
+  padding-top:var(--s-2);
+  border-top:.5px solid rgba(255,255,255,.06);
+  font-family:var(--font-sans);
+  font-size:var(--t-xs);          /* 12px */
+  font-weight:400;
+  color:var(--echo-ink-4);
+  letter-spacing:0.02em;
+  line-height:1.4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.echo-stack-arrow{
+  flex-shrink:0;
+  width:20px;height:20px;
+  color:var(--echo-ink-4);
+  transition:all var(--dur-base) var(--spring-gentle);
+}
+.echo-stack-card:hover .echo-stack-arrow{
+  color:var(--echo-gold);
+  transform:translateX(3px);
+}
+
 /* Language toggle — compact segmented control */
 .echo-lang-toggle{
   display:inline-flex;
@@ -738,27 +917,68 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   transform:translateY(-2px);
 }
 
-/* Hero gradient overlay — push to deeper dark */
+/* Hero gradient overlay — full-bleed image fades to pure black */
 .dark .home-hero-bg::after{
   background:linear-gradient(to bottom,
-    rgba(0,0,0,.30) 0%,
-    rgba(0,0,0,.05) 18%,
-    rgba(0,0,0,.05) 38%,
-    rgba(8,7,10,.55) 65%,
-    rgba(8,7,10,.92) 85%,
-    var(--echo-bg-0) 100%
+    rgba(0,0,0,.45) 0%,
+    rgba(0,0,0,.10) 12%,
+    rgba(0,0,0,.05) 28%,
+    rgba(0,0,0,.35) 50%,
+    rgba(0,0,0,.75) 72%,
+    rgba(0,0,0,.95) 88%,
+    #000 100%
   );
 }
 
+/* Hero center stronger gradient + text shadow for legibility on image */
+.dark .home-hero-center{
+  background:linear-gradient(to top,
+    rgba(0,0,0,.85) 0%,
+    rgba(0,0,0,.55) 40%,
+    rgba(0,0,0,.20) 75%,
+    transparent 100%);
+  padding-bottom:56px;
+}
+.dark .home-hero-tagline{
+  text-shadow:
+    0 2px 24px rgba(0,0,0,.85),
+    0 1px 4px rgba(0,0,0,.6),
+    0 0 80px rgba(0,0,0,.5) !important;
+  font-weight:300 !important;
+  letter-spacing:-0.025em !important;
+}
+.dark .home-hero-sub{
+  color:rgba(255,255,255,.78) !important;
+  text-shadow:0 1px 8px rgba(0,0,0,.7);
+  font-weight:400 !important;
+  letter-spacing:.22em !important;
+}
+
+/* Hero CTA — airy gold outline, not heavy solid */
 .dark .home-hero-cta{
-  background:var(--echo-gold);
-  color:#1A1208;
-  box-shadow:var(--echo-lift-gold);
-  font-weight:500;
+  background:rgba(212,178,122,.08) !important;
+  border:1px solid var(--echo-gold) !important;
+  color:var(--echo-gold) !important;
+  box-shadow:
+    0 0 0 0 rgba(212,178,122,0),
+    0 0 32px rgba(212,178,122,.18),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+  backdrop-filter:blur(12px) saturate(140%);
+  -webkit-backdrop-filter:blur(12px) saturate(140%);
+  font-weight:500 !important;
+  padding:16px 28px !important;
+  text-transform:uppercase;
+  letter-spacing:.22em !important;
+  transition:all var(--dur-base) var(--spring-gentle) !important;
 }
 .dark .home-hero-cta:hover{
-  background:#E0BF85;
-  box-shadow:0 0 0 1px rgba(212,178,122,.45), 0 8px 24px rgba(0,0,0,.45), 0 0 56px rgba(212,178,122,.25);
+  background:rgba(212,178,122,.18) !important;
+  color:#F0D8A8 !important;
+  border-color:#E8C887 !important;
+  box-shadow:
+    0 0 0 1px rgba(212,178,122,.5),
+    0 0 56px rgba(212,178,122,.35),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
   transform:translateY(-2px);
 }
 
@@ -1103,38 +1323,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   margin-right:var(--s-5) !important;
 }
 
-/* 4-action grid — gold-on-glass on dark */
-.dark #profile div[style*="grid-template-columns:1fr 1fr"]{
-  gap:var(--s-3) !important;
-}
-.dark #profile div[style*="grid-template-columns:1fr 1fr"] button,
-.dark #profile div[style*="grid-template-columns:1fr 1fr"] a{
-  padding:var(--s-5) var(--s-4) !important;
-  gap:var(--s-3) !important;
-}
-.dark #profile div[style*="grid-template-columns:1fr 1fr"] button > div:first-child,
-.dark #profile div[style*="grid-template-columns:1fr 1fr"] a > div:first-child{
-  width:40px !important;height:40px !important;
-  background:rgba(212,178,122,.10) !important;
-  color:var(--echo-gold) !important;
-  font-size:18px !important;
-}
-.dark #prof-moodlog-title,
-.dark #prof-share-title,
-.dark #prof-supp-title,
-.dark #prof-set-title{
-  font-size:var(--t-sm) !important;
-  color:var(--echo-ink-1) !important;
-  font-weight:400 !important;
-}
-.dark #prof-moodlog-sub,
-.dark #prof-share-sub,
-.dark #prof-supp-sub,
-.dark #prof-set-sub{
-  font-size:var(--t-xs) !important;
-  color:var(--echo-ink-3) !important;
-  line-height:1.4 !important;
-}
+/* Old 2x2 grid rules removed — replaced by .echo-stack-list / .echo-stack-card primitives */
 
 /* Sign Out — luxe pill */
 .dark #prof-signout{
@@ -1346,48 +1535,64 @@ input[type=range]{accent-color:var(--t3);width:100%}
   overscroll-behavior:contain;
 }
 
-/* Sticky nav — stays on top while scrolling */
+/* Fixed nav — always floating with backdrop blur */
 .home-nav-sticky{
-  position:sticky;
-  top:0;
-  z-index:20;
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:50;
   display:flex;align-items:center;justify-content:space-between;
   padding:calc(env(safe-area-inset-top,0px) + var(--s-3)) var(--s-4) var(--s-3);
-  background:transparent;
+  background:rgba(0,0,0,.40);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  backdrop-filter:blur(20px) saturate(160%);
+  border-bottom:.5px solid var(--echo-line-1);
   transition:background var(--dur-base) var(--ease-out),
-             backdrop-filter var(--dur-base) var(--ease-out),
              border-color var(--dur-base) var(--ease-out);
-  -webkit-backdrop-filter:none;
-  backdrop-filter:none;
-  border-bottom:.5px solid transparent;
 }
 .home-nav-sticky.scrolled{
-  background:rgba(245,243,238,.88);
-  -webkit-backdrop-filter:blur(20px) saturate(140%);
-  backdrop-filter:blur(20px) saturate(140%);
-  border-bottom-color:var(--b1);
+  background:rgba(0,0,0,.55);
+  border-bottom-color:var(--echo-line-2);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
 }
 .dark .home-nav-sticky.scrolled{
-  background:rgba(10,9,8,.72);
-  border-bottom-color:var(--echo-line-1);
-  box-shadow:0 1px 0 rgba(247,242,228,.04), 0 8px 24px rgba(0,0,0,.4);
+  background:rgba(0,0,0,.65);
+  border-bottom-color:var(--echo-line-2);
+  box-shadow:0 1px 0 rgba(255,255,255,.04), 0 8px 32px rgba(0,0,0,.6);
 }
-.dark .home-nav-sticky{
-  /* Subtle gradient fade for top edge even when not scrolled */
-}
-.dark .brand-name{color:var(--echo-ink-1);font-weight:300;letter-spacing:.16em}
-.dark .brand-tag{color:var(--echo-ink-3);font-weight:300}
-.dark .bb{background:var(--echo-gold);opacity:.85}
+.dark .brand-name{color:var(--echo-ink-1);font-weight:400;letter-spacing:.14em;font-size:var(--t-sm)}
+.dark .brand-tag{color:var(--echo-ink-3);font-weight:300;font-size:var(--t-2xs);letter-spacing:.18em}
+.dark .bb{background:var(--echo-gold);opacity:.95}
 .dark .bt{background:var(--echo-ink-2);opacity:.30}
 
-/* Hero — tall, parallax container */
+/* Avatar button — bumped to 44px with permanent gold glow ring */
+.dark .echo-avatar-btn{
+  width:44px !important;height:44px !important;
+  box-shadow:
+    inset 0 0 0 .5px rgba(212,178,122,.40),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 2px 8px rgba(0,0,0,.5),
+    0 0 24px rgba(212,178,122,.18);
+}
+.dark .echo-avatar-btn:hover{
+  width:44px !important;height:44px !important;
+  box-shadow:
+    inset 0 0 0 .5px rgba(212,178,122,.60),
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 4px 16px rgba(0,0,0,.5),
+    0 0 36px rgba(212,178,122,.32);
+}
+.dark .echo-icon-btn{width:44px;height:44px}
+.dark .echo-lang-toggle{height:36px}
+
+/* Hero — full-bleed under fixed nav */
 .home-hero{
   position:relative;
-  height:90vh;
-  min-height:500px;
+  height:92vh;
+  min-height:560px;
   overflow:hidden;
-  margin-top:-60px;   /* pull up behind sticky nav */
-;will-change:transform}
+  margin-top:0;   /* nav is position:fixed so hero starts at top */
+  will-change:transform;
+}
 video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;z-index:0}
 .home-hero-bg{
   position:absolute;
@@ -3188,51 +3393,50 @@ button{font-variant-emoji:text}
     <div id="prof-tones-list" style="display:flex;flex-direction:column;gap:8px"></div>
   </div>
 
-  <!-- 4 Action Cards Grid -->
-  <div style="margin:0 22px 22px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+  <!-- Action Cards — vertical stack of horizontal "stack-cards" -->
+  <div class="echo-stack-list">
     <!-- Mood Log -->
-    <button onclick="show('history');setTimeout(buildHistory,50)" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:14px">📅</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-moodlog-title">Mood Log</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-moodlog-sub">Track your emotional journey</div>
+    <button class="echo-stack-card" onclick="show('history');setTimeout(buildHistory,50)">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-activity"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-moodlog-title">Mood Log</div>
+        <div class="echo-stack-sub" id="prof-moodlog-sub">Track your emotional journey</div>
+        <div class="echo-stack-preview" id="prof-moodlog-preview">— no sessions yet</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg>
     </button>
+
     <!-- Share echo.11 -->
-    <button onclick="shareEcho()" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(59,130,246,.12);display:flex;align-items:center;justify-content:center;color:#3b82f6;font-size:14px">↗</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-share-title">Share echo.11</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-share-sub">Pass it on to a friend</div>
+    <button class="echo-stack-card" onclick="shareEcho()">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-share"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-share-title">Share echo.11</div>
+        <div class="echo-stack-sub" id="prof-share-sub">Pass it on to a friend</div>
+        <div class="echo-stack-preview" id="prof-share-preview">echo11.space</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
     </button>
+
     <!-- Support -->
-    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="track('support_click',{event_category:'engagement'})" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(20,184,166,.12);display:flex;align-items:center;justify-content:center;color:#14b8a6;font-size:14px">✉</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-supp-title">Support</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-supp-sub">We're here to help</div>
+    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="track('support_click',{event_category:'engagement'})" class="echo-stack-card">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-mail"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-supp-title">Support</div>
+        <div class="echo-stack-sub" id="prof-supp-sub">We're here to help</div>
+        <div class="echo-stack-preview" id="prof-supp-preview">hello@echo11.space</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
     </a>
+
     <!-- Settings -->
-    <button onclick="openSettings()" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:14px">⚙</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-set-title">Settings</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-set-sub">Personalize your sanctuary</div>
+    <button class="echo-stack-card" onclick="openSettings()">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-settings"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-set-title">Settings</div>
+        <div class="echo-stack-sub" id="prof-set-sub">Personalize your sanctuary</div>
+        <div class="echo-stack-preview" id="prof-set-preview">EN · Dark · A11y</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg>
     </button>
   </div>
 
@@ -4327,6 +4531,32 @@ function renderProfile(){
   const isHe = lang === 'he'
   const p = loadProfile()
   const sessions = loadSessions()
+
+  // Stack-card preview labels — dynamic context per card
+  try{
+    const now = new Date()
+    const thisMonthCount = sessions.filter(s => {
+      const d = new Date(s.t || s.time || 0)
+      return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear()
+    }).length
+    const mlPrev = document.getElementById('prof-moodlog-preview')
+    if(mlPrev){
+      mlPrev.textContent = thisMonthCount > 0
+        ? (isHe ? `${thisMonthCount} הקשבות החודש` : `${thisMonthCount} sessions this month`)
+        : (isHe ? 'עדיין לא הוקלטו הקשבות' : '— no sessions yet')
+    }
+    const shrPrev = document.getElementById('prof-share-preview')
+    if(shrPrev) shrPrev.textContent = 'echo11.space'
+    const supPrev = document.getElementById('prof-supp-preview')
+    if(supPrev) supPrev.textContent = 'hello@echo11.space'
+    const setPrev = document.getElementById('prof-set-preview')
+    if(setPrev){
+      const langStr = isHe ? 'עב' : 'EN'
+      const themeStr = (document.body.classList.contains('dark')) ? (isHe?'כהה':'Dark') : (isHe?'בהיר':'Light')
+      setPrev.textContent = `${langStr} · ${themeStr}`
+    }
+  }catch(e){}
+
 
   // Update mini avatar in nav — SVG icon for new users, initial for named
   const miniAvatar = document.getElementById('profile-avatar-mini')
