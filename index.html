@@ -880,18 +880,27 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 }
 .dark .home-play-btn:active{transform:translateY(0);transition-duration:80ms}
 
-/* ── Streak card → premium glass treatment ── */
+/* ── Streak card → premium glass treatment + breathable padding ── */
 .dark .streak-card{
-  background:var(--echo-glass-1);
-  border:.5px solid var(--echo-line-1);
-  border-radius:var(--r-md);
-  padding:var(--s-4) var(--s-4);
-  margin:0 var(--s-4) var(--s-3);
+  background:var(--echo-glass-1) !important;
+  border:.5px solid var(--echo-line-1) !important;
+  border-radius:var(--r-lg) !important;
+  padding:20px 22px !important;
+  margin:0 var(--s-4) var(--s-3) !important;
+  gap:20px !important;
   backdrop-filter:blur(20px) saturate(140%);
   -webkit-backdrop-filter:blur(20px) saturate(140%);
-  box-shadow:var(--echo-lift-1);
+  box-shadow:var(--echo-lift-1) !important;
   transition:all var(--dur-base) var(--spring-gentle);
+  width:auto !important;
 }
+.dark .streak-card #streak-right{
+  gap:8px !important;
+  align-items:flex-end;
+}
+.dark .streak-card .sk-bars{margin-top:2px}
+.dark .streak-card .sk-days{margin-top:6px;gap:6px}
+.dark .streak-card #streak-cta-lbl{margin-top:6px !important}
 .dark .streak-card:hover{
   border-color:var(--echo-line-2);
   background:var(--echo-glass-2);
@@ -1052,17 +1061,69 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   background:transparent !important;
 }
 
-/* Binaural card chips on dark */
-.dark #binaural-strip > *{
-  background:var(--echo-glass-1) !important;
-  border-color:var(--echo-line-1) !important;
-  color:var(--echo-ink-2) !important;
-  transition:all var(--dur-fast) var(--spring-gentle) !important;
+/* Binaural cards — bigger, more readable, more breathable */
+#binaural-strip{padding:8px 18px 12px !important;gap:12px !important}
+.echo-binaural-card{
+  flex-shrink:0;
+  display:flex;flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
+  border-radius:20px;
+  padding:18px 20px;
+  min-width:148px;
+  text-align:left;
+  cursor:pointer;
+  font-family:inherit;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  transition:all 200ms cubic-bezier(.22,1.2,.36,1);
+  box-shadow:var(--echo-lift-1);
 }
-.dark #binaural-strip > *:hover{
-  background:var(--echo-glass-2) !important;
-  border-color:var(--echo-line-2) !important;
+.echo-binaural-card:hover{
+  background:var(--echo-glass-2);
+  border-color:var(--echo-line-2);
   transform:translateY(-2px);
+  box-shadow:var(--echo-lift-2);
+}
+.echo-binaural-hz{
+  display:flex;
+  align-items:baseline;
+  gap:4px;
+  margin-bottom:2px;
+}
+.echo-binaural-num{
+  font-family:var(--font-sans);
+  font-size:30px;
+  font-weight:500;
+  letter-spacing:-0.02em;
+  color:var(--echo-ink-1);
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.echo-binaural-unit{
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.20em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+}
+.echo-binaural-name{
+  font-family:var(--font-sans);
+  font-size:14px;
+  font-weight:500;
+  color:var(--echo-ink-1);
+  letter-spacing:-0.005em;
+}
+.echo-binaural-wave{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:.18em;
+  color:var(--echo-ink-3);
+  text-transform:uppercase;
 }
 
 /* Footer area on dark */
@@ -1838,71 +1899,134 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 /* All tip-jar styling lives in .echo-tip-card primitive block (below) */
 
 /* ══════════════════════════════════════════════════════════
+   HOME PAGE → compact one-line footer (legal + protocol + Aa)
+══════════════════════════════════════════════════════════ */
+.echo-home-footer{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px 6px;
+  padding:18px 20px 4px;
+}
+.echo-home-foot-link{
+  display:inline-block;
+  background:none;
+  border:none;
+  padding:4px 2px;
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.16em;
+  color:var(--echo-ink-4);
+  text-transform:uppercase;
+  text-decoration:none;
+  cursor:pointer;
+  transition:color 150ms ease;
+}
+.echo-home-foot-link:hover{color:var(--echo-ink-2)}
+.echo-home-foot-dot{
+  color:var(--echo-ink-5);
+  font-size:11px;
+  user-select:none;
+}
+.echo-home-foot-aa{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
+  border-radius:9999px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:500;
+  color:var(--echo-ink-2);
+  cursor:pointer;
+  transition:all 150ms cubic-bezier(.22,1.2,.36,1);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+}
+.echo-home-foot-aa:hover{
+  background:var(--echo-glass-2);
+  color:var(--echo-ink-1);
+  border-color:var(--echo-line-2);
+  transform:translateY(-1px);
+}
+.echo-home-foot-copy{
+  text-align:center;
+  padding:6px 20px calc(24px + env(safe-area-inset-bottom,0px));
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:.18em;
+  color:var(--echo-ink-5);
+}
+
+/* ══════════════════════════════════════════════════════════
    HOME PAGE → "Visions" CTA card (entry point to /visions)
 ══════════════════════════════════════════════════════════ */
 .echo-home-visions-cta{
   width:100%;
-  padding:var(--s-5) var(--s-4);
-  background:linear-gradient(180deg, rgba(216,197,162,.06) 0%, var(--echo-glass-1) 70%);
-  border:.5px solid rgba(216,197,162,.20);
+  padding:var(--s-4) var(--s-4);
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
   border-radius:var(--r-lg);
   cursor:pointer;
   font-family:inherit;
   display:flex;
   align-items:center;
-  gap:var(--s-4);
+  gap:var(--s-3);
   transition:all var(--dur-base) var(--spring-gentle);
   -webkit-backdrop-filter:blur(20px) saturate(150%);
   backdrop-filter:blur(20px) saturate(150%);
   box-shadow:var(--echo-lift-1);
 }
 .echo-home-visions-cta:hover{
-  background:linear-gradient(180deg, rgba(216,197,162,.10) 0%, var(--echo-glass-2) 70%);
-  border-color:rgba(216,197,162,.35);
+  background:var(--echo-glass-2);
+  border-color:var(--echo-line-2);
   transform:translateY(-2px);
-  box-shadow:var(--echo-lift-gold);
+  box-shadow:var(--echo-lift-2);
 }
 .echo-home-visions-thumbs{
   display:flex;
   align-items:center;
   flex-shrink:0;
   position:relative;
-  width:64px;
-  height:64px;
+  width:52px;
+  height:52px;
 }
 .echo-home-visions-thumbs img{
   position:absolute;
   top:50%;
-  border-radius:8px;
+  border-radius:6px;
   object-fit:cover;
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 4px 12px rgba(0,0,0,.4);
-  filter:grayscale(.08) contrast(1.05);
+  border:.5px solid rgba(255,255,255,.10);
+  box-shadow:0 2px 6px rgba(0,0,0,.4);
+  filter:grayscale(.10) contrast(1.04);
   transition:transform 300ms cubic-bezier(.22,1.2,.36,1);
 }
 .echo-home-visions-thumbs img:nth-child(1){
   left:0;
-  width:34px;height:42px;
+  width:28px;height:34px;
   transform:translateY(-50%) rotate(-7deg);
   z-index:1;
 }
 .echo-home-visions-thumbs img:nth-child(2){
-  left:16px;
-  width:38px;height:46px;
+  left:12px;
+  width:30px;height:36px;
   transform:translateY(-50%);
   z-index:3;
 }
 .echo-home-visions-thumbs img:nth-child(3){
-  left:34px;
-  width:34px;height:42px;
+  left:26px;
+  width:28px;height:34px;
   transform:translateY(-50%) rotate(7deg);
   z-index:2;
 }
 .echo-home-visions-cta:hover .echo-home-visions-thumbs img:nth-child(1){
-  transform:translateY(-50%) translateX(-3px) rotate(-12deg);
+  transform:translateY(-50%) translateX(-2px) rotate(-11deg);
 }
 .echo-home-visions-cta:hover .echo-home-visions-thumbs img:nth-child(3){
-  transform:translateY(-50%) translateX(3px) rotate(12deg);
+  transform:translateY(-50%) translateX(2px) rotate(11deg);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -3562,7 +3686,7 @@ button{font-variant-emoji:text}
     <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none" id="binaural-strip">
       <!-- filled by JS -->
     </div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-top:6px;letter-spacing:.06em">Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-top:6px;letter-spacing:.06em" id="bin-foot">Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research</div>
   </div>
 
   <!-- Rest of content — scroll-reveal applied to individual cards via JS -->
@@ -3587,9 +3711,9 @@ button{font-variant-emoji:text}
     </button>
     <div id="quick-relief-card" style="margin:0 var(--s-4) var(--s-3);background:var(--card);border:.5px solid var(--b1);border-radius:var(--r-md);padding:var(--s-4) var(--s-4);display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);cursor:pointer" onclick="openQuickRelief()">
       <div style="flex:1;min-width:0">
-        <div class="echo-eyebrow" id="quick-lbl" style="margin-bottom:var(--s-2)">
+        <div class="echo-eyebrow" style="margin-bottom:var(--s-2)">
           <svg class="echo-icon sm" style="color:var(--echo-gold)" aria-hidden="true"><use href="#i-zap"/></svg>
-          quick relief
+          <span id="quick-lbl">quick relief</span>
         </div>
         <div style="font-family:var(--font-serif);font-size:var(--t-md);font-weight:200;font-style:italic;color:var(--echo-ink-1);line-height:1.35" id="quick-desc">feeling anxious? 3 minutes of calm.</div>
       </div>
@@ -3629,42 +3753,29 @@ button{font-variant-emoji:text}
           <img src="gift-2.webp" alt="" loading="lazy" width="40" height="50"/>
           <img src="gift-3.webp" alt="" loading="lazy" width="40" height="50"/>
         </div>
-        <div style="flex:1;text-align:left">
-          <div class="echo-eyebrow" id="visions-cta-lbl" style="margin-bottom:var(--s-2)">Visions · Free</div>
-          <div id="visions-cta-title" style="font-family:var(--font-serif);font-size:var(--t-xl);font-weight:300;color:var(--echo-ink-1);line-height:1.15;margin-bottom:var(--s-1);letter-spacing:var(--ls-tight)">Postcards from inner deserts.</div>
-          <div id="visions-cta-sub" style="font-family:var(--font-sans);font-size:var(--t-xs);font-weight:400;color:var(--echo-ink-3);letter-spacing:var(--ls-relaxed)">3 art prints · free for your screen or wall</div>
+        <div style="flex:1;text-align:left;min-width:0">
+          <div class="echo-eyebrow" id="visions-cta-lbl" style="margin-bottom:6px">Visions · Free</div>
+          <div id="visions-cta-title" style="font-family:var(--font-serif);font-size:var(--t-lg);font-weight:300;color:var(--echo-ink-1);line-height:1.2;margin-bottom:2px;letter-spacing:var(--ls-tight)">Postcards from inner deserts.</div>
+          <div id="visions-cta-sub" style="font-family:var(--font-sans);font-size:var(--t-xs);font-weight:400;color:var(--echo-ink-3);letter-spacing:var(--ls-relaxed)">3 art prints · free</div>
         </div>
-        <svg class="echo-icon lg" style="color:var(--echo-gold);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        <svg class="echo-icon" style="color:var(--echo-gold);flex-shrink:0;width:16px;height:16px" aria-hidden="true"><use href="#i-arrow-right"/></svg>
       </button>
     </div>
 
-    <div style="text-align:center;padding:6px 14px 14px">
-      <a href="legal.html?from=home#access" style="display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;padding:6px 0">
-        <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;display:block">
-          <circle cx="22" cy="22" r="21" fill="none" stroke="#525250" stroke-width="1.5"/>
-          <circle cx="22" cy="12.5" r="2.8" fill="#525250" stroke="none"/>
-          <line x1="22" y1="16" x2="22" y2="26.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="15.5" y1="20.5" x2="28.5" y2="20.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="22" y1="26.5" x2="18" y2="33.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="22" y1="26.5" x2="26" y2="33.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-        Accessibility
-      </a>
+    <!-- Footer — single compact line: legal · accessibility · protocol · text-size -->
+    <div class="echo-home-footer">
+      <a href="legal.html?from=home#access" class="echo-home-foot-link" id="foot-a11y-lnk">Accessibility</a>
+      <span class="echo-home-foot-dot">·</span>
+      <a href="legal.html?from=home" class="echo-home-foot-link" id="foot-privacy-lnk">Privacy</a>
+      <span class="echo-home-foot-dot">·</span>
+      <a href="legal.html?from=home" class="echo-home-foot-link" id="foot-terms-lnk">Terms</a>
+      <span class="echo-home-foot-dot">·</span>
+      <button class="echo-home-foot-link" onclick="localStorage.removeItem('echo11_protocol_seen');location.reload()" id="foot-protocol-lnk">Protocol</button>
+      <span class="echo-home-foot-dot">·</span>
+      <button class="echo-home-foot-aa" onclick="changeFontSize(1)" aria-label="Increase text size">A+</button>
+      <button class="echo-home-foot-aa" onclick="changeFontSize(-1)" aria-label="Decrease text size">A−</button>
     </div>
-    <div style="text-align:center;padding:0 14px 14px">
-      <a href="legal.html?from=home" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;display:inline-block;padding:6px 0">
-        Privacy · Terms · echo.11 © 2026
-      </a>
-    </div>
-    <!-- Re-show protocol -->
-    <div style="text-align:center;padding:0 14px 20px">
-      <button onclick="localStorage.removeItem('echo11_protocol_seen');location.reload()" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);background:none;border:none;cursor:pointer;padding:6px">↺ view pre-session protocol</button>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px;padding:0 14px 4px">
-      <span style="font-size:9px;letter-spacing:.18em;color:var(--t4);font-family:'DM Sans',sans-serif">text size</span>
-      <button class="pill" onclick="changeFontSize(1)" style="min-width:44px;min-height:44px">A+</button>
-      <button class="pill" onclick="changeFontSize(-1)" style="min-width:44px;min-height:44px">A−</button>
-    </div>
+    <div class="echo-home-foot-copy" id="foot-copy">echo.11 © 2026</div>
   </div>
 </div>
 
@@ -6521,21 +6632,10 @@ function renderBinauralStrip(){
   const binaurals = FREQS.filter(f => f.type === 'binaural');
   strip.innerHTML = binaurals.map(f => {
     const t = f[lang] || f.en;
-    return `<button onclick="openPlayer('${f.id}')" style="
-      flex-shrink:0;
-      background:var(--card);
-      border:.5px solid var(--b1);
-      border-radius:14px;
-      padding:14px 16px;
-      min-width:120px;
-      text-align:left;
-      cursor:pointer;
-      font-family:inherit;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t1);line-height:1;margin-bottom:4px">${f.hz}<span style="font-size:10px;color:var(--t3);font-family:'DM Sans',sans-serif;letter-spacing:.1em">Hz</span></div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t2);margin-bottom:2px">${t.name}</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);letter-spacing:.06em">${f.wave} wave</div>
+    return `<button onclick="openPlayer('${f.id}')" class="echo-binaural-card">
+      <div class="echo-binaural-hz"><span class="echo-binaural-num">${f.hz}</span><span class="echo-binaural-unit">Hz</span></div>
+      <div class="echo-binaural-name">${t.name}</div>
+      <div class="echo-binaural-wave">${f.wave} wave</div>
     </button>`;
   }).join('');
 }
@@ -6722,8 +6822,8 @@ function changeFontSize(d){
 }
 
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'enter echo.11 →','sp-btn-hp':'enter the frequency','sp-btn-no-hp':'start with 528 Hz →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
-  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','sp-btn-hp':'כניסה לתדר','sp-btn-no-hp':'התחילי עם 528 Hz ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'enter echo.11 →','sp-btn-hp':'enter the frequency','sp-btn-no-hp':'start with 528 Hz →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio','hero-sub':'22 frequencies · not music · real science · CIA gateway protocol','bin-lbl':'🎧 Binaural Beats · CIA Protocol','bin-foot':'Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research','quick-lbl':'quick relief','quick-desc':'feeling anxious? 3 minutes of calm.','foot-a11y-lnk':'Accessibility','foot-privacy-lnk':'Privacy','foot-terms-lnk':'Terms','foot-protocol-lnk':'Protocol','foot-copy':'echo.11 © 2026','streak-cta-lbl':'view history →'},
+  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','sp-btn-hp':'כניסה לתדר','sp-btn-no-hp':'התחילי עם 528 Hz ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה','hero-sub':'22 תדרים · לא מוזיקה · מדע אמיתי · פרוטוקול CIA Gateway','bin-lbl':'🎧 ביינוראל ביטס · פרוטוקול CIA','bin-foot':'נדרשות אוזניות · בהשראת CIA Gateway Experience (1983) ומחקר מכון Monroe','quick-lbl':'הקלה מהירה','quick-desc':'מרגישה חרדה? שלוש דקות של רוגע.','foot-a11y-lnk':'נגישות','foot-privacy-lnk':'פרטיות','foot-terms-lnk':'תנאים','foot-protocol-lnk':'פרוטוקול','foot-copy':'echo.11 © 2026','streak-cta-lbl':'צפו בהיסטוריה ←'},
 }
 function setLang(l){
   if(lang===l) return
