@@ -1193,12 +1193,78 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .dark #profile > *{margin-bottom:var(--s-5) !important}
 .dark #profile > *:last-child{margin-bottom:0 !important}
 
-/* Top nav stays tight */
-.dark #profile > div:first-child{
+/* ══════════════════════════════════════════════════════════
+   PROFILE HERO IMAGE — full-bleed atmospheric portrait
+   Image fades to pure black; top-nav floats glass-pill over it.
+══════════════════════════════════════════════════════════ */
+.dark .echo-profile-hero{
+  position:relative !important;
+  width:100% !important;
+  height:340px !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  flex-shrink:0;
+}
+.dark .echo-profile-hero-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 30%;
+  display:block;
+  filter:grayscale(.15) contrast(1.04) brightness(.92);
+  animation:echo-hero-breathe 12s ease-in-out infinite alternate;
+}
+@keyframes echo-hero-breathe{
+  from{transform:scale(1)}
+  to{transform:scale(1.04)}
+}
+.dark .echo-profile-hero-fade{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,
+    rgba(0,0,0,.50) 0%,
+    rgba(0,0,0,.15) 18%,
+    rgba(0,0,0,.05) 42%,
+    rgba(0,0,0,.45) 68%,
+    rgba(0,0,0,.85) 86%,
+    #000 100%
+  );
+  pointer-events:none;
+}
+.dark .echo-profile-hero-nav{
+  position:absolute;
+  top:calc(env(safe-area-inset-top,0px) + 14px);
+  left:0;right:0;
+  z-index:2;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--s-4);
+}
+.dark .echo-profile-hero-nav button:hover{
+  background:rgba(0,0,0,.55) !important;
+  border-color:rgba(255,255,255,.28) !important;
+  transform:translateY(-1px);
+  transition:all 150ms cubic-bezier(.22,1.2,.36,1);
+}
+
+/* Avatar + greeting now overlap with hero bottom fade (sits inside the fade) */
+.dark #profile > div:nth-of-type(2),
+.dark #profile > div:nth-of-type(3){
+  margin-top:-60px !important;
+  position:relative;
+  z-index:3;
+}
+/* Hide the legacy fallback top nav */
+.dark .echo-profile-toolbar-legacy{display:none !important}
+
+/* Top nav stays tight (LEGACY rule — kept for non-hero usage) */
+.dark #profile > div:first-child:not(.echo-profile-hero){
   margin-bottom:var(--s-3) !important;
   padding:calc(env(safe-area-inset-top,0px) + var(--s-5)) var(--s-5) var(--s-3) !important;
 }
-.dark #profile > div:first-child button{
+.dark #profile > div:first-child:not(.echo-profile-hero) button{
   background:var(--echo-glass-1) !important;
   border:.5px solid var(--echo-line-2) !important;
   border-radius:var(--r-full) !important;
@@ -1211,7 +1277,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   backdrop-filter:blur(20px) saturate(150%);
   -webkit-backdrop-filter:blur(20px) saturate(150%);
 }
-.dark #profile > div:first-child button:hover{
+.dark #profile > div:first-child:not(.echo-profile-hero) button:hover{
   background:var(--echo-glass-2) !important;
   border-color:var(--echo-line-3) !important;
   color:var(--echo-ink-1) !important;
@@ -3463,13 +3529,29 @@ button{font-variant-emoji:text}
 ═══════════════════════════════════ -->
 <div id="profile" class="scr" style="overflow-y:auto;overflow-x:hidden">
 
-  <!-- Top nav -->
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:calc(20px + env(safe-area-inset-top)) 22px 14px">
-    <button class="pl-back" onclick="show('home');renderStreak()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3);background:none;border:none;cursor:pointer">← Back</button>
-    <button onclick="editProfile()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t3);background:none;border:.5px solid var(--b2);border-radius:50px;padding:6px 14px;cursor:pointer" id="prof-edit-btn">Edit</button>
+  <!-- ═══════════════════════════════════════════════════
+       PROFILE HERO IMAGE — atmospheric portrait
+       Fades to pure black at the bottom. Top-nav floats over it.
+       To replace: save your image as profile-hero.webp via squoosh.app
+  ═══════════════════════════════════════════════════ -->
+  <div class="echo-profile-hero">
+    <img src="profile-hero.webp" alt="" width="900" height="1200" decoding="async" fetchpriority="high" class="echo-profile-hero-img"/>
+    <div class="echo-profile-hero-fade"></div>
+
+    <!-- Top nav — overlays the image -->
+    <div class="echo-profile-hero-nav">
+      <button class="pl-back" onclick="show('home');renderStreak()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--echo-ink-1);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer">← Back</button>
+      <button onclick="editProfile()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--echo-ink-1);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer" id="prof-edit-btn">Edit</button>
+    </div>
   </div>
 
-  <!-- Avatar + Greeting -->
+  <!-- Top nav (old fallback — hidden when hero is present) -->
+  <div class="echo-profile-toolbar-legacy" style="display:none">
+    <button class="pl-back" onclick="show('home');renderStreak()">← Back</button>
+    <button onclick="editProfile()" id="prof-edit-btn-legacy">Edit</button>
+  </div>
+
+  <!-- Avatar + Greeting — overlaps bottom of hero -->
   <div style="text-align:center;padding:20px 22px 28px;display:flex;flex-direction:column;align-items:center;gap:14px">
     <!-- Avatar wrapper with mood ring dot -->
     <div style="position:relative;width:88px;height:88px">
