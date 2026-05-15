@@ -4664,23 +4664,25 @@ function syncA11yPos(){
     menu.style.right='auto';menu.style.left='20px'
   }
 }
-// watch lang toggle
-const _origToggleLang = typeof toggleLang==='function' ? toggleLang : null
-if(_origToggleLang){
-  window.toggleLang = function(){
-    _origToggleLang()
-    syncA11yPos()
-    // translate widget labels
-    const isHe = document.body.dir==='rtl'
-    document.getElementById('a11y-title').textContent    = isHe?'נגישות':'Accessibility'
-    document.getElementById('a11y-lbl-font').textContent  = isHe?'גודל טקסט':'Text size'
-    document.getElementById('a11y-lbl-hc').textContent    = isHe?'ניגודיות גבוהה':'High contrast'
-    document.getElementById('a11y-lbl-anim').textContent  = isHe?'עצור אנימציות':'Stop animations'
-    document.getElementById('a11y-lbl-reset').textContent = isHe?'איפוס':'Reset'
-    document.getElementById('a11y-btn').setAttribute('aria-label', isHe?'תפריט נגישות':'Accessibility menu')
+// watch lang toggle — wait for deferred app.js so toggleLang is defined
+document.addEventListener('DOMContentLoaded', () => {
+  const _origToggleLang = typeof toggleLang==='function' ? toggleLang : null
+  if(_origToggleLang){
+    window.toggleLang = function(){
+      _origToggleLang()
+      syncA11yPos()
+      // translate widget labels
+      const isHe = document.body.dir==='rtl'
+      document.getElementById('a11y-title').textContent    = isHe?'נגישות':'Accessibility'
+      document.getElementById('a11y-lbl-font').textContent  = isHe?'גודל טקסט':'Text size'
+      document.getElementById('a11y-lbl-hc').textContent    = isHe?'ניגודיות גבוהה':'High contrast'
+      document.getElementById('a11y-lbl-anim').textContent  = isHe?'עצור אנימציות':'Stop animations'
+      document.getElementById('a11y-lbl-reset').textContent = isHe?'איפוס':'Reset'
+      document.getElementById('a11y-btn').setAttribute('aria-label', isHe?'תפריט נגישות':'Accessibility menu')
+    }
   }
-}
-syncA11yPos()
+  syncA11yPos()
+})
 </script>
 
 <!-- ════════════════════════════════════════════
