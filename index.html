@@ -1602,6 +1602,168 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   letter-spacing:.12em !important;
   color:var(--echo-ink-4) !important;
 }
+
+/* ══════════════════════════════════════════════════════════
+   GIFTS GALLERY — free art downloads, horizontal rail
+══════════════════════════════════════════════════════════ */
+.dark .echo-gifts-section{
+  margin:0 0 var(--s-5) !important;     /* full-bleed sides for rail */
+  padding:0 !important;
+}
+.dark .echo-gifts-header{
+  text-align:center;
+  padding:0 var(--s-5);
+  margin-bottom:20px;
+}
+.dark .echo-gifts-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.30em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+.dark .echo-gifts-eyebrow svg{width:14px;height:14px;color:var(--echo-gold)}
+.dark .echo-gifts-title,
+.dark #prof-gifts-title{
+  display:block !important;
+  font-family:var(--font-serif) !important;
+  font-size:22px !important;
+  font-weight:300 !important;
+  font-style:normal !important;
+  letter-spacing:-0.015em !important;
+  line-height:1.3 !important;
+  color:var(--echo-ink-1) !important;
+  margin:0 auto 8px !important;
+}
+.dark .echo-gifts-sub,
+.dark #prof-gifts-sub{
+  display:block !important;
+  font-family:var(--font-sans) !important;
+  font-size:13px !important;
+  font-weight:400 !important;
+  line-height:1.5 !important;
+  color:var(--echo-ink-3) !important;
+  max-width:32ch;
+  margin:0 auto !important;
+}
+.dark .echo-gifts-rail{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  padding:8px 24px 16px;
+  scroll-padding-left:24px;
+}
+.dark .echo-gifts-rail::-webkit-scrollbar{display:none}
+.dark .echo-gift-card{
+  flex-shrink:0;
+  width:62vw;
+  max-width:280px;
+  scroll-snap-align:start;
+  display:flex;flex-direction:column;
+  text-decoration:none;
+  color:inherit;
+  border-radius:24px;
+  overflow:hidden;
+  background:rgba(255,255,255,.04);
+  border:.5px solid rgba(255,255,255,.10);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,.5),
+    0 4px 14px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  transition:all 240ms cubic-bezier(.22,1.2,.36,1);
+  cursor:pointer;
+}
+.dark .echo-gift-card:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(212,178,122,.35);
+  transform:translateY(-3px);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.6),
+    0 12px 28px rgba(0,0,0,.5),
+    0 0 32px rgba(212,178,122,.15),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.dark .echo-gift-card:active{transform:translateY(-1px) scale(.99);transition-duration:80ms}
+.dark .echo-gift-thumb{
+  position:relative;
+  aspect-ratio:4 / 5;
+  overflow:hidden;
+  background:#0A0A0A;
+}
+.dark .echo-gift-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:grayscale(.10) contrast(1.03);
+  transition:transform 600ms cubic-bezier(.16,1,.3,1);
+}
+.dark .echo-gift-card:hover .echo-gift-thumb img{transform:scale(1.04)}
+.dark .echo-gift-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  padding:14px;
+  background:linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 50%);
+  opacity:0;
+  transition:opacity 240ms ease;
+}
+.dark .echo-gift-card:hover .echo-gift-overlay{opacity:1}
+.dark .echo-gift-overlay svg{
+  width:36px;height:36px;
+  padding:8px;
+  border-radius:9999px;
+  background:var(--echo-gold);
+  color:#1A1208;
+  stroke-width:2;
+  box-shadow:0 4px 14px rgba(0,0,0,.4), 0 0 24px rgba(212,178,122,.4);
+}
+.dark .echo-gift-caption{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;
+  gap:8px;
+}
+.dark .echo-gift-name{
+  font-family:var(--font-sans);
+  font-size:13px;
+  font-weight:500;
+  color:var(--echo-ink-1);
+  letter-spacing:-0.005em;
+}
+.dark .echo-gift-meta{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.12em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.dark .echo-gift-meta::before{
+  content:'';
+  width:5px;height:5px;border-radius:50%;
+  background:var(--echo-gold);
+  box-shadow:0 0 6px rgba(212,178,122,.5);
+}
+.dark .echo-gifts-foot,
+.dark #prof-gifts-foot{
+  text-align:center;
+  font-family:var(--font-sans);
+  font-size:12px;
+  font-weight:400;
+  font-style:italic;
+  letter-spacing:0;
+  color:var(--echo-ink-4);
+  padding:0 var(--s-5);
+}
 .dark #prof-tip-lbl{
   /* eyebrow text — color/size handled by .echo-tip-eyebrow parent */
   color:inherit !important;
@@ -2721,6 +2883,8 @@ button{font-variant-emoji:text}
   <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M5 4l10 8-10 8V4zM19 5v14"/></symbol>
   <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M19 20 9 12l10-8v16zM5 19V5"/></symbol>
   <symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M22 7l-9 9-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
 </defs></svg>
 
 <!-- PROTOCOL — shown on first visit -->
@@ -3631,6 +3795,62 @@ button{font-variant-emoji:text}
     </div>
     <div class="echo-tip-foot" id="prof-tip-hint" style="opacity:.65;margin-top:6px">
       You'll choose the exact amount on Ko-fi
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════
+       GIFTS FROM ECHO.11 — free downloads, no strings
+  ═════════════════════════════════════════════════ -->
+  <div class="echo-gifts-section">
+    <div class="echo-gifts-header">
+      <span class="echo-gifts-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-image"/></svg><span id="prof-gifts-lbl">Gifts from echo.11</span></span>
+      <div id="prof-gifts-title" class="echo-gifts-title">Visions for your screen.</div>
+      <div id="prof-gifts-sub" class="echo-gifts-sub">Free. No login. No paywall. Take what speaks to you.</div>
+    </div>
+
+    <div class="echo-gifts-rail">
+      <a href="gift-1.png" download="echo11-vision-01.png" class="echo-gift-card" onclick="track('gift_download',{event_category:'gift',event_label:'vision_01'})">
+        <div class="echo-gift-thumb">
+          <img src="gift-1.webp" alt="echo.11 vision 01" loading="lazy" width="960" height="1200"/>
+          <div class="echo-gift-overlay">
+            <svg class="echo-icon" aria-hidden="true"><use href="#i-download"/></svg>
+          </div>
+        </div>
+        <div class="echo-gift-caption">
+          <div class="echo-gift-name">Vision 01</div>
+          <div class="echo-gift-meta" id="prof-gift1-meta">free download</div>
+        </div>
+      </a>
+
+      <a href="gift-2.png" download="echo11-vision-02.png" class="echo-gift-card" onclick="track('gift_download',{event_category:'gift',event_label:'vision_02'})">
+        <div class="echo-gift-thumb">
+          <img src="gift-2.webp" alt="echo.11 vision 02" loading="lazy" width="960" height="1200"/>
+          <div class="echo-gift-overlay">
+            <svg class="echo-icon" aria-hidden="true"><use href="#i-download"/></svg>
+          </div>
+        </div>
+        <div class="echo-gift-caption">
+          <div class="echo-gift-name">Vision 02</div>
+          <div class="echo-gift-meta" id="prof-gift2-meta">free download</div>
+        </div>
+      </a>
+
+      <a href="gift-3.png" download="echo11-vision-03.png" class="echo-gift-card" onclick="track('gift_download',{event_category:'gift',event_label:'vision_03'})">
+        <div class="echo-gift-thumb">
+          <img src="gift-3.webp" alt="echo.11 vision 03" loading="lazy" width="928" height="1232"/>
+          <div class="echo-gift-overlay">
+            <svg class="echo-icon" aria-hidden="true"><use href="#i-download"/></svg>
+          </div>
+        </div>
+        <div class="echo-gift-caption">
+          <div class="echo-gift-name">Vision 03</div>
+          <div class="echo-gift-meta" id="prof-gift3-meta">free download</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="echo-gifts-foot" id="prof-gifts-foot">
+      If one moved you — the tip jar is above. ↑
     </div>
   </div>
 
@@ -5082,6 +5302,13 @@ function translateTipJar(){
     'prof-tip-social':   { en:'Be the first to support echo.11',                   he:'היו הראשונים לתמוך ב-echo.11' },
     'prof-tip-hint':     { en:"You'll choose the exact amount on Ko-fi",           he:'את הסכום המדויק תבחרו ב-Ko-fi' },
     'prof-tip-secure':   { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'prof-gifts-lbl':    { en:'Gifts from echo.11',                                he:'מתנות מ-echo.11' },
+    'prof-gifts-title':  { en:'Visions for your screen.',                          he:'חזיונות למסך שלך.' },
+    'prof-gifts-sub':    { en:'Free. No login. No paywall. Take what speaks to you.', he:'חינם. בלי הרשמה. בלי חומה. קחו את מה שמדבר אליכם.' },
+    'prof-gift1-meta':   { en:'free download',                                     he:'הורדה חינמית' },
+    'prof-gift2-meta':   { en:'free download',                                     he:'הורדה חינמית' },
+    'prof-gift3-meta':   { en:'free download',                                     he:'הורדה חינמית' },
+    'prof-gifts-foot':   { en:'If one moved you — the tip jar is above. ↑',        he:'אם משהו הזיז משהו — צנצנת הטיפים למעלה. ↑' },
   }
   Object.keys(map).forEach(id => {
     const el = document.getElementById(id)
