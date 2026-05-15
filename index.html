@@ -199,6 +199,50 @@
   --bg:#F5F0E8;--bg2:#EDE8DC;--card:#FDFAF5;
   --b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);
   --t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672;
+
+  /* ── light-mode --echo-* tokens (theme-aware) ──
+     Used by CTAs / glass / shadows. Switches automatically when
+     body.dark is removed. Darker accent than dark-mode so it pops
+     on cream background. */
+  --echo-bg-0:#F5EFE3;
+  --echo-bg-1:#FAF6EC;
+  --echo-bg-2:#FDFAF5;
+  --echo-bg-3:#FFFCF6;
+  --echo-glass-1:rgba(0,0,0,.025);
+  --echo-glass-2:rgba(0,0,0,.05);
+  --echo-glass-3:rgba(0,0,0,.08);
+  --echo-ink-1:rgba(28,22,16,.94);
+  --echo-ink-2:rgba(28,22,16,.70);
+  --echo-ink-3:rgba(28,22,16,.52);
+  --echo-ink-4:rgba(28,22,16,.34);
+  --echo-ink-5:rgba(28,22,16,.18);
+  --echo-line-1:rgba(0,0,0,.10);
+  --echo-line-2:rgba(0,0,0,.16);
+  --echo-line-3:rgba(0,0,0,.24);
+  --echo-gold:#8B7355;             /* deep desert bronze — pops on cream */
+  --echo-gold-hover:#6F4E37;
+  --echo-gold-soft:rgba(139,115,85,.14);
+  --echo-gold-glow:rgba(139,115,85,.26);
+  --echo-on-gold:#FAF6EC;           /* cream text on dark accent */
+  --echo-violet:#7C6FE0;
+  --echo-violet-soft:rgba(124,111,224,.12);
+  --echo-lift-1:
+    0 1px 1px rgba(0,0,0,.05),
+    0 2px 8px rgba(0,0,0,.06);
+  --echo-lift-2:
+    0 1px 2px rgba(0,0,0,.06),
+    0 4px 14px rgba(0,0,0,.08),
+    0 12px 32px rgba(0,0,0,.06);
+  --echo-lift-3:
+    0 2px 4px rgba(0,0,0,.08),
+    0 8px 24px rgba(0,0,0,.10),
+    0 24px 64px rgba(0,0,0,.08);
+  --echo-lift-gold:
+    0 1px 2px rgba(0,0,0,.10),
+    0 6px 24px rgba(139,115,85,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  --echo-ring-gold:0 0 0 1px rgba(139,115,85,.4), 0 0 0 4px rgba(139,115,85,.12);
+  --echo-ring-ink:0 0 0 1px rgba(0,0,0,.18), 0 0 0 4px rgba(0,0,0,.05);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -243,8 +287,10 @@
 
   /* Brand accents */
   --echo-gold:#D8C5A2;            /* desert-stone beige — not metallic gold */
+  --echo-gold-hover:#E5CDA7;       /* brighter beige for hover */
   --echo-gold-soft:rgba(216,197,162,.16);
   --echo-gold-glow:rgba(216,197,162,.32);
+  --echo-on-gold:var(--echo-on-gold);          /* dark text on light accent */
   --echo-violet:#B19CFB;
   --echo-violet-soft:rgba(177,156,251,.14);
 
@@ -498,13 +544,13 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 }
 .echo-pill.gold{
   background:var(--echo-gold);
-  color:#1A1208;
+  color:var(--echo-on-gold);
   border-color:transparent;
   box-shadow:var(--echo-lift-gold);
   font-weight:500;
 }
 .echo-pill.gold:hover{
-  background:#E0BF85;
+  background:var(--echo-gold-hover);
   box-shadow:0 0 0 1px rgba(216,197,162,.4),
              0 6px 18px rgba(0,0,0,.35),
              0 0 40px rgba(216,197,162,.18);
@@ -812,7 +858,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 }
 .dark .home-play-btn{
   background:var(--echo-gold);
-  color:#1A1208;
+  color:var(--echo-on-gold);
   border:none;
   border-radius:var(--r-full);
   padding:14px 22px;
@@ -826,7 +872,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   display:inline-flex;align-items:center;gap:var(--s-2);
 }
 .dark .home-play-btn:hover{
-  background:#E0BF85;
+  background:var(--echo-gold-hover);
   transform:translateY(-2px);
   box-shadow:0 0 0 1px rgba(216,197,162,.4),
              0 6px 18px rgba(0,0,0,.35),
@@ -1080,7 +1126,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 }
 .dark .pl-play{
   background:var(--echo-gold);
-  color:#1A1208;
+  color:var(--echo-on-gold);
   border-radius:var(--r-full);
   font-weight:500;
   letter-spacing:var(--ls-wider);
@@ -1090,7 +1136,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   padding:18px 24px;
 }
 .dark .pl-play:hover{
-  background:#E0BF85;
+  background:var(--echo-gold-hover);
   opacity:1;
   transform:translateY(-2px);
   box-shadow:0 0 0 1px rgba(216,197,162,.45),
@@ -1538,7 +1584,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   left:50% !important;
   transform:translateX(-50%) !important;
   background:var(--echo-gold) !important;
-  color:#1A1208 !important;
+  color:var(--echo-on-gold) !important;
   font-family:var(--font-sans) !important;
   font-size:9px !important;
   font-weight:600 !important;
@@ -1722,7 +1768,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   padding:8px;
   border-radius:9999px;
   background:var(--echo-gold);
-  color:#1A1208;
+  color:var(--echo-on-gold);
   stroke-width:2;
   box-shadow:0 4px 14px rgba(0,0,0,.4), 0 0 24px rgba(216,197,162,.4);
 }
@@ -1857,8 +1903,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-btn{
   width:100%;
   padding:16px 28px;
-  background:#C9B498;
-  color:#1a1208;
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
   border:none;
   border-radius:50px;
   font-family:'DM Sans',sans-serif;
@@ -1872,7 +1918,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
   transition:background .2s;
   animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both;
 }
-.sp-btn:hover{background:#b8945a}
+.sp-btn:hover{background:var(--echo-gold-hover)}
 .sp-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
 .sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1;pointer-events:none}
 .sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02)}
@@ -2061,8 +2107,8 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   font-size:11px;font-weight:400;
   letter-spacing:.22em;
   text-transform:uppercase;
-  color:#1a1208;
-  background:#C9B498;
+  color:var(--echo-on-gold);
+  background:var(--echo-gold);
   border:none;
   border-radius:50px;
   padding:15px 32px;
@@ -2072,7 +2118,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
 }
-.home-hero-cta:hover{background:#b8945a;transform:translateY(-1px)}
+.home-hero-cta:hover{background:var(--echo-gold-hover);transform:translateY(-1px)}
 .home-hero-cta:hover,.home-hero-cta:focus{
   background:#ffffff;
   outline:none;
@@ -2409,11 +2455,11 @@ button{font-variant-emoji:text}
   transition: color .2s, transform .2s !important;
 }
 .lb-row:hover .lb-arr {
-  color: #C9B498 !important;
+  color: var(--echo-gold) !important;
   transform: translateX(3px) !important;
 }
 .lb-row::before {
-  background: #C9B498 !important;
+  background: var(--echo-gold) !important;
 }
 
 .sp-btn, .home-hero-cta, .pr-cta-btn, .pl-play {
@@ -2421,7 +2467,7 @@ button{font-variant-emoji:text}
   backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 50px !important;
-  color: #1a1208 !important;
+  color: var(--echo-on-gold) !important;
   font-weight: 600 !important;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -2526,7 +2572,7 @@ button{font-variant-emoji:text}
   color:#f5f3ee;
   margin-bottom:14px;
 }
-.pr-display em{font-style:italic;color:#C9B498}
+.pr-display em{font-style:italic;color:var(--echo-gold)}
 .pr-sub-he{
   font-family:'DM Sans',sans-serif;
   font-size:clamp(15px,4.5vw,18px);
@@ -2777,7 +2823,7 @@ button{font-variant-emoji:text}
   top:50%;left:50%;
   width:6px;height:6px;
   border-radius:50%;
-  background:#C9B498;
+  background:var(--echo-gold);
   transform:translate(-50%,-50%);
   box-shadow:0 0 0 0 rgba(201,180,152,0.6);
   animation:awakenPulse 3.6s ease-in-out infinite;
@@ -2821,9 +2867,9 @@ button{font-variant-emoji:text}
 .pr-cta-btn{
   display:block;width:100%;
   padding:18px 24px;
-  background:#C9B498;
+  background:var(--echo-gold);
   border:none;border-radius:3px;
-  color:#1a1208;
+  color:var(--echo-on-gold);
   font-family:'DM Sans',sans-serif;
   font-size:11px;font-weight:400;
   letter-spacing:.24em;text-transform:uppercase;
@@ -2832,7 +2878,7 @@ button{font-variant-emoji:text}
   margin-bottom:12px;
   -webkit-tap-highlight-color:transparent;
 }
-.pr-cta-btn:hover{background:#b8945a;transform:translateY(-1px)}
+.pr-cta-btn:hover{background:var(--echo-gold-hover);transform:translateY(-1px)}
 .pr-cta-skip{
   display:block;width:100%;
   padding:14px;background:none;
@@ -3163,7 +3209,7 @@ button{font-variant-emoji:text}
       <!-- Label -->
       <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.32em;color:rgba(255,255,255,.45);text-transform:uppercase;display:block;margin-bottom:16px">echo · 11</span>
       <!-- Main tagline -->
-      <span class="home-hero-tagline" id="hero-tagline" style="font-size:clamp(48px,13vw,96px)">tune your<br><em style="font-style:italic;color:#C9B498">nervous system.</em></span>
+      <span class="home-hero-tagline" id="hero-tagline" style="font-size:clamp(48px,13vw,96px)">tune your<br><em style="font-style:italic;color:var(--echo-gold)">nervous system.</em></span>
       <!-- Sub -->
       <span class="home-hero-sub" id="hero-sub" style="font-size:clamp(11px,1.8vw,14px);letter-spacing:.22em">22 frequencies · not music · real science · CIA gateway protocol</span>
       <!-- CTA -->
@@ -3225,8 +3271,8 @@ button{font-variant-emoji:text}
     <!-- Hawkins Scale -->
     <div style="padding:14px 18px 16px">
       <div id="cs-scale" style="position:relative;height:8px;background:var(--b1);border-radius:4px;margin-bottom:22px;overflow:visible">
-        <div id="cs-fill" style="height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1);background:linear-gradient(to right,#6b7280,#9ca3af,#C9B498);width:0%;position:relative;z-index:1"></div>
-        <div id="cs-marker" style="position:absolute;top:-18px;left:28.5%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:#C9B498;white-space:nowrap">✦ Courage · 200</div>
+        <div id="cs-fill" style="height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1);background:linear-gradient(to right,#6b7280,#9ca3af,var(--echo-gold));width:0%;position:relative;z-index:1"></div>
+        <div id="cs-marker" style="position:absolute;top:-18px;left:28.5%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:var(--echo-gold);white-space:nowrap">✦ Courage · 200</div>
         <div style="position:absolute;top:0;bottom:0;left:28.5%;width:1px;background:rgba(201,180,152,.3)"></div>
       </div>
       <!-- Level labels -->
@@ -3556,9 +3602,9 @@ button{font-variant-emoji:text}
       text-transform:uppercase;
       padding:8px 16px;
       border-radius:50px;
-      border:.5px solid #C9B498;
-      background:#C9B498;
-      color:#1a1208;
+      border:.5px solid var(--echo-gold);
+      background:var(--echo-gold);
+      color:var(--echo-on-gold);
       cursor:pointer;
       transition:all .2s;
       font-weight:500;
@@ -3870,7 +3916,7 @@ button{font-variant-emoji:text}
   <div style="margin:0 22px 22px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
       <div style="display:flex;align-items:center;gap:8px">
-        <span style="width:8px;height:8px;border-radius:50%;background:#C9B498"></span>
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--echo-gold)"></span>
         <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-explored-lbl">Frequencies explored</span>
       </div>
       <div style="display:flex;align-items:baseline;gap:4px;font-family:'Cormorant Garamond',Georgia,serif;color:var(--t1)">
@@ -3879,7 +3925,7 @@ button{font-variant-emoji:text}
       </div>
     </div>
     <div style="width:100%;height:4px;background:rgba(0,0,0,.06);border-radius:4px;overflow:hidden">
-      <div id="prof-explored-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#C9B498,#10b981);transition:width .6s ease"></div>
+      <div id="prof-explored-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--echo-gold),#10b981);transition:width .6s ease"></div>
     </div>
   </div>
 
@@ -4848,7 +4894,7 @@ const AVATAR_GRADIENTS = [
   {id:'rose',   g:'linear-gradient(135deg,#f9a8d4 0%,#ec4899 100%)'},
   {id:'sky',    g:'linear-gradient(135deg,#7dd3fc 0%,#3b82f6 100%)'},
   {id:'emerald',g:'linear-gradient(135deg,#86efac 0%,#10b981 100%)'},
-  {id:'amber',  g:'linear-gradient(135deg,#fcd34d 0%,#C9B498 100%)'},
+  {id:'amber',  g:'linear-gradient(135deg,#fcd34d 0%,var(--echo-gold) 100%)'},
   {id:'slate',  g:'linear-gradient(135deg,#cbd5e1 0%,#475569 100%)'},
 ]
 const AFFIRMATIONS = [
@@ -4879,7 +4925,7 @@ function getTimeGreeting(isHe){
 const MODE_COLORS = {
   focus:     '#3b82f6',
   healing:   '#10b981',
-  abundance: '#C9B498',
+  abundance: 'var(--echo-gold)',
   sleep:     '#7c6ee0',
 }
 
@@ -5516,9 +5562,9 @@ function showLibrary(){
     activeMood='all'
     document.querySelectorAll('.mood-pill').forEach(p=>{
       const isAll=p.getAttribute('data-mood')==='all'
-      p.style.background=isAll?'#C9B498':'var(--card)'
-      p.style.color=isAll?'#1a1208':'var(--t2)'
-      p.style.borderColor=isAll?'#C9B498':'var(--b2)'
+      p.style.background=isAll?'var(--echo-gold)':'var(--card)'
+      p.style.color=isAll?'var(--echo-on-gold)':'var(--t2)'
+      p.style.borderColor=isAll?'var(--echo-gold)':'var(--b2)'
       p.style.fontWeight=isAll?'500':'300'
       p.classList.toggle('on',isAll)
     })
@@ -5540,9 +5586,9 @@ function openMode(mode){
     activeMood=mode
     document.querySelectorAll('.mood-pill').forEach(p=>{
       const isActive=p.getAttribute('data-mood')===mode
-      p.style.background=isActive?'#C9B498':'var(--card)'
-      p.style.color=isActive?'#1a1208':'var(--t2)'
-      p.style.borderColor=isActive?'#C9B498':'var(--b2)'
+      p.style.background=isActive?'var(--echo-gold)':'var(--card)'
+      p.style.color=isActive?'var(--echo-on-gold)':'var(--t2)'
+      p.style.borderColor=isActive?'var(--echo-gold)':'var(--b2)'
       p.style.fontWeight=isActive?'500':'300'
       p.classList.toggle('on',isActive)
     })
@@ -5832,9 +5878,9 @@ function filterByMood(mood, btn){
   // Update pill visual state — use brand gold for active
   document.querySelectorAll('.mood-pill').forEach(p=>{
     const isActive = p.getAttribute('data-mood') === mood
-    p.style.background = isActive ? '#C9B498' : 'var(--card)'
-    p.style.color = isActive ? '#1a1208' : 'var(--t2)'
-    p.style.borderColor = isActive ? '#C9B498' : 'var(--b2)'
+    p.style.background = isActive ? 'var(--echo-gold)' : 'var(--card)'
+    p.style.color = isActive ? 'var(--echo-on-gold)' : 'var(--t2)'
+    p.style.borderColor = isActive ? 'var(--echo-gold)' : 'var(--b2)'
     p.style.fontWeight = isActive ? '500' : '300'
     p.classList.toggle('on', isActive)
   })
@@ -5921,7 +5967,7 @@ const HAWKINS = [
   {score:100, name:'Desire',     nameHe:'תשוקה',       color:'#b45309'},
   {score:125, name:'Anger',      nameHe:'כעס',         color:'#c2410c'},
   {score:150, name:'Pride',      nameHe:'גאווה',       color:'#b45309'},
-  {score:200, name:'Courage ✦',  nameHe:'אומץ ✦',     color:'#C9B498'},
+  {score:200, name:'Courage ✦',  nameHe:'אומץ ✦',     color:'var(--echo-gold)'},
   {score:250, name:'Neutrality', nameHe:'ניטרליות',    color:'#a3a3a3'},
   {score:310, name:'Willingness',nameHe:'נכונות',      color:'#d1d5db'},
   {score:350, name:'Acceptance', nameHe:'קבלה',        color:'#e5e7eb'},
@@ -5990,11 +6036,11 @@ function renderConsciousnessCard(){
       transform:translateX(-50%);
       font-family:'DM Sans',sans-serif;
       font-size:8px;letter-spacing:.1em;
-      color:#C9B498;white-space:nowrap;
+      color:var(--echo-gold);white-space:nowrap;
     `;
     if(fillEl) fillEl.style.background = score >= 200
-      ? 'linear-gradient(to right,#6b7280,#C9B498,#fde68a)'
-      : 'linear-gradient(to right,#6b7280,#9ca3af,#C9B498)';
+      ? 'linear-gradient(to right,#6b7280,var(--echo-gold),#fde68a)'
+      : 'linear-gradient(to right,#6b7280,#9ca3af,var(--echo-gold))';
   }
 
   // Message
@@ -6025,7 +6071,7 @@ function renderConsciousnessCard(){
       const done = mins >= 20;
       const today2 = i === 29;
       html += `<div style="width:10px;height:10px;border-radius:2px;
-        background:${done ? '#C9B498' : 'var(--b1)'};
+        background:${done ? 'var(--echo-gold)' : 'var(--b1)'};
         border:${today2 ? '.5px solid var(--t3)' : 'none'};
         flex-shrink:0;transition:background .3s"></div>`;
     }
