@@ -194,8 +194,2066 @@
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#F5F0E8;--bg2:#EDE8DC;--card:#FDFAF5;--b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);--t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672}
-.dark{--bg:#111110;--bg2:#1C1C1A;--card:#262622;--b1:rgba(255,255,255,.10);--b2:rgba(255,255,255,.18);--b3:rgba(255,255,255,.30);--t1:#F5F3EE;--t2:#C8C4BA;--t3:#9A9690;--t4:#6A6862}
+:root{
+  /* ── legacy tokens (light) — kept for back-compat ── */
+  --bg:#F5F0E8;--bg2:#EDE8DC;--card:#FDFAF5;
+  --b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.16);--b3:rgba(0,0,0,.28);
+  --t1:#1a1a18;--t2:#4a4a44;--t3:#525250;--t4:#767672;
+
+  /* ── light-mode --echo-* tokens (theme-aware) ──
+     Used by CTAs / glass / shadows. Switches automatically when
+     body.dark is removed. Darker accent than dark-mode so it pops
+     on cream background. */
+  --echo-bg-0:#F5EFE3;
+  --echo-bg-1:#FAF6EC;
+  --echo-bg-2:#FDFAF5;
+  --echo-bg-3:#FFFCF6;
+  --echo-glass-1:rgba(0,0,0,.025);
+  --echo-glass-2:rgba(0,0,0,.05);
+  --echo-glass-3:rgba(0,0,0,.08);
+  --echo-ink-1:rgba(28,22,16,.94);
+  --echo-ink-2:rgba(28,22,16,.70);
+  --echo-ink-3:rgba(28,22,16,.52);
+  --echo-ink-4:rgba(28,22,16,.34);
+  --echo-ink-5:rgba(28,22,16,.18);
+  --echo-line-1:rgba(0,0,0,.10);
+  --echo-line-2:rgba(0,0,0,.16);
+  --echo-line-3:rgba(0,0,0,.24);
+  --echo-gold:#8B7355;             /* deep desert bronze — pops on cream */
+  --echo-gold-hover:#6F4E37;
+  --echo-gold-soft:rgba(139,115,85,.14);
+  --echo-gold-glow:rgba(139,115,85,.26);
+  --echo-on-gold:#FAF6EC;           /* cream text on dark accent */
+  --echo-violet:#7C6FE0;
+  --echo-violet-soft:rgba(124,111,224,.12);
+  --echo-lift-1:
+    0 1px 1px rgba(0,0,0,.05),
+    0 2px 8px rgba(0,0,0,.06);
+  --echo-lift-2:
+    0 1px 2px rgba(0,0,0,.06),
+    0 4px 14px rgba(0,0,0,.08),
+    0 12px 32px rgba(0,0,0,.06);
+  --echo-lift-3:
+    0 2px 4px rgba(0,0,0,.08),
+    0 8px 24px rgba(0,0,0,.10),
+    0 24px 64px rgba(0,0,0,.08);
+  --echo-lift-gold:
+    0 1px 2px rgba(0,0,0,.10),
+    0 6px 24px rgba(139,115,85,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  --echo-ring-gold:0 0 0 1px rgba(139,115,85,.4), 0 0 0 4px rgba(139,115,85,.12);
+  --echo-ring-ink:0 0 0 1px rgba(0,0,0,.18), 0 0 0 4px rgba(0,0,0,.05);
+}
+
+/* ══════════════════════════════════════════════════════════
+   ECHO.11 PREMIUM DARK — Design Engineering System v1
+   Inspired by Emil Kowalski (Linear, Vercel, animations.dev)
+   Mobile-first · Glass · Multi-layer shadows · Spring physics
+══════════════════════════════════════════════════════════ */
+.dark{
+  /* ── legacy tokens, rewired to pure-black premium dark ── */
+  --bg:#080706;
+  --bg2:#0E0C0A;
+  --card:#0E0C0A;
+  --b1:rgba(255,255,255,.06);
+  --b2:rgba(255,255,255,.10);
+  --b3:rgba(255,255,255,.18);
+  --t1:rgba(255,255,255,.96);
+  --t2:rgba(255,255,255,.78);
+  --t3:rgba(255,255,255,.52);
+  --t4:rgba(255,255,255,.32);
+
+  /* ── new design tokens (—echo prefix to avoid collisions) ── */
+  /* Surfaces — pure black base, glass surfaces lift visually */
+  --echo-bg-0:#080706;            /* warm-charcoal — was pure black */
+  --echo-bg-1:#0A0907;            /* near-black */
+  --echo-bg-2:#0E0C0A;            /* card matte fallback */
+  --echo-bg-3:#13110E;            /* elevated matte fallback */
+  --echo-glass-1:rgba(255,255,255,.055);
+  --echo-glass-2:rgba(255,255,255,.09);
+  --echo-glass-3:rgba(255,255,255,.14);
+
+  /* Ink — pure white with layered opacity */
+  --echo-ink-1:rgba(255,255,255,.96);
+  --echo-ink-2:rgba(255,255,255,.72);
+  --echo-ink-3:rgba(255,255,255,.50);
+  --echo-ink-4:rgba(255,255,255,.30);
+  --echo-ink-5:rgba(255,255,255,.14);
+
+  /* Hairlines — high-contrast on pure black */
+  --echo-line-1:rgba(255,255,255,.14);
+  --echo-line-2:rgba(255,255,255,.20);
+  --echo-line-3:rgba(255,255,255,.28);
+
+  /* Brand accents */
+  --echo-gold:#D8C5A2;            /* desert-stone beige — not metallic gold */
+  --echo-gold-hover:#E5CDA7;       /* brighter beige for hover */
+  --echo-gold-soft:rgba(216,197,162,.16);
+  --echo-gold-glow:rgba(216,197,162,.32);
+  --echo-on-gold:var(--echo-on-gold);          /* dark text on light accent */
+  --echo-violet:#B19CFB;
+  --echo-violet-soft:rgba(177,156,251,.14);
+
+  /* Multi-layer shadows — atmospheric depth on pure black */
+  --echo-lift-1:
+    0 1px 1px rgba(0,0,0,.6),
+    0 2px 8px rgba(0,0,0,.40),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  --echo-lift-2:
+    0 1px 2px rgba(0,0,0,.7),
+    0 4px 16px rgba(0,0,0,.5),
+    0 16px 40px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  --echo-lift-3:
+    0 2px 4px rgba(0,0,0,.7),
+    0 12px 32px rgba(0,0,0,.55),
+    0 32px 80px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  --echo-lift-gold:
+    0 1px 2px rgba(0,0,0,.5),
+    0 6px 24px rgba(0,0,0,.4),
+    0 0 40px rgba(216,197,162,.18),
+    inset 0 1px 0 rgba(255,255,255,.14);
+
+  /* Glow rings for focus & press */
+  --echo-ring-gold:0 0 0 1px rgba(216,197,162,.4), 0 0 0 4px rgba(216,197,162,.12);
+  --echo-ring-ink:0 0 0 1px rgba(255,255,255,.18), 0 0 0 4px rgba(255,255,255,.05);
+}
+.dark body{
+  background:#080706;
+}
+.dark .scr,
+.dark .home-content,
+.dark .home-today-block{background:transparent !important}
+
+/* ── Spacing / Type / Motion — global, not theme-scoped ── */
+:root{
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px;
+
+  /* Type scale — Apple-grade mobile readability (no glyph under 12px for body, 16px base) */
+  --t-2xs:11px; --t-xs:12px; --t-sm:14px; --t-md:16px; --t-lg:19px; --t-xl:24px; --t-2xl:34px; --t-3xl:52px; --t-4xl:72px;
+
+  /* Radii */
+  --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px; --r-2xl:36px; --r-full:999px;
+
+  /* Letter-spacing presets */
+  --ls-tight:-.01em; --ls-snug:0; --ls-relaxed:.04em; --ls-wide:.12em; --ls-wider:.18em; --ls-widest:.28em;
+
+  /* Motion */
+  --spring:cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-gentle:cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ease-out:cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap:cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms; --dur-slower:600ms;
+
+  /* Fonts — DM Sans primary on mobile; Geist removed (poor mobile rendering) */
+  --font-serif:'Cormorant Garamond', Georgia, serif;
+  --font-sans:'DM Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:ui-monospace, monospace;
+}
+
+/* Enforce 16px base + DM Sans + 400 weight for mobile readability */
+html{font-size:16px}
+body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+
+/* Smooth touch scroll for all screens + prevent overscroll bounce */
+.scr{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+
+/* ══ Global type refinements ══
+   Cormorant Garamond as DISPLAY type — weight 300, tight tracking
+   Captures both literal "Cormorant Garamond" and var(--font-serif) styles */
+.dark [style*="Cormorant Garamond"]:not([style*="weight:500"]):not([style*="weight:600"]):not([style*="weight:700"]),
+.dark [style*="--font-serif"],
+.dark .home-hero-tagline,
+.dark .home-freq-name,
+.dark #cs-level-name,
+.dark #prof-name,
+.dark #prof-affirmation,
+.dark #prof-tip-headline,
+.dark #lib-cta-title,
+.dark #quick-desc,
+.dark #today-intention,
+.dark .pl-fname,
+.dark .echo-display,
+.dark .echo-headline{
+  font-weight:300 !important;
+  letter-spacing:-0.02em !important;
+}
+
+/* Big numbers — DM Sans Medium 500, tabular, tight tracking */
+.dark .home-freq-num,
+.dark .pl-fn,
+.dark #cs-score,
+.dark #hero-hz-num,
+.dark #sk-num,
+.dark .sk-n,
+.dark #prof-month-count,
+.dark #prof-explored-count{
+  font-family:var(--font-sans) !important;
+  font-weight:500 !important;
+  font-variant-numeric:tabular-nums !important;
+  letter-spacing:-0.03em !important;
+  line-height:.92 !important;
+}
+/* Big-number size bumps on mobile (72-80) and tablet+ (96) */
+.dark .home-freq-num{font-size:72px !important;color:var(--echo-ink-1) !important}
+.dark .pl-fn{font-size:80px !important}
+.dark .sk-n,.dark #sk-num{font-size:36px !important}
+.dark #cs-score{font-size:34px !important}
+.dark #prof-month-count,.dark #prof-explored-count{font-size:34px !important}
+@media(min-width:768px){
+  .dark .home-freq-num{font-size:96px !important}
+  .dark .pl-fn{font-size:104px !important}
+}
+
+/* Universal tap micro-interaction — scale down on press, spring back */
+.dark button:active,
+.dark a[onclick]:active,
+.dark [role="button"]:active,
+.dark .echo-card.interactive:active,
+.dark .echo-pill:active,
+.dark .echo-icon-btn:active,
+.dark .echo-avatar-btn:active,
+.dark .streak-card:active,
+.dark #consciousness-card:active,
+.dark #quick-relief-card:active,
+.dark #lib-link:active,
+.dark .pl-play:active,
+.dark .pl-back:active,
+.dark .home-play-btn:active,
+.dark .home-hero-cta:active,
+.dark .tip-btn:active{
+  transform:scale(.97) !important;
+  transition:transform 100ms cubic-bezier(.4,0,.2,1) !important;
+}
+
+/* Disable tap highlight (iOS) — we have our own */
+.dark button, .dark a{-webkit-tap-highlight-color:transparent}
+
+/* ── Primitive classes — composable building blocks ── */
+.echo-eyebrow{
+  font-family:var(--font-sans);
+  font-size:var(--t-2xs);
+  font-weight:400;
+  letter-spacing:var(--ls-widest);
+  color:var(--echo-ink-3);
+  text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:var(--s-2);
+}
+.echo-eyebrow::before{
+  content:'';width:14px;height:1px;background:var(--echo-line-3);display:inline-block;
+}
+.echo-eyebrow.no-line::before{display:none}
+.echo-display{
+  font-family:var(--font-serif);
+  font-weight:200;
+  letter-spacing:var(--ls-tight);
+  line-height:1.02;
+  color:var(--echo-ink-1);
+}
+.echo-headline{
+  font-family:var(--font-serif);
+  font-weight:200;
+  line-height:1.15;
+  color:var(--echo-ink-1);
+}
+.echo-body{
+  font-family:var(--font-sans);
+  font-weight:300;
+  color:var(--echo-ink-2);
+  line-height:1.55;
+}
+.echo-meta{
+  font-family:var(--font-sans);
+  font-size:var(--t-xs);
+  font-weight:300;
+  color:var(--echo-ink-3);
+  letter-spacing:var(--ls-relaxed);
+}
+.tabular{font-variant-numeric:tabular-nums}
+
+/* Glass card — the foundational surface */
+.echo-card{
+  position:relative;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
+  border-radius:var(--r-lg);
+  box-shadow:var(--echo-lift-1);
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  transition:border-color var(--dur-base) var(--ease-out),
+             box-shadow var(--dur-base) var(--ease-out),
+             transform var(--dur-base) var(--spring-gentle),
+             background var(--dur-base) var(--ease-out);
+}
+.echo-card.elevated{
+  background:var(--echo-glass-2);
+  box-shadow:var(--echo-lift-2);
+}
+.echo-card.interactive{cursor:pointer}
+.echo-card.interactive:hover,
+.echo-card.interactive:focus-visible{
+  background:var(--echo-glass-2);
+  border-color:var(--echo-line-2);
+  box-shadow:var(--echo-lift-2);
+  transform:translateY(-2px);
+  outline:none;
+}
+.echo-card.interactive:active{
+  transform:translateY(-1px) scale(.997);
+  transition-duration:80ms;
+}
+.echo-card.gold-edge{
+  background:linear-gradient(180deg, rgba(216,197,162,.05) 0%, var(--echo-glass-1) 60%);
+  border-color:rgba(216,197,162,.22);
+}
+.echo-card.gold-edge:hover{
+  border-color:rgba(216,197,162,.36);
+  box-shadow:var(--echo-lift-gold);
+}
+
+/* Pill button — restrained luxury */
+.echo-pill{
+  display:inline-flex;align-items:center;gap:var(--s-2);
+  height:32px;padding:0 14px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-2);
+  border-radius:var(--r-full);
+  font-family:var(--font-sans);
+  font-size:var(--t-2xs);
+  font-weight:400;
+  letter-spacing:var(--ls-wider);
+  color:var(--echo-ink-2);
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:all var(--dur-fast) var(--spring-gentle);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.echo-pill:hover{
+  color:var(--echo-ink-1);
+  border-color:var(--echo-line-3);
+  background:var(--echo-glass-2);
+  transform:translateY(-1px);
+}
+.echo-pill:active{transform:translateY(0);transition-duration:80ms}
+.echo-pill.on{
+  background:var(--echo-glass-3);
+  color:var(--echo-ink-1);
+  border-color:var(--echo-line-3);
+}
+.echo-pill.gold{
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
+  border-color:transparent;
+  box-shadow:var(--echo-lift-gold);
+  font-weight:500;
+}
+.echo-pill.gold:hover{
+  background:var(--echo-gold-hover);
+  box-shadow:0 0 0 1px rgba(216,197,162,.4),
+             0 6px 18px rgba(0,0,0,.35),
+             0 0 40px rgba(216,197,162,.18);
+  transform:translateY(-2px);
+}
+
+/* Icon button — luxe round */
+.echo-icon-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-2);
+  border-radius:var(--r-full);
+  color:var(--echo-ink-2);
+  cursor:pointer;
+  transition:all var(--dur-fast) var(--spring-gentle);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  flex-shrink:0;
+}
+.echo-icon-btn:hover{
+  color:var(--echo-ink-1);
+  border-color:var(--echo-line-3);
+  background:var(--echo-glass-2);
+  transform:translateY(-1px) scale(1.03);
+}
+.echo-icon-btn:active{transform:scale(.96);transition-duration:80ms}
+.echo-icon-btn svg{width:16px;height:16px;stroke-width:1.5}
+
+/* Avatar button — premium feel with gold ring on hover */
+.echo-avatar-btn{
+  position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;
+  border:none;
+  border-radius:var(--r-full);
+  background:linear-gradient(135deg, #2A2520 0%, #1A1612 100%);
+  cursor:pointer;
+  color:var(--echo-ink-1);
+  font-family:var(--font-sans);
+  font-size:var(--t-xs);
+  font-weight:500;
+  letter-spacing:.04em;
+  transition:all var(--dur-base) var(--spring-gentle);
+  box-shadow:
+    inset 0 0 0 .5px rgba(216,197,162,.30),
+    inset 0 1px 0 rgba(247,242,228,.08),
+    0 2px 8px rgba(0,0,0,.4);
+  flex-shrink:0;
+  overflow:hidden;
+}
+.echo-avatar-btn::before{
+  content:'';position:absolute;inset:-1px;border-radius:inherit;
+  background:conic-gradient(from 0deg, transparent 0deg, rgba(216,197,162,.45) 60deg, transparent 180deg, rgba(177,156,251,.20) 240deg, transparent 360deg);
+  opacity:0;transition:opacity var(--dur-slow) var(--ease-out);
+  z-index:-1;
+  filter:blur(2px);
+}
+.echo-avatar-btn:hover{
+  transform:translateY(-1px) scale(1.04);
+  box-shadow:
+    inset 0 0 0 .5px rgba(216,197,162,.5),
+    inset 0 1px 0 rgba(247,242,228,.12),
+    0 4px 16px rgba(0,0,0,.5),
+    0 0 28px rgba(216,197,162,.18);
+}
+.echo-avatar-btn:hover::before{opacity:1;animation:echo-spin 4s linear infinite}
+.echo-avatar-btn:active{transform:scale(.97);transition-duration:80ms}
+@keyframes echo-spin{to{transform:rotate(360deg)}}
+
+/* Hairline divider */
+.echo-divider{height:.5px;background:var(--echo-line-1);margin:var(--s-5) 0;border:none}
+
+/* Status dot — breathing */
+.echo-dot{
+  width:6px;height:6px;border-radius:var(--r-full);
+  background:var(--echo-gold);
+  box-shadow:0 0 0 4px rgba(216,197,162,.10), 0 0 12px rgba(216,197,162,.4);
+  display:inline-block;
+  animation:echo-breathe 2.8s ease-in-out infinite;
+}
+@keyframes echo-breathe{
+  0%,100%{opacity:.6;box-shadow:0 0 0 4px rgba(216,197,162,.08), 0 0 8px rgba(216,197,162,.3)}
+  50%{opacity:1;box-shadow:0 0 0 6px rgba(216,197,162,.14), 0 0 16px rgba(216,197,162,.5)}
+}
+
+/* Staggered entry — applies to children (mount-time) */
+@keyframes echo-rise{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.echo-stagger > *{
+  opacity:0;
+  animation:echo-rise .6s var(--ease-snap) forwards;
+}
+.echo-stagger > *:nth-child(1){animation-delay:60ms}
+.echo-stagger > *:nth-child(2){animation-delay:140ms}
+.echo-stagger > *:nth-child(3){animation-delay:220ms}
+.echo-stagger > *:nth-child(4){animation-delay:300ms}
+.echo-stagger > *:nth-child(5){animation-delay:380ms}
+.echo-stagger > *:nth-child(6){animation-delay:460ms}
+.echo-stagger > *:nth-child(7){animation-delay:540ms}
+.echo-stagger > *:nth-child(8){animation-delay:620ms}
+.echo-stagger > *:nth-child(9){animation-delay:700ms}
+.echo-stagger > *:nth-child(10){animation-delay:780ms}
+
+/* Scroll-triggered reveal — fade + slide up as element enters viewport */
+.echo-reveal{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .7s var(--ease-snap), transform .7s var(--ease-snap);
+  will-change:opacity, transform;
+}
+.echo-reveal.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+@media (prefers-reduced-motion: reduce){
+  .echo-stagger > *{opacity:1;animation:none}
+  .echo-reveal{opacity:1;transform:none;transition:none}
+  .echo-dot{animation:none}
+}
+
+/* Lucide icon sprite — use via <svg><use href="#i-name"/></svg> */
+.echo-icon{
+  width:18px;height:18px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  flex-shrink:0;
+}
+.echo-icon.sm{width:14px;height:14px}
+.echo-icon.lg{width:22px;height:22px}
+.echo-icon.xl{width:28px;height:28px}
+
+/* ──────────────────────────────────────────────────────────
+   Stack-card list — horizontal rows with icon + content + arrow
+   Replaces 2x2 grid pattern (felt like a website, not an app)
+────────────────────────────────────────────────────────── */
+.echo-stack-list{
+  display:flex;flex-direction:column;
+  gap:var(--s-4);                  /* 16px between cards */
+  margin:0 var(--s-5) var(--s-5);  /* 24px sides + bottom */
+}
+.echo-stack-card{
+  display:flex;align-items:center;gap:var(--s-4);
+  padding:var(--s-4) var(--s-5);
+  background:rgba(255,255,255,.055);
+  border:.5px solid rgba(255,255,255,.14);
+  border-radius:28px;
+  text-decoration:none;
+  cursor:pointer;
+  font-family:var(--font-sans);
+  text-align:start;
+  width:100%;
+  color:inherit;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,.6),
+    0 4px 14px rgba(0,0,0,.40),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  transition:
+    background var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--spring-gentle);
+  position:relative;
+  overflow:hidden;
+}
+.echo-stack-card:hover{
+  background:rgba(255,255,255,.09);
+  border-color:rgba(255,255,255,.22);
+  transform:translateY(-2px);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.7),
+    0 8px 24px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.echo-stack-icon{
+  flex-shrink:0;
+  width:48px;height:48px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-full);
+  background:linear-gradient(135deg, rgba(216,197,162,.18) 0%, rgba(216,197,162,.06) 100%);
+  color:var(--echo-gold);
+  box-shadow:
+    inset 0 0 0 .5px rgba(216,197,162,.20),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  transition:all var(--dur-base) var(--spring-gentle);
+}
+.echo-stack-icon svg{width:20px;height:20px;stroke-width:1.5}
+.echo-stack-card:hover .echo-stack-icon{
+  background:linear-gradient(135deg, rgba(216,197,162,.28) 0%, rgba(216,197,162,.10) 100%);
+  box-shadow:
+    inset 0 0 0 .5px rgba(216,197,162,.32),
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 0 20px rgba(216,197,162,.18);
+}
+.echo-stack-content{
+  flex:1;min-width:0;
+  display:flex;flex-direction:column;gap:2px;
+}
+.echo-stack-title{
+  font-family:var(--font-sans);
+  font-size:var(--t-md);          /* 16px */
+  font-weight:500;
+  color:var(--echo-ink-1);
+  letter-spacing:-0.005em;
+  line-height:1.3;
+}
+.echo-stack-sub{
+  font-family:var(--font-sans);
+  font-size:var(--t-sm);          /* 14px */
+  font-weight:400;
+  color:var(--echo-ink-3);
+  line-height:1.4;
+}
+.echo-stack-preview{
+  margin-top:var(--s-2);
+  padding-top:var(--s-2);
+  border-top:.5px solid rgba(255,255,255,.06);
+  font-family:var(--font-sans);
+  font-size:var(--t-xs);          /* 12px */
+  font-weight:400;
+  color:var(--echo-ink-4);
+  letter-spacing:0.02em;
+  line-height:1.4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.echo-stack-arrow{
+  flex-shrink:0;
+  width:20px;height:20px;
+  color:var(--echo-ink-4);
+  transition:all var(--dur-base) var(--spring-gentle);
+}
+.echo-stack-card:hover .echo-stack-arrow{
+  color:var(--echo-gold);
+  transform:translateX(3px);
+}
+
+/* Language toggle — compact segmented control */
+.echo-lang-toggle{
+  display:inline-flex;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-2);
+  border-radius:var(--r-full);
+  padding:3px;
+  height:32px;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.echo-lang-opt{
+  background:none;border:none;
+  padding:0 10px;
+  height:100%;min-width:30px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--font-sans);
+  font-size:var(--t-2xs);
+  font-weight:500;
+  letter-spacing:.10em;
+  color:var(--echo-ink-3);
+  border-radius:var(--r-full);
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:all var(--dur-fast) var(--spring-gentle);
+}
+.echo-lang-opt:hover{color:var(--echo-ink-2)}
+.echo-lang-opt.on{
+  background:rgba(247,242,228,.95);
+  color:#1A1612;
+  box-shadow:0 1px 2px rgba(0,0,0,.3), 0 2px 6px rgba(0,0,0,.18);
+}
+
+/* ── Today block — premium dark hero strip ── */
+.dark .home-today-block{
+  background:transparent;
+  padding:var(--s-5) var(--s-4) var(--s-4);
+}
+.dark .home-freq-num{
+  font-family:var(--font-serif);
+  font-weight:200;
+  color:var(--echo-ink-1);
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 0 40px rgba(216,197,162,.15);
+}
+.dark .home-freq-unit{
+  color:var(--echo-ink-3);
+  letter-spacing:var(--ls-widest);
+}
+.dark .home-freq-name{
+  color:var(--echo-ink-2);
+  font-family:var(--font-serif);
+  font-style:italic;
+  font-weight:200;
+}
+.dark .home-today-lbl{
+  color:var(--echo-ink-3);
+  letter-spacing:var(--ls-widest);
+  font-weight:400;
+}
+.dark .home-play-btn{
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
+  border:none;
+  border-radius:var(--r-full);
+  padding:14px 22px;
+  font-family:var(--font-sans);
+  font-size:var(--t-xs);
+  font-weight:500;
+  letter-spacing:var(--ls-wider);
+  text-transform:uppercase;
+  box-shadow:var(--echo-lift-gold);
+  transition:all var(--dur-base) var(--spring-gentle);
+  display:inline-flex;align-items:center;gap:var(--s-2);
+}
+.dark .home-play-btn:hover{
+  background:var(--echo-gold-hover);
+  transform:translateY(-2px);
+  box-shadow:0 0 0 1px rgba(216,197,162,.4),
+             0 6px 18px rgba(0,0,0,.35),
+             0 0 40px rgba(216,197,162,.22);
+}
+.dark .home-play-btn:active{transform:translateY(0);transition-duration:80ms}
+
+/* ── Streak card → premium glass treatment + breathable padding ── */
+.dark .streak-card{
+  background:var(--echo-glass-1) !important;
+  border:.5px solid var(--echo-line-1) !important;
+  border-radius:var(--r-lg) !important;
+  padding:20px 22px !important;
+  margin:0 var(--s-4) var(--s-3) !important;
+  gap:20px !important;
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  box-shadow:var(--echo-lift-1) !important;
+  transition:all var(--dur-base) var(--spring-gentle);
+  width:auto !important;
+}
+.dark .streak-card #streak-right{
+  gap:8px !important;
+  align-items:flex-end;
+}
+.dark .streak-card .sk-bars{margin-top:2px}
+.dark .streak-card .sk-days{margin-top:6px;gap:6px}
+.dark .streak-card #streak-cta-lbl{margin-top:6px !important}
+.dark .streak-card:hover{
+  border-color:var(--echo-line-2);
+  background:var(--echo-glass-2);
+  box-shadow:var(--echo-lift-2);
+  transform:translateY(-2px);
+}
+.dark .sk-n{
+  font-family:var(--font-serif);
+  font-weight:200;
+  color:var(--echo-ink-1);
+  font-variant-numeric:tabular-nums;
+}
+.dark .sk-lbl{color:var(--echo-ink-2);letter-spacing:var(--ls-wider);font-weight:400}
+.dark .sk-sub{color:var(--echo-ink-3);font-weight:300}
+.dark .sk-bar{background:var(--echo-line-2);border-radius:3px 3px 0 0}
+.dark .sk-bar.h{background:var(--echo-ink-3)}
+.dark .sk-bar.t{background:var(--echo-gold);box-shadow:0 0 8px rgba(216,197,162,.4)}
+.dark .sk-d{color:var(--echo-ink-4)}
+.dark .sk-d.t{color:var(--echo-gold);font-weight:500}
+
+/* ── Consciousness card → premium ── */
+.dark #consciousness-card{
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
+  border-radius:var(--r-lg) !important;
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  box-shadow:var(--echo-lift-1);
+  transition:all var(--dur-base) var(--spring-gentle);
+}
+.dark #consciousness-card:hover{
+  border-color:var(--echo-line-2);
+  background:var(--echo-glass-2);
+  box-shadow:var(--echo-lift-2);
+  transform:translateY(-2px);
+}
+.dark #cs-scale{background:var(--echo-line-1)}
+.dark #cs-fill{background:linear-gradient(to right, #4A5568, #9CA3AF, var(--echo-gold)) !important}
+
+/* ── Library CTA → gold-edge glass ── */
+.dark #lib-link{
+  background:linear-gradient(180deg, rgba(216,197,162,.04) 0%, var(--echo-glass-1) 60%) !important;
+  border-color:rgba(216,197,162,.18) !important;
+  box-shadow:var(--echo-lift-1) !important;
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+}
+.dark #lib-link:hover{
+  border-color:rgba(216,197,162,.36) !important;
+  background:linear-gradient(180deg, rgba(216,197,162,.07) 0%, var(--echo-glass-2) 60%) !important;
+  box-shadow:var(--echo-lift-gold) !important;
+  transform:translateY(-2px) !important;
+}
+
+/* ── Quick relief card → premium ── */
+.dark #quick-relief-card{
+  background:var(--echo-glass-1) !important;
+  border-color:var(--echo-line-1) !important;
+  border-radius:var(--r-md) !important;
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  box-shadow:var(--echo-lift-1);
+  transition:all var(--dur-base) var(--spring-gentle);
+}
+.dark #quick-relief-card:hover{
+  border-color:var(--echo-line-2) !important;
+  background:var(--echo-glass-2) !important;
+  box-shadow:var(--echo-lift-2);
+  transform:translateY(-2px);
+}
+
+/* Hero gradient overlay — full-bleed image fades to pure black */
+.dark .home-hero-bg::after{
+  background:linear-gradient(to bottom,
+    rgba(0,0,0,.45) 0%,
+    rgba(0,0,0,.10) 12%,
+    rgba(0,0,0,.05) 28%,
+    rgba(0,0,0,.35) 50%,
+    rgba(0,0,0,.75) 72%,
+    rgba(0,0,0,.95) 88%,
+    #000 100%
+  );
+}
+
+/* Hero center stronger gradient + text shadow for legibility on image */
+.dark .home-hero-center{
+  background:linear-gradient(to top,
+    rgba(0,0,0,.85) 0%,
+    rgba(0,0,0,.55) 40%,
+    rgba(0,0,0,.20) 75%,
+    transparent 100%);
+  padding-bottom:56px;
+}
+.dark .home-hero-tagline{
+  text-shadow:
+    0 2px 24px rgba(0,0,0,.85),
+    0 1px 4px rgba(0,0,0,.6),
+    0 0 80px rgba(0,0,0,.5) !important;
+  font-weight:300 !important;
+  letter-spacing:-0.025em !important;
+}
+.dark .home-hero-sub{
+  color:rgba(255,255,255,.78) !important;
+  text-shadow:0 1px 8px rgba(0,0,0,.7);
+  font-weight:400 !important;
+  letter-spacing:.22em !important;
+}
+
+/* Hero CTA — airy gold outline, not heavy solid */
+.dark .home-hero-cta{
+  background:rgba(216,197,162,.08) !important;
+  border:1px solid var(--echo-gold) !important;
+  color:var(--echo-gold) !important;
+  box-shadow:
+    0 0 0 0 rgba(216,197,162,0),
+    0 0 32px rgba(216,197,162,.18),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+  backdrop-filter:blur(12px) saturate(140%);
+  -webkit-backdrop-filter:blur(12px) saturate(140%);
+  font-weight:500 !important;
+  padding:16px 28px !important;
+  text-transform:uppercase;
+  letter-spacing:.22em !important;
+  transition:all var(--dur-base) var(--spring-gentle) !important;
+}
+.dark .home-hero-cta:hover{
+  background:rgba(216,197,162,.18) !important;
+  color:#F0D8A8 !important;
+  border-color:#E8C887 !important;
+  box-shadow:
+    0 0 0 1px rgba(216,197,162,.5),
+    0 0 56px rgba(216,197,162,.35),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+  transform:translateY(-2px);
+}
+
+/* "prog-lbl" eyebrow on dark */
+.dark .prog-lbl{color:var(--echo-ink-3);letter-spacing:var(--ls-widest);font-weight:400}
+
+/* Pill (legacy) → soften on dark */
+.dark .pill{
+  background:var(--echo-glass-1);
+  border-color:var(--echo-line-2);
+  color:var(--echo-ink-3);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.dark .pill:hover{color:var(--echo-ink-1);border-color:var(--echo-line-3)}
+.dark .pill.on{background:var(--echo-ink-1);color:var(--echo-bg-0);border-color:transparent}
+
+/* Binaural strip section eyebrow */
+.dark #bin-lbl{color:var(--echo-ink-3);letter-spacing:var(--ls-widest);font-weight:400}
+
+/* Surfaces transparent in dark — let body radial gradient flow through */
+.dark .scr,
+.dark .home-content,
+.dark .home-today-block{
+  background:transparent !important;
+}
+
+/* Binaural cards — bigger, more readable, more breathable */
+#binaural-strip{padding:8px 18px 12px !important;gap:12px !important}
+.echo-binaural-card{
+  flex-shrink:0;
+  display:flex;flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
+  border-radius:20px;
+  padding:18px 20px;
+  min-width:148px;
+  text-align:left;
+  cursor:pointer;
+  font-family:inherit;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  transition:all 200ms cubic-bezier(.22,1.2,.36,1);
+  box-shadow:var(--echo-lift-1);
+}
+.echo-binaural-card:hover{
+  background:var(--echo-glass-2);
+  border-color:var(--echo-line-2);
+  transform:translateY(-2px);
+  box-shadow:var(--echo-lift-2);
+}
+.echo-binaural-hz{
+  display:flex;
+  align-items:baseline;
+  gap:4px;
+  margin-bottom:2px;
+}
+.echo-binaural-num{
+  font-family:var(--font-sans);
+  font-size:30px;
+  font-weight:500;
+  letter-spacing:-0.02em;
+  color:var(--echo-ink-1);
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.echo-binaural-unit{
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.20em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+}
+.echo-binaural-name{
+  font-family:var(--font-sans);
+  font-size:14px;
+  font-weight:500;
+  color:var(--echo-ink-1);
+  letter-spacing:-0.005em;
+}
+.echo-binaural-wave{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:.18em;
+  color:var(--echo-ink-3);
+  text-transform:uppercase;
+}
+
+/* Footer area on dark */
+.dark .home-content a,
+.dark .home-content button{transition:color var(--dur-fast) var(--ease-out)}
+.dark .home-content a:hover{color:var(--echo-ink-2)}
+
+/* "scrolled" state for navs — match new dark glass */
+.dark .home-nav-sticky.scrolled{
+  background:rgba(8,7,10,.65);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%);
+  border-bottom-color:var(--echo-line-2);
+}
+
+/* Subtle top glow at the very top of dark — helps frame the brand */
+.dark #home::before{
+  content:'';
+  position:fixed;
+  top:0;left:50%;
+  width:80%;height:200px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse 100% 100% at 50% 0%, rgba(216,197,162,.05) 0%, transparent 70%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PLAYER PAGE — premium dark treatment
+══════════════════════════════════════════════════════════ */
+.dark #player{background:transparent}
+.dark .pl-fn{
+  color:var(--echo-ink-1);
+  text-shadow:0 0 60px rgba(216,197,162,.18);
+  font-variant-numeric:tabular-nums;
+}
+.dark .pl-fu{
+  color:var(--echo-ink-3);
+  letter-spacing:var(--ls-widest);
+}
+.dark .pl-fname{
+  color:var(--echo-ink-2);
+  font-family:var(--font-serif);
+  font-style:italic;
+}
+.dark .pl-back{
+  background:var(--echo-glass-2) !important;
+  backdrop-filter:blur(20px) saturate(140%) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(140%) !important;
+  border:.5px solid var(--echo-line-2) !important;
+  color:var(--echo-ink-1) !important;
+  border-radius:var(--r-full) !important;
+  padding:8px 16px !important;
+  font-weight:400;
+  letter-spacing:var(--ls-wider);
+}
+.dark .pl-back:hover{
+  background:var(--echo-glass-3) !important;
+  border-color:var(--echo-line-3) !important;
+  transform:translateY(-1px);
+}
+.dark .pl-play{
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
+  border-radius:var(--r-full);
+  font-weight:500;
+  letter-spacing:var(--ls-wider);
+  text-transform:uppercase;
+  box-shadow:var(--echo-lift-gold);
+  transition:all var(--dur-base) var(--spring-gentle);
+  padding:18px 24px;
+}
+.dark .pl-play:hover{
+  background:var(--echo-gold-hover);
+  opacity:1;
+  transform:translateY(-2px);
+  box-shadow:0 0 0 1px rgba(216,197,162,.45),
+             0 8px 24px rgba(0,0,0,.45),
+             0 0 56px rgba(216,197,162,.25);
+}
+.dark .pl-play.stop-mode{
+  background:var(--echo-glass-2);
+  color:var(--echo-ink-1);
+  border:.5px solid var(--echo-line-3);
+  box-shadow:var(--echo-lift-1);
+}
+.dark .pl-play.stop-mode:hover{
+  background:var(--echo-glass-3);
+  border-color:var(--echo-line-3);
+  box-shadow:var(--echo-lift-2);
+}
+.dark .pl-tab{
+  background:var(--echo-glass-1);
+  border-color:var(--echo-line-2);
+  color:var(--echo-ink-3);
+  border-radius:var(--r-full);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:all var(--dur-fast) var(--spring-gentle);
+}
+.dark .pl-tab:hover{
+  color:var(--echo-ink-2);
+  border-color:var(--echo-line-3);
+  transform:translateY(-1px);
+}
+.dark .pl-tab.on{
+  background:var(--echo-ink-1);
+  color:var(--echo-bg-0);
+  border-color:transparent;
+}
+.dark .pl-timer{
+  background:var(--echo-glass-1);
+  border-color:var(--echo-line-2);
+  color:var(--echo-ink-3);
+  border-radius:var(--r-full);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:all var(--dur-fast) var(--spring-gentle);
+  padding:8px 16px;
+  font-weight:400;
+}
+.dark .pl-timer:hover{
+  color:var(--echo-ink-1);
+  border-color:var(--echo-line-3);
+  transform:translateY(-1px);
+}
+.dark .pl-timer.on{
+  background:var(--echo-ink-1);
+  color:var(--echo-bg-0);
+  border-color:transparent;
+  box-shadow:var(--echo-lift-1);
+}
+.dark .pl-overlay{
+  background:linear-gradient(to bottom,
+    rgba(0,0,0,.0)  0%,
+    rgba(0,0,0,.0) 22%,
+    rgba(8,7,10,.45) 44%,
+    rgba(8,7,10,.88) 62%,
+    var(--echo-bg-0) 78%);
+}
+/* Player content area transparent so body radial gradient flows */
+.dark #player > div:nth-child(2){background:transparent !important}
+
+/* Brain state / learn-more panel */
+.dark #learn-more-btn{
+  background:var(--echo-glass-1) !important;
+  border-color:var(--echo-line-2) !important;
+  color:var(--echo-ink-2);
+  border-radius:var(--r-md) !important;
+  transition:all var(--dur-fast) var(--spring-gentle);
+}
+.dark #learn-more-btn:hover{
+  background:var(--echo-glass-2) !important;
+  border-color:var(--echo-line-3) !important;
+}
+.dark .brain-state, .dark #pl-ear-detail{
+  background:var(--echo-glass-1) !important;
+  border-color:var(--echo-line-1);
+  border-radius:var(--r-md) !important;
+}
+
+/* Progress bar on player */
+.dark #pl-prog-fill{background:var(--echo-gold) !important;box-shadow:0 0 12px rgba(216,197,162,.4)}
+
+/* ══════════════════════════════════════════════════════════
+   PROFILE PAGE — premium dark, 24px breathing rhythm
+══════════════════════════════════════════════════════════ */
+.dark #profile{
+  padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));
+  scroll-padding-bottom:48px;
+}
+
+/* Every section gets a consistent 24px breath below */
+.dark #profile > *{margin-bottom:var(--s-5) !important}
+.dark #profile > *:last-child{margin-bottom:0 !important}
+
+/* ══════════════════════════════════════════════════════════
+   PROFILE HERO IMAGE — full-bleed atmospheric portrait
+   Image fades to pure black; top-nav floats glass-pill over it.
+══════════════════════════════════════════════════════════ */
+.dark .echo-profile-hero{
+  position:relative !important;
+  width:100% !important;
+  height:340px !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  flex-shrink:0;
+}
+.dark .echo-profile-hero-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 30%;
+  display:block;
+  filter:grayscale(.15) contrast(1.04) brightness(.92);
+  animation:echo-hero-breathe 12s ease-in-out infinite alternate;
+}
+@keyframes echo-hero-breathe{
+  from{transform:scale(1)}
+  to{transform:scale(1.04)}
+}
+.dark .echo-profile-hero-fade{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,
+    rgba(0,0,0,.50) 0%,
+    rgba(0,0,0,.15) 18%,
+    rgba(0,0,0,.05) 42%,
+    rgba(0,0,0,.45) 68%,
+    rgba(0,0,0,.85) 86%,
+    #000 100%
+  );
+  pointer-events:none;
+}
+.dark .echo-profile-hero-nav{
+  position:absolute;
+  top:calc(env(safe-area-inset-top,0px) + 14px);
+  left:0;right:0;
+  z-index:2;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--s-4);
+}
+.dark .echo-profile-hero-nav button:hover{
+  background:rgba(0,0,0,.55) !important;
+  border-color:rgba(255,255,255,.28) !important;
+  transform:translateY(-1px);
+  transition:all 150ms cubic-bezier(.22,1.2,.36,1);
+}
+
+/* Avatar + greeting now overlap with hero bottom fade (sits inside the fade) */
+.dark #profile > div:nth-of-type(2),
+.dark #profile > div:nth-of-type(3){
+  margin-top:-60px !important;
+  position:relative;
+  z-index:3;
+}
+/* Hide the legacy fallback top nav */
+.dark .echo-profile-toolbar-legacy{display:none !important}
+
+/* Top nav stays tight (LEGACY rule — kept for non-hero usage) */
+.dark #profile > div:first-child:not(.echo-profile-hero){
+  margin-bottom:var(--s-3) !important;
+  padding:calc(env(safe-area-inset-top,0px) + var(--s-5)) var(--s-5) var(--s-3) !important;
+}
+.dark #profile > div:first-child:not(.echo-profile-hero) button{
+  background:var(--echo-glass-1) !important;
+  border:.5px solid var(--echo-line-2) !important;
+  border-radius:var(--r-full) !important;
+  padding:8px 16px !important;
+  color:var(--echo-ink-2) !important;
+  font-family:var(--font-sans);
+  font-size:var(--t-xs) !important;
+  letter-spacing:var(--ls-wider);
+  transition:all var(--dur-fast) var(--spring-gentle);
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+}
+.dark #profile > div:first-child:not(.echo-profile-hero) button:hover{
+  background:var(--echo-glass-2) !important;
+  border-color:var(--echo-line-3) !important;
+  color:var(--echo-ink-1) !important;
+  transform:translateY(-1px);
+}
+
+/* Avatar + greeting block */
+.dark #profile > div:nth-child(2){
+  padding:var(--s-4) var(--s-5) !important;
+  text-align:center;
+}
+.dark #profile #profile-avatar{
+  width:96px !important;height:96px !important;
+  font-size:30px !important;font-weight:200 !important;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.5),
+    0 12px 32px rgba(0,0,0,.4),
+    0 0 48px rgba(216,197,162,.18),
+    inset 0 0 0 .5px rgba(216,197,162,.35),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+.dark #prof-name{
+  color:var(--echo-ink-1) !important;
+  font-size:var(--t-2xl) !important;
+  font-family:var(--font-serif) !important;
+  font-weight:200 !important;
+  letter-spacing:var(--ls-tight) !important;
+}
+.dark #prof-sub{
+  color:var(--echo-ink-3) !important;
+  font-size:var(--t-2xs) !important;
+  letter-spacing:var(--ls-widest) !important;
+  font-weight:400 !important;
+  font-family:var(--font-sans) !important;
+}
+
+/* Every card in profile — glass treatment */
+.dark #profile div[style*="background:var(--card)"],
+.dark #profile button[style*="background:var(--card)"],
+.dark #profile a[style*="background:var(--card)"]{
+  background:var(--echo-glass-1) !important;
+  border-color:var(--echo-line-1) !important;
+  backdrop-filter:blur(20px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(150%) !important;
+  box-shadow:var(--echo-lift-1) !important;
+  border-radius:var(--r-md) !important;
+  transition:all var(--dur-base) var(--spring-gentle) !important;
+}
+.dark #profile button[style*="background:var(--card)"]:hover,
+.dark #profile a[style*="background:var(--card)"]:hover,
+.dark #profile div[style*="background:var(--card)"]:hover{
+  background:var(--echo-glass-2) !important;
+  border-color:var(--echo-line-2) !important;
+  box-shadow:var(--echo-lift-2) !important;
+  transform:translateY(-2px);
+}
+
+/* Affirmation card rules now live in .echo-affirmation-card class block */
+
+/* Quiet moments + Frequencies explored — bigger numbers, more padding */
+.dark #prof-month-count,
+.dark #prof-explored-count{
+  font-family:var(--font-serif) !important;
+  font-size:var(--t-2xl) !important;
+  font-weight:200 !important;
+  color:var(--echo-ink-1) !important;
+  font-variant-numeric:tabular-nums !important;
+}
+.dark #prof-month-lbl,
+.dark #prof-explored-lbl{
+  color:var(--echo-ink-1) !important;
+  font-size:var(--t-sm) !important;
+}
+.dark #prof-month-unit,
+.dark #prof-explored-total{
+  color:var(--echo-ink-3) !important;
+}
+.dark #profile div[style*="prof-explored-bar"],
+.dark #prof-explored-bar{
+  background:linear-gradient(90deg, var(--echo-gold), #E8C887) !important;
+  box-shadow:0 0 12px rgba(216,197,162,.35);
+}
+
+/* Force more breathable padding inside each card */
+.dark #profile > div[style*="margin:0 22px"],
+.dark #profile > button[style*="margin:0 22px"],
+.dark #profile > a[style*="margin:0 22px"]{
+  margin-left:var(--s-5) !important;
+  margin-right:var(--s-5) !important;
+}
+
+/* Old 2x2 grid rules removed — replaced by .echo-stack-list / .echo-stack-card primitives */
+
+/* ══════════════════════════════════════════════════════════
+   AFFIRMATION HERO CARD — minimal chrome, hero-sized type
+══════════════════════════════════════════════════════════ */
+.dark .echo-affirmation-card{
+  width:calc(100% - 48px) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:var(--s-3) !important;
+  margin:0 var(--s-5) !important;
+  padding:32px 24px !important;
+  background:radial-gradient(ellipse at top, rgba(216,197,162,.10) 0%, rgba(255,255,255,.05) 50%) !important;
+  border:.5px solid rgba(255,255,255,.14) !important;
+  border-radius:28px !important;
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  text-align:center !important;
+  cursor:pointer;
+  transition:all var(--dur-base) var(--spring-gentle);
+  box-shadow:var(--echo-lift-2);
+  position:relative;
+}
+.dark .echo-affirmation-card:hover{
+  background:radial-gradient(ellipse at top, rgba(216,197,162,.14) 0%, rgba(255,255,255,.08) 50%) !important;
+  border-color:rgba(255,255,255,.22) !important;
+  box-shadow:var(--echo-lift-3);
+}
+.dark .echo-affirmation-eyebrow{
+  display:block;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.32em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+}
+.dark .echo-affirmation-text,
+.dark #prof-affirmation{
+  display:block;
+  font-family:var(--font-serif) !important;
+  font-size:26px !important;
+  font-weight:300 !important;
+  font-style:italic !important;
+  color:var(--echo-ink-1) !important;
+  letter-spacing:-0.015em !important;
+  line-height:1.4 !important;
+  max-width:32ch;
+  transition:opacity .25s;
+}
+.dark .echo-affirmation-hint,
+.dark #prof-aff-hint{
+  display:block;
+  font-family:var(--font-sans) !important;
+  font-size:11px !important;
+  font-weight:400 !important;
+  letter-spacing:.18em !important;
+  color:var(--echo-ink-4) !important;
+  text-transform:lowercase !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TIP CARD v2 — promoted, explained, with social proof
+══════════════════════════════════════════════════════════ */
+.dark .echo-tip-card{
+  margin:0 var(--s-5) !important;
+  padding:32px 24px 24px !important;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(216,197,162,.16) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.04) 100%) !important;
+  border:.5px solid rgba(216,197,162,.30) !important;
+  border-radius:28px !important;
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.6),
+    0 12px 32px rgba(0,0,0,.5),
+    0 0 56px rgba(216,197,162,.14),
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+  position:relative;
+}
+.dark .echo-tip-head{
+  text-align:center;
+  margin-bottom:24px;
+}
+.dark .echo-tip-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.30em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.dark .echo-tip-eyebrow svg{width:14px;height:14px;color:var(--echo-gold)}
+.dark .echo-tip-title,
+.dark #prof-tip-headline{
+  display:block !important;
+  font-family:var(--font-serif) !important;
+  font-size:22px !important;
+  font-weight:300 !important;
+  font-style:normal !important;
+  letter-spacing:-0.015em !important;
+  line-height:1.35 !important;
+  color:var(--echo-ink-1) !important;
+  max-width:28ch;
+  margin:0 auto !important;
+}
+.dark .echo-tip-tiers{
+  display:grid !important;
+  grid-template-columns:repeat(3,1fr) !important;
+  gap:10px !important;
+  margin-bottom:24px !important;
+}
+.dark .echo-tip-tiers .tip-btn{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:4px !important;
+  background:rgba(255,255,255,.06) !important;
+  border:.5px solid rgba(255,255,255,.16) !important;
+  border-radius:18px !important;
+  padding:16px 6px !important;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all 150ms cubic-bezier(0.22, 1.2, 0.36, 1) !important;
+  position:relative !important;
+  text-decoration:none;
+}
+.dark .echo-tip-tiers .tip-btn:hover{
+  background:rgba(255,255,255,.10) !important;
+  border-color:rgba(216,197,162,.55) !important;
+  transform:translateY(-2px);
+  box-shadow:0 4px 14px rgba(0,0,0,.3), 0 0 24px rgba(216,197,162,.15);
+}
+.dark .echo-tip-tiers .tip-btn.tip-middle{
+  background:linear-gradient(180deg, rgba(216,197,162,.18) 0%, rgba(216,197,162,.06) 100%) !important;
+  border-color:rgba(216,197,162,.55) !important;
+  box-shadow:0 0 24px rgba(216,197,162,.14);
+}
+.dark .echo-tip-tiers .tip-amt{
+  display:block !important;
+  font-family:var(--font-sans) !important;
+  font-size:24px !important;
+  font-weight:500 !important;
+  color:var(--echo-ink-1) !important;
+  letter-spacing:-0.02em !important;
+  font-variant-numeric:tabular-nums !important;
+  line-height:1 !important;
+}
+.dark .echo-tip-tiers .tip-lbl{
+  display:block !important;
+  font-family:var(--font-sans) !important;
+  font-size:10px !important;
+  font-weight:500 !important;
+  letter-spacing:.14em !important;
+  color:var(--echo-ink-3) !important;
+  text-transform:uppercase !important;
+  line-height:1.2 !important;
+}
+.dark .echo-tip-tiers .tip-badge{
+  position:absolute !important;
+  top:-9px !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  background:var(--echo-gold) !important;
+  color:var(--echo-on-gold) !important;
+  font-family:var(--font-sans) !important;
+  font-size:9px !important;
+  font-weight:600 !important;
+  letter-spacing:.12em !important;
+  padding:3px 9px !important;
+  border-radius:9999px !important;
+  text-transform:uppercase !important;
+  white-space:nowrap !important;
+  box-shadow:0 2px 8px rgba(216,197,162,.4) !important;
+}
+.dark .echo-tip-divider{
+  height:.5px;
+  background:rgba(255,255,255,.10);
+  margin:8px 0 16px;
+}
+.dark .echo-tip-explain,
+.dark #prof-tip-sub{
+  display:block !important;
+  font-family:var(--font-sans) !important;
+  font-size:14px !important;
+  font-weight:400 !important;
+  font-style:normal !important;
+  line-height:1.55 !important;
+  color:var(--echo-ink-2) !important;
+  text-align:center !important;
+  margin-bottom:18px !important;
+  letter-spacing:0 !important;
+}
+.dark .echo-tip-social{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  padding:12px 16px !important;
+  background:rgba(216,197,162,.08) !important;
+  border:.5px solid rgba(216,197,162,.24) !important;
+  border-radius:9999px !important;
+  margin-bottom:14px !important;
+}
+.dark .echo-tip-social-dot{
+  color:var(--echo-gold) !important;
+  font-size:14px !important;
+  filter:drop-shadow(0 0 8px rgba(216,197,162,.5));
+}
+.dark .echo-tip-social #prof-tip-social{
+  font-family:var(--font-sans) !important;
+  font-size:13px !important;
+  font-weight:500 !important;
+  letter-spacing:.02em !important;
+  color:var(--echo-ink-1) !important;
+}
+.dark .echo-tip-foot,
+.dark #prof-tip-secure,
+.dark #prof-tip-hint{
+  display:block !important;
+  text-align:center !important;
+  font-family:var(--font-sans) !important;
+  font-size:10px !important;
+  font-weight:400 !important;
+  font-style:normal !important;
+  letter-spacing:.12em !important;
+  color:var(--echo-ink-4) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   GIFTS GALLERY — free art downloads, horizontal rail
+══════════════════════════════════════════════════════════ */
+.dark .echo-gifts-section{
+  margin:0 0 var(--s-5) !important;     /* full-bleed sides for rail */
+  padding:0 !important;
+}
+.dark .echo-gifts-header{
+  text-align:center;
+  padding:0 var(--s-5);
+  margin-bottom:20px;
+}
+.dark .echo-gifts-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.30em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+.dark .echo-gifts-eyebrow svg{width:14px;height:14px;color:var(--echo-gold)}
+.dark .echo-gifts-title,
+.dark #prof-gifts-title{
+  display:block !important;
+  font-family:var(--font-serif) !important;
+  font-size:22px !important;
+  font-weight:300 !important;
+  font-style:normal !important;
+  letter-spacing:-0.015em !important;
+  line-height:1.3 !important;
+  color:var(--echo-ink-1) !important;
+  margin:0 auto 8px !important;
+}
+.dark .echo-gifts-sub,
+.dark #prof-gifts-sub{
+  display:block !important;
+  font-family:var(--font-sans) !important;
+  font-size:13px !important;
+  font-weight:400 !important;
+  line-height:1.5 !important;
+  color:var(--echo-ink-3) !important;
+  max-width:32ch;
+  margin:0 auto !important;
+}
+.dark .echo-gifts-rail{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  padding:8px 24px 16px;
+  scroll-padding-left:24px;
+}
+.dark .echo-gifts-rail::-webkit-scrollbar{display:none}
+.dark .echo-gift-card{
+  flex-shrink:0;
+  width:62vw;
+  max-width:280px;
+  scroll-snap-align:start;
+  display:flex;flex-direction:column;
+  text-decoration:none;
+  color:inherit;
+  border-radius:24px;
+  overflow:hidden;
+  background:rgba(255,255,255,.04);
+  border:.5px solid rgba(255,255,255,.10);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,.5),
+    0 4px 14px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  transition:all 240ms cubic-bezier(.22,1.2,.36,1);
+  cursor:pointer;
+}
+.dark .echo-gift-card:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(216,197,162,.35);
+  transform:translateY(-3px);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.6),
+    0 12px 28px rgba(0,0,0,.5),
+    0 0 32px rgba(216,197,162,.15),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.dark .echo-gift-card:active{transform:translateY(-1px) scale(.99);transition-duration:80ms}
+.dark .echo-gift-thumb{
+  position:relative;
+  aspect-ratio:4 / 5;
+  overflow:hidden;
+  background:#0A0A0A;
+}
+.dark .echo-gift-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:grayscale(.10) contrast(1.03);
+  transition:transform 600ms cubic-bezier(.16,1,.3,1);
+}
+.dark .echo-gift-card:hover .echo-gift-thumb img{transform:scale(1.04)}
+.dark .echo-gift-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  padding:14px;
+  background:linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 50%);
+  opacity:0;
+  transition:opacity 240ms ease;
+}
+.dark .echo-gift-card:hover .echo-gift-overlay{opacity:1}
+.dark .echo-gift-overlay svg{
+  width:36px;height:36px;
+  padding:8px;
+  border-radius:9999px;
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
+  stroke-width:2;
+  box-shadow:0 4px 14px rgba(0,0,0,.4), 0 0 24px rgba(216,197,162,.4);
+}
+.dark .echo-gift-caption{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;
+  gap:8px;
+}
+.dark .echo-gift-name{
+  font-family:var(--font-sans);
+  font-size:13px;
+  font-weight:500;
+  color:var(--echo-ink-1);
+  letter-spacing:-0.005em;
+}
+.dark .echo-gift-meta{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.12em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.dark .echo-gift-meta::before{
+  content:'';
+  width:5px;height:5px;border-radius:50%;
+  background:var(--echo-gold);
+  box-shadow:0 0 6px rgba(216,197,162,.5);
+}
+.dark .echo-gifts-foot,
+.dark #prof-gifts-foot{
+  text-align:center;
+  font-family:var(--font-sans);
+  font-size:12px;
+  font-weight:400;
+  font-style:italic;
+  letter-spacing:0;
+  color:var(--echo-ink-4);
+  padding:0 var(--s-5);
+}
+.dark #prof-tip-lbl{
+  /* eyebrow text — color/size handled by .echo-tip-eyebrow parent */
+  color:inherit !important;
+  font-family:inherit !important;
+  letter-spacing:inherit !important;
+  font-size:inherit !important;
+}
+
+/* Sign Out — luxe pill */
+.dark #prof-signout{
+  background:var(--echo-glass-1) !important;
+  border:.5px solid var(--echo-line-2) !important;
+  color:var(--echo-ink-2) !important;
+  font-size:var(--t-xs) !important;
+  letter-spacing:var(--ls-wider) !important;
+  padding:16px !important;
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+}
+.dark #prof-signout:hover{
+  background:var(--echo-glass-2) !important;
+  border-color:var(--echo-line-3) !important;
+  color:var(--echo-ink-1) !important;
+}
+
+/* All tip-jar styling lives in .echo-tip-card primitive block (below) */
+
+/* ══════════════════════════════════════════════════════════
+   HOME PAGE → compact one-line footer (legal + protocol + Aa)
+══════════════════════════════════════════════════════════ */
+.echo-home-footer{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px 6px;
+  padding:18px 20px 4px;
+}
+.echo-home-foot-link{
+  display:inline-block;
+  background:none;
+  border:none;
+  padding:4px 2px;
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.16em;
+  color:var(--echo-ink-4);
+  text-transform:uppercase;
+  text-decoration:none;
+  cursor:pointer;
+  transition:color 150ms ease;
+}
+.echo-home-foot-link:hover{color:var(--echo-ink-2)}
+.echo-home-foot-dot{
+  color:var(--echo-ink-5);
+  font-size:11px;
+  user-select:none;
+}
+.echo-home-foot-aa{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
+  border-radius:9999px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:500;
+  color:var(--echo-ink-2);
+  cursor:pointer;
+  transition:all 150ms cubic-bezier(.22,1.2,.36,1);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+}
+.echo-home-foot-aa:hover{
+  background:var(--echo-glass-2);
+  color:var(--echo-ink-1);
+  border-color:var(--echo-line-2);
+  transform:translateY(-1px);
+}
+.echo-home-foot-copy{
+  text-align:center;
+  padding:6px 20px calc(24px + env(safe-area-inset-bottom,0px));
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:.18em;
+  color:var(--echo-ink-5);
+}
+
+/* ══════════════════════════════════════════════════════════
+   HOME PAGE → "Visions" CTA card (entry point to /visions)
+══════════════════════════════════════════════════════════ */
+.echo-home-visions-cta{
+  width:100%;
+  padding:var(--s-4) var(--s-4);
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-1);
+  border-radius:var(--r-lg);
+  cursor:pointer;
+  font-family:inherit;
+  display:flex;
+  align-items:center;
+  gap:var(--s-3);
+  transition:all var(--dur-base) var(--spring-gentle);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:var(--echo-lift-1);
+}
+.echo-home-visions-cta:hover{
+  background:var(--echo-glass-2);
+  border-color:var(--echo-line-2);
+  transform:translateY(-2px);
+  box-shadow:var(--echo-lift-2);
+}
+.echo-home-visions-thumbs{
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+  position:relative;
+  width:52px;
+  height:52px;
+}
+.echo-home-visions-thumbs img{
+  position:absolute;
+  top:50%;
+  border-radius:6px;
+  object-fit:cover;
+  border:.5px solid rgba(255,255,255,.10);
+  box-shadow:0 2px 6px rgba(0,0,0,.4);
+  filter:grayscale(.10) contrast(1.04);
+  transition:transform 300ms cubic-bezier(.22,1.2,.36,1);
+}
+.echo-home-visions-thumbs img:nth-child(1){
+  left:0;
+  width:28px;height:34px;
+  transform:translateY(-50%) rotate(-7deg);
+  z-index:1;
+}
+.echo-home-visions-thumbs img:nth-child(2){
+  left:12px;
+  width:30px;height:36px;
+  transform:translateY(-50%);
+  z-index:3;
+}
+.echo-home-visions-thumbs img:nth-child(3){
+  left:26px;
+  width:28px;height:34px;
+  transform:translateY(-50%) rotate(7deg);
+  z-index:2;
+}
+.echo-home-visions-cta:hover .echo-home-visions-thumbs img:nth-child(1){
+  transform:translateY(-50%) translateX(-2px) rotate(-11deg);
+}
+.echo-home-visions-cta:hover .echo-home-visions-thumbs img:nth-child(3){
+  transform:translateY(-50%) translateX(2px) rotate(11deg);
+}
+
+/* ══════════════════════════════════════════════════════════
+   VISIONS PAGE — full-bleed art carousel + download CTAs
+══════════════════════════════════════════════════════════ */
+#visions{padding-bottom:env(safe-area-inset-bottom,0px)}
+.dark #visions{background:transparent !important}
+
+.echo-visions-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) 20px 12px;
+}
+.echo-visions-back{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-2);
+  border-radius:9999px;
+  padding:8px 14px 8px 12px;
+  color:var(--echo-ink-2);
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  cursor:pointer;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  transition:all 150ms cubic-bezier(.22,1.2,.36,1);
+}
+.echo-visions-back:hover{
+  background:var(--echo-glass-2);
+  border-color:var(--echo-line-3);
+  color:var(--echo-ink-1);
+  transform:translateY(-1px);
+}
+.echo-visions-back svg{width:13px;height:13px}
+.echo-visions-brand{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.22em;
+  color:var(--echo-ink-3);
+  text-transform:uppercase;
+}
+
+.echo-visions-header{
+  text-align:center;
+  padding:24px 24px 28px;
+}
+.echo-visions-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.30em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.echo-visions-eyebrow svg{width:14px;height:14px;color:var(--echo-gold)}
+.dark .echo-visions-title,
+.echo-visions-title{
+  font-family:var(--font-serif);
+  font-size:30px;
+  font-weight:300;
+  letter-spacing:-0.02em;
+  line-height:1.18;
+  color:var(--echo-ink-1);
+  margin:0 auto 10px;
+  max-width:18ch;
+}
+.echo-visions-sub{
+  font-family:var(--font-sans);
+  font-size:14px;
+  font-weight:400;
+  line-height:1.55;
+  color:var(--echo-ink-3);
+  max-width:32ch;
+  margin:0 auto;
+}
+
+/* Carousel */
+.echo-visions-carousel{position:relative;margin-bottom:8px}
+.echo-visions-rail{
+  display:flex;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  padding-bottom:16px;
+  scroll-behavior:smooth;
+}
+.echo-visions-rail::-webkit-scrollbar{display:none}
+
+.echo-vision-card{
+  flex-shrink:0;
+  width:100vw;
+  scroll-snap-align:center;
+  padding:0 28px;
+  text-decoration:none;
+  color:inherit;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  cursor:pointer;
+}
+.echo-vision-image{
+  position:relative;
+  aspect-ratio:4 / 5;
+  width:100%;
+  border-radius:24px;
+  overflow:hidden;
+  background:var(--echo-bg-2);
+  border:.5px solid var(--echo-line-1);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.45),
+    0 12px 32px rgba(0,0,0,.4),
+    0 24px 64px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+.echo-vision-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:grayscale(.12) contrast(1.04);
+  transition:transform 800ms cubic-bezier(.16,1,.3,1);
+}
+.echo-vision-card:hover .echo-vision-image img{transform:scale(1.03)}
+
+.echo-vision-meta{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  padding:20px 8px 8px;
+  text-align:center;
+}
+.echo-vision-num{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.36em;
+  color:var(--echo-gold);
+}
+.echo-vision-name{
+  font-family:var(--font-serif);
+  font-size:24px;
+  font-weight:300;
+  letter-spacing:-0.015em;
+  color:var(--echo-ink-1);
+  line-height:1.2;
+}
+.echo-vision-dims{
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.08em;
+  color:var(--echo-ink-3);
+  font-variant-numeric:tabular-nums;
+}
+.echo-vision-download{
+  margin-top:10px;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
+  border-radius:9999px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  box-shadow:var(--echo-lift-gold);
+  transition:all 200ms cubic-bezier(.22,1.2,.36,1);
+}
+.echo-vision-card:hover .echo-vision-download{
+  background:var(--echo-gold-hover);
+  transform:translateY(-2px);
+}
+.echo-vision-download svg{width:14px;height:14px;stroke-width:2}
+
+/* Pagination dots */
+.echo-visions-dots{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;
+  padding:14px 0 4px;
+}
+.visions-dot{
+  width:7px;height:7px;
+  border-radius:9999px;
+  background:var(--echo-line-2);
+  border:none;
+  padding:0;
+  cursor:pointer;
+  transition:all 240ms cubic-bezier(.22,1.2,.36,1);
+}
+.visions-dot.active{
+  background:var(--echo-gold);
+  width:24px;
+  box-shadow:0 0 12px var(--echo-gold-glow);
+}
+
+/* Footer text on profile */
+.dark #prof-footer{
+  color:var(--echo-ink-4) !important;
+  font-size:var(--t-xs) !important;
+  font-style:italic !important;
+  font-family:var(--font-serif) !important;
+}
+
+/* Healing tones header */
+.dark #prof-tones-lbl{
+  color:var(--echo-ink-1) !important;
+  font-size:var(--t-xs) !important;
+  letter-spacing:var(--ls-wide) !important;
+}
+
+/* Healing tones list items (rendered by JS) */
+.dark #prof-tones-list > *{
+  background:var(--echo-glass-1) !important;
+  border:.5px solid var(--echo-line-1) !important;
+  border-radius:var(--r-md) !important;
+  backdrop-filter:blur(20px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(150%) !important;
+  padding:var(--s-3) var(--s-4) !important;
+}
 html,body{width:100%;height:100%;background:var(--bg);color:var(--t1);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 button,a,[onclick]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
@@ -238,8 +2296,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-btn{
   width:100%;
   padding:16px 28px;
-  background:#C9A96E;
-  color:#1a1208;
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
   border:none;
   border-radius:50px;
   font-family:'DM Sans',sans-serif;
@@ -253,7 +2311,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
   transition:background .2s;
   animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both;
 }
-.sp-btn:hover{background:#b8945a}
+.sp-btn:hover{background:var(--echo-gold-hover)}
 .sp-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
 .sp-img-wrap{position:absolute;top:0;left:0;right:0;height:72%;overflow:hidden;z-index:1;pointer-events:none}
 .sp-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(15%) brightness(1.02)}
@@ -299,36 +2357,64 @@ input[type=range]{accent-color:var(--t3);width:100%}
   overscroll-behavior:contain;
 }
 
-/* Sticky nav — stays on top while scrolling */
+/* Fixed nav — always floating with backdrop blur */
 .home-nav-sticky{
-  position:sticky;
-  top:0;
-  z-index:20;
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:50;
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 22px;
-  background:transparent;
-  transition:background .3s, backdrop-filter .3s;
-  -webkit-backdrop-filter:none;
-  backdrop-filter:none;
+  padding:calc(env(safe-area-inset-top,0px) + var(--s-3)) var(--s-4) var(--s-3);
+  background:rgba(0,0,0,.40);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  backdrop-filter:blur(20px) saturate(160%);
+  border-bottom:.5px solid var(--echo-line-1);
+  transition:background var(--dur-base) var(--ease-out),
+             border-color var(--dur-base) var(--ease-out);
 }
 .home-nav-sticky.scrolled{
-  background:rgba(245,243,238,.88);
-  -webkit-backdrop-filter:blur(12px);
-  backdrop-filter:blur(12px);
-  border-bottom:.5px solid var(--b1);
+  background:rgba(0,0,0,.55);
+  border-bottom-color:var(--echo-line-2);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
 }
 .dark .home-nav-sticky.scrolled{
-  background:rgba(17,17,16,.92);
+  background:rgba(0,0,0,.65);
+  border-bottom-color:var(--echo-line-2);
+  box-shadow:0 1px 0 rgba(255,255,255,.04), 0 8px 32px rgba(0,0,0,.6);
 }
+.dark .brand-name{color:var(--echo-ink-1);font-weight:400;letter-spacing:.14em;font-size:var(--t-sm)}
+.dark .brand-tag{color:var(--echo-ink-3);font-weight:300;font-size:var(--t-2xs);letter-spacing:.18em}
+.dark .bb{background:var(--echo-gold);opacity:.95}
+.dark .bt{background:var(--echo-ink-2);opacity:.30}
 
-/* Hero — tall, parallax container */
+/* Avatar button — bumped to 44px with permanent gold glow ring */
+.dark .echo-avatar-btn{
+  width:44px !important;height:44px !important;
+  box-shadow:
+    inset 0 0 0 .5px rgba(216,197,162,.40),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 2px 8px rgba(0,0,0,.5),
+    0 0 24px rgba(216,197,162,.18);
+}
+.dark .echo-avatar-btn:hover{
+  width:44px !important;height:44px !important;
+  box-shadow:
+    inset 0 0 0 .5px rgba(216,197,162,.60),
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 4px 16px rgba(0,0,0,.5),
+    0 0 36px rgba(216,197,162,.32);
+}
+.dark .echo-icon-btn{width:44px;height:44px}
+.dark .echo-lang-toggle{height:36px}
+
+/* Hero — full-bleed under fixed nav */
 .home-hero{
   position:relative;
-  height:90vh;
-  min-height:500px;
+  height:92vh;
+  min-height:560px;
   overflow:hidden;
-  margin-top:-60px;   /* pull up behind sticky nav */
-;will-change:transform}
+  margin-top:0;   /* nav is position:fixed so hero starts at top */
+  will-change:transform;
+}
 video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;z-index:0}
 .home-hero-bg{
   position:absolute;
@@ -414,8 +2500,8 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   font-size:11px;font-weight:400;
   letter-spacing:.22em;
   text-transform:uppercase;
-  color:#1a1208;
-  background:#C9A96E;
+  color:var(--echo-on-gold);
+  background:var(--echo-gold);
   border:none;
   border-radius:50px;
   padding:15px 32px;
@@ -425,7 +2511,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
 }
-.home-hero-cta:hover{background:#b8945a;transform:translateY(-1px)}
+.home-hero-cta:hover{background:var(--echo-gold-hover);transform:translateY(-1px)}
 .home-hero-cta:hover,.home-hero-cta:focus{
   background:#ffffff;
   outline:none;
@@ -762,11 +2848,11 @@ button{font-variant-emoji:text}
   transition: color .2s, transform .2s !important;
 }
 .lb-row:hover .lb-arr {
-  color: #C9A96E !important;
+  color: var(--echo-gold) !important;
   transform: translateX(3px) !important;
 }
 .lb-row::before {
-  background: #C9A96E !important;
+  background: var(--echo-gold) !important;
 }
 
 .sp-btn, .home-hero-cta, .pr-cta-btn, .pl-play {
@@ -774,7 +2860,7 @@ button{font-variant-emoji:text}
   backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 50px !important;
-  color: #1a1208 !important;
+  color: var(--echo-on-gold) !important;
   font-weight: 600 !important;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -845,7 +2931,7 @@ button{font-variant-emoji:text}
 /* Progress */
 #pr-prog{
   position:fixed;top:0;left:0;width:0%;height:1px;
-  background:rgba(201,169,110,0.6);
+  background:rgba(201,180,152,0.6);
   z-index:9100;transition:width .15s linear;
 }
 
@@ -862,7 +2948,7 @@ button{font-variant-emoji:text}
   transition:background .3s,transform .3s;
   cursor:pointer;border:none;padding:0;
 }
-.pr-dot.active{background:rgba(201,169,110,.8);transform:scale(1.5)}
+.pr-dot.active{background:rgba(201,180,152,.8);transform:scale(1.5)}
 
 /* Typography — echo11 style */
 .pr-eyebrow{
@@ -879,7 +2965,7 @@ button{font-variant-emoji:text}
   color:#f5f3ee;
   margin-bottom:14px;
 }
-.pr-display em{font-style:italic;color:#C9A96E}
+.pr-display em{font-style:italic;color:var(--echo-gold)}
 .pr-sub-he{
   font-family:'DM Sans',sans-serif;
   font-size:clamp(15px,4.5vw,18px);
@@ -933,7 +3019,7 @@ button{font-variant-emoji:text}
 .pr-section.pr-active .pr-scroll-hint{opacity:1}
 .pr-scroll-line{
   width:1px;height:24px;
-  background:linear-gradient(to bottom,rgba(201,169,110,.5),transparent);
+  background:linear-gradient(to bottom,rgba(201,180,152,.5),transparent);
   animation:prLine 1.8s ease-in-out infinite;
 }
 @keyframes prLine{
@@ -968,7 +3054,7 @@ button{font-variant-emoji:text}
 .pr-what-accent{
   font-family:'Cormorant Garamond',Georgia,serif;
   font-size:13px;font-style:italic;
-  color:rgba(201,169,110,.7);
+  color:rgba(201,180,152,.7);
   letter-spacing:.04em;
 }
 
@@ -1118,9 +3204,9 @@ button{font-variant-emoji:text}
   margin:0 auto 30px;
   background:linear-gradient(90deg,
     transparent 0%,
-    rgba(201,169,110,0) 15%,
-    rgba(201,169,110,0.5) 50%,
-    rgba(201,169,110,0) 85%,
+    rgba(201,180,152,0) 15%,
+    rgba(201,180,152,0.5) 50%,
+    rgba(201,180,152,0) 85%,
     transparent 100%);
   overflow:visible;
   animation:awakenBreath 3.6s ease-in-out infinite;
@@ -1130,9 +3216,9 @@ button{font-variant-emoji:text}
   top:50%;left:50%;
   width:6px;height:6px;
   border-radius:50%;
-  background:#C9A96E;
+  background:var(--echo-gold);
   transform:translate(-50%,-50%);
-  box-shadow:0 0 0 0 rgba(201,169,110,0.6);
+  box-shadow:0 0 0 0 rgba(201,180,152,0.6);
   animation:awakenPulse 3.6s ease-in-out infinite;
 }
 @keyframes awakenBreath{
@@ -1141,13 +3227,13 @@ button{font-variant-emoji:text}
 }
 @keyframes awakenPulse{
   0%,100%{
-    box-shadow:0 0 0 0 rgba(201,169,110,0.7),
-               0 0 8px 2px rgba(201,169,110,0.3);
+    box-shadow:0 0 0 0 rgba(201,180,152,0.7),
+               0 0 8px 2px rgba(201,180,152,0.3);
     transform:translate(-50%,-50%) scale(1);
   }
   50%{
-    box-shadow:0 0 0 14px rgba(201,169,110,0),
-               0 0 22px 8px rgba(201,169,110,0.5);
+    box-shadow:0 0 0 14px rgba(201,180,152,0),
+               0 0 22px 8px rgba(201,180,152,0.5);
     transform:translate(-50%,-50%) scale(1.4);
   }
 }
@@ -1174,9 +3260,9 @@ button{font-variant-emoji:text}
 .pr-cta-btn{
   display:block;width:100%;
   padding:18px 24px;
-  background:#C9A96E;
+  background:var(--echo-gold);
   border:none;border-radius:3px;
-  color:#1a1208;
+  color:var(--echo-on-gold);
   font-family:'DM Sans',sans-serif;
   font-size:11px;font-weight:400;
   letter-spacing:.24em;text-transform:uppercase;
@@ -1185,7 +3271,7 @@ button{font-variant-emoji:text}
   margin-bottom:12px;
   -webkit-tap-highlight-color:transparent;
 }
-.pr-cta-btn:hover{background:#b8945a;transform:translateY(-1px)}
+.pr-cta-btn:hover{background:var(--echo-gold-hover);transform:translateY(-1px)}
 .pr-cta-skip{
   display:block;width:100%;
   padding:14px;background:none;
@@ -1206,7 +3292,39 @@ button{font-variant-emoji:text}
 }
 </style>
 </head>
-<body>
+<body class="dark">
+
+<!-- ══════════════════════════════════════════════════════════
+     Lucide icon sprite — referenced via <use href="#i-name"/>
+     Strokes: 1.5, line caps round. Sized via .echo-icon class.
+═══════════════════════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></symbol>
+  <symbol id="i-headphones" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.7 4.4a4 4 0 0 0 2.9 2.9L21 12l-4.4 1.7a4 4 0 0 0-2.9 2.9L12 21l-1.7-4.4a4 4 0 0 0-2.9-2.9L3 12l4.4-1.7a4 4 0 0 0 2.9-2.9z"/><path d="M19 3v4M21 5h-4"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.4 4.6a5.5 5.5 0 0 0-7.8 0L12 5.2l-.6-.6a5.5 5.5 0 0 0-7.8 7.8l8.4 8.4 8.4-8.4a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8L4.2 7a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M5 4l10 8-10 8V4zM19 5v14"/></symbol>
+  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M19 20 9 12l10-8v16zM5 19V5"/></symbol>
+  <symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M22 7l-9 9-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+</defs></svg>
 
 <!-- PROTOCOL — shown on first visit -->
 <div id="protocol">
@@ -1438,37 +3556,30 @@ button{font-variant-emoji:text}
 <!-- HOME -->
 <div id="home" class="scr">
 
-  <!-- Sticky nav -->
+  <!-- Sticky nav — premium glass header -->
   <nav class="home-nav-sticky" id="home-nav">
     <div class="brand-wrap">
       <div class="brand-bars"><span class="bb"></span><span class="bt"></span><span class="bsp"></span><span class="bt"></span><span class="bb"></span></div>
-      <div><div class="brand-name">echo.11</div><div class="brand-tag" id="hm-tag">tune your mind</div></div>
+      <div>
+        <div class="brand-name">echo.11</div>
+        <div class="brand-tag" id="hm-tag">tune your mind</div>
+      </div>
     </div>
-    <div class="hdr-r">
-      <button class="pill lang-pill" id="lang-en" onclick="setLang('en')" style="font-size:10px;padding:5px 10px">EN</button><button class="pill lang-pill" id="lang-he" onclick="setLang('he')" style="font-size:10px;padding:5px 10px">עב</button>
-      <button class="pill" id="dark-h" onclick="toggleDark()">◐ Dark</button>
-      <!-- Profile icon button -->
-      <button id="profile-btn" onclick="showProfile()" aria-label="Profile" style="
-        background:var(--card);
-        border:.5px solid var(--b1);
-        border-radius:50%;
-        width:34px;
-        height:34px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        padding:0;
-        transition:all .2s;
-        margin-left:4px;
-      " onmouseover="this.style.borderColor='var(--b2)';this.style.transform='scale(1.05)'" onmouseout="this.style.borderColor='var(--b1)';this.style.transform='scale(1)'">
-        <span id="profile-avatar-mini" style="
-          font-family:'DM Sans',sans-serif;
-          font-size:11px;
-          font-weight:500;
-          letter-spacing:.05em;
-          color:var(--t1);
-        ">+</span>
+    <div class="hdr-r" style="display:flex;align-items:center;gap:var(--s-2)">
+      <!-- Language compact toggle -->
+      <div class="echo-lang-toggle" role="tablist" aria-label="Language">
+        <button class="echo-lang-opt on" id="lang-en" onclick="setLang('en')" role="tab" aria-selected="true">EN</button>
+        <button class="echo-lang-opt" id="lang-he" onclick="setLang('he')" role="tab" aria-selected="false">עב</button>
+      </div>
+      <!-- Theme toggle as icon button -->
+      <button class="echo-icon-btn" id="dark-h" onclick="toggleDark()" aria-label="Toggle theme">
+        <svg class="echo-icon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+      <!-- Profile — premium avatar -->
+      <button class="echo-avatar-btn" id="profile-btn" onclick="showProfile()" aria-label="Profile">
+        <span id="profile-avatar-mini" aria-hidden="true">
+          <svg class="echo-icon sm" style="display:block"><use href="#i-user"/></svg>
+        </span>
       </button>
     </div>
   </nav>
@@ -1491,7 +3602,7 @@ button{font-variant-emoji:text}
       <!-- Label -->
       <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.32em;color:rgba(255,255,255,.45);text-transform:uppercase;display:block;margin-bottom:16px">echo · 11</span>
       <!-- Main tagline -->
-      <span class="home-hero-tagline" id="hero-tagline" style="font-size:clamp(48px,13vw,96px)">tune your<br><em style="font-style:italic;color:#C9A96E">nervous system.</em></span>
+      <span class="home-hero-tagline" id="hero-tagline" style="font-size:clamp(48px,13vw,96px)">tune your<br><em style="font-style:italic;color:var(--echo-gold)">nervous system.</em></span>
       <!-- Sub -->
       <span class="home-hero-sub" id="hero-sub" style="font-size:clamp(11px,1.8vw,14px);letter-spacing:.22em">22 frequencies · not music · real science · CIA gateway protocol</span>
       <!-- CTA -->
@@ -1509,29 +3620,32 @@ button{font-variant-emoji:text}
   <!-- Today block — context first, then number -->
   <div class="home-today-block" id="home-today">
     <div>
-      <div class="home-today-lbl"><div class="ldot"></div><span id="today-lbl">today's frequency</span></div>
+      <div class="home-today-lbl"><span class="echo-dot" style="width:5px;height:5px"></span><span id="today-lbl">today's frequency</span></div>
       <!-- Emotional hook BEFORE the technical number -->
-      <div id="today-intention" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t3);margin-bottom:6px;line-height:1.4"></div>
+      <div id="today-intention" style="font-family:var(--font-serif);font-size:var(--t-md);font-weight:200;font-style:italic;color:var(--echo-ink-3);margin-bottom:6px;line-height:1.4"></div>
       <div class="home-freq-badge">
-        <div class="home-freq-num" id="hero-hz-num">432</div>
+        <div class="home-freq-num tabular" id="hero-hz-num">432</div>
         <div class="home-freq-unit">Hz</div>
       </div>
       <div class="home-freq-name" id="today-name">The Universe · Deep Sleep · Release</div>
-      <div style="margin-top:4px;display:flex;align-items:center;gap:7px">
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4)" id="today-changes-lbl">changes daily</span>
-      <div style="display:flex;gap:4px;align-items:center;margin-top:8px" id="home-mini-dots">
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--t1)"></div>
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
-        <div style="width:7px;height:7px;border-radius:50%;background:var(--b1)"></div>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-left:4px" id="home-day-lbl">day 1 of 7</span>
-      </div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="font-family:var(--font-sans);font-size:var(--t-2xs);letter-spacing:var(--ls-wider);color:var(--echo-ink-4);text-transform:uppercase" id="today-changes-lbl">changes daily</span>
+        <div style="display:flex;gap:5px;align-items:center" id="home-mini-dots">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--echo-gold);box-shadow:0 0 8px rgba(216,197,162,.5)"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--echo-line-3)"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--echo-line-3)"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--echo-line-3)"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--echo-line-3)"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--echo-line-3)"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--echo-line-3)"></div>
+          <span style="font-family:var(--font-sans);font-size:var(--t-2xs);color:var(--echo-ink-4);margin-left:4px;letter-spacing:var(--ls-relaxed)" id="home-day-lbl">day 1 of 7</span>
+        </div>
       </div>
     </div>
-    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openTodayFreq()" style="background:#1a1a18;color:#f5f4f0"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>  listen</button>
+    <button class="home-play-btn" id="today-cta" data-freq="hz432" onclick="openTodayFreq()">
+      <svg class="echo-icon sm" aria-hidden="true"><use href="#i-play"/></svg>
+      <span>listen</span>
+    </button>
   </div>
 
   <!-- ══ CONSCIOUSNESS JOURNEY CARD ══ -->
@@ -1550,9 +3664,9 @@ button{font-variant-emoji:text}
     <!-- Hawkins Scale -->
     <div style="padding:14px 18px 16px">
       <div id="cs-scale" style="position:relative;height:8px;background:var(--b1);border-radius:4px;margin-bottom:22px;overflow:visible">
-        <div id="cs-fill" style="height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1);background:linear-gradient(to right,#6b7280,#9ca3af,#C9A96E);width:0%;position:relative;z-index:1"></div>
-        <div id="cs-marker" style="position:absolute;top:-18px;left:28.5%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:#C9A96E;white-space:nowrap">✦ Courage · 200</div>
-        <div style="position:absolute;top:0;bottom:0;left:28.5%;width:1px;background:rgba(201,169,110,.3)"></div>
+        <div id="cs-fill" style="height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1);background:linear-gradient(to right,#6b7280,#9ca3af,var(--echo-gold));width:0%;position:relative;z-index:1"></div>
+        <div id="cs-marker" style="position:absolute;top:-18px;left:28.5%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.1em;color:var(--echo-gold);white-space:nowrap">✦ Courage · 200</div>
+        <div style="position:absolute;top:0;bottom:0;left:28.5%;width:1px;background:rgba(201,180,152,.3)"></div>
       </div>
       <!-- Level labels -->
       <div style="display:flex;justify-content:space-between;margin-bottom:12px">
@@ -1572,10 +3686,10 @@ button{font-variant-emoji:text}
     <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none" id="binaural-strip">
       <!-- filled by JS -->
     </div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-top:6px;letter-spacing:.06em">Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-top:6px;letter-spacing:.06em" id="bin-foot">Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research</div>
   </div>
 
-  <!-- Rest of content — natural flow -->
+  <!-- Rest of content — scroll-reveal applied to individual cards via JS -->
   <div class="home-content">
     <div class="prog-lbl" id="prog-lbl">Your progress</div>
     <!-- Streak card — dynamic: empty state for new users -->
@@ -1595,65 +3709,73 @@ button{font-variant-emoji:text}
         <div id="streak-cta-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:2px">view history →</div>
       </div>
     </button>
-    <div id="quick-relief-card" style="margin:0 14px 10px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="openQuickRelief()">
-      <div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;margin-bottom:4px" id="quick-lbl">quick relief</div>
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1)" id="quick-desc">feeling anxious? 3 minutes of calm.</div>
+    <div id="quick-relief-card" style="margin:0 var(--s-4) var(--s-3);background:var(--card);border:.5px solid var(--b1);border-radius:var(--r-md);padding:var(--s-4) var(--s-4);display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);cursor:pointer" onclick="openQuickRelief()">
+      <div style="flex:1;min-width:0">
+        <div class="echo-eyebrow" style="margin-bottom:var(--s-2)">
+          <svg class="echo-icon sm" style="color:var(--echo-gold)" aria-hidden="true"><use href="#i-zap"/></svg>
+          <span id="quick-lbl">quick relief</span>
+        </div>
+        <div style="font-family:var(--font-serif);font-size:var(--t-md);font-weight:200;font-style:italic;color:var(--echo-ink-1);line-height:1.35" id="quick-desc">feeling anxious? 3 minutes of calm.</div>
       </div>
-      <div style="font-size:10px;color:var(--t3)">→</div>
+      <svg class="echo-icon" style="color:var(--echo-ink-3);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
     </div>
-    <!-- Library CTA — single, clear, beautiful -->
-    <div style="margin:8px 14px 16px">
+    <!-- Library CTA — gold-edge premium card -->
+    <div style="margin:var(--s-2) var(--s-4) var(--s-5)">
       <button id="lib-link" onclick="showLibrary()" style="
         width:100%;
-        padding:24px 22px;
+        padding:var(--s-5) var(--s-4);
         background:var(--card);
         border:.5px solid var(--b1);
-        border-radius:18px;
+        border-radius:var(--r-lg);
         cursor:pointer;
         font-family:inherit;
         text-align:left;
         display:flex;
         align-items:center;
         justify-content:space-between;
-        gap:14px;
-        transition:all .25s;
-      " onmouseover="this.style.borderColor='var(--b2)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,.08)'" onmouseout="this.style.borderColor='var(--b1)';this.style.transform='translateY(0)';this.style.boxShadow='none'">
+        gap:var(--s-4);
+        transition:all var(--dur-base) var(--spring-gentle);
+      ">
         <div style="flex:1">
-          <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase;margin-bottom:6px" id="lib-cta-lbl">Explore the Library</div>
-          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:200;color:var(--t1);line-height:1.2;margin-bottom:4px" id="lib-cta-title">21 frequencies. 4 moods.</div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.04em" id="lib-cta-sub">Sleep · Healing · Focus · Abundance</div>
+          <div class="echo-eyebrow" id="lib-cta-lbl" style="margin-bottom:var(--s-2)">Explore the Library</div>
+          <div style="font-family:var(--font-serif);font-size:var(--t-xl);font-weight:200;color:var(--echo-ink-1);line-height:1.15;margin-bottom:var(--s-1);letter-spacing:var(--ls-tight)" id="lib-cta-title">21 frequencies. 4 moods.</div>
+          <div style="font-family:var(--font-sans);font-size:var(--t-xs);font-weight:300;color:var(--echo-ink-3);letter-spacing:var(--ls-relaxed)" id="lib-cta-sub">Sleep · Healing · Focus · Abundance</div>
         </div>
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:200;color:var(--t2);flex-shrink:0">→</div>
+        <svg class="echo-icon lg" style="color:var(--echo-gold);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
       </button>
     </div>
-    <div style="text-align:center;padding:6px 14px 14px">
-      <a href="legal.html?from=home#access" style="display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;padding:6px 0">
-        <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;display:block">
-          <circle cx="22" cy="22" r="21" fill="none" stroke="#525250" stroke-width="1.5"/>
-          <circle cx="22" cy="12.5" r="2.8" fill="#525250" stroke="none"/>
-          <line x1="22" y1="16" x2="22" y2="26.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="15.5" y1="20.5" x2="28.5" y2="20.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="22" y1="26.5" x2="18" y2="33.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-          <line x1="22" y1="26.5" x2="26" y2="33.5" stroke="#525250" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-        Accessibility
-      </a>
+
+    <!-- Visions CTA — free art prints (links to dedicated page) -->
+    <div style="margin:0 var(--s-4) var(--s-5)">
+      <button id="visions-link" onclick="showVisions()" class="echo-home-visions-cta">
+        <div class="echo-home-visions-thumbs">
+          <img src="gift-1.webp" alt="" loading="lazy" width="40" height="50"/>
+          <img src="gift-2.webp" alt="" loading="lazy" width="40" height="50"/>
+          <img src="gift-3.webp" alt="" loading="lazy" width="40" height="50"/>
+        </div>
+        <div style="flex:1;text-align:left;min-width:0">
+          <div class="echo-eyebrow" id="visions-cta-lbl" style="margin-bottom:6px">Visions · Free</div>
+          <div id="visions-cta-title" style="font-family:var(--font-serif);font-size:var(--t-lg);font-weight:300;color:var(--echo-ink-1);line-height:1.2;margin-bottom:2px;letter-spacing:var(--ls-tight)">Postcards from inner deserts.</div>
+          <div id="visions-cta-sub" style="font-family:var(--font-sans);font-size:var(--t-xs);font-weight:400;color:var(--echo-ink-3);letter-spacing:var(--ls-relaxed)">3 art prints · free</div>
+        </div>
+        <svg class="echo-icon" style="color:var(--echo-gold);flex-shrink:0;width:16px;height:16px" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+      </button>
     </div>
-    <div style="text-align:center;padding:0 14px 14px">
-      <a href="legal.html?from=home" style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;display:inline-block;padding:6px 0">
-        Privacy · Terms · echo.11 © 2026
-      </a>
+
+    <!-- Footer — single compact line: legal · accessibility · protocol · text-size -->
+    <div class="echo-home-footer">
+      <a href="legal.html?from=home#access" class="echo-home-foot-link" id="foot-a11y-lnk">Accessibility</a>
+      <span class="echo-home-foot-dot">·</span>
+      <a href="legal.html?from=home" class="echo-home-foot-link" id="foot-privacy-lnk">Privacy</a>
+      <span class="echo-home-foot-dot">·</span>
+      <a href="legal.html?from=home" class="echo-home-foot-link" id="foot-terms-lnk">Terms</a>
+      <span class="echo-home-foot-dot">·</span>
+      <button class="echo-home-foot-link" onclick="localStorage.removeItem('echo11_protocol_seen');location.reload()" id="foot-protocol-lnk">Protocol</button>
+      <span class="echo-home-foot-dot">·</span>
+      <button class="echo-home-foot-aa" onclick="changeFontSize(1)" aria-label="Increase text size">A+</button>
+      <button class="echo-home-foot-aa" onclick="changeFontSize(-1)" aria-label="Decrease text size">A−</button>
     </div>
-    <!-- Re-show protocol -->
-    <div style="text-align:center;padding:0 14px 20px">
-      <button onclick="localStorage.removeItem('echo11_protocol_seen');location.reload()" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);background:none;border:none;cursor:pointer;padding:6px">↺ view pre-session protocol</button>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px;padding:0 14px 4px">
-      <span style="font-size:9px;letter-spacing:.18em;color:var(--t4);font-family:'DM Sans',sans-serif">text size</span>
-      <button class="pill" onclick="changeFontSize(1)" style="min-width:44px;min-height:44px">A+</button>
-      <button class="pill" onclick="changeFontSize(-1)" style="min-width:44px;min-height:44px">A−</button>
-    </div>
+    <div class="echo-home-foot-copy" id="foot-copy">echo.11 © 2026</div>
   </div>
 </div>
 
@@ -1878,9 +4000,9 @@ button{font-variant-emoji:text}
       text-transform:uppercase;
       padding:8px 16px;
       border-radius:50px;
-      border:.5px solid #C9A96E;
-      background:#C9A96E;
-      color:#1a1208;
+      border:.5px solid var(--echo-gold);
+      background:var(--echo-gold);
+      color:var(--echo-on-gold);
       cursor:pointer;
       transition:all .2s;
       font-weight:500;
@@ -2015,13 +4137,29 @@ button{font-variant-emoji:text}
 ═══════════════════════════════════ -->
 <div id="profile" class="scr" style="overflow-y:auto;overflow-x:hidden">
 
-  <!-- Top nav -->
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:calc(20px + env(safe-area-inset-top)) 22px 14px">
-    <button class="pl-back" onclick="show('home');renderStreak()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3);background:none;border:none;cursor:pointer">← Back</button>
-    <button onclick="editProfile()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t3);background:none;border:.5px solid var(--b2);border-radius:50px;padding:6px 14px;cursor:pointer" id="prof-edit-btn">Edit</button>
+  <!-- ═══════════════════════════════════════════════════
+       PROFILE HERO IMAGE — atmospheric portrait
+       Fades to pure black at the bottom. Top-nav floats over it.
+       To replace: save your image as profile-hero.webp via squoosh.app
+  ═══════════════════════════════════════════════════ -->
+  <div class="echo-profile-hero">
+    <img src="profile-hero.webp" alt="" width="900" height="1200" decoding="async" fetchpriority="high" class="echo-profile-hero-img"/>
+    <div class="echo-profile-hero-fade"></div>
+
+    <!-- Top nav — overlays the image -->
+    <div class="echo-profile-hero-nav">
+      <button class="pl-back" onclick="show('home');renderStreak()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--echo-ink-1);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer">← Back</button>
+      <button onclick="editProfile()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--echo-ink-1);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer" id="prof-edit-btn">Edit</button>
+    </div>
   </div>
 
-  <!-- Avatar + Greeting -->
+  <!-- Top nav (old fallback — hidden when hero is present) -->
+  <div class="echo-profile-toolbar-legacy" style="display:none">
+    <button class="pl-back" onclick="show('home');renderStreak()">← Back</button>
+    <button onclick="editProfile()" id="prof-edit-btn-legacy">Edit</button>
+  </div>
+
+  <!-- Avatar + Greeting — overlaps bottom of hero -->
   <div style="text-align:center;padding:20px 22px 28px;display:flex;flex-direction:column;align-items:center;gap:14px">
     <!-- Avatar wrapper with mood ring dot -->
     <div style="position:relative;width:88px;height:88px">
@@ -2052,20 +4190,65 @@ button{font-variant-emoji:text}
     </div>
   </div>
 
-  <!-- Today's Affirmation — tap to shuffle -->
-  <button onclick="shuffleAffirmation()" aria-label="Shuffle affirmation" style="display:block;width:calc(100% - 44px);margin:0 22px 14px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px 20px;text-align:center;cursor:pointer;font-family:inherit;transition:border-color .15s,transform .15s" onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-    <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:10px">
-      <span style="color:#ec4899;font-size:13px">♡</span>
-      <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase" id="prof-aff-lbl">Today's Affirmation</span>
-    </div>
-    <div id="prof-affirmation" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.5;transition:opacity .25s">"Your sensitivity is your superpower"</div>
-    <div id="prof-aff-hint" style="margin-top:8px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);text-transform:lowercase">tap for another ↻</div>
+  <!-- Today's Affirmation — hero, less chrome, bigger type -->
+  <button onclick="shuffleAffirmation()" aria-label="Shuffle affirmation" class="echo-affirmation-card">
+    <span class="echo-affirmation-eyebrow" id="prof-aff-lbl">Today's whisper</span>
+    <div id="prof-affirmation" class="echo-affirmation-text">"Your sensitivity is your superpower"</div>
+    <span class="echo-affirmation-hint" id="prof-aff-hint">tap for another</span>
   </button>
+
+  <!-- ═════════════════════════════════════════════════
+       TIP JAR — promoted, explained, with social proof
+       (moved up from bottom-of-page so it isn't hidden)
+  ═════════════════════════════════════════════════ -->
+  <div class="echo-tip-card">
+    <div class="echo-tip-head">
+      <span class="echo-tip-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-sparkles"/></svg><span id="prof-tip-lbl">Support echo.11</span></span>
+      <div id="prof-tip-headline" class="echo-tip-title">If echo.11 brought you calm, you can return the gift.</div>
+    </div>
+
+    <div class="echo-tip-tiers">
+      <button onclick="startTip(5)" data-tip="5" class="tip-btn">
+        <span class="tip-amt">$5</span>
+        <span class="tip-lbl" data-tip-sub="5">a coffee</span>
+      </button>
+      <button onclick="startTip(7)" data-tip="7" class="tip-btn tip-middle">
+        <span data-tip-badge class="tip-badge">most chosen</span>
+        <span class="tip-amt">$7</span>
+        <span class="tip-lbl" data-tip-sub="7">a week</span>
+      </button>
+      <button onclick="startTip(14)" data-tip="14" class="tip-btn">
+        <span class="tip-amt">$14</span>
+        <span class="tip-lbl" data-tip-sub="14">a month</span>
+      </button>
+    </div>
+
+    <div class="echo-tip-divider"></div>
+
+    <div class="echo-tip-explain" id="prof-tip-sub">
+      echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.
+    </div>
+
+    <div class="echo-tip-social">
+      <span class="echo-tip-social-dot">✦</span>
+      <span id="prof-tip-social">Be the first to support echo.11</span>
+    </div>
+
+    <div class="echo-tip-foot" id="prof-tip-secure">
+      no account needed · one-time · powered by Ko-fi
+    </div>
+    <div class="echo-tip-foot" id="prof-tip-hint" style="opacity:.65;margin-top:6px">
+      You'll choose the exact amount on Ko-fi
+    </div>
+  </div>
+
+  <!-- Gifts moved to dedicated /visions page — entry point on home -->
+
 
   <!-- Quiet moments stat -->
   <div style="margin:0 22px 12px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
     <div style="display:flex;align-items:center;gap:8px">
-      <span style="width:8px;height:8px;border-radius:50%;background:#10b981"></span>
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--echo-gold);box-shadow:0 0 8px rgba(216,197,162,.5)"></span>
       <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-month-lbl">This month</span>
     </div>
     <div style="display:flex;align-items:baseline;gap:5px">
@@ -2078,7 +4261,7 @@ button{font-variant-emoji:text}
   <div style="margin:0 22px 22px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
       <div style="display:flex;align-items:center;gap:8px">
-        <span style="width:8px;height:8px;border-radius:50%;background:#C9A96E"></span>
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--echo-gold)"></span>
         <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-explored-lbl">Frequencies explored</span>
       </div>
       <div style="display:flex;align-items:baseline;gap:4px;font-family:'Cormorant Garamond',Georgia,serif;color:var(--t1)">
@@ -2087,64 +4270,63 @@ button{font-variant-emoji:text}
       </div>
     </div>
     <div style="width:100%;height:4px;background:rgba(0,0,0,.06);border-radius:4px;overflow:hidden">
-      <div id="prof-explored-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#C9A96E,#10b981);transition:width .6s ease"></div>
+      <div id="prof-explored-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--echo-gold),#10b981);transition:width .6s ease"></div>
     </div>
   </div>
 
   <!-- Your Healing Tones -->
   <div style="margin:0 22px 22px">
-    <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
-      <span style="color:#ec4899;font-size:13px">♡</span>
-      <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;color:var(--t1)" id="prof-tones-lbl">Your Healing Tones</span>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:0 4px">
+      <svg style="width:14px;height:14px;color:var(--echo-gold);flex-shrink:0" class="echo-icon" aria-hidden="true"><use href="#i-sparkles"/></svg>
+      <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.28em;color:var(--echo-ink-3);text-transform:uppercase" id="prof-tones-lbl">Your Healing Tones</span>
     </div>
     <div id="prof-tones-list" style="display:flex;flex-direction:column;gap:8px"></div>
   </div>
 
-  <!-- 4 Action Cards Grid -->
-  <div style="margin:0 22px 22px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+  <!-- Action Cards — vertical stack of horizontal "stack-cards" -->
+  <div class="echo-stack-list">
     <!-- Mood Log -->
-    <button onclick="show('history');setTimeout(buildHistory,50)" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:14px">📅</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-moodlog-title">Mood Log</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-moodlog-sub">Track your emotional journey</div>
+    <button class="echo-stack-card" onclick="show('history');setTimeout(buildHistory,50)">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-activity"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-moodlog-title">Mood Log</div>
+        <div class="echo-stack-sub" id="prof-moodlog-sub">Track your emotional journey</div>
+        <div class="echo-stack-preview" id="prof-moodlog-preview">— no sessions yet</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg>
     </button>
+
     <!-- Share echo.11 -->
-    <button onclick="shareEcho()" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(59,130,246,.12);display:flex;align-items:center;justify-content:center;color:#3b82f6;font-size:14px">↗</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-share-title">Share echo.11</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-share-sub">Pass it on to a friend</div>
+    <button class="echo-stack-card" onclick="shareEcho()">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-share"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-share-title">Share echo.11</div>
+        <div class="echo-stack-sub" id="prof-share-sub">Pass it on to a friend</div>
+        <div class="echo-stack-preview" id="prof-share-preview">echo11.space</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
     </button>
+
     <!-- Support -->
-    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="track('support_click',{event_category:'engagement'})" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(20,184,166,.12);display:flex;align-items:center;justify-content:center;color:#14b8a6;font-size:14px">✉</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-supp-title">Support</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-supp-sub">We're here to help</div>
+    <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="track('support_click',{event_category:'engagement'})" class="echo-stack-card">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-mail"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-supp-title">Support</div>
+        <div class="echo-stack-sub" id="prof-supp-sub">We're here to help</div>
+        <div class="echo-stack-preview" id="prof-supp-preview">hello@echo11.space</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
     </a>
+
     <!-- Settings -->
-    <button onclick="openSettings()" style="
-      background:var(--card);border:.5px solid var(--b1);border-radius:14px;
-      padding:18px 14px;cursor:pointer;font-family:inherit;text-align:center;
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,.12);display:flex;align-items:center;justify-content:center;color:#a855f7;font-size:14px">⚙</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1)" id="prof-set-title">Settings</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);line-height:1.4" id="prof-set-sub">Personalize your sanctuary</div>
+    <button class="echo-stack-card" onclick="openSettings()">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-settings"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-set-title">Settings</div>
+        <div class="echo-stack-sub" id="prof-set-sub">Personalize your sanctuary</div>
+        <div class="echo-stack-preview" id="prof-set-preview">EN · Dark · A11y</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg>
     </button>
   </div>
 
@@ -2170,40 +4352,121 @@ button{font-variant-emoji:text}
     " id="prof-signout">→ Sign Out Gently</button>
   </div>
 
-  <!-- Tip Jar -->
-  <div style="margin:0 22px 22px;padding:22px 20px;background:linear-gradient(135deg,rgba(201,169,110,.06),rgba(167,139,250,.04));border:.5px solid var(--b1);border-radius:14px">
-    <div style="text-align:center;margin-bottom:16px">
-      <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px">
-        <span style="color:#C9A96E;font-size:13px">◇</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase" id="prof-tip-lbl">Keep echo.11 free</span>
-      </div>
-      <div id="prof-tip-headline" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1);line-height:1.4;margin-bottom:4px">Leave a tip, however small.</div>
-      <div id="prof-tip-sub" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5">No subscription. No paywall. Just gratitude.</div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <button onclick="startTip(5)" data-tip="5" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$5</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="5">a coffee</span>
-      </button>
-      <button onclick="startTip(7)" data-tip="7" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid #C9A96E;border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
-        <span style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#C9A96E;color:#1a1208;font-family:'DM Sans',sans-serif;font-size:8px;font-weight:500;letter-spacing:.14em;padding:2px 7px;border-radius:8px;text-transform:uppercase" data-tip-badge>most chosen</span>
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$7</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="7">a week</span>
-      </button>
-      <button onclick="startTip(14)" data-tip="14" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$14</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="14">a month</span>
-      </button>
-    </div>
-    <div id="prof-tip-hint" style="margin-top:12px;text-align:center;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);font-style:italic;line-height:1.4">You'll choose the exact amount on Ko-fi</div>
-    <div style="margin-top:6px;text-align:center;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;color:var(--t4);letter-spacing:.1em">
-      <span id="prof-tip-secure">no account needed · one-time · powered by Ko-fi</span>
-    </div>
-  </div>
+  <!-- Tip Jar moved to top of profile (right after affirmation) — see above -->
 
   <!-- Footer line -->
   <div style="text-align:center;padding:14px 22px 40px;border-top:.5px solid var(--b1);margin:0 22px">
     <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12px;font-weight:200;font-style:italic;color:var(--t4)" id="prof-footer">A space to return to. Always.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     VISIONS — free downloadable art / posters
+     Accessed from home page; not shown on profile (per design)
+═══════════════════════════════════════════════════════ -->
+<div id="visions" class="scr">
+  <!-- Top nav -->
+  <div class="echo-visions-nav">
+    <button class="echo-visions-back" onclick="show('home');renderStreak()" aria-label="Back">
+      <svg class="echo-icon sm" aria-hidden="true"><use href="#i-arrow-left"/></svg>
+      <span id="vis-back-lbl">Back</span>
+    </button>
+    <span class="echo-visions-brand">echo.11 · visions</span>
+  </div>
+
+  <!-- Header -->
+  <div class="echo-visions-header">
+    <span class="echo-visions-eyebrow">
+      <svg class="echo-icon sm" aria-hidden="true"><use href="#i-image"/></svg>
+      <span id="vis-eyebrow">Visions from echo.11</span>
+    </span>
+    <div id="vis-title" class="echo-visions-title">Postcards from inner deserts.</div>
+    <div id="vis-sub" class="echo-visions-sub">Free for your screen. Free for your wall. Take what speaks to you.</div>
+  </div>
+
+  <!-- Auto-rotating carousel -->
+  <div class="echo-visions-carousel">
+    <div class="echo-visions-rail" id="visions-rail">
+      <a class="echo-vision-card" href="gift-1.png" download="echo11-salt-plains.png" onclick="track('gift_download',{event_category:'gift',event_label:'salt_plains'})">
+        <div class="echo-vision-image">
+          <img src="gift-1.webp" alt="Salt Plains" loading="lazy" width="960" height="1200"/>
+        </div>
+        <div class="echo-vision-meta">
+          <div class="echo-vision-num">01</div>
+          <div class="echo-vision-name" id="vis-name-1">Salt Plains</div>
+          <div class="echo-vision-dims" id="vis-dims-1">960 × 1200 · 4:5 portrait</div>
+          <div class="echo-vision-download">
+            <svg class="echo-icon sm" aria-hidden="true"><use href="#i-download"/></svg>
+            <span id="vis-dl-1">Free download</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="echo-vision-card" href="gift-2.png" download="echo11-inner-horizon.png" onclick="track('gift_download',{event_category:'gift',event_label:'inner_horizon'})">
+        <div class="echo-vision-image">
+          <img src="gift-2.webp" alt="Inner Horizon" loading="lazy" width="960" height="1200"/>
+        </div>
+        <div class="echo-vision-meta">
+          <div class="echo-vision-num">02</div>
+          <div class="echo-vision-name" id="vis-name-2">Inner Horizon</div>
+          <div class="echo-vision-dims" id="vis-dims-2">960 × 1200 · 4:5 portrait</div>
+          <div class="echo-vision-download">
+            <svg class="echo-icon sm" aria-hidden="true"><use href="#i-download"/></svg>
+            <span id="vis-dl-2">Free download</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="echo-vision-card" href="gift-3.png" download="echo11-first-light.png" onclick="track('gift_download',{event_category:'gift',event_label:'first_light'})">
+        <div class="echo-vision-image">
+          <img src="gift-3.webp" alt="First Light" loading="lazy" width="928" height="1232"/>
+        </div>
+        <div class="echo-vision-meta">
+          <div class="echo-vision-num">03</div>
+          <div class="echo-vision-name" id="vis-name-3">First Light</div>
+          <div class="echo-vision-dims" id="vis-dims-3">928 × 1232 · 4:5 portrait</div>
+          <div class="echo-vision-download">
+            <svg class="echo-icon sm" aria-hidden="true"><use href="#i-download"/></svg>
+            <span id="vis-dl-3">Free download</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="echo-visions-dots" id="visions-dots">
+      <button class="visions-dot active" data-idx="0" aria-label="Vision 1"></button>
+      <button class="visions-dot" data-idx="1" aria-label="Vision 2"></button>
+      <button class="visions-dot" data-idx="2" aria-label="Vision 3"></button>
+    </div>
+  </div>
+
+  <!-- Tip jar — same content, reused IDs prefixed with vis- so i18n works -->
+  <div class="echo-tip-card" style="margin:32px 24px 24px !important">
+    <div class="echo-tip-head">
+      <span class="echo-tip-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-sparkles"/></svg><span id="vis-tip-lbl">Support echo.11</span></span>
+      <div id="vis-tip-headline" class="echo-tip-title">If a vision moved you, you can return the gift.</div>
+    </div>
+    <div class="echo-tip-tiers">
+      <button onclick="startTip(5)" data-tip="5" class="tip-btn">
+        <span class="tip-amt">$5</span>
+        <span class="tip-lbl" data-tip-sub="5">a coffee</span>
+      </button>
+      <button onclick="startTip(7)" data-tip="7" class="tip-btn tip-middle">
+        <span data-tip-badge class="tip-badge">most chosen</span>
+        <span class="tip-amt">$7</span>
+        <span class="tip-lbl" data-tip-sub="7">a week</span>
+      </button>
+      <button onclick="startTip(14)" data-tip="14" class="tip-btn">
+        <span class="tip-amt">$14</span>
+        <span class="tip-lbl" data-tip-sub="14">a month</span>
+      </button>
+    </div>
+    <div class="echo-tip-foot" id="vis-tip-secure">no account needed · one-time · powered by Ko-fi</div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:16px 24px 48px">
+    <div style="font-family:var(--font-serif);font-size:12px;font-weight:300;font-style:italic;color:var(--echo-ink-4)" id="vis-footer">A space to return to. Always.</div>
   </div>
 </div>
 
@@ -2654,7 +4917,7 @@ const BRAIN=[
   {t:300,en:"Optimal depth. <em>Natural recovery processes</em> are now active.",he:"עומק מיטבי. <em>תהליכי ריפוי טבעיים</em> פעילים."},
 ]
 
-let lang='en',dark=false,playing=false
+let lang='en',dark=true,playing=false
 let curIdx=FREQS.findIndex(f=>f.id==='hz432')
 let volume=40,elapsed=0,activeTab=0,selTimerSec=1200
 let elapsedIv=null,audioCtx=null,audioNodes={}
@@ -3086,7 +5349,7 @@ const AVATAR_GRADIENTS = [
   {id:'rose',   g:'linear-gradient(135deg,#f9a8d4 0%,#ec4899 100%)'},
   {id:'sky',    g:'linear-gradient(135deg,#7dd3fc 0%,#3b82f6 100%)'},
   {id:'emerald',g:'linear-gradient(135deg,#86efac 0%,#10b981 100%)'},
-  {id:'amber',  g:'linear-gradient(135deg,#fcd34d 0%,#C9A96E 100%)'},
+  {id:'amber',  g:'linear-gradient(135deg,#fcd34d 0%,var(--echo-gold) 100%)'},
   {id:'slate',  g:'linear-gradient(135deg,#cbd5e1 0%,#475569 100%)'},
 ]
 const AFFIRMATIONS = [
@@ -3117,7 +5380,7 @@ function getTimeGreeting(isHe){
 const MODE_COLORS = {
   focus:     '#3b82f6',
   healing:   '#10b981',
-  abundance: '#C9A96E',
+  abundance: 'var(--echo-gold)',
   sleep:     '#7c6ee0',
 }
 
@@ -3240,35 +5503,67 @@ function renderProfile(){
   const p = loadProfile()
   const sessions = loadSessions()
 
-  // Update mini avatar in nav
+  // Stack-card preview labels — dynamic context per card
+  try{
+    const now = new Date()
+    const thisMonthCount = sessions.filter(s => {
+      const d = new Date(s.t || s.time || 0)
+      return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear()
+    }).length
+    const mlPrev = document.getElementById('prof-moodlog-preview')
+    if(mlPrev){
+      mlPrev.textContent = thisMonthCount > 0
+        ? (isHe ? `${thisMonthCount} הקשבות החודש` : `${thisMonthCount} sessions this month`)
+        : (isHe ? 'עדיין לא הוקלטו הקשבות' : '— no sessions yet')
+    }
+    const shrPrev = document.getElementById('prof-share-preview')
+    if(shrPrev) shrPrev.textContent = 'echo11.space'
+    const supPrev = document.getElementById('prof-supp-preview')
+    if(supPrev) supPrev.textContent = 'hello@echo11.space'
+    const setPrev = document.getElementById('prof-set-preview')
+    if(setPrev){
+      const langStr = isHe ? 'עב' : 'EN'
+      const themeStr = (document.body.classList.contains('dark')) ? (isHe?'כהה':'Dark') : (isHe?'בהיר':'Light')
+      setPrev.textContent = `${langStr} · ${themeStr}`
+    }
+  }catch(e){}
+
+
+  // Update mini avatar in nav — SVG icon for new users, initial for named
   const miniAvatar = document.getElementById('profile-avatar-mini')
   const profileBtn = document.getElementById('profile-btn')
   if(miniAvatar){
-    miniAvatar.textContent = getInitials(p.name)
-    if(p.name && profileBtn){
-      profileBtn.style.background = getAvatarGradient(p.avatarColor)
-      miniAvatar.style.color = '#fff'
+    if(p.name){
+      miniAvatar.textContent = getInitials(p.name)
+      if(profileBtn){
+        profileBtn.style.background = getAvatarGradient(p.avatarColor)
+        miniAvatar.style.color = '#fff'
+      }
+    } else {
+      miniAvatar.innerHTML = '<svg class="echo-icon sm" style="display:block" aria-hidden="true"><use href="#i-user"/></svg>'
     }
   }
 
-  // Avatar — initials (or ✦ when empty) + mood ring tinted by last freq
+  // Avatar — minimal dark surface with gold inset ring (matches brand)
+  // mood-ring tints removed: were purple by default, off-brand on pure-black bg
   const avatar = document.getElementById('profile-avatar')
   const moodDot = document.getElementById('profile-mood-dot')
   if(avatar){
-    avatar.style.background = getAvatarGradient(p.avatarColor)
-    avatar.textContent = p.name ? getInitials(p.name) : '✦'
-    const lastMode = getLastFreqMode()
-    if(lastMode && MODE_COLORS[lastMode]){
-      const c = MODE_COLORS[lastMode]
-      avatar.style.boxShadow = `0 6px 24px ${c}40, 0 0 0 3px ${c}30`
-      if(moodDot){
-        moodDot.style.background = c
-        moodDot.style.display = 'block'
-      }
+    // Only apply user-picked color if they've explicitly chosen one; otherwise stay gold/dark
+    if(p.avatarColor && p.name){
+      avatar.style.background = getAvatarGradient(p.avatarColor)
     } else {
-      avatar.style.boxShadow = '0 6px 24px rgba(167,139,250,.25)'
-      if(moodDot) moodDot.style.display = 'none'
+      avatar.style.background = 'linear-gradient(135deg, #1F1B16 0%, #0A0908 100%)'
     }
+    avatar.textContent = p.name ? getInitials(p.name) : '✦'
+    avatar.style.color = 'var(--echo-gold)'
+    avatar.style.boxShadow = [
+      'inset 0 0 0 .5px rgba(216,197,162,.50)',
+      'inset 0 1px 0 rgba(255,255,255,.10)',
+      '0 2px 8px rgba(0,0,0,.6)',
+      '0 0 48px rgba(216,197,162,.22)'
+    ].join(', ')
+    if(moodDot) moodDot.style.display = 'none'
   }
 
   // Name greeting — time-of-day aware
@@ -3285,7 +5580,7 @@ function renderProfile(){
 
   // Affirmation
   const affLbl = document.getElementById('prof-aff-lbl')
-  if(affLbl) affLbl.textContent = isHe ? 'אישור היום' : "Today's Affirmation"
+  if(affLbl) affLbl.textContent = isHe ? 'הלחישה של היום' : "Today's whisper"
   const affEl = document.getElementById('prof-affirmation')
   if(affEl){
     const aff = getTodayAffirmationWithOverride()
@@ -3293,7 +5588,7 @@ function renderProfile(){
     affEl.style.opacity = '1'
   }
   const affHint = document.getElementById('prof-aff-hint')
-  if(affHint) affHint.textContent = isHe ? 'הקישי לעוד אחד ↻' : 'tap for another ↻'
+  if(affHint) affHint.textContent = isHe ? 'הקליקי לעוד אחת' : 'tap for another'
 
   // Monthly count
   const monthCount = getMonthlyMomentsCount()
@@ -3342,7 +5637,7 @@ function renderProfile(){
       const colors = [
         {bg:'linear-gradient(90deg,rgba(16,185,129,.18),rgba(20,184,166,.08))', border:'rgba(16,185,129,.3)'},
         {bg:'linear-gradient(90deg,rgba(167,139,250,.18),rgba(124,110,224,.08))', border:'rgba(167,139,250,.3)'},
-        {bg:'linear-gradient(90deg,rgba(201,169,110,.18),rgba(184,148,90,.08))', border:'rgba(201,169,110,.3)'},
+        {bg:'linear-gradient(90deg,rgba(201,180,152,.18),rgba(184,148,90,.08))', border:'rgba(201,180,152,.3)'},
       ]
       tonesList.innerHTML = top3.map((r,i) => {
         const t = r.freq[lang] || r.freq.en
@@ -3501,11 +5796,39 @@ function startTip(amount){
 function translateTipJar(){
   const isHe = lang === 'he'
   const map = {
-    'prof-tip-lbl':      { en:'Keep echo.11 free',                                 he:'שמרי על echo.11 בחינם' },
-    'prof-tip-headline': { en:'Leave a tip, however small.',                       he:'השאירי טיפ, יהיה אשר יהיה.' },
-    'prof-tip-sub':      { en:'No subscription. No paywall. Just gratitude.',      he:'בלי מנוי. בלי חומה. רק הכרת תודה.' },
+    'prof-tip-lbl':      { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
+    'prof-tip-headline': { en:'If echo.11 brought you calm, you can return the gift.',  he:'אם echo.11 נגע בך, אפשר להגיד תודה.' },
+    'prof-tip-sub':      { en:'echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.',
+                           he:'echo.11 נשאר חינמי לכולם — בלי מנוי, בלי פרסומות, בלי תשלום חובה. טיפ הוא תודה חד-פעמית, כמו לקנות כוס קפה למי שעבודתה ריגשה אותך.' },
+    'prof-tip-social':   { en:'Be the first to support echo.11',                   he:'היו הראשונים לתמוך ב-echo.11' },
     'prof-tip-hint':     { en:"You'll choose the exact amount on Ko-fi",           he:'את הסכום המדויק תבחרו ב-Ko-fi' },
     'prof-tip-secure':   { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'prof-gifts-lbl':    { en:'Gifts from echo.11',                                he:'מתנות מ-echo.11' },
+    'prof-gifts-title':  { en:'Visions for your screen.',                          he:'חזיונות למסך שלך.' },
+    'prof-gifts-sub':    { en:'Free. No login. No paywall. Take what speaks to you.', he:'חינם. בלי הרשמה. בלי חומה. קחו את מה שמדבר אליכם.' },
+    'prof-gift1-meta':   { en:'free download',                                     he:'הורדה חינמית' },
+    'prof-gift2-meta':   { en:'free download',                                     he:'הורדה חינמית' },
+    'prof-gift3-meta':   { en:'free download',                                     he:'הורדה חינמית' },
+    'prof-gifts-foot':   { en:'If one moved you — the tip jar is above. ↑',        he:'אם משהו הזיז משהו — צנצנת הטיפים למעלה. ↑' },
+    /* Home CTA → Visions */
+    'visions-cta-lbl':   { en:'Visions · Free',                                    he:'חזיונות · חינם' },
+    'visions-cta-title': { en:'Postcards from inner deserts.',                     he:'גלויות מהמדבר הפנימי.' },
+    'visions-cta-sub':   { en:'3 art prints · free for your screen or wall',       he:'3 הדפסי אמנות · חינם למסך או לקיר' },
+    /* Visions page */
+    'vis-back-lbl':      { en:'Back',                                              he:'חזרה' },
+    'vis-eyebrow':       { en:'Visions from echo.11',                              he:'חזיונות מ-echo.11' },
+    'vis-title':         { en:'Postcards from inner deserts.',                     he:'גלויות מהמדבר הפנימי.' },
+    'vis-sub':           { en:'Free for your screen. Free for your wall. Take what speaks to you.', he:'חינמי למסך. חינמי לקיר. קחו את מה שמדבר אליכם.' },
+    'vis-name-1':        { en:'Salt Plains',                                       he:'מישורי המלח' },
+    'vis-name-2':        { en:'Inner Horizon',                                     he:'האופק הפנימי' },
+    'vis-name-3':        { en:'First Light',                                       he:'אור ראשון' },
+    'vis-dl-1':          { en:'Free download',                                     he:'הורדה חינמית' },
+    'vis-dl-2':          { en:'Free download',                                     he:'הורדה חינמית' },
+    'vis-dl-3':          { en:'Free download',                                     he:'הורדה חינמית' },
+    'vis-tip-lbl':       { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
+    'vis-tip-headline':  { en:'If a vision moved you, you can return the gift.',   he:'אם חיזיון אחד הזיז משהו, אפשר להגיד תודה.' },
+    'vis-tip-secure':    { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
   Object.keys(map).forEach(id => {
     const el = document.getElementById(id)
@@ -3561,10 +5884,14 @@ function showHome(){
     const miniAvatar = document.getElementById('profile-avatar-mini')
     const profileBtn = document.getElementById('profile-btn')
     if(miniAvatar){
-      miniAvatar.textContent = getInitials(p.name)
-      if(p.name && profileBtn){
-        profileBtn.style.background = getAvatarGradient(p.avatarColor)
-        miniAvatar.style.color = '#fff'
+      if(p.name){
+        miniAvatar.textContent = getInitials(p.name)
+        if(profileBtn){
+          profileBtn.style.background = getAvatarGradient(p.avatarColor)
+          miniAvatar.style.color = '#fff'
+        }
+      } else {
+        miniAvatar.innerHTML = '<svg class="echo-icon sm" style="display:block" aria-hidden="true"><use href="#i-user"/></svg>'
       }
     }
   } catch(e){ console.warn('prof:',e) }
@@ -3624,6 +5951,31 @@ document.addEventListener('DOMContentLoaded', ()=>{
       shown: splashVisible ? 1 : 0,
     }, { once: true })
   }catch(e){}
+
+  // ── Scroll-triggered reveal — fade-up cards as they enter viewport ──
+  try{
+    if(!('IntersectionObserver' in window)) return
+    const selectors = [
+      '#home .streak-card',
+      '#home #consciousness-card',
+      '#home #quick-relief-card',
+      '#home #lib-link',
+      '#home #binaural-strip',
+      '#home .home-today-block',
+      '#profile > *:not(:first-child)',
+    ]
+    const targets = document.querySelectorAll(selectors.join(','))
+    targets.forEach(el => el.classList.add('echo-reveal'))
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting){
+          e.target.classList.add('is-visible')
+          io.unobserve(e.target)
+        }
+      })
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' })
+    targets.forEach(t => io.observe(t))
+  }catch(e){}
 })
 
 // Handle return from legal.html — skip splash if #home in URL
@@ -3663,7 +6015,77 @@ function openMode(mode){
     const si=document.getElementById('lib-si'); if(si) si.value=''
   },60)
 }
-function showLibrary(){ 
+// ── Visions page navigation + carousel auto-rotation ──
+let _visionsTimer = null
+let _visionsPaused = false
+function showVisions(){
+  show('visions')
+  try{ track('visions_view', { event_category:'navigation', event_label:'from_home' }) }catch(e){}
+  // Apply current language to all visions strings
+  try{ translateTipJar() }catch(e){}
+  // Wait for screen transition, then set up carousel
+  setTimeout(setupVisionsCarousel, 220)
+}
+function setupVisionsCarousel(){
+  const rail = document.getElementById('visions-rail')
+  if(!rail) return
+  const cards = rail.querySelectorAll('.echo-vision-card')
+  const dots  = document.querySelectorAll('.visions-dot')
+  if(!cards.length) return
+  let activeIdx = 0
+
+  const updateActive = (i) => {
+    activeIdx = Math.max(0, Math.min(i, cards.length - 1))
+    dots.forEach((d, di) => d.classList.toggle('active', di === activeIdx))
+  }
+  const scrollToCard = (i, smooth=true) => {
+    updateActive(i)
+    const card = cards[activeIdx]
+    if(!card) return
+    rail.scrollTo({ left: card.offsetLeft, behavior: smooth ? 'smooth' : 'auto' })
+  }
+  // Reset to first card on entry
+  scrollToCard(0, false)
+
+  // Detect scroll position → which card is centered
+  let scrollTimeout = null
+  rail.onscroll = () => {
+    clearTimeout(scrollTimeout)
+    scrollTimeout = setTimeout(() => {
+      const idx = Math.round(rail.scrollLeft / rail.clientWidth)
+      if(idx !== activeIdx) updateActive(idx)
+    }, 80)
+  }
+
+  // Pause auto-rotation on user touch
+  const pauseAndResume = () => {
+    _visionsPaused = true
+    clearTimeout(_visionsTimer)
+    _visionsTimer = setTimeout(() => { _visionsPaused = false; tickRotation() }, 4000)
+  }
+  rail.onpointerdown = pauseAndResume
+
+  // Dot click navigation
+  dots.forEach((d, i) => {
+    d.onclick = () => { pauseAndResume(); scrollToCard(i) }
+  })
+
+  // Auto-rotation
+  if(_visionsTimer) clearTimeout(_visionsTimer)
+  const tickRotation = () => {
+    clearTimeout(_visionsTimer)
+    _visionsTimer = setTimeout(() => {
+      if(!_visionsPaused && document.getElementById('visions')?.classList.contains('on')){
+        scrollToCard((activeIdx + 1) % cards.length)
+      }
+      tickRotation()
+    }, 5000)
+  }
+  _visionsPaused = false
+  tickRotation()
+}
+
+function showLibrary(){
   buildLibrary()
   show('library')
   setTimeout(()=>{
@@ -3684,9 +6106,9 @@ function showLibrary(){
     activeMood='all'
     document.querySelectorAll('.mood-pill').forEach(p=>{
       const isAll=p.getAttribute('data-mood')==='all'
-      p.style.background=isAll?'#C9A96E':'var(--card)'
-      p.style.color=isAll?'#1a1208':'var(--t2)'
-      p.style.borderColor=isAll?'#C9A96E':'var(--b2)'
+      p.style.background=isAll?'var(--echo-gold)':'var(--card)'
+      p.style.color=isAll?'var(--echo-on-gold)':'var(--t2)'
+      p.style.borderColor=isAll?'var(--echo-gold)':'var(--b2)'
       p.style.fontWeight=isAll?'500':'300'
       p.classList.toggle('on',isAll)
     })
@@ -3708,9 +6130,9 @@ function openMode(mode){
     activeMood=mode
     document.querySelectorAll('.mood-pill').forEach(p=>{
       const isActive=p.getAttribute('data-mood')===mode
-      p.style.background=isActive?'#C9A96E':'var(--card)'
-      p.style.color=isActive?'#1a1208':'var(--t2)'
-      p.style.borderColor=isActive?'#C9A96E':'var(--b2)'
+      p.style.background=isActive?'var(--echo-gold)':'var(--card)'
+      p.style.color=isActive?'var(--echo-on-gold)':'var(--t2)'
+      p.style.borderColor=isActive?'var(--echo-gold)':'var(--b2)'
       p.style.fontWeight=isActive?'500':'300'
       p.classList.toggle('on',isActive)
     })
@@ -4000,9 +6422,9 @@ function filterByMood(mood, btn){
   // Update pill visual state — use brand gold for active
   document.querySelectorAll('.mood-pill').forEach(p=>{
     const isActive = p.getAttribute('data-mood') === mood
-    p.style.background = isActive ? '#C9A96E' : 'var(--card)'
-    p.style.color = isActive ? '#1a1208' : 'var(--t2)'
-    p.style.borderColor = isActive ? '#C9A96E' : 'var(--b2)'
+    p.style.background = isActive ? 'var(--echo-gold)' : 'var(--card)'
+    p.style.color = isActive ? 'var(--echo-on-gold)' : 'var(--t2)'
+    p.style.borderColor = isActive ? 'var(--echo-gold)' : 'var(--b2)'
     p.style.fontWeight = isActive ? '500' : '300'
     p.classList.toggle('on', isActive)
   })
@@ -4089,7 +6511,7 @@ const HAWKINS = [
   {score:100, name:'Desire',     nameHe:'תשוקה',       color:'#b45309'},
   {score:125, name:'Anger',      nameHe:'כעס',         color:'#c2410c'},
   {score:150, name:'Pride',      nameHe:'גאווה',       color:'#b45309'},
-  {score:200, name:'Courage ✦',  nameHe:'אומץ ✦',     color:'#C9A96E'},
+  {score:200, name:'Courage ✦',  nameHe:'אומץ ✦',     color:'var(--echo-gold)'},
   {score:250, name:'Neutrality', nameHe:'ניטרליות',    color:'#a3a3a3'},
   {score:310, name:'Willingness',nameHe:'נכונות',      color:'#d1d5db'},
   {score:350, name:'Acceptance', nameHe:'קבלה',        color:'#e5e7eb'},
@@ -4158,11 +6580,11 @@ function renderConsciousnessCard(){
       transform:translateX(-50%);
       font-family:'DM Sans',sans-serif;
       font-size:8px;letter-spacing:.1em;
-      color:#C9A96E;white-space:nowrap;
+      color:var(--echo-gold);white-space:nowrap;
     `;
     if(fillEl) fillEl.style.background = score >= 200
-      ? 'linear-gradient(to right,#6b7280,#C9A96E,#fde68a)'
-      : 'linear-gradient(to right,#6b7280,#9ca3af,#C9A96E)';
+      ? 'linear-gradient(to right,#6b7280,var(--echo-gold),#fde68a)'
+      : 'linear-gradient(to right,#6b7280,#9ca3af,var(--echo-gold))';
   }
 
   // Message
@@ -4193,7 +6615,7 @@ function renderConsciousnessCard(){
       const done = mins >= 20;
       const today2 = i === 29;
       html += `<div style="width:10px;height:10px;border-radius:2px;
-        background:${done ? '#C9A96E' : 'var(--b1)'};
+        background:${done ? 'var(--echo-gold)' : 'var(--b1)'};
         border:${today2 ? '.5px solid var(--t3)' : 'none'};
         flex-shrink:0;transition:background .3s"></div>`;
     }
@@ -4210,21 +6632,10 @@ function renderBinauralStrip(){
   const binaurals = FREQS.filter(f => f.type === 'binaural');
   strip.innerHTML = binaurals.map(f => {
     const t = f[lang] || f.en;
-    return `<button onclick="openPlayer('${f.id}')" style="
-      flex-shrink:0;
-      background:var(--card);
-      border:.5px solid var(--b1);
-      border-radius:14px;
-      padding:14px 16px;
-      min-width:120px;
-      text-align:left;
-      cursor:pointer;
-      font-family:inherit;
-      transition:all .2s;
-    " onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t1);line-height:1;margin-bottom:4px">${f.hz}<span style="font-size:10px;color:var(--t3);font-family:'DM Sans',sans-serif;letter-spacing:.1em">Hz</span></div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t2);margin-bottom:2px">${t.name}</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);letter-spacing:.06em">${f.wave} wave</div>
+    return `<button onclick="openPlayer('${f.id}')" class="echo-binaural-card">
+      <div class="echo-binaural-hz"><span class="echo-binaural-num">${f.hz}</span><span class="echo-binaural-unit">Hz</span></div>
+      <div class="echo-binaural-name">${t.name}</div>
+      <div class="echo-binaural-wave">${f.wave} wave</div>
     </button>`;
   }).join('');
 }
@@ -4370,8 +6781,16 @@ async function _doEnterApp(){
 // Theme / Lang
 function toggleDark(){
   dark=!dark; document.body.classList.toggle('dark',dark)
+  // Header icon button (new design) — swap moon/sun SVG
+  const headerBtn=document.getElementById('dark-h')
+  if(headerBtn){
+    const use=headerBtn.querySelector('use')
+    if(use) use.setAttribute('href', dark ? '#i-moon' : '#i-sun')
+    headerBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme')
+  }
+  // Legacy text buttons (player page, settings modal)
   const txt=dark?'◑ Light':'◐ Dark'
-  ;['dark-h','dark-p'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=txt})
+  ;['dark-p','settings-dark-btn'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=txt})
 }
 let baseFontSize=16
 // Restore saved font size
@@ -4403,8 +6822,8 @@ function changeFontSize(d){
 }
 
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'enter echo.11 →','sp-btn-hp':'enter the frequency','sp-btn-no-hp':'start with 528 Hz →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio'},
-  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','sp-btn-hp':'כניסה לתדר','sp-btn-no-hp':'התחילי עם 528 Hz ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה'},
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'enter echo.11 →','sp-btn-hp':'enter the frequency','sp-btn-no-hp':'start with 528 Hz →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio','hero-sub':'22 frequencies · not music · real science · CIA gateway protocol','bin-lbl':'🎧 Binaural Beats · CIA Protocol','bin-foot':'Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research','quick-lbl':'quick relief','quick-desc':'feeling anxious? 3 minutes of calm.','foot-a11y-lnk':'Accessibility','foot-privacy-lnk':'Privacy','foot-terms-lnk':'Terms','foot-protocol-lnk':'Protocol','foot-copy':'echo.11 © 2026','streak-cta-lbl':'view history →'},
+  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','sp-btn-hp':'כניסה לתדר','sp-btn-no-hp':'התחילי עם 528 Hz ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה','hero-sub':'22 תדרים · לא מוזיקה · מדע אמיתי · פרוטוקול CIA Gateway','bin-lbl':'🎧 ביינוראל ביטס · פרוטוקול CIA','bin-foot':'נדרשות אוזניות · בהשראת CIA Gateway Experience (1983) ומחקר מכון Monroe','quick-lbl':'הקלה מהירה','quick-desc':'מרגישה חרדה? שלוש דקות של רוגע.','foot-a11y-lnk':'נגישות','foot-privacy-lnk':'פרטיות','foot-terms-lnk':'תנאים','foot-protocol-lnk':'פרוטוקול','foot-copy':'echo.11 © 2026','streak-cta-lbl':'צפו בהיסטוריה ←'},
 }
 function setLang(l){
   if(lang===l) return
@@ -4415,6 +6834,8 @@ function setLang(l){
   renderPlayer(); buildLibrary()
   // Re-render profile if visible
   try{ if(document.getElementById('profile')?.classList.contains('on')) renderProfile() }catch(e){}
+  // Update visions/tip-jar strings even when not on profile
+  try{ translateTipJar() }catch(e){}
   // Update Library CTA on home
   const isHe=lang==='he'
   const lcLbl=document.getElementById('lib-cta-lbl')
@@ -4435,7 +6856,7 @@ function setLang(l){
   document.querySelectorAll('.lang-pill').forEach(b=>{
     const isEnBtn=b.textContent.trim()==='EN'
     const active=isHeL?!isEnBtn:isEnBtn
-    b.style.background=active?'rgba(201,169,110,.15)':'transparent'
+    b.style.background=active?'rgba(201,180,152,.15)':'transparent'
     b.style.color=active?'var(--t1)':'var(--t4)'
     b.style.fontWeight=active?'500':'300'
   })
