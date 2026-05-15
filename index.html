@@ -225,9 +225,9 @@
   --echo-bg-1:#050505;            /* near-black */
   --echo-bg-2:#0A0A0A;            /* card matte fallback */
   --echo-bg-3:#0F0F0F;            /* elevated matte fallback */
-  --echo-glass-1:rgba(255,255,255,.03);
-  --echo-glass-2:rgba(255,255,255,.06);
-  --echo-glass-3:rgba(255,255,255,.10);
+  --echo-glass-1:rgba(255,255,255,.055);
+  --echo-glass-2:rgba(255,255,255,.09);
+  --echo-glass-3:rgba(255,255,255,.14);
 
   /* Ink — pure white with layered opacity */
   --echo-ink-1:rgba(255,255,255,.96);
@@ -236,10 +236,10 @@
   --echo-ink-4:rgba(255,255,255,.30);
   --echo-ink-5:rgba(255,255,255,.14);
 
-  /* Hairlines — minimum-visible Apple-grade */
-  --echo-line-1:rgba(255,255,255,.10);
-  --echo-line-2:rgba(255,255,255,.14);
-  --echo-line-3:rgba(255,255,255,.22);
+  /* Hairlines — high-contrast on pure black */
+  --echo-line-1:rgba(255,255,255,.14);
+  --echo-line-2:rgba(255,255,255,.20);
+  --echo-line-3:rgba(255,255,255,.28);
 
   /* Brand accents */
   --echo-gold:#D4B27A;            /* slightly brighter on dark */
@@ -654,8 +654,8 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .echo-stack-card{
   display:flex;align-items:center;gap:var(--s-4);
   padding:var(--s-4) var(--s-5);
-  background:rgba(255,255,255,.03);
-  border:.5px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.055);
+  border:.5px solid rgba(255,255,255,.14);
   border-radius:28px;
   text-decoration:none;
   cursor:pointer;
@@ -678,13 +678,13 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   overflow:hidden;
 }
 .echo-stack-card:hover{
-  background:rgba(255,255,255,.05);
-  border-color:rgba(255,255,255,.16);
+  background:rgba(255,255,255,.09);
+  border-color:rgba(255,255,255,.22);
   transform:translateY(-2px);
   box-shadow:
     0 1px 2px rgba(0,0,0,.7),
     0 8px 24px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.06);
+    inset 0 1px 0 rgba(255,255,255,.08);
 }
 .echo-stack-icon{
   flex-shrink:0;
@@ -1324,6 +1324,243 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 }
 
 /* Old 2x2 grid rules removed — replaced by .echo-stack-list / .echo-stack-card primitives */
+
+/* ══════════════════════════════════════════════════════════
+   AFFIRMATION HERO CARD — minimal chrome, hero-sized type
+══════════════════════════════════════════════════════════ */
+.dark .echo-affirmation-card{
+  width:calc(100% - 48px) !important;
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--s-3);
+  margin:0 var(--s-5) !important;
+  padding:var(--s-6) var(--s-5) !important;
+  background:rgba(255,255,255,.04) !important;
+  border:.5px solid rgba(255,255,255,.10) !important;
+  border-radius:28px !important;
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  text-align:center;
+  cursor:pointer;
+  transition:all var(--dur-base) var(--spring-gentle);
+  box-shadow:var(--echo-lift-1);
+  position:relative;
+  overflow:hidden;
+}
+.dark .echo-affirmation-card::before{
+  content:'';
+  position:absolute;
+  top:-50%;left:-20%;width:140%;height:200%;
+  background:radial-gradient(ellipse at top, rgba(212,178,122,.07) 0%, transparent 50%);
+  pointer-events:none;
+}
+.dark .echo-affirmation-card:hover{
+  background:rgba(255,255,255,.07) !important;
+  border-color:rgba(255,255,255,.18) !important;
+  box-shadow:var(--echo-lift-2);
+}
+.dark .echo-affirmation-eyebrow{
+  font-family:var(--font-sans);
+  font-size:var(--t-2xs);
+  font-weight:500;
+  letter-spacing:.32em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  opacity:.8;
+}
+.dark .echo-affirmation-text{
+  font-family:var(--font-serif) !important;
+  font-size:var(--t-xl) !important;       /* 24px - hero scale */
+  font-weight:300 !important;
+  font-style:italic;
+  color:var(--echo-ink-1) !important;
+  letter-spacing:-0.015em !important;
+  line-height:1.4 !important;
+  max-width:32ch;
+  transition:opacity .25s;
+}
+.dark .echo-affirmation-hint{
+  font-family:var(--font-sans);
+  font-size:var(--t-2xs);
+  font-weight:400;
+  letter-spacing:.18em;
+  color:var(--echo-ink-4);
+  text-transform:lowercase;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TIP CARD v2 — promoted, explained, with social proof
+══════════════════════════════════════════════════════════ */
+.dark .echo-tip-card{
+  margin:0 var(--s-5) !important;
+  padding:var(--s-6) var(--s-5) var(--s-5) !important;
+  background:linear-gradient(180deg,
+    rgba(212,178,122,.07) 0%,
+    rgba(255,255,255,.04) 50%,
+    rgba(255,255,255,.04) 100%) !important;
+  border:.5px solid rgba(212,178,122,.22) !important;
+  border-radius:28px !important;
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.6),
+    0 8px 28px rgba(0,0,0,.4),
+    0 0 56px rgba(212,178,122,.10),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+  position:relative;
+  overflow:hidden;
+}
+.dark .echo-tip-card::before{
+  content:'';
+  position:absolute;
+  top:-30%;left:50%;
+  width:240px;height:240px;
+  transform:translateX(-50%);
+  background:radial-gradient(circle, rgba(212,178,122,.16) 0%, transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+.dark .echo-tip-head{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  margin-bottom:var(--s-5);
+}
+.dark .echo-tip-eyebrow{
+  display:inline-flex;align-items:center;gap:var(--s-2);
+  font-family:var(--font-sans);
+  font-size:var(--t-2xs);
+  font-weight:500;
+  letter-spacing:.30em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  margin-bottom:var(--s-3);
+}
+.dark .echo-tip-eyebrow svg{width:14px;height:14px}
+.dark .echo-tip-title{
+  font-family:var(--font-serif) !important;
+  font-size:var(--t-lg) !important;       /* 19px */
+  font-weight:300 !important;
+  letter-spacing:-0.015em !important;
+  line-height:1.35 !important;
+  color:var(--echo-ink-1) !important;
+  max-width:28ch;
+  margin:0 auto;
+}
+.dark .echo-tip-tiers{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:var(--s-2);
+  margin-bottom:var(--s-5);
+}
+.dark .echo-tip-tiers .tip-btn{
+  background:rgba(255,255,255,.05) !important;
+  border:.5px solid rgba(255,255,255,.14) !important;
+  border-radius:18px !important;
+  padding:var(--s-4) var(--s-2) !important;
+  display:flex;flex-direction:column;align-items:center;gap:var(--s-1);
+  cursor:pointer;
+  font-family:inherit;
+  transition:all var(--dur-fast) var(--spring-gentle) !important;
+  position:relative;
+}
+.dark .echo-tip-tiers .tip-btn:hover{
+  background:rgba(255,255,255,.10) !important;
+  border-color:rgba(212,178,122,.55) !important;
+  transform:translateY(-2px);
+  box-shadow:0 4px 14px rgba(0,0,0,.3), 0 0 24px rgba(212,178,122,.15);
+}
+.dark .echo-tip-tiers .tip-btn.tip-middle{
+  background:linear-gradient(180deg, rgba(212,178,122,.16) 0%, rgba(212,178,122,.06) 100%) !important;
+  border-color:rgba(212,178,122,.5) !important;
+}
+.dark .echo-tip-tiers .tip-btn .tip-amt{
+  font-family:var(--font-sans) !important;
+  font-size:var(--t-xl) !important;
+  font-weight:500 !important;
+  color:var(--echo-ink-1) !important;
+  letter-spacing:-0.02em;
+  font-variant-numeric:tabular-nums;
+}
+.dark .echo-tip-tiers .tip-btn .tip-lbl{
+  font-family:var(--font-sans) !important;
+  font-size:var(--t-2xs) !important;
+  font-weight:500;
+  letter-spacing:.16em !important;
+  color:var(--echo-ink-3) !important;
+  text-transform:uppercase;
+}
+.dark .echo-tip-tiers .tip-badge{
+  position:absolute !important;
+  top:-9px !important;left:50% !important;
+  transform:translateX(-50%) !important;
+  background:var(--echo-gold) !important;
+  color:#1A1208 !important;
+  font-family:var(--font-sans) !important;
+  font-size:9px !important;
+  font-weight:600 !important;
+  letter-spacing:.14em !important;
+  padding:3px 9px !important;
+  border-radius:var(--r-full) !important;
+  text-transform:uppercase !important;
+  white-space:nowrap;
+  box-shadow:0 2px 8px rgba(212,178,122,.4);
+}
+.dark .echo-tip-divider{
+  height:.5px;
+  background:rgba(255,255,255,.08);
+  margin:var(--s-2) 0 var(--s-4);
+  position:relative;
+  z-index:1;
+}
+.dark .echo-tip-explain{
+  position:relative;
+  z-index:1;
+  font-family:var(--font-sans) !important;
+  font-size:var(--t-sm) !important;        /* 14px */
+  font-weight:400 !important;
+  line-height:1.55 !important;
+  color:var(--echo-ink-2) !important;
+  text-align:center;
+  margin-bottom:var(--s-4) !important;
+  letter-spacing:0 !important;
+  font-style:normal !important;
+}
+.dark .echo-tip-social{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+  gap:var(--s-2);
+  padding:var(--s-3) var(--s-4);
+  background:rgba(212,178,122,.06);
+  border:.5px solid rgba(212,178,122,.18);
+  border-radius:var(--r-full);
+  margin-bottom:var(--s-4);
+}
+.dark .echo-tip-social-dot{
+  color:var(--echo-gold);
+  font-size:14px;
+  filter:drop-shadow(0 0 8px rgba(212,178,122,.5));
+}
+.dark .echo-tip-social #prof-tip-social,
+.dark .echo-tip-social span:last-child{
+  font-family:var(--font-sans);
+  font-size:var(--t-xs);
+  font-weight:500;
+  letter-spacing:.04em;
+  color:var(--echo-ink-1);
+}
+.dark .echo-tip-foot{
+  position:relative;z-index:1;
+  text-align:center;
+  font-family:var(--font-sans);
+  font-size:var(--t-2xs);
+  font-weight:400;
+  letter-spacing:.12em;
+  color:var(--echo-ink-4);
+}
 
 /* Sign Out — luxe pill */
 .dark #prof-signout{
@@ -3345,20 +3582,62 @@ button{font-variant-emoji:text}
     </div>
   </div>
 
-  <!-- Today's Affirmation — tap to shuffle -->
-  <button onclick="shuffleAffirmation()" aria-label="Shuffle affirmation" style="display:block;width:calc(100% - 44px);margin:0 22px 14px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px 20px;text-align:center;cursor:pointer;font-family:inherit;transition:border-color .15s,transform .15s" onmouseover="this.style.borderColor='var(--b2)'" onmouseout="this.style.borderColor='var(--b1)'">
-    <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:10px">
-      <span style="color:#ec4899;font-size:13px">♡</span>
-      <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase" id="prof-aff-lbl">Today's Affirmation</span>
-    </div>
-    <div id="prof-affirmation" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.5;transition:opacity .25s">"Your sensitivity is your superpower"</div>
-    <div id="prof-aff-hint" style="margin-top:8px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);text-transform:lowercase">tap for another ↻</div>
+  <!-- Today's Affirmation — hero, less chrome, bigger type -->
+  <button onclick="shuffleAffirmation()" aria-label="Shuffle affirmation" class="echo-affirmation-card">
+    <span class="echo-affirmation-eyebrow" id="prof-aff-lbl">Today's whisper</span>
+    <div id="prof-affirmation" class="echo-affirmation-text">"Your sensitivity is your superpower"</div>
+    <span class="echo-affirmation-hint" id="prof-aff-hint">tap for another</span>
   </button>
+
+  <!-- ═════════════════════════════════════════════════
+       TIP JAR — promoted, explained, with social proof
+       (moved up from bottom-of-page so it isn't hidden)
+  ═════════════════════════════════════════════════ -->
+  <div class="echo-tip-card">
+    <div class="echo-tip-head">
+      <span class="echo-tip-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-sparkles"/></svg><span id="prof-tip-lbl">Support echo.11</span></span>
+      <div id="prof-tip-headline" class="echo-tip-title">If echo.11 brought you calm, you can return the gift.</div>
+    </div>
+
+    <div class="echo-tip-tiers">
+      <button onclick="startTip(5)" data-tip="5" class="tip-btn">
+        <span class="tip-amt">$5</span>
+        <span class="tip-lbl" data-tip-sub="5">a coffee</span>
+      </button>
+      <button onclick="startTip(7)" data-tip="7" class="tip-btn tip-middle">
+        <span data-tip-badge class="tip-badge">most chosen</span>
+        <span class="tip-amt">$7</span>
+        <span class="tip-lbl" data-tip-sub="7">a week</span>
+      </button>
+      <button onclick="startTip(14)" data-tip="14" class="tip-btn">
+        <span class="tip-amt">$14</span>
+        <span class="tip-lbl" data-tip-sub="14">a month</span>
+      </button>
+    </div>
+
+    <div class="echo-tip-divider"></div>
+
+    <div class="echo-tip-explain" id="prof-tip-sub">
+      echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.
+    </div>
+
+    <div class="echo-tip-social">
+      <span class="echo-tip-social-dot">✦</span>
+      <span id="prof-tip-social">Be the first to support echo.11</span>
+    </div>
+
+    <div class="echo-tip-foot" id="prof-tip-secure">
+      no account needed · one-time · powered by Ko-fi
+    </div>
+    <div class="echo-tip-foot" id="prof-tip-hint" style="opacity:.65;margin-top:6px">
+      You'll choose the exact amount on Ko-fi
+    </div>
+  </div>
 
   <!-- Quiet moments stat -->
   <div style="margin:0 22px 12px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
     <div style="display:flex;align-items:center;gap:8px">
-      <span style="width:8px;height:8px;border-radius:50%;background:#10b981"></span>
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--echo-gold);box-shadow:0 0 8px rgba(212,178,122,.5)"></span>
       <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-month-lbl">This month</span>
     </div>
     <div style="display:flex;align-items:baseline;gap:5px">
@@ -3386,9 +3665,9 @@ button{font-variant-emoji:text}
 
   <!-- Your Healing Tones -->
   <div style="margin:0 22px 22px">
-    <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px">
-      <span style="color:#ec4899;font-size:13px">♡</span>
-      <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;color:var(--t1)" id="prof-tones-lbl">Your Healing Tones</span>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:0 4px">
+      <svg style="width:14px;height:14px;color:var(--echo-gold);flex-shrink:0" class="echo-icon" aria-hidden="true"><use href="#i-sparkles"/></svg>
+      <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.28em;color:var(--echo-ink-3);text-transform:uppercase" id="prof-tones-lbl">Your Healing Tones</span>
     </div>
     <div id="prof-tones-list" style="display:flex;flex-direction:column;gap:8px"></div>
   </div>
@@ -3462,36 +3741,7 @@ button{font-variant-emoji:text}
     " id="prof-signout">→ Sign Out Gently</button>
   </div>
 
-  <!-- Tip Jar -->
-  <div style="margin:0 22px 22px;padding:22px 20px;background:linear-gradient(135deg,rgba(201,169,110,.06),rgba(167,139,250,.04));border:.5px solid var(--b1);border-radius:14px">
-    <div style="text-align:center;margin-bottom:16px">
-      <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px">
-        <span style="color:#C9A96E;font-size:13px">◇</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase" id="prof-tip-lbl">Keep echo.11 free</span>
-      </div>
-      <div id="prof-tip-headline" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1);line-height:1.4;margin-bottom:4px">Leave a tip, however small.</div>
-      <div id="prof-tip-sub" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5">No subscription. No paywall. Just gratitude.</div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <button onclick="startTip(5)" data-tip="5" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$5</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="5">a coffee</span>
-      </button>
-      <button onclick="startTip(7)" data-tip="7" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid #C9A96E;border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
-        <span style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#C9A96E;color:#1a1208;font-family:'DM Sans',sans-serif;font-size:8px;font-weight:500;letter-spacing:.14em;padding:2px 7px;border-radius:8px;text-transform:uppercase" data-tip-badge>most chosen</span>
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$7</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="7">a week</span>
-      </button>
-      <button onclick="startTip(14)" data-tip="14" class="tip-btn" style="padding:14px 8px;background:var(--card);border:.5px solid var(--b2);border-radius:10px;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px" onmouseover="this.style.borderColor='#C9A96E';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='var(--b2)';this.style.transform='translateY(0)'">
-        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1)">$14</span>
-        <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase" data-tip-sub="14">a month</span>
-      </button>
-    </div>
-    <div id="prof-tip-hint" style="margin-top:12px;text-align:center;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3);font-style:italic;line-height:1.4">You'll choose the exact amount on Ko-fi</div>
-    <div style="margin-top:6px;text-align:center;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;color:var(--t4);letter-spacing:.1em">
-      <span id="prof-tip-secure">no account needed · one-time · powered by Ko-fi</span>
-    </div>
-  </div>
+  <!-- Tip Jar moved to top of profile (right after affirmation) — see above -->
 
   <!-- Footer line -->
   <div style="text-align:center;padding:14px 22px 40px;border-top:.5px solid var(--b1);margin:0 22px">
@@ -4573,24 +4823,26 @@ function renderProfile(){
     }
   }
 
-  // Avatar — initials (or ✦ when empty) + mood ring tinted by last freq
+  // Avatar — minimal dark surface with gold inset ring (matches brand)
+  // mood-ring tints removed: were purple by default, off-brand on pure-black bg
   const avatar = document.getElementById('profile-avatar')
   const moodDot = document.getElementById('profile-mood-dot')
   if(avatar){
-    avatar.style.background = getAvatarGradient(p.avatarColor)
-    avatar.textContent = p.name ? getInitials(p.name) : '✦'
-    const lastMode = getLastFreqMode()
-    if(lastMode && MODE_COLORS[lastMode]){
-      const c = MODE_COLORS[lastMode]
-      avatar.style.boxShadow = `0 6px 24px ${c}40, 0 0 0 3px ${c}30`
-      if(moodDot){
-        moodDot.style.background = c
-        moodDot.style.display = 'block'
-      }
+    // Only apply user-picked color if they've explicitly chosen one; otherwise stay gold/dark
+    if(p.avatarColor && p.name){
+      avatar.style.background = getAvatarGradient(p.avatarColor)
     } else {
-      avatar.style.boxShadow = '0 6px 24px rgba(167,139,250,.25)'
-      if(moodDot) moodDot.style.display = 'none'
+      avatar.style.background = 'linear-gradient(135deg, #1F1B16 0%, #0A0908 100%)'
     }
+    avatar.textContent = p.name ? getInitials(p.name) : '✦'
+    avatar.style.color = 'var(--echo-gold)'
+    avatar.style.boxShadow = [
+      'inset 0 0 0 .5px rgba(212,178,122,.50)',
+      'inset 0 1px 0 rgba(255,255,255,.10)',
+      '0 2px 8px rgba(0,0,0,.6)',
+      '0 0 48px rgba(212,178,122,.22)'
+    ].join(', ')
+    if(moodDot) moodDot.style.display = 'none'
   }
 
   // Name greeting — time-of-day aware
@@ -4607,7 +4859,7 @@ function renderProfile(){
 
   // Affirmation
   const affLbl = document.getElementById('prof-aff-lbl')
-  if(affLbl) affLbl.textContent = isHe ? 'אישור היום' : "Today's Affirmation"
+  if(affLbl) affLbl.textContent = isHe ? 'הלחישה של היום' : "Today's whisper"
   const affEl = document.getElementById('prof-affirmation')
   if(affEl){
     const aff = getTodayAffirmationWithOverride()
@@ -4615,7 +4867,7 @@ function renderProfile(){
     affEl.style.opacity = '1'
   }
   const affHint = document.getElementById('prof-aff-hint')
-  if(affHint) affHint.textContent = isHe ? 'הקישי לעוד אחד ↻' : 'tap for another ↻'
+  if(affHint) affHint.textContent = isHe ? 'הקליקי לעוד אחת' : 'tap for another'
 
   // Monthly count
   const monthCount = getMonthlyMomentsCount()
@@ -4823,9 +5075,11 @@ function startTip(amount){
 function translateTipJar(){
   const isHe = lang === 'he'
   const map = {
-    'prof-tip-lbl':      { en:'Keep echo.11 free',                                 he:'שמרי על echo.11 בחינם' },
-    'prof-tip-headline': { en:'Leave a tip, however small.',                       he:'השאירי טיפ, יהיה אשר יהיה.' },
-    'prof-tip-sub':      { en:'No subscription. No paywall. Just gratitude.',      he:'בלי מנוי. בלי חומה. רק הכרת תודה.' },
+    'prof-tip-lbl':      { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
+    'prof-tip-headline': { en:'If echo.11 brought you calm, you can return the gift.',  he:'אם echo.11 הביא לך רוגע, אפשר להחזיר את המתנה.' },
+    'prof-tip-sub':      { en:'echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.',
+                           he:'echo.11 נשאר חינמי לכולם — בלי מנוי, בלי פרסומות, בלי חומה. טיפ הוא תודה חד-פעמית, כמו לקנות כוס קפה למי שעבודתה ריגשה אותך.' },
+    'prof-tip-social':   { en:'Be the first to support echo.11',                   he:'היו הראשונים לתמוך ב-echo.11' },
     'prof-tip-hint':     { en:"You'll choose the exact amount on Ko-fi",           he:'את הסכום המדויק תבחרו ב-Ko-fi' },
     'prof-tip-secure':   { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
   }
