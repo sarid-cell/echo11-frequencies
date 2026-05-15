@@ -1837,6 +1837,275 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 
 /* All tip-jar styling lives in .echo-tip-card primitive block (below) */
 
+/* ══════════════════════════════════════════════════════════
+   HOME PAGE → "Visions" CTA card (entry point to /visions)
+══════════════════════════════════════════════════════════ */
+.echo-home-visions-cta{
+  width:100%;
+  padding:var(--s-5) var(--s-4);
+  background:linear-gradient(180deg, rgba(216,197,162,.06) 0%, var(--echo-glass-1) 70%);
+  border:.5px solid rgba(216,197,162,.20);
+  border-radius:var(--r-lg);
+  cursor:pointer;
+  font-family:inherit;
+  display:flex;
+  align-items:center;
+  gap:var(--s-4);
+  transition:all var(--dur-base) var(--spring-gentle);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:var(--echo-lift-1);
+}
+.echo-home-visions-cta:hover{
+  background:linear-gradient(180deg, rgba(216,197,162,.10) 0%, var(--echo-glass-2) 70%);
+  border-color:rgba(216,197,162,.35);
+  transform:translateY(-2px);
+  box-shadow:var(--echo-lift-gold);
+}
+.echo-home-visions-thumbs{
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+  position:relative;
+  width:64px;
+  height:64px;
+}
+.echo-home-visions-thumbs img{
+  position:absolute;
+  top:50%;
+  border-radius:8px;
+  object-fit:cover;
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+  filter:grayscale(.08) contrast(1.05);
+  transition:transform 300ms cubic-bezier(.22,1.2,.36,1);
+}
+.echo-home-visions-thumbs img:nth-child(1){
+  left:0;
+  width:34px;height:42px;
+  transform:translateY(-50%) rotate(-7deg);
+  z-index:1;
+}
+.echo-home-visions-thumbs img:nth-child(2){
+  left:16px;
+  width:38px;height:46px;
+  transform:translateY(-50%);
+  z-index:3;
+}
+.echo-home-visions-thumbs img:nth-child(3){
+  left:34px;
+  width:34px;height:42px;
+  transform:translateY(-50%) rotate(7deg);
+  z-index:2;
+}
+.echo-home-visions-cta:hover .echo-home-visions-thumbs img:nth-child(1){
+  transform:translateY(-50%) translateX(-3px) rotate(-12deg);
+}
+.echo-home-visions-cta:hover .echo-home-visions-thumbs img:nth-child(3){
+  transform:translateY(-50%) translateX(3px) rotate(12deg);
+}
+
+/* ══════════════════════════════════════════════════════════
+   VISIONS PAGE — full-bleed art carousel + download CTAs
+══════════════════════════════════════════════════════════ */
+#visions{padding-bottom:env(safe-area-inset-bottom,0px)}
+.dark #visions{background:transparent !important}
+
+.echo-visions-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) 20px 12px;
+}
+.echo-visions-back{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--echo-glass-1);
+  border:.5px solid var(--echo-line-2);
+  border-radius:9999px;
+  padding:8px 14px 8px 12px;
+  color:var(--echo-ink-2);
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  cursor:pointer;
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  transition:all 150ms cubic-bezier(.22,1.2,.36,1);
+}
+.echo-visions-back:hover{
+  background:var(--echo-glass-2);
+  border-color:var(--echo-line-3);
+  color:var(--echo-ink-1);
+  transform:translateY(-1px);
+}
+.echo-visions-back svg{width:13px;height:13px}
+.echo-visions-brand{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:.22em;
+  color:var(--echo-ink-3);
+  text-transform:uppercase;
+}
+
+.echo-visions-header{
+  text-align:center;
+  padding:24px 24px 28px;
+}
+.echo-visions-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.30em;
+  color:var(--echo-gold);
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.echo-visions-eyebrow svg{width:14px;height:14px;color:var(--echo-gold)}
+.dark .echo-visions-title,
+.echo-visions-title{
+  font-family:var(--font-serif);
+  font-size:30px;
+  font-weight:300;
+  letter-spacing:-0.02em;
+  line-height:1.18;
+  color:var(--echo-ink-1);
+  margin:0 auto 10px;
+  max-width:18ch;
+}
+.echo-visions-sub{
+  font-family:var(--font-sans);
+  font-size:14px;
+  font-weight:400;
+  line-height:1.55;
+  color:var(--echo-ink-3);
+  max-width:32ch;
+  margin:0 auto;
+}
+
+/* Carousel */
+.echo-visions-carousel{position:relative;margin-bottom:8px}
+.echo-visions-rail{
+  display:flex;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  padding-bottom:16px;
+  scroll-behavior:smooth;
+}
+.echo-visions-rail::-webkit-scrollbar{display:none}
+
+.echo-vision-card{
+  flex-shrink:0;
+  width:100vw;
+  scroll-snap-align:center;
+  padding:0 28px;
+  text-decoration:none;
+  color:inherit;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  cursor:pointer;
+}
+.echo-vision-image{
+  position:relative;
+  aspect-ratio:4 / 5;
+  width:100%;
+  border-radius:24px;
+  overflow:hidden;
+  background:var(--echo-bg-2);
+  border:.5px solid var(--echo-line-1);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.45),
+    0 12px 32px rgba(0,0,0,.4),
+    0 24px 64px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+.echo-vision-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:grayscale(.12) contrast(1.04);
+  transition:transform 800ms cubic-bezier(.16,1,.3,1);
+}
+.echo-vision-card:hover .echo-vision-image img{transform:scale(1.03)}
+
+.echo-vision-meta{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  padding:20px 8px 8px;
+  text-align:center;
+}
+.echo-vision-num{
+  font-family:var(--font-sans);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.36em;
+  color:var(--echo-gold);
+}
+.echo-vision-name{
+  font-family:var(--font-serif);
+  font-size:24px;
+  font-weight:300;
+  letter-spacing:-0.015em;
+  color:var(--echo-ink-1);
+  line-height:1.2;
+}
+.echo-vision-dims{
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.08em;
+  color:var(--echo-ink-3);
+  font-variant-numeric:tabular-nums;
+}
+.echo-vision-download{
+  margin-top:10px;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;
+  background:var(--echo-gold);
+  color:var(--echo-on-gold);
+  border-radius:9999px;
+  font-family:var(--font-sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  box-shadow:var(--echo-lift-gold);
+  transition:all 200ms cubic-bezier(.22,1.2,.36,1);
+}
+.echo-vision-card:hover .echo-vision-download{
+  background:var(--echo-gold-hover);
+  transform:translateY(-2px);
+}
+.echo-vision-download svg{width:14px;height:14px;stroke-width:2}
+
+/* Pagination dots */
+.echo-visions-dots{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;
+  padding:14px 0 4px;
+}
+.visions-dot{
+  width:7px;height:7px;
+  border-radius:9999px;
+  background:var(--echo-line-2);
+  border:none;
+  padding:0;
+  cursor:pointer;
+  transition:all 240ms cubic-bezier(.22,1.2,.36,1);
+}
+.visions-dot.active{
+  background:var(--echo-gold);
+  width:24px;
+  box-shadow:0 0 12px var(--echo-gold-glow);
+}
+
 /* Footer text on profile */
 .dark #prof-footer{
   color:var(--echo-ink-4) !important;
@@ -3351,6 +3620,24 @@ button{font-variant-emoji:text}
         <svg class="echo-icon lg" style="color:var(--echo-gold);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
       </button>
     </div>
+
+    <!-- Visions CTA — free art prints (links to dedicated page) -->
+    <div style="margin:0 var(--s-4) var(--s-5)">
+      <button id="visions-link" onclick="showVisions()" class="echo-home-visions-cta">
+        <div class="echo-home-visions-thumbs">
+          <img src="gift-1.webp" alt="" loading="lazy" width="40" height="50"/>
+          <img src="gift-2.webp" alt="" loading="lazy" width="40" height="50"/>
+          <img src="gift-3.webp" alt="" loading="lazy" width="40" height="50"/>
+        </div>
+        <div style="flex:1;text-align:left">
+          <div class="echo-eyebrow" id="visions-cta-lbl" style="margin-bottom:var(--s-2)">Visions · Free</div>
+          <div id="visions-cta-title" style="font-family:var(--font-serif);font-size:var(--t-xl);font-weight:300;color:var(--echo-ink-1);line-height:1.15;margin-bottom:var(--s-1);letter-spacing:var(--ls-tight)">Postcards from inner deserts.</div>
+          <div id="visions-cta-sub" style="font-family:var(--font-sans);font-size:var(--t-xs);font-weight:400;color:var(--echo-ink-3);letter-spacing:var(--ls-relaxed)">3 art prints · free for your screen or wall</div>
+        </div>
+        <svg class="echo-icon lg" style="color:var(--echo-gold);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+      </button>
+    </div>
+
     <div style="text-align:center;padding:6px 14px 14px">
       <a href="legal.html?from=home#access" style="display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.2em;color:var(--t4);text-decoration:none;padding:6px 0">
         <svg width="20" height="20" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;display:block">
@@ -3844,61 +4131,8 @@ button{font-variant-emoji:text}
     </div>
   </div>
 
-  <!-- ═════════════════════════════════════════════════
-       GIFTS FROM ECHO.11 — free downloads, no strings
-  ═════════════════════════════════════════════════ -->
-  <div class="echo-gifts-section">
-    <div class="echo-gifts-header">
-      <span class="echo-gifts-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-image"/></svg><span id="prof-gifts-lbl">Gifts from echo.11</span></span>
-      <div id="prof-gifts-title" class="echo-gifts-title">Visions for your screen.</div>
-      <div id="prof-gifts-sub" class="echo-gifts-sub">Free. No login. No paywall. Take what speaks to you.</div>
-    </div>
+  <!-- Gifts moved to dedicated /visions page — entry point on home -->
 
-    <div class="echo-gifts-rail">
-      <a href="gift-1.png" download="echo11-vision-01.png" class="echo-gift-card" onclick="track('gift_download',{event_category:'gift',event_label:'vision_01'})">
-        <div class="echo-gift-thumb">
-          <img src="gift-1.webp" alt="echo.11 vision 01" loading="lazy" width="960" height="1200"/>
-          <div class="echo-gift-overlay">
-            <svg class="echo-icon" aria-hidden="true"><use href="#i-download"/></svg>
-          </div>
-        </div>
-        <div class="echo-gift-caption">
-          <div class="echo-gift-name">Vision 01</div>
-          <div class="echo-gift-meta" id="prof-gift1-meta">free download</div>
-        </div>
-      </a>
-
-      <a href="gift-2.png" download="echo11-vision-02.png" class="echo-gift-card" onclick="track('gift_download',{event_category:'gift',event_label:'vision_02'})">
-        <div class="echo-gift-thumb">
-          <img src="gift-2.webp" alt="echo.11 vision 02" loading="lazy" width="960" height="1200"/>
-          <div class="echo-gift-overlay">
-            <svg class="echo-icon" aria-hidden="true"><use href="#i-download"/></svg>
-          </div>
-        </div>
-        <div class="echo-gift-caption">
-          <div class="echo-gift-name">Vision 02</div>
-          <div class="echo-gift-meta" id="prof-gift2-meta">free download</div>
-        </div>
-      </a>
-
-      <a href="gift-3.png" download="echo11-vision-03.png" class="echo-gift-card" onclick="track('gift_download',{event_category:'gift',event_label:'vision_03'})">
-        <div class="echo-gift-thumb">
-          <img src="gift-3.webp" alt="echo.11 vision 03" loading="lazy" width="928" height="1232"/>
-          <div class="echo-gift-overlay">
-            <svg class="echo-icon" aria-hidden="true"><use href="#i-download"/></svg>
-          </div>
-        </div>
-        <div class="echo-gift-caption">
-          <div class="echo-gift-name">Vision 03</div>
-          <div class="echo-gift-meta" id="prof-gift3-meta">free download</div>
-        </div>
-      </a>
-    </div>
-
-    <div class="echo-gifts-foot" id="prof-gifts-foot">
-      If one moved you — the tip jar is above. ↑
-    </div>
-  </div>
 
   <!-- Quiet moments stat -->
   <div style="margin:0 22px 12px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
@@ -4012,6 +4246,116 @@ button{font-variant-emoji:text}
   <!-- Footer line -->
   <div style="text-align:center;padding:14px 22px 40px;border-top:.5px solid var(--b1);margin:0 22px">
     <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12px;font-weight:200;font-style:italic;color:var(--t4)" id="prof-footer">A space to return to. Always.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     VISIONS — free downloadable art / posters
+     Accessed from home page; not shown on profile (per design)
+═══════════════════════════════════════════════════════ -->
+<div id="visions" class="scr">
+  <!-- Top nav -->
+  <div class="echo-visions-nav">
+    <button class="echo-visions-back" onclick="show('home');renderStreak()" aria-label="Back">
+      <svg class="echo-icon sm" aria-hidden="true"><use href="#i-arrow-left"/></svg>
+      <span id="vis-back-lbl">Back</span>
+    </button>
+    <span class="echo-visions-brand">echo.11 · visions</span>
+  </div>
+
+  <!-- Header -->
+  <div class="echo-visions-header">
+    <span class="echo-visions-eyebrow">
+      <svg class="echo-icon sm" aria-hidden="true"><use href="#i-image"/></svg>
+      <span id="vis-eyebrow">Visions from echo.11</span>
+    </span>
+    <div id="vis-title" class="echo-visions-title">Postcards from inner deserts.</div>
+    <div id="vis-sub" class="echo-visions-sub">Free for your screen. Free for your wall. Take what speaks to you.</div>
+  </div>
+
+  <!-- Auto-rotating carousel -->
+  <div class="echo-visions-carousel">
+    <div class="echo-visions-rail" id="visions-rail">
+      <a class="echo-vision-card" href="gift-1.png" download="echo11-salt-plains.png" onclick="track('gift_download',{event_category:'gift',event_label:'salt_plains'})">
+        <div class="echo-vision-image">
+          <img src="gift-1.webp" alt="Salt Plains" loading="lazy" width="960" height="1200"/>
+        </div>
+        <div class="echo-vision-meta">
+          <div class="echo-vision-num">01</div>
+          <div class="echo-vision-name" id="vis-name-1">Salt Plains</div>
+          <div class="echo-vision-dims" id="vis-dims-1">960 × 1200 · 4:5 portrait</div>
+          <div class="echo-vision-download">
+            <svg class="echo-icon sm" aria-hidden="true"><use href="#i-download"/></svg>
+            <span id="vis-dl-1">Free download</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="echo-vision-card" href="gift-2.png" download="echo11-inner-horizon.png" onclick="track('gift_download',{event_category:'gift',event_label:'inner_horizon'})">
+        <div class="echo-vision-image">
+          <img src="gift-2.webp" alt="Inner Horizon" loading="lazy" width="960" height="1200"/>
+        </div>
+        <div class="echo-vision-meta">
+          <div class="echo-vision-num">02</div>
+          <div class="echo-vision-name" id="vis-name-2">Inner Horizon</div>
+          <div class="echo-vision-dims" id="vis-dims-2">960 × 1200 · 4:5 portrait</div>
+          <div class="echo-vision-download">
+            <svg class="echo-icon sm" aria-hidden="true"><use href="#i-download"/></svg>
+            <span id="vis-dl-2">Free download</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="echo-vision-card" href="gift-3.png" download="echo11-first-light.png" onclick="track('gift_download',{event_category:'gift',event_label:'first_light'})">
+        <div class="echo-vision-image">
+          <img src="gift-3.webp" alt="First Light" loading="lazy" width="928" height="1232"/>
+        </div>
+        <div class="echo-vision-meta">
+          <div class="echo-vision-num">03</div>
+          <div class="echo-vision-name" id="vis-name-3">First Light</div>
+          <div class="echo-vision-dims" id="vis-dims-3">928 × 1232 · 4:5 portrait</div>
+          <div class="echo-vision-download">
+            <svg class="echo-icon sm" aria-hidden="true"><use href="#i-download"/></svg>
+            <span id="vis-dl-3">Free download</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="echo-visions-dots" id="visions-dots">
+      <button class="visions-dot active" data-idx="0" aria-label="Vision 1"></button>
+      <button class="visions-dot" data-idx="1" aria-label="Vision 2"></button>
+      <button class="visions-dot" data-idx="2" aria-label="Vision 3"></button>
+    </div>
+  </div>
+
+  <!-- Tip jar — same content, reused IDs prefixed with vis- so i18n works -->
+  <div class="echo-tip-card" style="margin:32px 24px 24px !important">
+    <div class="echo-tip-head">
+      <span class="echo-tip-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-sparkles"/></svg><span id="vis-tip-lbl">Support echo.11</span></span>
+      <div id="vis-tip-headline" class="echo-tip-title">If a vision moved you, you can return the gift.</div>
+    </div>
+    <div class="echo-tip-tiers">
+      <button onclick="startTip(5)" data-tip="5" class="tip-btn">
+        <span class="tip-amt">$5</span>
+        <span class="tip-lbl" data-tip-sub="5">a coffee</span>
+      </button>
+      <button onclick="startTip(7)" data-tip="7" class="tip-btn tip-middle">
+        <span data-tip-badge class="tip-badge">most chosen</span>
+        <span class="tip-amt">$7</span>
+        <span class="tip-lbl" data-tip-sub="7">a week</span>
+      </button>
+      <button onclick="startTip(14)" data-tip="14" class="tip-btn">
+        <span class="tip-amt">$14</span>
+        <span class="tip-lbl" data-tip-sub="14">a month</span>
+      </button>
+    </div>
+    <div class="echo-tip-foot" id="vis-tip-secure">no account needed · one-time · powered by Ko-fi</div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:16px 24px 48px">
+    <div style="font-family:var(--font-serif);font-size:12px;font-weight:300;font-style:italic;color:var(--echo-ink-4)" id="vis-footer">A space to return to. Always.</div>
   </div>
 </div>
 
@@ -5355,6 +5699,25 @@ function translateTipJar(){
     'prof-gift2-meta':   { en:'free download',                                     he:'הורדה חינמית' },
     'prof-gift3-meta':   { en:'free download',                                     he:'הורדה חינמית' },
     'prof-gifts-foot':   { en:'If one moved you — the tip jar is above. ↑',        he:'אם משהו הזיז משהו — צנצנת הטיפים למעלה. ↑' },
+    /* Home CTA → Visions */
+    'visions-cta-lbl':   { en:'Visions · Free',                                    he:'חזיונות · חינם' },
+    'visions-cta-title': { en:'Postcards from inner deserts.',                     he:'גלויות מהמדבר הפנימי.' },
+    'visions-cta-sub':   { en:'3 art prints · free for your screen or wall',       he:'3 הדפסי אמנות · חינם למסך או לקיר' },
+    /* Visions page */
+    'vis-back-lbl':      { en:'Back',                                              he:'חזרה' },
+    'vis-eyebrow':       { en:'Visions from echo.11',                              he:'חזיונות מ-echo.11' },
+    'vis-title':         { en:'Postcards from inner deserts.',                     he:'גלויות מהמדבר הפנימי.' },
+    'vis-sub':           { en:'Free for your screen. Free for your wall. Take what speaks to you.', he:'חינמי למסך. חינמי לקיר. קחו את מה שמדבר אליכם.' },
+    'vis-name-1':        { en:'Salt Plains',                                       he:'מישורי המלח' },
+    'vis-name-2':        { en:'Inner Horizon',                                     he:'האופק הפנימי' },
+    'vis-name-3':        { en:'First Light',                                       he:'אור ראשון' },
+    'vis-dl-1':          { en:'Free download',                                     he:'הורדה חינמית' },
+    'vis-dl-2':          { en:'Free download',                                     he:'הורדה חינמית' },
+    'vis-dl-3':          { en:'Free download',                                     he:'הורדה חינמית' },
+    'vis-tip-lbl':       { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
+    'vis-tip-headline':  { en:'If a vision moved you, you can return the gift.',   he:'אם חיזיון נגע בך, אפשר להחזיר את המתנה.' },
+    'vis-tip-secure':    { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
   Object.keys(map).forEach(id => {
     const el = document.getElementById(id)
@@ -5541,7 +5904,77 @@ function openMode(mode){
     const si=document.getElementById('lib-si'); if(si) si.value=''
   },60)
 }
-function showLibrary(){ 
+// ── Visions page navigation + carousel auto-rotation ──
+let _visionsTimer = null
+let _visionsPaused = false
+function showVisions(){
+  show('visions')
+  try{ track('visions_view', { event_category:'navigation', event_label:'from_home' }) }catch(e){}
+  // Apply current language to all visions strings
+  try{ translateTipJar() }catch(e){}
+  // Wait for screen transition, then set up carousel
+  setTimeout(setupVisionsCarousel, 220)
+}
+function setupVisionsCarousel(){
+  const rail = document.getElementById('visions-rail')
+  if(!rail) return
+  const cards = rail.querySelectorAll('.echo-vision-card')
+  const dots  = document.querySelectorAll('.visions-dot')
+  if(!cards.length) return
+  let activeIdx = 0
+
+  const updateActive = (i) => {
+    activeIdx = Math.max(0, Math.min(i, cards.length - 1))
+    dots.forEach((d, di) => d.classList.toggle('active', di === activeIdx))
+  }
+  const scrollToCard = (i, smooth=true) => {
+    updateActive(i)
+    const card = cards[activeIdx]
+    if(!card) return
+    rail.scrollTo({ left: card.offsetLeft, behavior: smooth ? 'smooth' : 'auto' })
+  }
+  // Reset to first card on entry
+  scrollToCard(0, false)
+
+  // Detect scroll position → which card is centered
+  let scrollTimeout = null
+  rail.onscroll = () => {
+    clearTimeout(scrollTimeout)
+    scrollTimeout = setTimeout(() => {
+      const idx = Math.round(rail.scrollLeft / rail.clientWidth)
+      if(idx !== activeIdx) updateActive(idx)
+    }, 80)
+  }
+
+  // Pause auto-rotation on user touch
+  const pauseAndResume = () => {
+    _visionsPaused = true
+    clearTimeout(_visionsTimer)
+    _visionsTimer = setTimeout(() => { _visionsPaused = false; tickRotation() }, 4000)
+  }
+  rail.onpointerdown = pauseAndResume
+
+  // Dot click navigation
+  dots.forEach((d, i) => {
+    d.onclick = () => { pauseAndResume(); scrollToCard(i) }
+  })
+
+  // Auto-rotation
+  if(_visionsTimer) clearTimeout(_visionsTimer)
+  const tickRotation = () => {
+    clearTimeout(_visionsTimer)
+    _visionsTimer = setTimeout(() => {
+      if(!_visionsPaused && document.getElementById('visions')?.classList.contains('on')){
+        scrollToCard((activeIdx + 1) % cards.length)
+      }
+      tickRotation()
+    }, 5000)
+  }
+  _visionsPaused = false
+  tickRotation()
+}
+
+function showLibrary(){
   buildLibrary()
   show('library')
   setTimeout(()=>{
@@ -6301,6 +6734,8 @@ function setLang(l){
   renderPlayer(); buildLibrary()
   // Re-render profile if visible
   try{ if(document.getElementById('profile')?.classList.contains('on')) renderProfile() }catch(e){}
+  // Update visions/tip-jar strings even when not on profile
+  try{ translateTipJar() }catch(e){}
   // Update Library CTA on home
   const isHe=lang==='he'
   const lcLbl=document.getElementById('lib-cta-lbl')
