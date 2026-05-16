@@ -1235,6 +1235,8 @@ function translateTipJar(){
     'prof-tip-social':   { en:'Be the first to support echo.11',                   he:'היו הראשונים לתמוך ב-echo.11' },
     'prof-tip-hint':     { en:"You'll choose the exact amount on Ko-fi",           he:'את הסכום המדויק תבחרו ב-Ko-fi' },
     'prof-tip-secure':   { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'prof-tip-legal':    { en:'Tips support echo.11 as a personal project — not a commercial service or medical product.',
+                           he:'תרומה תומכת ב-echo.11 כפרויקט אישי — לא שירות מסחרי או מוצר רפואי.' },
     'prof-gifts-lbl':    { en:'Gifts from echo.11',                                he:'מתנות מ-echo.11' },
     'prof-gifts-title':  { en:'Visions for your screen.',                          he:'חזיונות למסך שלך.' },
     'prof-gifts-sub':    { en:'Free. No login. No paywall. Take what speaks to you.', he:'חינם. בלי הרשמה. בלי חומה. קחו את מה שמדבר אליכם.' },
@@ -1260,6 +1262,8 @@ function translateTipJar(){
     'vis-tip-lbl':       { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
     'vis-tip-headline':  { en:'If a vision moved you, you can return the gift.',   he:'אם חיזיון אחד הזיז משהו, אפשר להגיד תודה.' },
     'vis-tip-secure':    { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'vis-tip-legal':     { en:'Tips support echo.11 as a personal project — not a commercial service or medical product.',
+                           he:'תרומה תומכת ב-echo.11 כפרויקט אישי — לא שירות מסחרי או מוצר רפואי.' },
     'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
   Object.keys(map).forEach(id => {
