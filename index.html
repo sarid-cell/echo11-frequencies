@@ -3602,6 +3602,12 @@ button{font-variant-emoji:text}
       </button>
     </div>
 
+    <!-- Home tip nudge — discreet, single line, opens Ko-fi -->
+    <button id="home-tip-nudge" onclick="startTip(5)" style="display:block;margin:24px auto 0;background:none;border:none;font-family:var(--font-sans);font-size:11px;font-weight:300;letter-spacing:.12em;color:var(--echo-ink-3);cursor:pointer;padding:8px 16px;text-align:center;line-height:1.6">
+      <span id="home-tip-nudge-txt">If echo.11 brought you calm — say thanks</span>
+      <span style="opacity:.6">  ↗</span>
+    </button>
+
     <!-- Footer — single compact line: legal · accessibility · protocol · text-size -->
     <div class="echo-home-footer">
       <a href="legal.html?from=home#access" class="echo-home-foot-link" id="foot-a11y-lnk">Accessibility</a>
@@ -4403,6 +4409,13 @@ button{font-variant-emoji:text}
       " id="settings-close">Close</button>
     </div>
   </div>
+</div>
+
+<!-- Tip nudge toast — shown once per browser after 60s of listening -->
+<div id="tip-nudge-toast" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:998;background:rgba(26,26,24,.94);color:#f5f4f0;border-radius:24px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.08em;max-width:92vw;text-align:center;pointer-events:auto;box-shadow:0 6px 24px rgba(0,0,0,.25)">
+  <span id="tip-nudge-msg">You're listening. If this brought you calm —</span>
+  <button onclick="startTip(5);hideTipNudgeToast()" style="background:none;border:none;color:#D8C5A2;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0;margin-left:6px" id="tip-nudge-cta">support echo.11 →</button>
+  <button onclick="hideTipNudgeToast()" aria-label="Close" style="background:none;border:none;color:rgba(245,243,238,.5);font-size:13px;cursor:pointer;padding:0 0 0 12px;line-height:1">✕</button>
 </div>
 
 <!-- Headphone toast — shown when binaural plays without headphones -->

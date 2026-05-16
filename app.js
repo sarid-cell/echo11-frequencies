@@ -1214,6 +1214,22 @@ function signOutGently(){
 }
 
 // ─────────────────────────────────────────────────────────────
+// Tip nudge toast (after 60s of real listening, once per browser)
+function showTipNudgeToast(){
+  const t=document.getElementById('tip-nudge-toast'); if(!t) return
+  const msg=document.getElementById('tip-nudge-msg')
+  const cta=document.getElementById('tip-nudge-cta')
+  const isHe=lang==='he'
+  if(msg) msg.textContent=isHe?'את מאזינה. אם זה הרגיע אותך —':"You're listening. If this brought you calm —"
+  if(cta) cta.textContent=isHe?'תמכי ב-echo.11 →':'support echo.11 →'
+  t.style.display='block'
+  clearTimeout(window._tipNudgeTimer)
+  window._tipNudgeTimer=setTimeout(hideTipNudgeToast, 12000)
+}
+function hideTipNudgeToast(){
+  const t=document.getElementById('tip-nudge-toast'); if(t) t.style.display='none'
+}
+
 // Tip Jar — opens Ko-fi in a new tab
 // ─────────────────────────────────────────────────────────────
 const KOFI_URL = 'https://ko-fi.com/echo11'
@@ -1815,6 +1831,13 @@ async function togglePlay(){
     } else if(elapsed === 60){
       const _f=FREQS[curIdx]
       track('audio_60s', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+      // Gentle tip nudge — only once per browser, only for users who reached a real session
+      try{
+        if(!localStorage.getItem('echo11_tip_nudged')){
+          localStorage.setItem('echo11_tip_nudged','1')
+          showTipNudgeToast()
+        }
+      }catch(e){}
     } else if(elapsed === 300){
       const _f=FREQS[curIdx]
       track('audio_5min', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
@@ -2258,8 +2281,8 @@ function changeFontSize(d){
 }
 
 const STR={
-  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'enter echo.11 →','sp-btn-hp':'enter the frequency','sp-btn-no-hp':'start with 528 Hz →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio','hero-sub':'22 frequencies · not music · real science · CIA gateway protocol','bin-lbl':'🎧 Binaural Beats · CIA Protocol','bin-foot':'Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research','quick-lbl':'quick relief','quick-desc':'feeling anxious? 3 minutes of calm.','foot-a11y-lnk':'Accessibility','foot-privacy-lnk':'Privacy','foot-terms-lnk':'Terms','foot-protocol-lnk':'Protocol','foot-copy':'echo.11 © 2026','streak-cta-lbl':'view history →'},
-  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','sp-btn-hp':'כניסה לתדר','sp-btn-no-hp':'התחילי עם 528 Hz ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה','hero-sub':'22 תדרים · לא מוזיקה · מדע אמיתי · פרוטוקול CIA Gateway','bin-lbl':'🎧 ביינוראל ביטס · פרוטוקול CIA','bin-foot':'נדרשות אוזניות · בהשראת CIA Gateway Experience (1983) ומחקר מכון Monroe','quick-lbl':'הקלה מהירה','quick-desc':'מרגישה חרדה? שלוש דקות של רוגע.','foot-a11y-lnk':'נגישות','foot-privacy-lnk':'פרטיות','foot-terms-lnk':'תנאים','foot-protocol-lnk':'פרוטוקול','foot-copy':'echo.11 © 2026','streak-cta-lbl':'צפו בהיסטוריה ←'},
+  en:{'sp-sub':'frequencies','sp-desc':'your nervous system is listening.\nfelt in seconds. backed by science.','sp-hp-m':'Headphones required','sp-hp-s':'BINAURAL BEATS · STEREO SEPARATION','sp-btn':'enter echo.11 →','sp-btn-hp':'enter the frequency','sp-btn-no-hp':'start with 528 Hz →','hm-tag':'tune your mind','lang-h':'עב','lang-p':'עב','today-lbl':"Today's Frequency",'today-changes-lbl':'changes daily','today-name':'The Universe · Deep Sleep · Release','today-cta':'Tap to listen →','modes-lbl':'Choose a mode','m-sleep':'Sleep','m-sleepc':'4 frequencies','m-heal':'Healing','m-healc':'4 frequencies','m-focus':'Focus','m-focusc':'4 frequencies','m-abund':'Abundance','m-abundc':'4 frequencies','lib-link':'← Full Library · 21 Frequencies','pl-back':'← Back','bs-what':"What's happening",'bs-lbl':'Brain State','vol-lbl':'Vol','prog-lbl':'Your progress','sk-lbl':'day streak','sk-sub':'Most played: 432 Hz','lib-back':'← Back','lib-title':'Library · 21 Frequencies','lib-si':'Search frequencies...','timer-lbl':'Session duration','lock-txt':'Keep screen on for continuous audio','hero-sub':'22 frequencies · not music · real science · CIA gateway protocol','bin-lbl':'🎧 Binaural Beats · CIA Protocol','bin-foot':'Headphones required · inspired by declassified CIA Gateway Experience (1983) & Monroe Institute research','quick-lbl':'quick relief','quick-desc':'feeling anxious? 3 minutes of calm.','foot-a11y-lnk':'Accessibility','foot-privacy-lnk':'Privacy','foot-terms-lnk':'Terms','foot-protocol-lnk':'Protocol','foot-copy':'echo.11 © 2026','streak-cta-lbl':'view history →','home-tip-nudge-txt':'If echo.11 brought you calm — say thanks'},
+  he:{'sp-sub':'תדרים','sp-desc':'כווני את מערכת העצבים שלך.\nנחווה תוך שניות. מבוסס מדע.','sp-hp-m':'חובה להשתמש באוזניות','sp-hp-s':'BINAURAL BEATS · הפרדה סטריאו','sp-btn':'כנסי לאפליקציה ←','sp-btn-hp':'כניסה לתדר','sp-btn-no-hp':'התחילי עם 528 Hz ←','hm-tag':'כווני את מוחך','lang-h':'EN','lang-p':'EN','today-lbl':'התדר של היום','today-changes-lbl':'מתחלף יומי','today-name':'היקום · שינה עמוקה · שחרור','today-cta':'לחצי להאזנה ←','modes-lbl':'בחרי מצב','m-sleep':'שינה','m-sleepc':'2 תדרים','m-heal':'ריפוי','m-healc':'8 תדרים','m-focus':'ריכוז','m-focusc':'7 תדרים','m-abund':'שפע','m-abundc':'4 תדרים','lib-link':'← ספריה מלאה · 21 תדרים','pl-back':'← חזרה','bs-what':'מה קורה עכשיו','bs-lbl':'מצב המוח','vol-lbl':'עוצמה','prog-lbl':'ההתקדמות שלך','sk-lbl':'ימים רצופים','sk-sub':'הכי מאוזן: 432 Hz','lib-back':'← חזרה','lib-title':'ספריה · 21 תדרים','lib-si':'חיפוש תדרים...','timer-lbl':'משך הסשן','lock-txt':'השאירי את המסך דלוק להמשך האזנה','hero-sub':'22 תדרים · לא מוזיקה · מדע אמיתי · פרוטוקול CIA Gateway','bin-lbl':'🎧 ביינוראל ביטס · פרוטוקול CIA','bin-foot':'נדרשות אוזניות · בהשראת CIA Gateway Experience (1983) ומחקר מכון Monroe','quick-lbl':'הקלה מהירה','quick-desc':'מרגישה חרדה? שלוש דקות של רוגע.','foot-a11y-lnk':'נגישות','foot-privacy-lnk':'פרטיות','foot-terms-lnk':'תנאים','foot-protocol-lnk':'פרוטוקול','foot-copy':'echo.11 © 2026','streak-cta-lbl':'צפו בהיסטוריה ←','home-tip-nudge-txt':'אם echo.11 הרגיע אותך — אפשר להגיד תודה'},
 }
 function setLang(l){
   if(lang===l) return
