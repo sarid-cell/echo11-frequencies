@@ -77,8 +77,9 @@ a:hover{color:var(--t1)}
 .feature-check{font-size:12px;color:var(--t2);flex-shrink:0;width:20px}
 .feature-text{font-size:13px;font-weight:300;color:var(--t2)}
 </style>
-<!-- Google Analytics 4 (deferred) -->
+<!-- Google Analytics 4 (deferred) — honors per-browser opt-out via Google's official ga-disable flag -->
 <script>
+  try { if (localStorage.getItem('echo11_no_analytics') === '1') window['ga-disable-G-KSCG5KS848'] = true; } catch(e){}
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -117,7 +118,7 @@ a:hover{color:var(--t1)}
 <div class="page on" id="page-privacy">
   <div class="page-eyebrow" id="pp-eyebrow">Legal · Privacy</div>
   <h1 class="page-title" id="pp-title">Privacy Policy</h1>
-  <p class="page-date" id="pp-date">Last updated: March 2026</p>
+  <p class="page-date" id="pp-date">Last updated: 17 May 2026</p>
 
   <div class="section">
     <div class="section-title" id="pp-s1-title">Who We Are</div>
@@ -134,14 +135,15 @@ a:hover{color:var(--t1)}
   <div class="section">
     <div class="section-title" id="pp-s2-title">What Data We Collect</div>
     <div class="warning-box">
-      <div class="warning-title" id="pp-collect-title">🔒 We collect NO personal data</div>
-      <p class="warning-text" id="pp-collect-text">echo.11 does not require registration, login, or any personal information. The app runs entirely in your browser.</p>
+      <div class="warning-title" id="pp-collect-title">🔒 No registration. No personal data we ask you for.</div>
+      <p class="warning-text" id="pp-collect-text">echo.11 does not require registration, login, account creation, or any personal information from you. The app runs entirely in your browser.</p>
     </div>
-    <p class="body-text" id="pp-nocollect">We do not collect:</p>
+    <p class="body-text" id="pp-nocollect">echo.11 itself does not collect:</p>
     <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-l1">Names, emails, or contact information</div></div>
     <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-l2">Health or biometric data</div></div>
-    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-l3">Location data</div></div>
-    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-l4">Usage analytics or cookies</div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-l3">Precise location data</div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-l4">Audio recordings or microphone input</div></div>
+    <p class="body-text" id="pp-collect-note" style="margin-top:14px">However, two third-party services we use (Google Analytics and Vercel) collect limited technical and usage data — see "Third-Party Services" below. You can opt out at any time.</p>
   </div>
 
   <div class="section">
@@ -156,8 +158,22 @@ a:hover{color:var(--t1)}
 
   <div class="section">
     <div class="section-title" id="pp-s5-title">Third-Party Services</div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text"><strong>Google Analytics 4</strong> — <span id="pp-ga">Property G-KSCG5KS848. Collects anonymized usage events (pages viewed, frequencies played, session duration), a pseudonymous client ID stored as a cookie, and a truncated IP address. We do not enable Google Signals or ad personalization. You can opt out below.</span></div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text"><strong>Ko-fi</strong> — <span id="pp-kofi">When you click a Support button, a new tab opens at ko-fi.com/echo11. Ko-fi (and its payment processor PayPal) handle all payment information independently. echo.11 never sees your card or PayPal details.</span></div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text"><strong>Vercel</strong> — <span id="pp-vc">Our hosting provider may log standard server access logs (IP address, timestamp, user agent) for security and performance.</span></div></div>
     <div class="list-item"><div class="list-dot"></div><div class="list-text"><strong>Google Fonts</strong> — <span id="pp-gf">We load fonts from fonts.googleapis.com. Google's privacy policy applies.</span></div></div>
-    <div class="list-item"><div class="list-dot"></div><div class="list-text"><strong>Vercel</strong> — <span id="pp-vc">Our hosting provider may log standard server access logs (IP address, timestamp).</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title" id="pp-s5b-title">Cookies We Use</div>
+    <p class="body-text" id="pp-cookies-text">echo.11 itself sets no cookies. Google Analytics sets a <strong>_ga</strong> cookie (pseudonymous client identifier, expires after 2 years) and one or more <strong>_ga_KSCG5KS848</strong> cookies (session state). If you opt out (see below), these cookies are not used to send data.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title" id="pp-s5c-title">Data Retention</div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-ret-ga"><strong>Google Analytics events:</strong> retained for 14 months, then deleted automatically.</div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-ret-vc"><strong>Vercel server logs:</strong> typically retained for ~30 days.</div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-ret-ls"><strong>Local storage (your browser):</strong> stays on your device until you clear your browser data.</div></div>
   </div>
 
   <div class="section">
@@ -166,8 +182,20 @@ a:hover{color:var(--t1)}
   </div>
 
   <div class="section">
-    <div class="section-title" id="pp-s7-title">Your Rights (GDPR)</div>
-    <p class="body-text" id="pp-s7-text">Since we collect no personal data, there is nothing to access, correct, or delete. For any questions, contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdd8ded5d28c8cdbcfd8ccc8d8d3ded4d8cefddad0dcd4d193ded2d0">[email&#160;protected]</a></p>
+    <div class="section-title" id="pp-s7-title">Your Rights (GDPR & CCPA)</div>
+    <p class="body-text" id="pp-s7-text">You have the right to:</p>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-r1"><strong>Access</strong> — request a copy of any data linked to your browser. Email us; we will work with Google to retrieve what's available.</div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-r2"><strong>Delete</strong> — request deletion of your analytics record. We will submit the request to Google Analytics within 30 days.</div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-r3"><strong>Opt out</strong> — disable analytics tracking on this browser, immediately and at any time, using the button below.</div></div>
+    <div class="list-item"><div class="list-dot"></div><div class="list-text" id="pp-r4"><strong>Withdraw consent</strong> — same as opt out. Your choice takes effect on the next page load.</div></div>
+    <p class="body-text" id="pp-s7-contact" style="margin-top:12px">For access or deletion requests, email <strong>echo11frequencies@gmail.com</strong>. We respond within 5 business days.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title" id="pp-s8-title">Manage Analytics on This Browser</div>
+    <p class="body-text" id="pp-s8-text">You can disable Google Analytics tracking for echo.11 on this browser. The setting is stored locally and persists across visits.</p>
+    <div id="pp-optout-status" style="font-size:13px;font-weight:400;letter-spacing:.04em;margin:14px 0;padding:10px 14px;border-radius:8px;background:var(--card);border:.5px solid var(--b1);color:var(--t2)">Analytics: <strong id="pp-optout-state">enabled (default)</strong></div>
+    <button id="pp-optout-btn" onclick="toggleAnalyticsOptOut()" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--t1);background:var(--card);border:.5px solid var(--b1);border-radius:8px;padding:12px 18px;cursor:pointer">Disable analytics on this browser</button>
   </div>
 </div>
 
@@ -187,7 +215,7 @@ a:hover{color:var(--t1)}
       <h1 class="page-title" id="ac-title" style="margin-bottom:0">Accessibility Statement</h1>
     </div>
   </div>
-  <p class="page-date" id="ac-date">Last updated: March 2026 · Per Israeli Law Amendment 35</p>
+  <p class="page-date" id="ac-date">Last updated: 17 May 2026 · Per Israeli Law Amendment 35</p>
 
   <div class="section">
     <p class="body-text" id="ac-intro">echo.11 is committed to making our digital service accessible to everyone, including people with disabilities, in accordance with the Equal Rights for People with Disabilities Law (Service Accessibility Adjustments), 5773-2013.</p>
@@ -238,7 +266,7 @@ a:hover{color:var(--t1)}
 <div class="page" id="page-terms">
   <div class="page-eyebrow" id="tu-eyebrow">Legal · Terms</div>
   <h1 class="page-title" id="tu-title">Terms of Use</h1>
-  <p class="page-date" id="tu-date">Last updated: March 2026</p>
+  <p class="page-date" id="tu-date">Last updated: 17 May 2026</p>
 
   <div class="section">
     <div class="section-title" id="tu-s1-title">Acceptance</div>
@@ -336,21 +364,41 @@ const STR={
   en:{
     'tag':'tune your mind','lang-btn':'עב','app-btn':'← App',
     'tab-privacy':'Privacy Policy','tab-access':'Accessibility','tab-terms':'Terms of Use',
-    'pp-eyebrow':'Legal · Privacy','pp-title':'Privacy Policy','pp-date':'Last updated: March 2026',
+    'pp-eyebrow':'Legal · Privacy','pp-title':'Privacy Policy','pp-date':'Last updated: 17 May 2026',
     'pp-s1-title':'Who We Are','pp-s1-text':'echo.11 is a wellness application created by <strong>Shira Sarid</strong>, Israel. We build science-backed sound therapy tools for mental wellbeing.',
     'pp-contact-lbl':'Contact',
-    'pp-s2-title':'What Data We Collect','pp-collect-title':'🔒 We collect NO personal data',
-    'pp-collect-text':'echo.11 does not require registration, login, or any personal information. The app runs entirely in your browser.',
-    'pp-nocollect':'We do not collect:',
-    'pp-l1':'Names, emails, or contact information','pp-l2':'Health or biometric data','pp-l3':'Location data','pp-l4':'Usage analytics or cookies',
+    'pp-s2-title':'What Data We Collect','pp-collect-title':'🔒 No registration. No personal data we ask you for.',
+    'pp-collect-text':'echo.11 does not require registration, login, account creation, or any personal information from you. The app runs entirely in your browser.',
+    'pp-nocollect':'echo.11 itself does not collect:',
+    'pp-l1':'Names, emails, or contact information','pp-l2':'Health or biometric data','pp-l3':'Precise location data','pp-l4':'Audio recordings or microphone input',
+    'pp-collect-note':'However, two third-party services we use (Google Analytics and Vercel) collect limited technical and usage data — see "Third-Party Services" below. You can opt out at any time.',
     'pp-s3-title':'Local Storage','pp-s3-text':'Your preferences (dark/light mode, language, volume) are stored <strong>locally in your browser only</strong>. This data never leaves your device.',
     'pp-s4-title':'Audio Processing','pp-s4-text':'All audio is generated locally using the Web Audio API. <strong>No audio is recorded, transmitted, or stored.</strong>',
     'pp-s5-title':'Third-Party Services',
+    'pp-ga':'Property G-KSCG5KS848. Collects anonymized usage events (pages viewed, frequencies played, session duration), a pseudonymous client ID stored as a cookie, and a truncated IP address. We do not enable Google Signals or ad personalization. You can opt out below.',
+    'pp-kofi':'When you click a Support button, a new tab opens at ko-fi.com/echo11. Ko-fi (and its payment processor PayPal) handle all payment information independently. echo.11 never sees your card or PayPal details.',
+    'pp-vc':'Our hosting provider may log standard server access logs (IP address, timestamp, user agent) for security and performance.',
     'pp-gf':'We load fonts from fonts.googleapis.com. Google\'s privacy policy applies.',
-    'pp-vc':'Our hosting provider may log standard server access logs (IP address, timestamp).',
+    'pp-s5b-title':'Cookies We Use',
+    'pp-cookies-text':'echo.11 itself sets no cookies. Google Analytics sets a <strong>_ga</strong> cookie (pseudonymous client identifier, expires after 2 years) and one or more <strong>_ga_KSCG5KS848</strong> cookies (session state). If you opt out (see below), these cookies are not used to send data.',
+    'pp-s5c-title':'Data Retention',
+    'pp-ret-ga':'<strong>Google Analytics events:</strong> retained for 14 months, then deleted automatically.',
+    'pp-ret-vc':'<strong>Vercel server logs:</strong> typically retained for ~30 days.',
+    'pp-ret-ls':'<strong>Local storage (your browser):</strong> stays on your device until you clear your browser data.',
     'pp-s6-title':'Children\'s Privacy','pp-s6-text':'echo.11 is not directed at children under 13. We do not knowingly collect data from children.',
-    'pp-s7-title':'Your Rights (GDPR)','pp-s7-text':'Since we collect no personal data, there is nothing to access, correct, or delete. Contact: echo11frequencies@gmail.com',
-    'ac-eyebrow':'Legal · Accessibility','ac-title':'Accessibility Statement','ac-date':'Last updated: March 2026 · Per Israeli Law Amendment 35',
+    'pp-s7-title':'Your Rights (GDPR & CCPA)','pp-s7-text':'You have the right to:',
+    'pp-r1':'<strong>Access</strong> — request a copy of any data linked to your browser. Email us; we will work with Google to retrieve what\'s available.',
+    'pp-r2':'<strong>Delete</strong> — request deletion of your analytics record. We will submit the request to Google Analytics within 30 days.',
+    'pp-r3':'<strong>Opt out</strong> — disable analytics tracking on this browser, immediately and at any time, using the button below.',
+    'pp-r4':'<strong>Withdraw consent</strong> — same as opt out. Your choice takes effect on the next page load.',
+    'pp-s7-contact':'For access or deletion requests, email <strong>echo11frequencies@gmail.com</strong>. We respond within 5 business days.',
+    'pp-s8-title':'Manage Analytics on This Browser',
+    'pp-s8-text':'You can disable Google Analytics tracking for echo.11 on this browser. The setting is stored locally and persists across visits.',
+    'pp-optout-btn-disable':'Disable analytics on this browser',
+    'pp-optout-btn-enable':'Enable analytics on this browser',
+    'pp-optout-state-on':'enabled (default)',
+    'pp-optout-state-off':'disabled — no events sent from this browser',
+    'ac-eyebrow':'Legal · Accessibility','ac-title':'Accessibility Statement','ac-date':'Last updated: 17 May 2026 · Per Israeli Law Amendment 35',
     'ac-intro':'echo.11 is committed to making our digital service accessible to everyone, including people with disabilities, in accordance with Israeli Equal Rights Law Amendment 35.',
     'ac-level':'Conformance level: WCAG 2.1 AA (in progress)',
     'ac-s1-title':'What Has Been Made Accessible',
@@ -370,7 +418,7 @@ const STR={
     'ac-report':'Found an accessibility barrier? We want to hear from you. We aim to respond within 5 business days.',
     'ac-contact-lbl':'Accessibility Contact',
     'ac-s4-title':'Legal Basis','ac-legal':'This statement is published in accordance with Amendment 35 to the Equal Rights for People with Disabilities Law, Israel.',
-    'tu-eyebrow':'Legal · Terms','tu-title':'Terms of Use','tu-date':'Last updated: March 2026',
+    'tu-eyebrow':'Legal · Terms','tu-title':'Terms of Use','tu-date':'Last updated: 17 May 2026',
     'tu-s1-title':'Acceptance','tu-s1-text':'By using echo.11, you agree to these terms. If you do not agree, please do not use the service.',
     'tu-s2-title':'Description of Service','tu-s2-text':'echo.11 is a wellness application providing binaural beats, solfeggio frequencies, and sound therapy tools for general relaxation and wellbeing.',
     'tu-s3-title':'⚠️ Medical Disclaimer','tu-warn-title':'⚠️ Not a Medical Device',
@@ -388,21 +436,41 @@ const STR={
   he:{
     'tag':'כווני את מוחך','lang-btn':'EN','app-btn':'← האפליקציה',
     'tab-privacy':'מדיניות פרטיות','tab-access':'נגישות','tab-terms':'תנאי שימוש',
-    'pp-eyebrow':'משפטי · פרטיות','pp-title':'מדיניות פרטיות','pp-date':'עודכן לאחרונה: מרץ 2026',
+    'pp-eyebrow':'משפטי · פרטיות','pp-title':'מדיניות פרטיות','pp-date':'עודכן לאחרונה: 17 במאי 2026',
     'pp-s1-title':'מי אנחנו','pp-s1-text':'echo.11 היא אפליקציית בריאות שנוצרה על ידי <strong>שירה שריד</strong>, ישראל. אנו בונים כלי טיפול בצליל מבוססי מדע לרווחה נפשית.',
     'pp-contact-lbl':'יצירת קשר',
-    'pp-s2-title':'אילו נתונים אנו אוספים','pp-collect-title':'🔒 אנחנו לא אוספים שום נתונים אישיים',
-    'pp-collect-text':'echo.11 אינה דורשת הרשמה, התחברות, או כל מידע אישי. האפליקציה פועלת לחלוטין בדפדפן שלך.',
-    'pp-nocollect':'איננו אוספים:',
-    'pp-l1':'שמות, כתובות דואר אלקטרוני, או פרטי יצירת קשר','pp-l2':'נתוני בריאות או ביומטריים','pp-l3':'נתוני מיקום','pp-l4':'אנליטיקה או עוגיות',
+    'pp-s2-title':'אילו נתונים אנו אוספים','pp-collect-title':'🔒 אין הרשמה. אין נתונים אישיים שאנו מבקשים ממך.',
+    'pp-collect-text':'echo.11 אינה דורשת הרשמה, התחברות, יצירת חשבון, או כל מידע אישי ממך. האפליקציה פועלת לחלוטין בדפדפן שלך.',
+    'pp-nocollect':'echo.11 עצמה אינה אוספת:',
+    'pp-l1':'שמות, כתובות דואר אלקטרוני, או פרטי יצירת קשר','pp-l2':'נתוני בריאות או ביומטריים','pp-l3':'נתוני מיקום מדויקים','pp-l4':'הקלטות אודיו או קלט מהמיקרופון',
+    'pp-collect-note':'עם זאת, שני שירותי צד שלישי שאנו משתמשים בהם (Google Analytics ו-Vercel) אוספים נתונים טכניים ושימוש מוגבלים — ראו "שירותי צד שלישי" למטה. ניתן לבטל הסכמה בכל עת.',
     'pp-s3-title':'אחסון מקומי','pp-s3-text':'העדפותיך (מצב כהה/בהיר, שפה, עוצמת שמע) נשמרות <strong>מקומית בדפדפן שלך בלבד</strong>. נתונים אלה לעולם אינם עוזבים את המכשיר שלך.',
     'pp-s4-title':'עיבוד אודיו','pp-s4-text':'כל האודיו מיוצר מקומית בדפדפן שלך. <strong>אין הקלטה, שידור, או אחסון של אודיו.</strong>',
     'pp-s5-title':'שירותי צד שלישי',
+    'pp-ga':'מאפיין G-KSCG5KS848. אוסף אירועי שימוש אנונימיים (דפים שנצפו, תדרים שהושמעו, משך סשן), מזהה לקוח פסאודונימי כעוגייה, וכתובת IP מקוצרת. איננו מפעילים את Google Signals או התאמה אישית של מודעות. ניתן לבטל הסכמה למטה.',
+    'pp-kofi':'בלחיצה על כפתור תמיכה, נפתחת לשונית חדשה ב-ko-fi.com/echo11. Ko-fi (וספק התשלום שלה, PayPal) מטפלים בכל פרטי התשלום באופן עצמאי. echo.11 לעולם אינה רואה את פרטי הכרטיס או PayPal שלך.',
+    'pp-vc':'ספק האחסון שלנו עשוי לנהל יומני גישה סטנדרטיים (כתובת IP, חותמת זמן, user agent) למטרות אבטחה וביצועים.',
     'pp-gf':'אנו טוענים גופנים מ-fonts.googleapis.com. מדיניות הפרטיות של Google חלה.',
-    'pp-vc':'ספק האחסון שלנו עשוי לנהל יומני גישה סטנדרטיים (כתובת IP, חותמת זמן).',
+    'pp-s5b-title':'עוגיות שאנו משתמשים בהן',
+    'pp-cookies-text':'echo.11 עצמה אינה מציבה עוגיות. Google Analytics מציבה עוגיית <strong>_ga</strong> (מזהה לקוח פסאודונימי, פגה אחרי שנתיים) ועוגיית <strong>_ga_KSCG5KS848</strong> אחת או יותר (מצב סשן). אם תבטלי הסכמה (ראי למטה), העוגיות הללו לא משמשות לשליחת נתונים.',
+    'pp-s5c-title':'שמירת נתונים',
+    'pp-ret-ga':'<strong>אירועי Google Analytics:</strong> נשמרים למשך 14 חודשים, ואז נמחקים אוטומטית.',
+    'pp-ret-vc':'<strong>יומני שרת Vercel:</strong> בדרך כלל נשמרים כ-30 ימים.',
+    'pp-ret-ls':'<strong>אחסון מקומי (בדפדפן שלך):</strong> נשאר במכשירך עד שתנקי את נתוני הדפדפן.',
     'pp-s6-title':'פרטיות ילדים','pp-s6-text':'echo.11 אינה מיועדת לילדים מתחת לגיל 13. איננו אוספים ביודעין נתונים מילדים.',
-    'pp-s7-title':'זכויותיך (GDPR)','pp-s7-text':'מכיוון שאיננו אוספים נתונים אישיים, אין מה לגשת אליו, לתקן, או למחוק. לשאלות: echo11frequencies@gmail.com',
-    'ac-eyebrow':'משפטי · נגישות','ac-title':'הצהרת נגישות','ac-date':'עודכן: מרץ 2026 · בהתאם לתיקון 35 לחוק שוויון זכויות לאנשים עם מוגבלות',
+    'pp-s7-title':'זכויותיך (GDPR ו-CCPA)','pp-s7-text':'יש לך זכות ל:',
+    'pp-r1':'<strong>גישה</strong> — לבקש עותק של כל נתון שמקושר לדפדפן שלך. שלחי לנו מייל; נפעל מול Google לקבלת המידע הזמין.',
+    'pp-r2':'<strong>מחיקה</strong> — לבקש מחיקה של הרישום האנליטי שלך. אנו נגיש את הבקשה ל-Google Analytics תוך 30 ימים.',
+    'pp-r3':'<strong>ביטול הסכמה</strong> — להפסיק מעקב אנליטי על דפדפן זה, מיידית ובכל עת, באמצעות הכפתור למטה.',
+    'pp-r4':'<strong>חזרה מהסכמה</strong> — זהה לביטול הסכמה. הבחירה שלך תיכנס לתוקף בטעינה הבאה של הדף.',
+    'pp-s7-contact':'לבקשות גישה או מחיקה, שלחי מייל ל-<strong>echo11frequencies@gmail.com</strong>. אנו משיבים תוך 5 ימי עסקים.',
+    'pp-s8-title':'ניהול אנליטיקה בדפדפן זה',
+    'pp-s8-text':'באפשרותך להשבית את מעקב Google Analytics עבור echo.11 בדפדפן זה. ההגדרה נשמרת מקומית ומתמשכת בין ביקורים.',
+    'pp-optout-btn-disable':'השבת אנליטיקה בדפדפן זה',
+    'pp-optout-btn-enable':'הפעל אנליטיקה בדפדפן זה',
+    'pp-optout-state-on':'פעיל (ברירת מחדל)',
+    'pp-optout-state-off':'מושבת — לא נשלחים אירועים מדפדפן זה',
+    'ac-eyebrow':'משפטי · נגישות','ac-title':'הצהרת נגישות','ac-date':'עודכן: 17 במאי 2026 · בהתאם לתיקון 35 לחוק שוויון זכויות לאנשים עם מוגבלות',
     'ac-intro':'echo.11 מחויבת להנגשת השירות הדיגיטלי לכלל המשתמשים, לרבות אנשים עם מוגבלות, בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), תשע"ג-2013.',
     'ac-level':'רמת עמידה: WCAG 2.1 AA (בתהליך)',
     'ac-s1-title':'מה הונגש',
@@ -422,7 +490,7 @@ const STR={
     'ac-report':'נתקלתם במחסום נגישות? אנחנו רוצים לשמוע. נשתדל להשיב תוך 5 ימי עסקים.',
     'ac-contact-lbl':'יצירת קשר בנושא נגישות',
     'ac-s4-title':'בסיס חוקי','ac-legal':'הצהרה זו מפורסמת בהתאם לתיקון 35 לחוק שוויון זכויות לאנשים עם מוגבלות, ישראל.',
-    'tu-eyebrow':'משפטי · תנאים','tu-title':'תנאי שימוש','tu-date':'עודכן לאחרונה: מרץ 2026',
+    'tu-eyebrow':'משפטי · תנאים','tu-title':'תנאי שימוש','tu-date':'עודכן לאחרונה: 17 במאי 2026',
     'tu-s1-title':'קבלת התנאים','tu-s1-text':'בשימוש ב-echo.11 אתה/את מסכים/ה לתנאים אלה. אם אינך מסכים/ה, אנא אל תשתמש/י בשירות.',
     'tu-s2-title':'תיאור השירות','tu-s2-text':'echo.11 היא אפליקציית בריאות המספקת תדרים ביאנורליים, תדרי סולפג׳יו, וכלי טיפול בצליל לרווחה והרפיה כללית.',
     'tu-s3-title':'⚠️ כתב ויתור רפואי','tu-warn-title':'⚠️ אינה מכשיר רפואי',
@@ -449,10 +517,39 @@ function toggleLang(){
     else e.textContent=v
   })
   document.getElementById('lang-btn').textContent=lang==='he'?'EN':'עב'
+  renderOptOutState()
 }
 
-// On load: check hash to open correct tab
+// Analytics opt-out toggle — sets a localStorage flag honored by track() in app.js
+const OPTOUT_KEY = 'echo11_no_analytics'
+function isOptedOut(){ try{ return localStorage.getItem(OPTOUT_KEY)==='1' }catch(e){ return false } }
+function renderOptOutState(){
+  const state = document.getElementById('pp-optout-state')
+  const btn = document.getElementById('pp-optout-btn')
+  if(!state || !btn) return
+  const opted = isOptedOut()
+  state.textContent = STR[lang][opted ? 'pp-optout-state-off' : 'pp-optout-state-on']
+  btn.textContent = STR[lang][opted ? 'pp-optout-btn-enable' : 'pp-optout-btn-disable']
+}
+function toggleAnalyticsOptOut(){
+  try{
+    if(isOptedOut()){
+      localStorage.removeItem(OPTOUT_KEY)
+      // Re-enable GA in this tab as well
+      window['ga-disable-G-KSCG5KS848'] = false
+    } else {
+      localStorage.setItem(OPTOUT_KEY,'1')
+      // Disable GA immediately in this tab — official Google opt-out flag
+      window['ga-disable-G-KSCG5KS848'] = true
+    }
+  }catch(e){}
+  renderOptOutState()
+}
+
+// On load: honor opt-out before GA fires, check hash to open correct tab
 window.addEventListener('DOMContentLoaded',()=>{
+  if(isOptedOut()) window['ga-disable-G-KSCG5KS848'] = true
+  renderOptOutState()
   const hash=window.location.hash.replace('#','')
   const validTabs=['privacy','access','terms']
   if(validTabs.includes(hash)){

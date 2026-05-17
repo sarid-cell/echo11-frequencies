@@ -4683,24 +4683,30 @@ function syncA11yPos(){
     menu.style.right='auto';menu.style.left='20px'
   }
 }
-// watch lang toggle — wait for deferred app.js so toggleLang is defined
+// Watch the real language switch (setLang in app.js) — translate widget labels
+// when user toggles language. Wait for deferred app.js so setLang is defined.
+function _syncA11yLabels(){
+  const isHe = document.body.dir==='rtl'
+  const set = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt }
+  set('a11y-title',     isHe ? 'נגישות'           : 'Accessibility')
+  set('a11y-lbl-font',  isHe ? 'גודל טקסט'         : 'Text size')
+  set('a11y-lbl-hc',    isHe ? 'ניגודיות גבוהה'    : 'High contrast')
+  set('a11y-lbl-anim',  isHe ? 'עצור אנימציות'     : 'Stop animations')
+  set('a11y-lbl-reset', isHe ? 'איפוס'            : 'Reset')
+  const btn = document.getElementById('a11y-btn')
+  if(btn) btn.setAttribute('aria-label', isHe ? 'תפריט נגישות' : 'Accessibility menu')
+}
 document.addEventListener('DOMContentLoaded', () => {
-  const _origToggleLang = typeof toggleLang==='function' ? toggleLang : null
-  if(_origToggleLang){
-    window.toggleLang = function(){
-      _origToggleLang()
+  const _origSetLang = typeof setLang==='function' ? setLang : null
+  if(_origSetLang){
+    window.setLang = function(l){
+      _origSetLang(l)
       syncA11yPos()
-      // translate widget labels
-      const isHe = document.body.dir==='rtl'
-      document.getElementById('a11y-title').textContent    = isHe?'נגישות':'Accessibility'
-      document.getElementById('a11y-lbl-font').textContent  = isHe?'גודל טקסט':'Text size'
-      document.getElementById('a11y-lbl-hc').textContent    = isHe?'ניגודיות גבוהה':'High contrast'
-      document.getElementById('a11y-lbl-anim').textContent  = isHe?'עצור אנימציות':'Stop animations'
-      document.getElementById('a11y-lbl-reset').textContent = isHe?'איפוס':'Reset'
-      document.getElementById('a11y-btn').setAttribute('aria-label', isHe?'תפריט נגישות':'Accessibility menu')
+      _syncA11yLabels()
     }
   }
   syncA11yPos()
+  _syncA11yLabels()
 })
 </script>
 
@@ -4709,6 +4715,8 @@ document.addEventListener('DOMContentLoaded', () => {
      Loads 1.5s after window.load to never block render
 ════════════════════════════════════════════ -->
 <script>
+  // Per-browser opt-out — set on legal.html. Google's official ga-disable flag.
+  try { if (localStorage.getItem('echo11_no_analytics') === '1') window['ga-disable-G-KSCG5KS848'] = true; } catch(e){}
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());

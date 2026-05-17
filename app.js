@@ -31,8 +31,11 @@ const ECHO_SESSION_ID = (()=>{
 })()
 
 // Track an event. `opts.once` = true → fire only first time per session.
+// Honors per-browser opt-out via localStorage flag set on legal.html.
 function track(eventName, params, opts){
   try{
+    // GDPR/CCPA opt-out — no events sent if user disabled analytics on this browser
+    try{ if(localStorage.getItem('echo11_no_analytics')==='1') return }catch(e){}
     if(opts && opts.once){
       if(TRACK_ONCE.has(eventName)) return
       TRACK_ONCE.add(eventName)
