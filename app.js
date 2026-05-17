@@ -211,10 +211,10 @@ Guidelines:
     const text=data.content?.[0]?.text||''
     content.innerHTML=`
       <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75;margin-bottom:14px">${text}</div>
-      <button onclick="runAIAnalysis()" style="background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);cursor:pointer;padding:0">↻ ${lang==='he'?'ניתוח מחדש':'refresh'}</button>`
+      <button onclick="runAIAnalysis()" style="background:none;border:none;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t4);cursor:pointer;padding:0">↻ ${lang==='he'?'ניתוח מחדש':'refresh'}</button>`
   }catch(e){
     content.innerHTML=`<div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t3);padding:8px 0">${lang==='he'?'לא ניתן להתחבר כרגע.':'Could not connect right now.'}</div>
-    <button onclick="runAIAnalysis()" style="background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t3);cursor:pointer">↻ try again</button>`
+    <button onclick="runAIAnalysis()" style="background:none;border:none;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t3);cursor:pointer">↻ try again</button>`
   }
 }
 
@@ -245,7 +245,7 @@ function buildHistory(){
     [keys.length, isHe?'ימים':'days active'],
   ].map(([v,l])=>`
     <div style="background:var(--bg2);border-radius:12px;padding:12px 10px;text-align:center">
-      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:5px">${l}</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:5px">${l}</div>
       <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:200;color:var(--t1);line-height:1">${v}</div>
     </div>`).join('')
 
@@ -257,7 +257,7 @@ function buildHistory(){
     const refl=getMonthlyReflection(monthlyDays)
     const isHe=lang==='he'
     reflEl.innerHTML=`
-      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">${isHe?'תובנת החודש':'this month'} · ${monthlyDays} ${isHe?'ימים':'days'}</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">${isHe?'תובנת החודש':'this month'} · ${monthlyDays} ${isHe?'ימים':'days'}</div>
       <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75">${refl}</div>`
   }
   // ── Weekly Shape ──
@@ -293,7 +293,7 @@ function buildHistory(){
     return
   }
   const labelEl=document.getElementById('hist-list')
-  let html=`<div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px">${isHe?'היסטוריית האזנות':'session history'}</div>`
+  let html=`<div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px">${isHe?'היסטוריית האזנות':'session history'}</div>`
   keys.forEach(key=>{
     const d=sessions[key]
     const mins=Math.round((d.total||0)/60)
@@ -306,11 +306,11 @@ function buildHistory(){
     html+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
       <div style="flex:1;min-width:0">
         <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:var(--t1);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${freqName}</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t4)">${day}/${m}/${y} &nbsp;·&nbsp; ${mins} ${isHe?'דק':'min'}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t4)">${day}/${m}/${y} &nbsp;·&nbsp; ${mins} ${isHe?'דק':'min'}</div>
       </div>
       <div style="text-align:right;flex-shrink:0;margin-left:12px">
         <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t2)">${mins}</div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4)">${isHe?'דק':'min'}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;color:var(--t4)">${isHe?'דק':'min'}</div>
       </div>
     </div>`
   })
@@ -1098,7 +1098,7 @@ function renderProfile(){
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
             <span style="color:#fbbf24;font-size:13px">★</span>
-            <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3)">${dateLabel}</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t3)">${dateLabel}</span>
           </div>
         </button>`
       }).join('')
@@ -1733,7 +1733,7 @@ function renderTab(){
   const isHe=lang==='he'
   if(activeTab===0) el.innerHTML=t.desc||''
   else if(activeTab===1){
-    el.innerHTML='<em style="font-size:10px;color:var(--t4)">'+(isHe?'מקורות:':'Sources:')+'</em> '+(t.res||'')+' <em style="font-size:10px;color:var(--t4)">· '+(isHe?'echo.11 אינה מכשיר רפואי':'echo.11 is not a medical device')+'</em>'
+    el.innerHTML='<em style="font-size:11px;color:var(--t4)">'+(isHe?'מקורות:':'Sources:')+'</em> '+(t.res||'')+' <em style="font-size:11px;color:var(--t4)">· '+(isHe?'echo.11 אינה מכשיר רפואי':'echo.11 is not a medical device')+'</em>'
   }
   else if(activeTab===2) el.textContent=t.ideal||''
   else if(activeTab===3) el.textContent=t.feel||(isHe?'האזיני ותרגישי.':'listen and notice.')
@@ -1930,23 +1930,23 @@ function renderLibRows(list){
     html+=`
       <div style="padding:16px 16px 6px;border-top:.5px solid var(--b1);margin-top:4px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-          <span style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t2);font-weight:400">${group.label[lang]||group.label.en}</span>
-          <span style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4)">${group.items.length}</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;color:var(--t2);font-weight:400">${group.label[lang]||group.label.en}</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t4)">${group.items.length}</span>
         </div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t4);letter-spacing:.06em">${group.note[lang]||group.note.en}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t4);letter-spacing:.06em">${group.note[lang]||group.note.en}</div>
       </div>`;
     group.items.forEach(f=>{
       const t=f[lang]||f.en;
       const isP=!!audioNodes[f.id];
       const hpTag = f.type==='binaural'
-        ? `<span style="font-size:8px;letter-spacing:.1em;color:var(--t3);border:.5px solid var(--b2);border-radius:10px;padding:2px 7px">🎧 headphones</span>`
-        : `<span style="font-size:8px;letter-spacing:.1em;color:var(--t4)">🔊 speakers ok</span>`;
+        ? `<span style="font-size:10px;letter-spacing:.1em;color:var(--t3);border:.5px solid var(--b2);border-radius:10px;padding:2px 7px">🎧 headphones</span>`
+        : `<span style="font-size:10px;letter-spacing:.1em;color:var(--t4)">🔊 speakers ok</span>`;
       html+=`<button class="lb-row" data-fid="${f.id}" onclick="openPlayer('${f.id}')">
         <div style="position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--t1);opacity:0;transition:opacity .2s;border-radius:0 1px 1px 0" class="ra"></div>
         <div class="lb-hc"><span class="lb-hv" style="font-size:18px">${f.hz}</span><span class="lb-hu">Hz</span></div>
         <div class="lb-mid">
           <div class="lb-nm" style="font-size:14px;margin-bottom:3px">${t.name}</div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t3);margin-bottom:5px">${t.sub}</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t3);margin-bottom:5px">${t.sub}</div>
           ${hpTag}
         </div>
         <div class="lb-r">${isP?'<div class="pl-dot"></div>':''}<span class="lb-arr">›</span></div>
@@ -2041,7 +2041,7 @@ function renderConsciousnessCard(){
       left:${courage200pct}%;
       transform:translateX(-50%);
       font-family:'DM Sans',sans-serif;
-      font-size:8px;letter-spacing:.1em;
+      font-size:10px;letter-spacing:.1em;
       color:var(--echo-gold);white-space:nowrap;
     `;
     if(fillEl) fillEl.style.background = score >= 200
@@ -2361,7 +2361,7 @@ function showComplete(freqId,listenedSecs){
   const hl=[[streak>=7,isHe?`${streak} ימים. את התדר.`:`${streak} days. you are the frequency.`],[mins>=20,isHe?`${mins} דקות של כוונון.`:`${mins} minutes. your system shifted.`],[mins>=3,isHe?'סשן הושלם. הגוף שלך יודע.':'session complete. your body knows.'],[true,isHe?'האזנת. זה מספיק.':'you listened. that is enough.']].find(([c])=>c)[1]
   if(el('comp-headline')) el('comp-headline').textContent=hl
   if(el('comp-freq-lbl')) el('comp-freq-lbl').textContent=(f?.hz||'')+' Hz · '+(t.name||'')
-  if(el('comp-stats')) el('comp-stats').innerHTML=[[mins,isHe?'דקות':'minutes'],[streak,isHe?'ימים רצופים':'day streak'],[totalMins,isHe?'סה"כ':'total min']].map(([v,l])=>`<div style="background:var(--bg2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">${l}</div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1">${v}</div></div>`).join('')
+  if(el('comp-stats')) el('comp-stats').innerHTML=[[mins,isHe?'דקות':'minutes'],[streak,isHe?'ימים רצופים':'day streak'],[totalMins,isHe?'סה"כ':'total min']].map(([v,l])=>`<div style="background:var(--bg2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">${l}</div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1">${v}</div></div>`).join('')
   const bd=getBrainComplete(f)
   if(el('comp-brain-lbl')) el('comp-brain-lbl').textContent=isHe?'מה קרה':'what happened'
   if(el('comp-brain-txt')) el('comp-brain-txt').textContent=isHe?bd.he:bd.en
