@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>echo.11 · Protocol Preview (3 screens)</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--echo-gold:#D8C5A2;--echo-gold-hover:#c9b48b;--echo-on-gold:#1a1a18}
+html,body{background:#0e0d0c;color:#f5f3ee;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+
+/* Preview-only banner */
+.preview-banner{
+  position:fixed;top:0;left:0;right:0;z-index:9200;
+  background:rgba(216,197,162,.95);color:#1a1a18;
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;
+  letter-spacing:.18em;text-transform:uppercase;
+  padding:9px 16px;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  flex-wrap:wrap;
+}
+.preview-banner strong{font-weight:700;letter-spacing:.22em}
+.preview-banner a{
+  color:#1a1a18;text-decoration:underline;text-underline-offset:3px;
+  letter-spacing:.18em;font-size:10px;font-weight:400;
+}
+
+/* Protocol container */
+#protocol{
+  position:fixed;inset:0;top:36px;z-index:9000;
+  background:#0e0d0c;
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+
+.pr-section{
+  position:relative;width:100%;min-height:calc(100dvh - 36px);
+  display:flex;align-items:flex-end;overflow:hidden;
+}
+.pr-bg{
+  position:absolute;top:-20%;left:0;right:0;bottom:-20%;
+  background-size:cover;background-position:center;
+  filter:grayscale(1) brightness(0.48);
+}
+.pr-section::after{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to top,rgba(14,13,12,0.96) 0%,rgba(14,13,12,0.5) 35%,rgba(14,13,12,0.05) 100%);
+}
+.pr-content{
+  position:relative;z-index:2;
+  padding:0 26px 60px;width:100%;max-width:520px;
+}
+
+/* IMPROVED Skip — visible but still minimal */
+#pr-skip{
+  position:fixed;top:48px;right:16px;z-index:9100;
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;letter-spacing:.18em;
+  color:rgba(245,243,238,.6);
+  background:rgba(0,0,0,.35);
+  border:.5px solid rgba(245,243,238,.18);
+  border-radius:20px;padding:8px 16px;
+  cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:all .2s;
+}
+#pr-skip:hover{color:#fff;border-color:rgba(245,243,238,.4)}
+
+/* Progress bar */
+#pr-prog{position:fixed;top:36px;left:0;width:0%;height:1.5px;background:rgba(201,180,152,0.7);z-index:9100;transition:width .15s linear}
+
+/* Nav dots */
+#pr-dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:9100}
+.pr-dot{width:5px;height:5px;border-radius:50%;background:rgba(245,243,238,.2);border:none;padding:0;cursor:pointer;transition:all .3s}
+.pr-dot.active{background:rgba(201,180,152,.9);transform:scale(1.6)}
+
+/* Typography */
+.pr-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.45em;color:rgba(245,243,238,.32);margin-bottom:18px;text-transform:uppercase}
+.pr-display{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(40px,13vw,76px);line-height:0.9;letter-spacing:0.03em;color:#f5f3ee;margin-bottom:14px}
+.pr-sub-he{font-family:'DM Sans',sans-serif;font-size:clamp(17px,5vw,22px);font-weight:300;color:rgba(245,243,238,.48);direction:rtl;line-height:1.6;margin-bottom:22px}
+.pr-divider{width:28px;height:.5px;background:rgba(245,243,238,.22);margin:0 0 22px}
+.pr-body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.85;color:rgba(245,243,238,.62);margin-bottom:14px;letter-spacing:.01em}
+.pr-body-he{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:300;line-height:1.8;color:rgba(245,243,238,.66);direction:rtl;margin-bottom:14px}
+.pr-what-accent{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(18px,5vw,22px);color:rgba(216,197,162,.8);line-height:1.4;margin-top:14px}
+
+/* Setup screen — icon list */
+.pr-setup-list{margin-top:26px}
+.pr-setup-row{
+  display:flex;align-items:flex-start;gap:18px;
+  padding:18px 0;border-bottom:.5px solid rgba(245,243,238,.08);
+}
+.pr-setup-row:last-child{border-bottom:none}
+.pr-setup-icon{
+  flex-shrink:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  border:.5px solid rgba(245,243,238,.18);border-radius:50%;
+  font-size:14px;
+}
+.pr-setup-txt{flex:1}
+.pr-setup-en{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:rgba(245,243,238,.85);letter-spacing:.04em;margin-bottom:4px}
+.pr-setup-he{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:rgba(245,243,238,.55);direction:rtl;margin-bottom:6px}
+.pr-setup-note{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(245,243,238,.35);line-height:1.6}
+
+/* Awaken dot animation */
+.pr-awaken-line{position:relative;width:100%;height:1px;margin:0 auto 30px;background:linear-gradient(90deg,transparent 0%,rgba(201,180,152,0.5) 50%,transparent 100%);animation:awakenBreath 3.6s ease-in-out infinite}
+.pr-awaken-dot{position:absolute;top:50%;left:50%;width:6px;height:6px;border-radius:50%;background:var(--echo-gold);transform:translate(-50%,-50%);animation:awakenPulse 3.6s ease-in-out infinite}
+@keyframes awakenBreath{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes awakenPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,180,152,0.7),0 0 8px 2px rgba(201,180,152,0.3);transform:translate(-50%,-50%) scale(1)}
+  50%{box-shadow:0 0 0 14px rgba(201,180,152,0),0 0 22px 8px rgba(201,180,152,0.5);transform:translate(-50%,-50%) scale(1.4)}
+}
+
+/* CTA */
+.pr-cta-pre{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.45em;color:rgba(245,243,238,.32);margin-bottom:18px;text-align:center}
+.pr-cta-display{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(48px,14vw,88px);font-weight:200;line-height:.88;color:#f5f3ee;margin-bottom:6px;direction:rtl;text-align:center}
+.pr-cta-sub{font-family:'DM Sans',sans-serif;font-size:clamp(13px,3.5vw,16px);font-weight:300;letter-spacing:.12em;color:rgba(245,243,238,.32);margin-bottom:36px;text-align:center}
+.pr-cta-btn{display:block;width:100%;padding:18px 24px;background:var(--echo-gold);border:none;border-radius:3px;color:var(--echo-on-gold);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;text-align:center;transition:all .25s;margin-bottom:12px}
+.pr-cta-btn:hover{background:var(--echo-gold-hover);transform:translateY(-1px)}
+.pr-footnote{margin-top:20px;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:rgba(245,243,238,.22);text-align:center;text-transform:uppercase;line-height:1.8}
+
+/* Scroll hint */
+.pr-scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.7}
+.pr-scroll-line{width:1px;height:24px;background:linear-gradient(to bottom,rgba(201,180,152,.5),transparent);animation:prLine 1.8s ease-in-out infinite}
+@keyframes prLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.pr-scroll-hint span{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.35em;color:rgba(245,243,238,.28)}
+</style>
+</head>
+<body>
+
+<div class="preview-banner">
+  <strong>PREVIEW</strong>
+  <span>3-screen protocol · not live yet</span>
+  <a href="index.html">← back to app</a>
+</div>
+
+<div id="protocol">
+  <div id="pr-prog"></div>
+  <button id="pr-skip" onclick="document.location.href='index.html'">skip · דלגי →</button>
+  <div id="pr-dots">
+    <button class="pr-dot active" onclick="goTo(0)" aria-label="Screen 1"></button>
+    <button class="pr-dot" onclick="goTo(1)" aria-label="Screen 2"></button>
+    <button class="pr-dot" onclick="goTo(2)" aria-label="Screen 3"></button>
+  </div>
+
+  <!-- ═══ Screen 1: The Story ═══ -->
+  <div class="pr-section" data-pr="0">
+    <div class="pr-bg" style="background-image:url('astronaut.webp');background-position:center 20%"></div>
+    <div class="pr-content">
+      <div class="pr-eyebrow">echo11 · pre-session protocol · classified</div>
+      <div class="pr-display">PRE-<br>SESSION<br>PROTOCOL</div>
+      <div class="pr-sub-he">לפני שנכנסים לתדר —<br>סיפור קצר.</div>
+      <div class="pr-divider"></div>
+      <div class="pr-body">In 1983 the CIA declassified Project Gateway — experiments in expanded states of consciousness using binaural frequencies. echo.11 brings that protocol into a modern app.</div>
+      <div class="pr-body-he">ב-1983 חקרה ה-CIA פרויקט סודי בשם Gateway Experience. echo.11 מביאה את הפרוטוקול הזה לאפליקציה מודרנית.</div>
+      <div class="pr-what-accent">not music. not meditation. structured sound — for a disordered world.</div>
+    </div>
+    <div class="pr-scroll-hint"><span>scroll · גללי</span><div class="pr-scroll-line"></div></div>
+  </div>
+
+  <!-- ═══ Screen 2: Quick Setup ═══ -->
+  <div class="pr-section" data-pr="1">
+    <div class="pr-bg" style="background-image:url('img-s2.webp');background-position:center 30%"></div>
+    <div class="pr-content">
+      <div class="pr-eyebrow">setup · הכנה</div>
+      <div class="pr-display" style="font-size:clamp(34px,10vw,58px)">BEFORE<br>YOU PRESS<br>PLAY</div>
+      <div class="pr-sub-he">לפני שלוחצים</div>
+      <div class="pr-divider"></div>
+      <div class="pr-setup-list">
+
+        <div class="pr-setup-row">
+          <div class="pr-setup-icon">🎧</div>
+          <div class="pr-setup-txt">
+            <div class="pr-setup-en">Headphones for binaural beats</div>
+            <div class="pr-setup-he">אוזניות לתדרים בינאורליים</div>
+            <div class="pr-setup-note">Solfeggio frequencies work on speakers too · סולפג׳יו עובד גם ברמקול</div>
+          </div>
+        </div>
+
+        <div class="pr-setup-row">
+          <div class="pr-setup-icon">🌙</div>
+          <div class="pr-setup-txt">
+            <div class="pr-setup-en">Quiet space, devices silenced</div>
+            <div class="pr-setup-he">מקום שקט, מכשירים מושתקים</div>
+            <div class="pr-setup-note">This is your launchpad · זהו בסיס השיגור שלך</div>
+          </div>
+        </div>
+
+        <div class="pr-setup-row">
+          <div class="pr-setup-icon">🛋️</div>
+          <div class="pr-setup-txt">
+            <div class="pr-setup-en">Sit upright or lie down — your choice</div>
+            <div class="pr-setup-he">שב זקוף או שכב — בחירה שלך</div>
+            <div class="pr-setup-note">Loosen tight clothing · שחרר בגדים</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="pr-scroll-hint"><span>scroll · גללי</span><div class="pr-scroll-line"></div></div>
+  </div>
+
+  <!-- ═══ Screen 3: Set Intention + CTA ═══ -->
+  <div class="pr-section" data-pr="2">
+    <div class="pr-bg" style="background-image:url('img-cta.webp');background-position:center 25%"></div>
+    <div class="pr-content">
+      <div class="pr-eyebrow">final step · הצעד האחרון</div>
+      <div class="pr-display" style="font-size:clamp(36px,11vw,62px)">SET<br>INTENTION</div>
+      <div class="pr-sub-he">קבעי כוונה.</div>
+      <div class="pr-divider"></div>
+      <div class="pr-body">Before entering — decide what you seek. State it silently. The frequency responds to direction.</div>
+      <div class="pr-body-he">לפני הכניסה — החליטי מה את מחפשת. אמרי זאת בשקט. התדר מגיב לכוונה.</div>
+
+      <div class="pr-body" style="margin-top:22px;font-size:11px;color:rgba(245,243,238,.4);font-style:italic">Optional: 3 deep breaths · scan your body, head to toe · let tension go.</div>
+      <div class="pr-body-he" style="font-size:12px;color:rgba(245,243,238,.44);font-style:italic">אופציונלי: 3 נשימות עמוקות · סריקת גוף · שחרור מתח.</div>
+
+      <div class="pr-awaken-line" style="margin-top:36px" aria-hidden="true">
+        <span class="pr-awaken-dot"></span>
+      </div>
+
+      <div class="pr-cta-pre">— you are ready · את מוכנה —</div>
+      <div class="pr-cta-display">כניסה<br>לתדר</div>
+      <div class="pr-cta-sub">ENTER THE FREQUENCY</div>
+      <button class="pr-cta-btn" onclick="alert('Preview only — in the real app this enters the frequency player.')">enter · כניסה</button>
+      <div class="pr-footnote">echo.11 · 22 healing frequencies<br>based on CIA gateway protocol · declassified 1983</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const sections = document.querySelectorAll('.pr-section')
+const dots = document.querySelectorAll('.pr-dot')
+const prog = document.getElementById('pr-prog')
+const container = document.getElementById('protocol')
+
+function goTo(i){
+  const target = sections[i]
+  if(!target) return
+  container.scrollTo({ top: target.offsetTop, behavior: 'smooth' })
+}
+
+container.addEventListener('scroll', () => {
+  const h = container.scrollHeight - container.clientHeight
+  prog.style.width = (h > 0 ? (container.scrollTop / h) * 100 : 0) + '%'
+  // active dot
+  const mid = container.scrollTop + container.clientHeight / 2
+  let activeIdx = 0
+  sections.forEach((s, i) => { if (s.offsetTop <= mid) activeIdx = i })
+  dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx))
+})
+</script>
+</body>
+</html>
