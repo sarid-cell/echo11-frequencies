@@ -5185,6 +5185,7 @@ async function openTodayFreq(){
 }
 function openPlayerDirect(fid){
   // For users without headphones — go straight to solfeggio freq
+  if(playing) doStop()
   const el=document.getElementById('splash')
   if(el) el.style.display='none'
   const idx=FREQS.findIndex(f=>f.id===fid)
