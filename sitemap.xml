@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/0.9">
+
+  <url>
+    <loc>https://echo11.space/</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo11.space/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://echo11.space/?lang=he"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo11.space/"/>
+    <image:image>
+      <image:loc>https://echo11.space/astronaut.jpg</image:loc>
+      <image:title>echo.11 — a figure walking through a salt desert</image:title>
+      <image:caption>echo.11 hero image: figure in white robes crossing an alien salt plain, symbolizing the inner journey of frequency-based nervous-system regulation</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://echo11.space/?lang=he</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echo11.space/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://echo11.space/?lang=he"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echo11.space/"/>
+  </url>
+
+  <url>
+    <loc>https://echo11.space/legal.html</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>
