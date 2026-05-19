@@ -25,6 +25,9 @@
 <meta name="author" content="Shira Sarid"/>
 <meta name="robots" content="index, follow, max-image-preview:large"/>
 <link rel="canonical" href="https://echo11.space/"/>
+<link rel="alternate" hreflang="en" href="https://echo11.space/"/>
+<link rel="alternate" hreflang="he" href="https://echo11.space/?lang=he"/>
+<link rel="alternate" hreflang="x-default" href="https://echo11.space/"/>
 
 <!-- ✦ AI Crawlers — explicit allow -->
 <meta name="GPTBot" content="index, follow"/>
@@ -3134,6 +3137,12 @@ button{font-variant-emoji:text}
 </head>
 <body class="dark">
 
+<!-- iOS Silent-Switch Unlock: a looped silent <audio> element promotes the page to
+     the "media playback" audio session so Web Audio is no longer muted by the
+     physical mute switch / silent mode. Started on first user gesture. -->
+<audio id="silent-unlock" loop playsinline preload="auto" aria-hidden="true" style="display:none"
+       src="data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=="></audio>
+
 <!-- ══════════════════════════════════════════════════════════
      Lucide icon sprite — referenced via <use href="#i-name"/>
      Strokes: 1.5, line caps round. Sized via .echo-icon class.
@@ -3363,7 +3372,7 @@ button{font-variant-emoji:text}
   <div class="sp-top"></div><div class="sp-bot"></div>
   <div class="sp-ui">
     <div class="sp-icon"><span class="sp-ib"></span><span class="sp-it"></span><span class="sp-is"></span><span class="sp-it"></span><span class="sp-ib"></span></div>
-    <div class="sp-title">echo.11</div>
+    <h1 class="sp-title" style="margin:0 0 5px 0;font-weight:100">echo.11</h1>
     <p class="sp-sub" id="sp-sub">frequencies</p>
     <div class="sp-line"></div>
     <p class="sp-desc" id="sp-desc">22 healing frequencies. Not music.<br>Real science — backed by the CIA Gateway protocol.</p>
@@ -3589,9 +3598,9 @@ button{font-variant-emoji:text}
     <div style="margin:0 var(--s-4) var(--s-5)">
       <button id="visions-link" onclick="showVisions()" class="echo-home-visions-cta">
         <div class="echo-home-visions-thumbs">
-          <img src="gift-1.webp" alt="" loading="lazy" width="40" height="50"/>
-          <img src="gift-2.webp" alt="" loading="lazy" width="40" height="50"/>
-          <img src="gift-3.webp" alt="" loading="lazy" width="40" height="50"/>
+          <img src="gift-1.webp" alt="echo.11 wallpaper gift — celestial vision artwork" loading="lazy" width="40" height="50"/>
+          <img src="gift-2.webp" alt="echo.11 wallpaper gift — desert pilgrimage artwork" loading="lazy" width="40" height="50"/>
+          <img src="gift-3.webp" alt="echo.11 wallpaper gift — frequency portal artwork" loading="lazy" width="40" height="50"/>
         </div>
         <div style="flex:1;text-align:left;min-width:0">
           <div class="echo-eyebrow" id="visions-cta-lbl" style="margin-bottom:6px">Visions · Free</div>
@@ -3624,7 +3633,7 @@ button{font-variant-emoji:text}
 
   <!-- ① IMAGE ZONE: 52vh, Ken Burns, nothing overlapping -->
   <div style="position:relative;height:52vh;min-height:300px;max-height:600px;overflow:hidden;flex-shrink:0">
-    <img src="img_player.jpg" alt="" id="pl-bg-img"
+    <img src="img_player.jpg" alt="Frequency player — ethereal visual companion for healing sound" id="pl-bg-img"
       width="1170" height="900"
       loading="lazy" decoding="async"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;animation:kenBurns 18s ease-in-out infinite alternate"/>
@@ -3702,7 +3711,7 @@ button{font-variant-emoji:text}
         <div id="pl-prog-fill" style="height:100%;background:var(--t1);border-radius:2px;width:0%;transition:width .8s linear"></div>
       </div>
     </div>
-    <button class="pl-play" id="play-btn" onclick="togglePlay()" style="touch-action:manipulation" style="margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>  Play · 432 Hz</button>
+    <button class="pl-play" id="play-btn" onclick="togglePlay()" aria-label="Play frequency" style="touch-action:manipulation;margin-bottom:12px;font-size:13px;letter-spacing:.2em;padding:18px"><svg style="width:10px;height:10px;display:inline-block;vertical-align:middle;fill:currentColor" viewBox="0 0 10 10" aria-hidden="true"><polygon points="2,1 9,5 2,9"/></svg>  Play · 432 Hz</button>
     <div class="elapsed-row" id="el-row" style="display:none"><div class="el-dot"></div><div class="el-txt" id="el-txt">Listening · 0:00</div></div>
     <div id="hp-notice" style="display:none;align-items:center;gap:6px;padding:6px 10px;background:var(--bg2);border-radius:6px;margin-top:6px">
       <span style="font-size:13px">🎧</span>
@@ -3786,7 +3795,7 @@ button{font-variant-emoji:text}
 <!-- SESSION COMPLETE -->
 <div id="complete" class="scr" style="overflow-y:auto">
   <div style="position:relative;height:42vh;min-height:240px;max-height:340px;overflow:hidden;flex-shrink:0">
-    <img src="img_complete.webp" alt="" width="1170" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
+    <img src="img_complete.webp" alt="Session complete — daily frequency cycle finished" width="1170" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,18,16,.1) 0%,rgba(20,18,16,.45) 100%)"></div>
     <button onclick="show('home');renderStreak()" style="position:absolute;top:22px;left:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer" id="comp-back">← Back</button>
   </div>
@@ -3918,7 +3927,7 @@ button{font-variant-emoji:text}
 
   <!-- Hero image with dynamic message -->
   <div style="position:relative;height:42vh;min-height:260px;overflow:hidden;flex-shrink:0">
-    <img src="img_history.webp" alt="" width="1170" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'"
+    <img src="img_history.webp" alt="Your listening journey — frequency history visualization" width="1170" height="900" loading="lazy" decoding="async" onerror="this.style.display='none'"
       style="width:100%;height:115%;object-fit:cover;object-position:center 10%;display:block"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(245,243,238,0) 55%,var(--bg) 100%)"></div>
     <!-- gradient so nav is always readable -->
@@ -3983,7 +3992,7 @@ button{font-variant-emoji:text}
        To replace: save your image as profile-hero.webp via squoosh.app
   ═══════════════════════════════════════════════════ -->
   <div class="echo-profile-hero">
-    <img src="profile-hero.webp" alt="" width="900" height="1200" loading="lazy" decoding="async" class="echo-profile-hero-img"/>
+    <img src="profile-hero.webp" alt="echo.11 profile — your personal frequency practice" width="900" height="1200" loading="lazy" decoding="async" class="echo-profile-hero-img"/>
     <div class="echo-profile-hero-fade"></div>
 
     <!-- Top nav — overlays the image -->
@@ -5093,6 +5102,28 @@ function audioStopId(id){
   setTimeout(()=>{ try{n.o?.stop();n.oL?.stop();n.oR?.stop();n.gain.disconnect()}catch(e){}; delete audioNodes[id] },1400)
 }
 function audioVol(id,v){ const n=audioNodes[id]; if(!n) return; try{getCtx(); n.gain.gain.setTargetAtTime((v/100)*.5,getCtx().currentTime,.1)}catch(e){} }
+// Surfaces an audio-startup failure so users on mobile aren't left guessing why
+// nothing plays. Common cause on iPhone: silent switch is on, or browser blocked
+// the AudioContext. We make the message bilingual + short.
+function showAudioError(err){
+  const isHe = (typeof lang!=='undefined' && lang==='he')
+  const msg = isHe
+    ? 'לא הצלחנו להתחיל את ההשמעה. אם את/ה ב-iPhone — ודא/י שמתג ההשתקה כבוי ושמצב שקט מבוטל, ואז נסה/י שוב.'
+    : "Couldn't start audio. On iPhone, check that the mute switch is off and silent mode is disabled, then tap Play again."
+  let el = document.getElementById('audio-err-toast')
+  if(!el){
+    el = document.createElement('div')
+    el.id='audio-err-toast'
+    el.setAttribute('role','alert')
+    el.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(180,40,40,.95);color:#fff;border-radius:16px;padding:14px 18px;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:400;line-height:1.4;max-width:88vw;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3);direction:'+(isHe?'rtl':'ltr')
+    document.body.appendChild(el)
+  }
+  el.textContent = msg
+  el.style.display='block'
+  clearTimeout(window._aetTimer)
+  window._aetTimer=setTimeout(()=>{ if(el) el.style.display='none' },7000)
+  try{ track('audio_error',{ event_category:'audio', error: (err&&err.name)||'unknown' }) }catch(_e){}
+}
 
 // ── Onboarding ───────────────────────────────────────────────
 const OB_STEPS=[
@@ -5144,41 +5175,10 @@ function openPlayerDirect(fid){
   setTimeout(showOnboarding, 1000)
 }
 async function enterApp(){
-  // Show protocol on first visit, otherwise go straight in
-  // Always show protocol on every visit
-  showProtocol();
-  return;
-  // Pre-init AudioContext on splash tap (iOS requires user gesture)
-  try{
-    if(!audioCtx||audioCtx.state==='closed')
-      audioCtx=new(window.AudioContext||window.webkitAudioContext)()
-    if(audioCtx.state==='suspended') await audioCtx.resume()
-  }catch(e){}
-  track('app_enter', { event_category:'funnel', source:'splash' })
-  // Live counter: increment on enter, show if >= 2
-  try{
-    let n=parseInt(sessionStorage.getItem('echo11_live')||'0')
-    const stored=parseInt(localStorage.getItem('echo11_active')||'0')
-    const now=Date.now()
-    const active=parseInt(localStorage.getItem('echo11_active_ts')||'0')
-    // Count active in last 5 min
-    const liveN = (now-active < 300000) ? Math.max(stored,1)+1 : 1
-    localStorage.setItem('echo11_active', liveN)
-    localStorage.setItem('echo11_active_ts', now)
-    const badge=document.getElementById('live-badge')
-    const cnt=document.getElementById('live-count')
-    const lbl=document.getElementById('live-lbl')
-    if(badge&&cnt&&liveN>=2){
-      cnt.textContent=liveN
-      if(lbl) lbl.textContent=lang==='he'?'מאזינים עכשיו':'listening now'
-      badge.style.display='flex'
-    }
-  }catch(e){}
-  try{ const c=new(window.AudioContext||window.webkitAudioContext)(); await c.resume(); c.close() }catch(e){}
-  document.getElementById('splash').style.display='none'
-  try{ renderStreak() }catch(e){ console.warn('renderStreak:',e) }
-  showHome()
-  setTimeout(showOnboarding, 800)
+  // Splash → protocol screen. We prime the iOS audio session here too so the
+  // mute-switch bypass is unlocked as early as possible in the funnel.
+  _primeAudioSession()
+  showProtocol()
 }
 // ═══════════════════════════════════
 // PROFILE SYSTEM — Local Profile (rmA)
@@ -6165,6 +6165,7 @@ function toggleBrainState(){
 }
 function doStop(){
   const f=FREQS[curIdx]; audioStopId(f.id); playing=false; clearInterval(elapsedIv); releaseWakeLock(); const _pw=document.getElementById('pl-prog-wrap'); if(_pw) _pw.style.display='none'
+  try{ const su=document.getElementById('silent-unlock'); if(su){ su.pause(); su.currentTime=0 } }catch(e){}
   // Streak/history requires >=60s; saveSession itself enforces this floor
   if(elapsed>=60) saveSession(f.id, elapsed)
   elapsed=0
@@ -6189,10 +6190,22 @@ function hideHpToast(){
 async function togglePlay(){
   const f=FREQS[curIdx]
   if(playing){ doStop(); return }
+  // iOS silent-switch bypass: keep a looped silent <audio> playing so the page
+  // is in the media-playback audio session — without this, Web Audio is muted
+  // by the physical mute switch and "silent mode" on iPhone.
+  try{
+    const su=document.getElementById('silent-unlock')
+    if(su){ su.volume=0.001; su.muted=false; await su.play() }
+  }catch(e){}
+  let audioErr=null
   try{
     if(!audioCtx||audioCtx.state==='closed') audioCtx=new(window.AudioContext||window.webkitAudioContext)()
     if(audioCtx.state==='suspended') await audioCtx.resume()
-  }catch(e){}
+  }catch(e){ audioErr=e }
+  if(audioErr || (audioCtx && audioCtx.state!=='running')){
+    showAudioError(audioErr)
+    return
+  }
   await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
   track('audio_started', { event_category:'audio', event_label:f.id, freq_hz:f.hz, freq_mode:f.mode, freq_type:f.type||'tone' })
   // Headphone nudge for binaural
@@ -6580,7 +6593,22 @@ function showProtocol(){
   setTimeout(()=>{ if(sections[0]) sections[0].classList.add('pr-active'); }, 200);
 }
 
+// iOS-safe priming: must run synchronously inside the click handler, BEFORE any
+// setTimeout/await chain — otherwise Safari treats it as outside the user gesture.
+function _primeAudioSession(){
+  try{
+    if(!audioCtx||audioCtx.state==='closed')
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)()
+    if(audioCtx.state==='suspended') audioCtx.resume()
+  }catch(e){}
+  try{
+    const su=document.getElementById('silent-unlock')
+    if(su){ su.volume=0.001; const p=su.play(); if(p&&p.catch) p.catch(()=>{}) }
+  }catch(e){}
+}
+
 function enterFromProtocol(){
+  _primeAudioSession()
   track('protocol_completed', { event_category: 'funnel', method: 'cta' })
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .6s ease'; el.style.opacity='0'; }
@@ -6591,6 +6619,7 @@ function enterFromProtocol(){
 }
 
 function skipProtocol(){
+  _primeAudioSession()
   track('protocol_skipped', { event_category: 'funnel' })
   const el = document.getElementById('protocol');
   if(el){ el.style.transition='opacity .4s ease'; el.style.opacity='0'; }
