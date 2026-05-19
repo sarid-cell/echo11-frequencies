@@ -4933,6 +4933,7 @@ function renderStreak(){
       if(streak >= m && !fired.includes(m)){
         fired.push(m)
         track('streak_milestone', { event_category:'engagement', value:m, event_label:`day_${m}` })
+        if([7,14,30,60,90].includes(m)) setTimeout(()=>launchConfetti(m),300)
       }
     })
     localStorage.setItem('echo11_streak_milestones_fired', JSON.stringify(fired))
@@ -5645,6 +5646,34 @@ function signOutGently(){
 // ─────────────────────────────────────────────────────────────
 const KOFI_URL = 'https://ko-fi.com/echo11'
 
+function launchConfetti(days){
+  const isHe=lang==='he'
+  const msgs={7:isHe?'✦ שבוע שלם. את התדר.':'✦ 7 days. you are the frequency.',14:isHe?'✦ שבועיים. מדהים.':'✦ 14 days. incredible.',30:isHe?'✦ חודש. מערכת עצבים חדשה.':'✦ 30 days. a new nervous system.',60:isHe?'✦ 60 יום. נדיר ממש.':'✦ 60 days. truly rare.',90:isHe?'✦ 90 יום. שינוי קבוע.':'✦ 90 days. permanent change.'}
+  const colors=['#c9a96e','#f5f3ee','#a78bfa','#86efac','#fcd34d','#f9a8d4']
+  const canvas=document.createElement('canvas')
+  canvas.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none'
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight
+  document.body.appendChild(canvas)
+  const ctx=canvas.getContext('2d')
+  const particles=Array.from({length:120},()=>({
+    x:Math.random()*canvas.width, y:-10-Math.random()*100,
+    r:3+Math.random()*5, c:colors[Math.floor(Math.random()*colors.length)],
+    vx:(Math.random()-0.5)*4, vy:2+Math.random()*4,
+    angle:Math.random()*360, spin:(Math.random()-0.5)*8, alpha:1
+  }))
+  let frame=0
+  function draw(){ frame++; ctx.clearRect(0,0,canvas.width,canvas.height)
+    particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin; p.alpha=Math.max(0,1-frame/140)
+      ctx.save(); ctx.globalAlpha=p.alpha; ctx.fillStyle=p.c
+      ctx.translate(p.x,p.y); ctx.rotate(p.angle*Math.PI/180)
+      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r); ctx.restore()
+    })
+    if(frame<150) requestAnimationFrame(draw); else canvas.remove()
+  }
+  draw()
+  if(msgs[days]) showTipFeedback(msgs[days], 5000)
+}
+
 function startTip(amount){
   const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'kofi'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
@@ -6230,6 +6259,8 @@ function doStop(){
   try{ const su=document.getElementById('silent-unlock'); if(su){ su.pause(); su.currentTime=0 } }catch(e){}
   // Streak/history requires >=60s; saveSession itself enforces this floor
   if(elapsed>=60) saveSession(f.id, elapsed)
+  // Save accumulated time so resuming the same frequency continues the counter
+  if(elapsed>0) sessionStorage.setItem('echo11_resume_'+f.id, elapsed)
   elapsed=0
   document.getElementById('el-row').style.display='none'
   if('mediaSession' in navigator) navigator.mediaSession.playbackState='paused'
@@ -6268,7 +6299,11 @@ async function togglePlay(){
     showAudioError(audioErr)
     return
   }
-  await audioPlay(f); playing=true; audioVol(f.id,volume); elapsed=0; await requestWakeLock()
+  await audioPlay(f); playing=true; audioVol(f.id,volume)
+  // Restore accumulated time if resuming the same frequency in the same session
+  const _resumed=parseInt(sessionStorage.getItem('echo11_resume_'+f.id)||0)
+  elapsed=_resumed; sessionStorage.removeItem('echo11_resume_'+f.id)
+  await requestWakeLock()
   track('audio_started', { event_category:'audio', event_label:f.id, freq_hz:f.hz, freq_mode:f.mode, freq_type:f.type||'tone' })
   // Headphone nudge for binaural
   if(f.type==='binaural'){
