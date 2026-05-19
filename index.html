@@ -3173,6 +3173,8 @@ button{font-variant-emoji:text}
   <symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M22 7l-9 9-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
   <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v2a6 6 0 0 1 2-2z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></symbol>
 </defs></svg>
 
 <!-- PROTOCOL — shown on first visit -->
@@ -4206,6 +4208,22 @@ button{font-variant-emoji:text}
   <!-- Footer line -->
   <div style="text-align:center;padding:14px 22px 40px;border-top:.5px solid var(--b1);margin:0 22px">
     <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12px;font-weight:200;font-style:italic;color:var(--t4)" id="prof-footer">A space to return to. Always.</div>
+    <div style="display:flex;justify-content:center;gap:20px;margin-top:14px">
+      <a href="https://www.linkedin.com/in/shirasarid" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'linkedin'})"
+         aria-label="LinkedIn"
+         style="color:var(--t3);opacity:.7;transition:opacity .2s;display:flex;align-items:center"
+         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.7">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-linkedin"/></svg>
+      </a>
+      <a href="https://www.instagram.com/shira.sarid/" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'instagram'})"
+         aria-label="Instagram"
+         style="color:var(--t3);opacity:.7;transition:opacity .2s;display:flex;align-items:center"
+         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.7">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-instagram"/></svg>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -5629,7 +5647,8 @@ const KOFI_URL = 'https://ko-fi.com/echo11'
 function startTip(amount){
   const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'kofi'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
-  window.open(KOFI_URL, '_blank', 'noopener,noreferrer')
+  const dest = [5,7,14].includes(amount) ? `${KOFI_URL}?amount=${amount}` : KOFI_URL
+  window.open(dest, '_blank', 'noopener,noreferrer')
 }
 
 // Tip Jar translations — applied when profile renders
