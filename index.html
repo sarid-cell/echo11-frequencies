@@ -5629,7 +5629,8 @@ const KOFI_URL = 'https://ko-fi.com/echo11'
 function startTip(amount){
   const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'kofi'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
-  window.open(KOFI_URL, '_blank', 'noopener,noreferrer')
+  const dest = [5,7,14].includes(amount) ? `${KOFI_URL}?amount=${amount}` : KOFI_URL
+  window.open(dest, '_blank', 'noopener,noreferrer')
 }
 
 // Tip Jar translations — applied when profile renders
