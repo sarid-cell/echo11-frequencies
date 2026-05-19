@@ -5117,7 +5117,7 @@ async function audioPlay(f){
 function audioStopId(id){
   const n=audioNodes[id]; if(!n) return
   try{ n.gain.gain.setValueAtTime(n.gain.gain.value,getCtx().currentTime); n.gain.gain.linearRampToValueAtTime(0,getCtx().currentTime+1.3) }catch(e){}
-  setTimeout(()=>{ try{n.o?.stop();n.oL?.stop();n.oR?.stop();n.gain.disconnect()}catch(e){}; delete audioNodes[id] },1400)
+  setTimeout(()=>{ try{n.o?.stop();n.oL?.stop();n.oR?.stop();n.gain.disconnect()}catch(e){}; if(audioNodes[id]===n) delete audioNodes[id] },1400)
 }
 function audioVol(id,v){ const n=audioNodes[id]; if(!n) return; try{getCtx(); n.gain.gain.setTargetAtTime((v/100)*.5,getCtx().currentTime,.1)}catch(e){} }
 // Surfaces an audio-startup failure so users on mobile aren't left guessing why
@@ -6775,7 +6775,7 @@ function setPlayerState(state){
   const bg=document.getElementById('pl-bg-img')
   if(bg) bg.style.opacity=state==='playing'?'0.7':'1'
 }
-function replaySession(){ show('player') }
+function replaySession(){ if(playing) doStop(); show('player') }
 function showComplete(freqId,listenedSecs){
   const _f = FREQS.find(x=>x.id===freqId)
   track('audio_complete', { event_category:'audio', event_label:freqId, freq_hz:_f?.hz, freq_mode:_f?.mode, value:Math.round(listenedSecs/60), seconds:listenedSecs })
