@@ -5649,8 +5649,50 @@ function startTip(amount){
   const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'kofi'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
   const dest = [5,7,14].includes(amount) ? `${KOFI_URL}?amount=${amount}` : KOFI_URL
-  window.open(dest, '_blank', 'noopener,noreferrer')
+  const win = window.open(dest, '_blank', 'noopener,noreferrer')
+
+  // Popup blocked — fall back to a visible link in the tip card
+  if(!win){
+    track('tip_popup_blocked', { event_category:'tip_jar', event_label:label, value:amount })
+    const isHe = lang === 'he'
+    const msg = isHe
+      ? `הדפדפן חסם את הפתיחה — <a href="${dest}" target="_blank" rel="noopener noreferrer" style="color:var(--echo-gold);text-decoration:underline">לחצי כאן לתשלום</a>`
+      : `Popup blocked — <a href="${dest}" target="_blank" rel="noopener noreferrer" style="color:var(--echo-gold);text-decoration:underline">tap here to support</a>`
+    showTipFeedback(msg, 9000)
+    return
+  }
+
+  // User went to Ko-fi — when they return to this tab, show a thank-you prompt
+  window._tipPending = { amount, dest, label }
 }
+
+function showTipFeedback(html, duration){
+  let el = document.getElementById('tip-feedback-toast')
+  if(!el){
+    el = document.createElement('div')
+    el.id = 'tip-feedback-toast'
+    el.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(26,26,24,.95);color:#f5f4f0;border-radius:24px;padding:13px 22px;font-family:\'DM Sans\',sans-serif;font-size:11px;font-weight:300;letter-spacing:.08em;text-align:center;max-width:88vw;pointer-events:auto;display:none'
+    document.body.appendChild(el)
+  }
+  el.innerHTML = html
+  el.style.display = 'block'
+  clearTimeout(window._tipFeedbackTimer)
+  window._tipFeedbackTimer = setTimeout(()=>{ el.style.display='none' }, duration || 5000)
+}
+
+// When user returns to the tab after visiting Ko-fi — show a thank-you nudge
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState !== 'visible') return
+  const tip = window._tipPending
+  if(!tip) return
+  window._tipPending = null
+  track('tip_return', { event_category:'tip_jar', event_label:tip.label, value:tip.amount })
+  const isHe = lang === 'he'
+  const msg = isHe
+    ? '✦ תודה שחזרת. אם שלחת — תודה מכל הלב. אם לא, אפשר תמיד אחר כך.'
+    : '✦ Thanks for coming back. If you tipped — it means everything. If not, no pressure, ever.'
+  showTipFeedback(msg, 7000)
+})
 
 // Tip Jar translations — applied when profile renders
 function translateTipJar(){
