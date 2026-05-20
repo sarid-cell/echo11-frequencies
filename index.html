@@ -3568,7 +3568,7 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- ══ CONSCIOUSNESS JOURNEY CARD ══ -->
-  <div id="consciousness-card" style="margin:0 14px 16px;background:var(--card);border:.5px solid var(--b1);border-radius:18px;overflow:hidden;cursor:pointer" onclick="show('history')">
+  <div id="consciousness-card" style="display:none;margin:0 14px 16px;background:var(--card);border:.5px solid var(--b1);border-radius:18px;overflow:hidden;cursor:pointer" onclick="show('history')">
     <!-- Header -->
     <div style="padding:16px 18px 12px;border-bottom:.5px solid var(--b1);display:flex;align-items:center;justify-content:space-between">
       <div>
@@ -7358,6 +7358,15 @@ syncA11yPos()
 
 <!-- Vercel Speed Insights — deferred -->
 <script defer src="/_vercel/speed-insights/script.js"></script>
+
+<!-- Service Worker registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {})
+    })
+  }
+</script>
 <!-- Supporter confirmation modal -->
 <div id="supporter-modal" role="dialog" aria-modal="true" aria-labelledby="supp-modal-title">
   <div class="supp-sheet">
