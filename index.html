@@ -1741,6 +1741,74 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 
 /* All tip-jar styling lives in .echo-tip-card primitive block (below) */
 
+/* ── Supporter badge ───────────────────────────────────── */
+#prof-supporter-badge{
+  display:none;align-items:center;gap:5px;
+  background:linear-gradient(135deg,rgba(201,169,110,.16),rgba(201,169,110,.07));
+  border:.5px solid rgba(201,169,110,.32);border-radius:9999px;
+  padding:4px 13px;margin-top:6px;
+  font-family:var(--font-sans);font-size:10px;font-weight:400;
+  letter-spacing:.15em;color:var(--echo-gold);
+}
+#prof-supporter-badge.visible{display:inline-flex}
+
+/* ── Supporter confirmation modal ──────────────────────── */
+#supporter-modal{
+  display:none;position:fixed;inset:0;z-index:10000;
+  align-items:flex-end;justify-content:center;
+  background:rgba(0,0,0,.48);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+#supporter-modal.open{display:flex}
+.supp-sheet{
+  background:var(--bg);border-radius:24px 24px 0 0;
+  padding:32px 28px 48px;width:100%;max-width:480px;
+  text-align:center;animation:supp-up .3s ease;
+}
+@keyframes supp-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.supp-icon{font-size:30px;margin-bottom:16px}
+.supp-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:22px;font-weight:200;color:var(--t1);margin-bottom:8px;
+}
+.supp-sub{
+  font-family:var(--font-sans);font-size:12px;font-weight:300;
+  color:var(--t3);letter-spacing:.08em;margin-bottom:28px;line-height:1.65;
+}
+.supp-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.supp-yes{
+  background:linear-gradient(135deg,#c9a96e,#a07840);color:#fff;border:none;
+  border-radius:9999px;padding:12px 28px;
+  font-family:var(--font-sans);font-size:12px;font-weight:400;
+  letter-spacing:.12em;cursor:pointer;
+}
+.supp-no{
+  background:none;color:var(--t3);border:.5px solid var(--b1);
+  border-radius:9999px;padding:12px 22px;
+  font-family:var(--font-sans);font-size:12px;font-weight:300;
+  letter-spacing:.1em;cursor:pointer;
+}
+
+/* ── Supporter tip-card state ──────────────────────────── */
+.echo-tip-card.is-supported .echo-tip-tiers,
+.echo-tip-card.is-supported .echo-tip-divider,
+.echo-tip-card.is-supported .echo-tip-explain,
+.echo-tip-card.is-supported .echo-tip-social,
+.echo-tip-card.is-supported #prof-tip-secure,
+.echo-tip-card.is-supported #vis-tip-secure,
+.echo-tip-card.is-supported #prof-tip-hint{display:none!important}
+.echo-supporter-thanks{display:none;text-align:center;padding:14px 0 6px}
+.echo-tip-card.is-supported .echo-supporter-thanks{display:block}
+.supp-thanks-icon{font-size:24px;margin-bottom:10px}
+.supp-thanks-text{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:20px;font-weight:200;color:var(--echo-gold);margin-bottom:5px;
+}
+.supp-thanks-date{
+  font-family:var(--font-sans);font-size:11px;font-weight:300;
+  color:var(--t3);letter-spacing:.1em;
+}
+
 /* ══════════════════════════════════════════════════════════
    HOME PAGE → compact one-line footer (legal + protocol + Aa)
 ══════════════════════════════════════════════════════════ */
@@ -4038,6 +4106,7 @@ button{font-variant-emoji:text}
     <div>
       <div id="prof-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1);margin-bottom:5px;line-height:1">Hi, Beautiful Soul</div>
       <div id="prof-sub" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.16em;text-transform:lowercase">Your quiet space is here</div>
+      <div id="prof-supporter-badge" aria-label="Supporter">✦ Supporter</div>
     </div>
   </div>
 
@@ -4090,6 +4159,11 @@ button{font-variant-emoji:text}
     </div>
     <div class="echo-tip-foot" id="prof-tip-hint" style="opacity:.65;margin-top:6px">
       You'll choose the exact amount on Ko-fi
+    </div>
+    <div class="echo-supporter-thanks">
+      <div class="supp-thanks-icon">✦</div>
+      <div class="supp-thanks-text" id="prof-supp-thanks-title">Thank you, Supporter.</div>
+      <div class="supp-thanks-date" id="prof-supp-thanks-date"></div>
     </div>
   </div>
 
@@ -4329,6 +4403,11 @@ button{font-variant-emoji:text}
       </button>
     </div>
     <div class="echo-tip-foot" id="vis-tip-secure">no account needed · one-time · powered by Ko-fi</div>
+    <div class="echo-supporter-thanks">
+      <div class="supp-thanks-icon">✦</div>
+      <div class="supp-thanks-text">Thank you, Supporter.</div>
+      <div class="supp-thanks-date" id="vis-supp-thanks-date"></div>
+    </div>
   </div>
 
   <!-- Footer -->
@@ -5356,6 +5435,7 @@ function showProfile(){
 
 function renderProfile(){
   const isHe = lang === 'he'
+  checkSupporter()
   const p = loadProfile()
   const sessions = loadSessions()
 
@@ -5705,19 +5785,88 @@ function showTipFeedback(html, duration){
   window._tipFeedbackTimer = setTimeout(()=>{ el.style.display='none' }, duration || 5000)
 }
 
-// When user returns to the tab after visiting Ko-fi — show a thank-you nudge
+// When user returns to the tab after visiting Ko-fi — show supporter confirmation
 document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState !== 'visible') return
   const tip = window._tipPending
   if(!tip) return
   window._tipPending = null
   track('tip_return', { event_category:'tip_jar', event_label:tip.label, value:tip.amount })
-  const isHe = lang === 'he'
-  const msg = isHe
-    ? '✦ תודה שחזרת. אם שלחת — תודה מכל הלב. אם לא, אפשר תמיד אחר כך.'
-    : '✦ Thanks for coming back. If you tipped — it means everything. If not, no pressure, ever.'
-  showTipFeedback(msg, 7000)
+  showSupporterModal(tip)
 })
+
+function showSupporterModal(tip){
+  window._pendingClaim = tip
+  const isHe = lang === 'he'
+  const modal = document.getElementById('supporter-modal')
+  if(!modal) return
+  document.getElementById('supp-modal-title').textContent = isHe ? 'השלמת את התמיכה?' : 'Did you complete your support?'
+  document.getElementById('supp-modal-sub').innerHTML = isHe
+    ? 'אם כן — תודה מכל הלב. זה אומר הכול.<br>נשמח לכבד את זה.'
+    : 'If you did — thank you. It means everything.<br>We\'d love to honour that.'
+  document.getElementById('supp-modal-yes').textContent = isHe ? 'כן, תמכתי ✦' : 'Yes, I did ✦'
+  document.getElementById('supp-modal-no').textContent = isHe ? 'אולי בפעם אחרת' : 'Not this time'
+  modal.classList.add('open')
+}
+
+function dismissSupporterModal(){
+  document.getElementById('supporter-modal')?.classList.remove('open')
+  window._pendingClaim = null
+  const isHe = lang === 'he'
+  showTipFeedback(isHe ? '✦ אין לחץ. תמיד אפשר אחר כך.' : '✦ No pressure. Always welcome later.', 4500)
+}
+
+function claimSupporter(){
+  const tip = window._pendingClaim || {}
+  const supporter = { date: new Date().toISOString(), amount: tip.amount || null }
+  localStorage.setItem('echo11_supporter', JSON.stringify(supporter))
+  window._pendingClaim = null
+  document.getElementById('supporter-modal')?.classList.remove('open')
+  track('supporter_claimed', { event_category:'tip_jar', value: tip.amount || 0 })
+  launchConfetti(0)
+  const isHe = lang === 'he'
+  showTipFeedback(isHe ? '✦ תודה מכל הלב. את/ה חלק מ-echo.11 עכשיו.' : '✦ Thank you. You are part of echo.11 now.', 7000)
+  renderSupporterState()
+}
+
+function checkSupporter(){
+  if(localStorage.getItem('echo11_supporter')) renderSupporterState()
+}
+
+function renderSupporterState(){
+  let supporter
+  try{ supporter = JSON.parse(localStorage.getItem('echo11_supporter')) }catch(e){ return }
+  if(!supporter) return
+  const isHe = lang === 'he'
+
+  // Show badge in profile
+  document.getElementById('prof-supporter-badge')?.classList.add('visible')
+
+  // Mark all tip cards as supported
+  document.querySelectorAll('.echo-tip-card').forEach(c => c.classList.add('is-supported'))
+
+  // Update eyebrow labels
+  const profLbl = document.getElementById('prof-tip-lbl')
+  if(profLbl) profLbl.textContent = isHe ? 'תומכת echo.11' : 'echo.11 Supporter'
+  const visLbl = document.getElementById('vis-tip-lbl')
+  if(visLbl) visLbl.textContent = isHe ? 'תומכת echo.11' : 'echo.11 Supporter'
+
+  // Update thank-you title
+  const title = document.getElementById('prof-supp-thanks-title')
+  if(title) title.textContent = isHe ? 'תודה, תומכת echo.11.' : 'Thank you, Supporter.'
+
+  // Format support date
+  if(supporter.date){
+    const d = new Date(supporter.date)
+    const dateStr = isHe
+      ? d.toLocaleDateString('he-IL', {month:'long', day:'numeric', year:'numeric'})
+      : d.toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})
+    const profDate = document.getElementById('prof-supp-thanks-date')
+    if(profDate) profDate.textContent = isHe ? `תמכת ב-${dateStr}` : `Supporter since ${dateStr}`
+    const visDate = document.getElementById('vis-supp-thanks-date')
+    if(visDate) visDate.textContent = isHe ? `תמכת ב-${dateStr}` : `Supporter since ${dateStr}`
+  }
+}
 
 // Tip Jar translations — applied when profile renders
 function translateTipJar(){
@@ -7209,5 +7358,18 @@ syncA11yPos()
 
 <!-- Vercel Speed Insights — deferred -->
 <script defer src="/_vercel/speed-insights/script.js"></script>
+<!-- Supporter confirmation modal -->
+<div id="supporter-modal" role="dialog" aria-modal="true" aria-labelledby="supp-modal-title">
+  <div class="supp-sheet">
+    <div class="supp-icon">✦</div>
+    <div class="supp-title" id="supp-modal-title">Did you complete your support?</div>
+    <div class="supp-sub" id="supp-modal-sub">If you did — thank you. It means everything.<br>We'd love to honour that.</div>
+    <div class="supp-btns">
+      <button class="supp-yes" id="supp-modal-yes" onclick="claimSupporter()">Yes, I did ✦</button>
+      <button class="supp-no" id="supp-modal-no" onclick="dismissSupporterModal()">Not this time</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
