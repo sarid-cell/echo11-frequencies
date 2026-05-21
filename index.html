@@ -20,8 +20,8 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 
 <!-- ✦ Primary SEO -->
-<meta name="description" content="echo.11 — 22 healing frequencies and binaural beats inspired by the declassified CIA Gateway Experience (1983). Science-backed sound for sleep, focus, healing, and abundance. Headphones recommended. Free to listen."/>
-<meta name="keywords" content="binaural beats, healing frequencies, solfeggio frequencies, brainwave entrainment, CIA gateway experience, monroe institute, sound healing, sleep frequency, focus frequency, alpha wave, theta wave, delta wave, gamma wave, 432hz, 528hz, 741hz, nervous system regulation, meditation app, sound therapy"/>
+<meta name="description" content="echo.11 — Free binaural beats &amp; healing frequencies online. 22 science-backed tones for sleep, focus, anxiety relief &amp; nervous system regulation. Solfeggio 528 Hz, 432 Hz, Schumann 7.83 Hz. No signup. CIA Gateway protocol. Use with headphones."/>
+<meta name="keywords" content="binaural beats, free binaural beats online, healing frequencies, solfeggio frequencies, 528 hz, 432 hz, 963 hz, 396 hz, 174 hz, schumann resonance 7.83 hz, brainwave entrainment, CIA gateway experience, monroe institute, sound healing, sleep frequency, delta waves sleep, theta waves meditation, alpha waves focus, gamma waves, nervous system regulation, anxiety relief sounds, stress relief frequency, vagal tone, parasympathetic nervous system, meditation app, sound therapy, frequency healing, brain waves, healing sounds free"/>
 <meta name="author" content="Shira Sarid"/>
 <meta name="robots" content="index, follow, max-image-preview:large"/>
 <link rel="canonical" href="https://echo11.space/"/>
@@ -58,7 +58,6 @@
 <meta name="twitter:image:alt" content="echo.11 — frequencies"/>
 
 <!-- Icons -->
-<link rel="apple-touch-icon" href="astronaut.jpg"/>
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="shortcut icon" href="/favicon.ico"/>
@@ -66,7 +65,7 @@
 <link rel="manifest" href="/site.webmanifest"/>
 <link rel="manifest" href="manifest.json"/>
 
-<title>echo.11 · frequencies — 22 healing frequencies for sleep, focus, healing & abundance</title>
+<title>echo.11 — Free Binaural Beats &amp; Healing Frequencies | Sleep · Focus · Anxiety Relief</title>
 
 <!-- ═══ Schema.org · Structured Data for AI engines & search ═══ -->
 <script type="application/ld+json">
@@ -3497,7 +3496,7 @@ button{font-variant-emoji:text}
 
     <!-- Parallax image layer -->
     <div class="home-hero-bg" id="hero-bg" style="pointer-events:none">
-      <video id="hero-video" autoplay loop muted playsinline preload="metadata" poster="hero-poster.webp"
+      <video id="hero-video" loop muted playsinline preload="none" poster="hero-poster.webp"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;pointer-events:none">
   <source src="hero.mp4" type="video/mp4"/>
   <img src="img_home.webp" alt="echo.11" width="1170" height="2000" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"/>
@@ -6254,9 +6253,12 @@ function show(id){
   next.style.display='flex'
   requestAnimationFrame(()=>{ next.classList.add('on') })
   document.body.dir=lang==='he'?'rtl':'ltr'
-  // Reset scroll on any new screen
   next.scrollTop = 0
   if(id==='history') setTimeout(buildHistory,50)
+  if(id==='home'){
+    const hv=document.getElementById('hero-video')
+    if(hv && hv.paused && hv.readyState>=2) hv.play().catch(()=>{})
+  }
 }
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
@@ -6880,6 +6882,8 @@ async function _doEnterApp(){
     if(splash) splash.style.display='none';
     try{ renderStreak(); }catch(e){}
     showHome();
+    const hv = document.getElementById('hero-video');
+    if(hv && hv.paused){ hv.load(); hv.play().catch(()=>{}); }
     setTimeout(showOnboarding, 800);
   }, 420);
 }
