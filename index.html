@@ -2598,20 +2598,20 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 .lb-search:focus-within{border-color:var(--b2)}
 .lb-si{background:none;border:none;outline:none;font-family:inherit;font-size:12px;color:var(--t1);flex:1}
 .lb-si::placeholder{color:var(--t4)}
-.lb-grp{display:flex;align-items:center;gap:9px;padding:13px 16px 7px}
-.lb-gl{font-size:10px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;flex-shrink:0}
-.lb-gline{flex:1;height:.5px;background:var(--b2)}.lb-gc{font-size:10px;color:var(--t3)}
-.lb-row{display:flex;align-items:center;gap:13px;padding:12px 16px;border-bottom:.5px solid var(--b1);cursor:pointer;transition:background .15s;position:relative;background:var(--bg);font-family:inherit;width:100%;text-align:left}
-.lb-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--t1);opacity:0;transition:opacity .2s;border-radius:0 1px 1px 0}
+.lb-grp{display:flex;align-items:center;gap:9px;padding:16px 16px 8px}
+.lb-gl{font-size:11px;letter-spacing:.22em;color:var(--echo-gold);text-transform:uppercase;flex-shrink:0;font-weight:500}
+.lb-gline{flex:1;height:.5px;background:var(--echo-gold);opacity:.25}.lb-gc{font-size:10px;color:var(--t4)}
+.lb-row{display:flex;align-items:center;gap:13px;padding:13px 16px;border-bottom:.5px solid var(--b1);cursor:pointer;transition:background .15s;position:relative;background:var(--bg);font-family:inherit;width:100%;text-align:left}
+.lb-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--echo-gold);opacity:0;transition:opacity .2s;border-radius:0 2px 2px 0}
 .lb-row:hover{background:var(--card)}.lb-row:hover::before{opacity:1}
 .lb-row:hover .lb-hv,.lb-row:hover .lb-nm,.lb-row:hover .lb-arr{color:var(--t1)}
-.lb-hc{display:flex;align-items:baseline;gap:2px;min-width:48px}
-.lb-hv{font-size:20px;font-weight:200;color:var(--t3);transition:color .2s}
+.lb-hc{display:flex;align-items:baseline;gap:2px;min-width:52px}
+.lb-hv{font-size:22px;font-weight:200;color:var(--echo-gold);transition:color .2s;opacity:.85}
 .lb-hu{font-size:9px;letter-spacing:.1em;color:var(--t4)}
-.lb-mid{flex:1}.lb-nm{font-size:13px;font-weight:300;color:var(--t2);transition:color .2s;margin-bottom:1px}
-.lb-sb{font-size:9px;letter-spacing:.1em;color:var(--t4)}
+.lb-mid{flex:1}.lb-nm{font-size:14px;font-weight:400;color:var(--t1);transition:color .2s;margin-bottom:2px}
+.lb-sb{font-size:10px;letter-spacing:.06em;color:var(--t3)}
 .lb-r{display:flex;align-items:center;gap:6px}
-.lb-arr{font-size:13px;color:var(--t4);transition:color .2s}
+.lb-arr{font-size:14px;color:var(--t3);transition:color .2s}
 .pl-dot{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pd 2s infinite}
 </style>
 <!-- Vercel Analytics: active on Vercel only -->
@@ -3681,6 +3681,35 @@ button{font-variant-emoji:text}
       <span class="echo-home-foot-dot">·</span>
       <button class="echo-home-foot-aa" onclick="changeFontSize(1)" aria-label="Increase text size">A+</button>
       <button class="echo-home-foot-aa" onclick="changeFontSize(-1)" aria-label="Decrease text size">A−</button>
+    </div>
+    <!-- Social + Support row -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;padding:10px 0 4px">
+      <a href="https://www.instagram.com/shira.sarid/" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'instagram_home'})"
+         aria-label="Instagram" title="Follow on Instagram"
+         style="color:var(--t3);display:flex;align-items:center;transition:color .2s;padding:4px"
+         onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-instagram"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/shirasarid" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'linkedin_home'})"
+         aria-label="LinkedIn" title="Connect on LinkedIn"
+         style="color:var(--t3);display:flex;align-items:center;transition:color .2s;padding:4px"
+         onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-linkedin"/></svg>
+      </a>
+      <a href="https://shirasarid.substack.com/" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'substack_home'})"
+         aria-label="Substack" title="Read on Substack"
+         style="color:var(--t3);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.08em;font-weight:300;display:flex;align-items:center;gap:4px;transition:color .2s;padding:4px;text-decoration:none"
+         onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+      </a>
+      <button onclick="startTip(7)"
+         aria-label="Support echo.11"
+         style="background:none;border:none;color:var(--echo-gold);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.14em;font-weight:300;cursor:pointer;padding:4px 8px;opacity:.75;transition:opacity .2s"
+         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75"
+         id="foot-support-btn">✦ support</button>
     </div>
     <div class="echo-home-foot-copy" id="foot-copy">echo.11 © 2026</div>
   </div>
