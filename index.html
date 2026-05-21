@@ -589,20 +589,25 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   width:40px;height:40px;
   border:none;
   border-radius:var(--r-full);
-  background:linear-gradient(135deg, #2A2520 0%, #1A1612 100%);
+  background:var(--echo-glass-3);
   cursor:pointer;
-  color:var(--echo-ink-1);
+  color:var(--echo-ink-2);
   font-family:var(--font-sans);
   font-size:var(--t-xs);
   font-weight:500;
   letter-spacing:.04em;
   transition:all var(--dur-base) var(--spring-gentle);
+  box-shadow:inset 0 0 0 .5px var(--echo-line-2), 0 2px 8px rgba(0,0,0,.12);
+  flex-shrink:0;
+  overflow:hidden;
+}
+.dark .echo-avatar-btn{
+  background:linear-gradient(135deg, #2A2520 0%, #1A1612 100%);
+  color:var(--echo-ink-1);
   box-shadow:
     inset 0 0 0 .5px rgba(216,197,162,.30),
     inset 0 1px 0 rgba(247,242,228,.08),
     0 2px 8px rgba(0,0,0,.4);
-  flex-shrink:0;
-  overflow:hidden;
 }
 .echo-avatar-btn::before{
   content:'';position:absolute;inset:-1px;border-radius:inherit;
@@ -958,20 +963,28 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 }
 
 /* ── Quick relief card → premium ── */
-.dark #quick-relief-card{
-  background:var(--echo-glass-1) !important;
-  border-color:var(--echo-line-1) !important;
-  border-radius:var(--r-md) !important;
-  backdrop-filter:blur(20px) saturate(140%);
-  -webkit-backdrop-filter:blur(20px) saturate(140%);
-  box-shadow:var(--echo-lift-1);
-  transition:all var(--dur-base) var(--spring-gentle);
+/* Quick Relief card removed from home (redundant with Rescue button) */
+
+/* Home support tier buttons — adapt to light/dark */
+.hst-btn{
+  background:var(--echo-glass-2);
+  border:.5px solid var(--echo-line-1);
+  border-radius:14px;padding:14px 6px;
+  cursor:pointer;font-family:inherit;
+  transition:all .2s;
 }
-.dark #quick-relief-card:hover{
-  border-color:var(--echo-line-2) !important;
-  background:var(--echo-glass-2) !important;
-  box-shadow:var(--echo-lift-2);
-  transform:translateY(-2px);
+.hst-btn:hover{border-color:rgba(201,169,110,.5)!important}
+.dark .hst-btn{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.15);
+}
+.hst-btn-f{
+  background:rgba(201,169,110,.15);
+  border:.5px solid rgba(201,169,110,.55);
+  border-radius:14px;padding:14px 6px;
+  cursor:pointer;font-family:inherit;
+  position:relative;box-shadow:0 0 20px rgba(201,169,110,.12);
+  transition:all .2s;
 }
 
 /* Hero gradient overlay — full-bleed image fades to pure black */
@@ -1777,7 +1790,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .rescue-btn-sub{
   font-family:'DM Sans',sans-serif;
   font-size:12px;font-weight:300;
-  letter-spacing:.12em;color:rgba(245,243,238,.7);
+  letter-spacing:.12em;color:var(--echo-ink-3);
 }
 @keyframes rescueOrbit1{to{transform:rotate(360deg)}}
 @keyframes rescueOrbit2{to{transform:rotate(-360deg)}}
@@ -2320,20 +2333,31 @@ input[type=range]{accent-color:var(--t3);width:100%}
   background:rgba(0,0,0,.40);
   -webkit-backdrop-filter:blur(20px) saturate(160%);
   backdrop-filter:blur(20px) saturate(160%);
-  border-bottom:.5px solid var(--echo-line-1);
+  border-bottom:.5px solid rgba(255,255,255,.10);
   transition:background var(--dur-base) var(--ease-out),
              border-color var(--dur-base) var(--ease-out);
 }
+/* Nav always has dark backdrop — keep all icons/text white regardless of theme */
+.home-nav-sticky .brand-name{color:rgba(255,255,255,.92);font-weight:400;letter-spacing:.14em;font-size:var(--t-sm)}
+.home-nav-sticky .brand-tag{color:rgba(255,255,255,.5);font-weight:300;font-size:var(--t-2xs);letter-spacing:.18em}
+.home-nav-sticky .bb{background:rgba(201,169,110,.9)}
+.home-nav-sticky .bt{background:rgba(255,255,255,.3)}
+.home-nav-sticky .echo-icon-btn{color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.08)}
+.home-nav-sticky .echo-icon-btn:hover{color:#fff;background:rgba(255,255,255,.14)}
+.home-nav-sticky .echo-lang-toggle{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+.home-nav-sticky .echo-lang-opt{color:rgba(255,255,255,.55)}
+.home-nav-sticky .echo-lang-opt.on{background:rgba(255,255,255,.18);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.home-nav-sticky .echo-avatar-btn{background:rgba(255,255,255,.10);color:rgba(255,255,255,.75);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.2)}
 .home-nav-sticky.scrolled{
-  background:rgba(0,0,0,.55);
-  border-bottom-color:var(--echo-line-2);
+  background:rgba(0,0,0,.62);
+  border-bottom-color:rgba(255,255,255,.08);
   box-shadow:0 8px 24px rgba(0,0,0,.4);
 }
 .dark .home-nav-sticky.scrolled{
   background:rgba(0,0,0,.65);
-  border-bottom-color:var(--echo-line-2);
   box-shadow:0 1px 0 rgba(255,255,255,.04), 0 8px 32px rgba(0,0,0,.6);
 }
+/* Dark mode brand overrides (still applicable since .home-nav-sticky covers light) */
 .dark .brand-name{color:var(--echo-ink-1);font-weight:400;letter-spacing:.14em;font-size:var(--t-sm)}
 .dark .brand-tag{color:var(--echo-ink-3);font-weight:300;font-size:var(--t-2xs);letter-spacing:.18em}
 .dark .bb{background:var(--echo-gold);opacity:.95}
@@ -3659,16 +3683,6 @@ button{font-variant-emoji:text}
         <div id="streak-cta-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:2px">view history →</div>
       </div>
     </button>
-    <div id="quick-relief-card" style="margin:0 var(--s-4) var(--s-3);background:var(--card);border:.5px solid var(--b1);border-radius:var(--r-md);padding:var(--s-4) var(--s-4);display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);cursor:pointer" onclick="openQuickRelief()">
-      <div style="flex:1;min-width:0">
-        <div class="echo-eyebrow" style="margin-bottom:var(--s-2)">
-          <svg class="echo-icon sm" style="color:var(--echo-gold)" aria-hidden="true"><use href="#i-zap"/></svg>
-          <span id="quick-lbl">quick relief</span>
-        </div>
-        <div style="font-family:var(--font-serif);font-size:var(--t-md);font-weight:200;color:var(--echo-ink-1);line-height:1.35" id="quick-desc">feeling anxious? 3 minutes of calm.</div>
-      </div>
-      <svg class="echo-icon" style="color:var(--echo-ink-3);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-    </div>
     <!-- ✦ RESCUE — immediate anxiety/stress relief -->
     <div style="margin:0 var(--s-4) var(--s-4)">
       <button class="echo-rescue-btn" onclick="startRescue()" id="rescue-btn" aria-label="Start instant relief session">
@@ -3728,23 +3742,23 @@ button{font-variant-emoji:text}
     <div style="margin:0 var(--s-4) var(--s-5)">
       <div style="background:linear-gradient(180deg,rgba(201,169,110,.11) 0%,rgba(201,169,110,.04) 100%);border:.5px solid rgba(201,169,110,.32);border-radius:20px;padding:22px 20px 18px;text-align:center">
         <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.28em;color:var(--echo-gold);text-transform:uppercase;margin-bottom:10px">✦ support echo.11</div>
-        <div style="font-family:'Spectral',Georgia,serif;font-size:18px;font-weight:300;color:rgba(245,243,238,.88);line-height:1.4;margin-bottom:18px" id="home-support-tagline">echo.11 stays free for everyone.<br>A tip keeps it alive.</div>
+        <div style="font-family:'Spectral',Georgia,serif;font-size:18px;font-weight:300;color:var(--echo-ink-1);line-height:1.4;margin-bottom:18px" id="home-support-tagline">echo.11 stays free for everyone.<br>A tip keeps it alive.</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
-          <button onclick="startTip(5)" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 6px;cursor:pointer;font-family:inherit;transition:all .2s" onmouseover="this.style.borderColor='rgba(201,169,110,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
-            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:rgba(245,243,238,.9);letter-spacing:-.02em;line-height:1">$5</div>
-            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:4px">coffee</div>
+          <button onclick="startTip(5)" class="hst-btn">
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:var(--echo-ink-1);letter-spacing:-.02em;line-height:1">$5</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:var(--echo-ink-3);text-transform:uppercase;margin-top:4px">coffee</div>
           </button>
-          <button onclick="startTip(7)" style="background:linear-gradient(180deg,rgba(201,169,110,.2) 0%,rgba(201,169,110,.07) 100%);border:.5px solid rgba(201,169,110,.55);border-radius:14px;padding:14px 6px;cursor:pointer;font-family:inherit;position:relative;box-shadow:0 0 20px rgba(201,169,110,.12);transition:all .2s">
+          <button onclick="startTip(7)" class="hst-btn-f">
             <div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--echo-gold);border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:8px;font-weight:600;letter-spacing:.1em;color:#1a1612;padding:2px 9px;text-transform:uppercase;white-space:nowrap" id="home-support-popular">popular</div>
-            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:rgba(245,243,238,.95);letter-spacing:-.02em;line-height:1">$7</div>
-            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:4px" id="home-support-7lbl">a week</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:var(--echo-ink-1);letter-spacing:-.02em;line-height:1">$7</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:var(--echo-ink-3);text-transform:uppercase;margin-top:4px" id="home-support-7lbl">a week</div>
           </button>
-          <button onclick="startTip(14)" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 6px;cursor:pointer;font-family:inherit;transition:all .2s" onmouseover="this.style.borderColor='rgba(201,169,110,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
-            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:rgba(245,243,238,.9);letter-spacing:-.02em;line-height:1">$14</div>
-            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:4px">a month</div>
+          <button onclick="startTip(14)" class="hst-btn">
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:var(--echo-ink-1);letter-spacing:-.02em;line-height:1">$14</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:var(--echo-ink-3);text-transform:uppercase;margin-top:4px">a month</div>
           </button>
         </div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.08em;color:rgba(245,243,238,.38)">no account needed · one-time · via Ko-fi</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.08em;color:var(--echo-ink-4)">no account needed · one-time · via Ko-fi</div>
       </div>
     </div>
 
@@ -6275,7 +6289,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const selectors = [
       '#home .streak-card',
       '#home #consciousness-card',
-      '#home #quick-relief-card',
       '#home #lib-link',
       '#home #binaural-strip',
       '#home .home-today-block',
