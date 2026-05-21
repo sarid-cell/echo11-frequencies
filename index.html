@@ -58,7 +58,6 @@
 <meta name="twitter:image:alt" content="echo.11 — frequencies"/>
 
 <!-- Icons -->
-<link rel="apple-touch-icon" href="astronaut.jpg"/>
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="shortcut icon" href="/favicon.ico"/>
@@ -3497,7 +3496,7 @@ button{font-variant-emoji:text}
 
     <!-- Parallax image layer -->
     <div class="home-hero-bg" id="hero-bg" style="pointer-events:none">
-      <video id="hero-video" autoplay loop muted playsinline preload="metadata" poster="hero-poster.webp"
+      <video id="hero-video" loop muted playsinline preload="none" poster="hero-poster.webp"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;pointer-events:none">
   <source src="hero.mp4" type="video/mp4"/>
   <img src="img_home.webp" alt="echo.11" width="1170" height="2000" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"/>
@@ -6254,9 +6253,12 @@ function show(id){
   next.style.display='flex'
   requestAnimationFrame(()=>{ next.classList.add('on') })
   document.body.dir=lang==='he'?'rtl':'ltr'
-  // Reset scroll on any new screen
   next.scrollTop = 0
   if(id==='history') setTimeout(buildHistory,50)
+  if(id==='home'){
+    const hv=document.getElementById('hero-video')
+    if(hv && hv.paused && hv.readyState>=2) hv.play().catch(()=>{})
+  }
 }
 function openPlayer(fid){
   const idx=FREQS.findIndex(f=>f.id===fid)
@@ -6880,6 +6882,8 @@ async function _doEnterApp(){
     if(splash) splash.style.display='none';
     try{ renderStreak(); }catch(e){}
     showHome();
+    const hv = document.getElementById('hero-video');
+    if(hv && hv.paused){ hv.load(); hv.play().catch(()=>{}); }
     setTimeout(showOnboarding, 800);
   }, 420);
 }
