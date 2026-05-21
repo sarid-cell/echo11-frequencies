@@ -1740,46 +1740,49 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 
 /* ─── ✦ Rescue Button ─────────────────────────────────── */
 .echo-rescue-btn{
-  width:100%;display:flex;align-items:center;gap:14px;
-  padding:14px 16px;
-  background:transparent;
-  border:1px solid rgba(201,169,110,.3);
-  border-radius:14px;
+  width:100%;display:flex;align-items:center;gap:16px;
+  padding:20px 20px;
+  background:linear-gradient(135deg,rgba(201,169,110,.14) 0%,rgba(201,169,110,.04) 100%);
+  border:1px solid rgba(201,169,110,.5);
+  border-radius:16px;
   cursor:pointer;font-family:inherit;text-align:left;
   position:relative;overflow:hidden;
+  box-shadow:0 4px 24px rgba(201,169,110,.12),0 0 0 1px rgba(201,169,110,.06);
   transition:border-color .25s,background .25s,box-shadow .25s;
 }
 .echo-rescue-btn::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at left,rgba(201,169,110,.07) 0%,transparent 70%);
+  background:radial-gradient(ellipse 60% 80% at 20% 50%,rgba(201,169,110,.12) 0%,transparent 70%);
   pointer-events:none;
 }
 .echo-rescue-btn:hover,.echo-rescue-btn:focus{
-  border-color:rgba(201,169,110,.6);
-  background:rgba(201,169,110,.05);
-  box-shadow:0 0 20px rgba(201,169,110,.08);
+  border-color:rgba(201,169,110,.75);
+  background:linear-gradient(135deg,rgba(201,169,110,.22) 0%,rgba(201,169,110,.08) 100%);
+  box-shadow:0 6px 32px rgba(201,169,110,.22),0 0 0 1px rgba(201,169,110,.12);
 }
 .rescue-btn-dot{
-  width:8px;height:8px;border-radius:50%;
+  width:12px;height:12px;border-radius:50%;
   background:var(--echo-gold);flex-shrink:0;
-  box-shadow:0 0 8px rgba(201,169,110,.6);
+  box-shadow:0 0 12px rgba(201,169,110,.8),0 0 24px rgba(201,169,110,.4);
   animation:rescuePulse 2s ease-in-out infinite;
 }
 @keyframes rescuePulse{
-  0%,100%{opacity:1;box-shadow:0 0 8px rgba(201,169,110,.6)}
-  50%{opacity:.55;box-shadow:0 0 16px rgba(201,169,110,.3)}
+  0%,100%{opacity:1;box-shadow:0 0 12px rgba(201,169,110,.8),0 0 24px rgba(201,169,110,.4)}
+  50%{opacity:.6;box-shadow:0 0 6px rgba(201,169,110,.5),0 0 12px rgba(201,169,110,.2)}
 }
 .rescue-btn-title{
   font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:17px;font-weight:300;
-  color:var(--echo-gold);
-  letter-spacing:.01em;line-height:1.2;margin-bottom:3px;
+  font-size:21px;font-weight:300;
+  color:rgba(201,169,110,1);
+  letter-spacing:.01em;line-height:1.2;margin-bottom:4px;
 }
 .rescue-btn-sub{
   font-family:'DM Sans',sans-serif;
-  font-size:10px;font-weight:300;
-  letter-spacing:.14em;color:var(--t3);
+  font-size:12px;font-weight:300;
+  letter-spacing:.12em;color:rgba(245,243,238,.7);
 }
+@keyframes rescueOrbit1{to{transform:rotate(360deg)}}
+@keyframes rescueOrbit2{to{transform:rotate(-360deg)}}
 /* All tip-jar styling lives in .echo-tip-card primitive block (below) */
 
 /* ── Supporter badge ───────────────────────────────────── */
@@ -3721,6 +3724,30 @@ button{font-variant-emoji:text}
         </div>
         <svg class="echo-icon" style="color:var(--echo-gold);flex-shrink:0;width:16px;height:16px" aria-hidden="true"><use href="#i-arrow-right"/></svg>
       </button>
+    </div>
+
+    <!-- ✦ SUPPORT CARD — visible tiers on home screen -->
+    <div style="margin:0 var(--s-4) var(--s-5)">
+      <div style="background:linear-gradient(180deg,rgba(201,169,110,.11) 0%,rgba(201,169,110,.04) 100%);border:.5px solid rgba(201,169,110,.32);border-radius:20px;padding:22px 20px 18px;text-align:center">
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.28em;color:var(--echo-gold);text-transform:uppercase;margin-bottom:10px">✦ support echo.11</div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:300;color:rgba(245,243,238,.88);line-height:1.4;margin-bottom:18px" id="home-support-tagline">echo.11 stays free for everyone.<br>A tip keeps it alive.</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+          <button onclick="startTip(5)" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 6px;cursor:pointer;font-family:inherit;transition:all .2s" onmouseover="this.style.borderColor='rgba(201,169,110,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:rgba(245,243,238,.9);letter-spacing:-.02em;line-height:1">$5</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:4px">coffee</div>
+          </button>
+          <button onclick="startTip(7)" style="background:linear-gradient(180deg,rgba(201,169,110,.2) 0%,rgba(201,169,110,.07) 100%);border:.5px solid rgba(201,169,110,.55);border-radius:14px;padding:14px 6px;cursor:pointer;font-family:inherit;position:relative;box-shadow:0 0 20px rgba(201,169,110,.12);transition:all .2s">
+            <div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--echo-gold);border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:8px;font-weight:600;letter-spacing:.1em;color:#1a1612;padding:2px 9px;text-transform:uppercase;white-space:nowrap" id="home-support-popular">popular</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:rgba(245,243,238,.95);letter-spacing:-.02em;line-height:1">$7</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:4px" id="home-support-7lbl">a week</div>
+          </button>
+          <button onclick="startTip(14)" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 6px;cursor:pointer;font-family:inherit;transition:all .2s" onmouseover="this.style.borderColor='rgba(201,169,110,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.15)'">
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:rgba(245,243,238,.9);letter-spacing:-.02em;line-height:1">$14</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:4px">a month</div>
+          </button>
+        </div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.08em;color:rgba(245,243,238,.38)">no account needed · one-time · via Ko-fi</div>
+      </div>
     </div>
 
     <!-- Footer — single compact line: legal · accessibility · protocol · text-size -->
@@ -6093,6 +6120,10 @@ function translateTipJar(){
     'prof-gift2-meta':   { en:'free download',                                     he:'הורדה חינמית' },
     'prof-gift3-meta':   { en:'free download',                                     he:'הורדה חינמית' },
     'prof-gifts-foot':   { en:'If one moved you — the tip jar is above. ↑',        he:'אם משהו הזיז משהו — צנצנת הטיפים למעלה. ↑' },
+    /* Home support card */
+    'home-support-tagline': { en:'echo.11 stays free for everyone.<br>A tip keeps it alive.', he:'echo.11 נשאר חינמי לכולם.<br>טיפ אחד שומר אותו חי.' },
+    'home-support-popular': { en:'popular',                                         he:'נבחר' },
+    'home-support-7lbl':    { en:'a week',                                          he:'שבוע' },
     /* Home CTA → Visions */
     'visions-cta-lbl':   { en:'Visions · Free',                                    he:'חזיונות · חינם' },
     'visions-cta-title': { en:'Postcards from inner deserts.',                     he:'גלויות מהמדבר הפנימי.' },
@@ -6113,9 +6144,13 @@ function translateTipJar(){
     'vis-tip-secure':    { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
     'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
+  const htmlIds = new Set(['home-support-tagline'])
   Object.keys(map).forEach(id => {
     const el = document.getElementById(id)
-    if(el) el.textContent = isHe ? map[id].he : map[id].en
+    if(!el) return
+    const val = isHe ? map[id].he : map[id].en
+    if(htmlIds.has(id)) el.innerHTML = val
+    else el.textContent = val
   })
   const subs = { 5: { en:'a coffee', he:'קפה' }, 7: { en:'a week', he:'שבוע' }, 14: { en:'a month', he:'חודש' } }
   document.querySelectorAll('[data-tip-sub]').forEach(el => {
@@ -7582,34 +7617,41 @@ syncA11yPos()
 <!-- ✦ RESCUE OVERLAY — fullscreen breathing guide -->
 <div id="rescue-overlay" role="dialog" aria-modal="true" aria-label="Relief session" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(6,5,4,.97);flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,24px) 24px env(safe-area-inset-bottom,32px)">
 
-  <!-- Top bar -->
-  <div style="position:absolute;top:env(safe-area-inset-top,24px);left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:16px 22px">
-    <div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:rgba(201,169,110,.6);text-transform:uppercase" id="rescue-freq-lbl">θ theta · 6 Hz</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;color:rgba(245,243,238,.45);margin-top:2px" id="rescue-timer-lbl">2:00</div>
+  <!-- Top bar: freq + timer centered -->
+  <div style="position:absolute;top:env(safe-area-inset-top,20px);left:0;right:0;display:flex;align-items:center;justify-content:center;gap:16px;padding:20px 22px">
+    <div style="font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.22em;color:rgba(201,169,110,.85);text-transform:uppercase" id="rescue-freq-lbl">θ theta · 6 Hz</div>
+    <div style="width:3px;height:3px;border-radius:50%;background:rgba(201,169,110,.4);flex-shrink:0"></div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:17px;letter-spacing:.1em;font-weight:300;color:rgba(245,243,238,.9)" id="rescue-timer-lbl">2:00</div>
+  </div>
+
+  <!-- 3D Breathing animation -->
+  <div style="position:relative;width:280px;height:280px;display:flex;align-items:center;justify-content:center;perspective:600px">
+    <div style="position:absolute;width:280px;height:280px;display:flex;align-items:center;justify-content:center;transform:rotateX(28deg);transform-style:preserve-3d">
+      <!-- Outer slow orbit ring -->
+      <div style="position:absolute;border-radius:50%;width:256px;height:256px;border:1px solid rgba(201,169,110,.13);animation:rescueOrbit1 14s linear infinite"></div>
+      <!-- Middle counter-orbit ring -->
+      <div style="position:absolute;border-radius:50%;width:200px;height:200px;border:1px dashed rgba(201,169,110,.2);animation:rescueOrbit2 8s linear infinite"></div>
+      <!-- Outer pulse ring (JS-controlled) -->
+      <div id="rescue-pulse" style="position:absolute;border-radius:50%;background:transparent;border:1.5px solid rgba(201,169,110,.2);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1),opacity 4s ease,border-color 4s ease"></div>
+      <!-- Inner solid glow ring (JS-controlled) -->
+      <div id="rescue-ring" style="position:relative;z-index:1;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.32) 0%,rgba(201,169,110,.1) 55%,transparent 100%);border:1.5px solid rgba(201,169,110,.75);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;box-shadow:0 0 28px rgba(201,169,110,.5),0 0 56px rgba(201,169,110,.25),inset 0 0 18px rgba(201,169,110,.18)">
+        <div id="rescue-count" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:42px;font-weight:200;color:rgba(201,169,110,1);line-height:1;min-width:42px;text-align:center;text-shadow:0 0 20px rgba(201,169,110,.9)"></div>
+      </div>
     </div>
-    <button onclick="stopRescue()" aria-label="Stop rescue session"
-      style="background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.12);border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.14em;color:rgba(245,243,238,.55);cursor:pointer;padding:7px 16px;transition:all .2s"
-      id="rescue-stop-btn">✕ stop</button>
   </div>
 
-  <!-- Breathing ring -->
-  <div style="position:relative;width:220px;height:220px;display:flex;align-items:center;justify-content:center">
-    <!-- Outer pulse ring -->
-    <div id="rescue-pulse" style="position:absolute;border-radius:50%;background:transparent;border:1.5px solid rgba(201,169,110,.2);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1),opacity 4s ease,border-color 4s ease"></div>
-    <!-- Inner solid circle -->
-    <div id="rescue-ring" style="position:relative;z-index:1;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.22) 0%,rgba(201,169,110,.06) 70%,transparent 100%);border:1.5px solid rgba(201,169,110,.55);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(201,169,110,.1)">
-      <div id="rescue-count" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:200;color:rgba(201,169,110,.9);line-height:1;min-width:32px;text-align:center"></div>
-    </div>
+  <!-- Phase label — large and readable -->
+  <div id="rescue-phase" style="font-family:'DM Sans',sans-serif;font-size:28px;font-weight:200;letter-spacing:.3em;color:rgba(245,243,238,.9);text-transform:uppercase;margin-top:32px;height:42px;transition:opacity .4s">breathe</div>
+
+  <!-- Science note — readable size and contrast -->
+  <div style="text-align:center;max-width:300px;margin-top:14px">
+    <div id="rescue-note" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:200;font-style:italic;color:rgba(245,243,238,.65);line-height:1.65">4-7-8 breathing activates the parasympathetic nervous system.<br>Your heart rate will slow within 2 cycles.</div>
   </div>
 
-  <!-- Phase label -->
-  <div id="rescue-phase" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.32em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:28px;height:16px;transition:opacity .4s">breathe</div>
-
-  <!-- Science note -->
-  <div style="position:absolute;bottom:calc(env(safe-area-inset-bottom,32px) + 24px);text-align:center;max-width:280px">
-    <div id="rescue-note" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:rgba(245,243,238,.3);line-height:1.55">4-7-8 breathing activates the parasympathetic nervous system.<br>Your heart rate will slow within 2 cycles.</div>
-  </div>
+  <!-- Stop button — large, centered, bottom -->
+  <button onclick="stopRescue()" aria-label="Stop rescue session"
+    id="rescue-stop-btn"
+    style="position:absolute;bottom:calc(env(safe-area-inset-bottom,32px) + 20px);left:50%;transform:translateX(-50%);background:rgba(201,169,110,.14);border:1.5px solid rgba(201,169,110,.55);border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:15px;letter-spacing:.2em;color:rgba(245,243,238,.92);cursor:pointer;padding:15px 52px;min-width:190px;text-align:center;transition:all .25s;white-space:nowrap">✕ stop</button>
 
 </div>
 
