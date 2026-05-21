@@ -1,8 +1,6 @@
-const CACHE = 'echo11-v1'
+const CACHE = 'echo11-v2'
 
 const PRECACHE = [
-  '/',
-  '/index.html',
   '/glassmorphism-overrides.css',
   '/manifest.json',
   '/favicon.svg',
@@ -38,6 +36,23 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url)
   if (url.pathname.startsWith('/api/')) return
 
+  // HTML navigation — always network-first so new deploys reach users immediately
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then(res => {
+          if (res && res.status === 200) {
+            const clone = res.clone()
+            caches.open(CACHE).then(c => c.put(e.request, clone))
+          }
+          return res
+        })
+        .catch(() => caches.match('/index.html'))
+    )
+    return
+  }
+
+  // Static assets — cache-first
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached
@@ -46,8 +61,6 @@ self.addEventListener('fetch', e => {
         const clone = res.clone()
         caches.open(CACHE).then(c => c.put(e.request, clone))
         return res
-      }).catch(() => {
-        if (e.request.mode === 'navigate') return caches.match('/index.html')
       })
     })
   )
