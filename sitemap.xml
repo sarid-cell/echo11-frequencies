@@ -5,7 +5,7 @@
 
   <url>
     <loc>https://echo11.space/</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-05-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://echo11.space/"/>
@@ -20,7 +20,7 @@
 
   <url>
     <loc>https://echo11.space/?lang=he</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-05-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://echo11.space/"/>
@@ -30,7 +30,7 @@
 
   <url>
     <loc>https://echo11.space/legal.html</loc>
-    <lastmod>2026-05-19</lastmod>
+    <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
