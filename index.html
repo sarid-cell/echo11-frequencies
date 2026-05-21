@@ -1738,6 +1738,48 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   color:var(--echo-ink-1) !important;
 }
 
+/* ─── ✦ Rescue Button ─────────────────────────────────── */
+.echo-rescue-btn{
+  width:100%;display:flex;align-items:center;gap:14px;
+  padding:14px 16px;
+  background:transparent;
+  border:1px solid rgba(201,169,110,.3);
+  border-radius:14px;
+  cursor:pointer;font-family:inherit;text-align:left;
+  position:relative;overflow:hidden;
+  transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.echo-rescue-btn::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at left,rgba(201,169,110,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.echo-rescue-btn:hover,.echo-rescue-btn:focus{
+  border-color:rgba(201,169,110,.6);
+  background:rgba(201,169,110,.05);
+  box-shadow:0 0 20px rgba(201,169,110,.08);
+}
+.rescue-btn-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--echo-gold);flex-shrink:0;
+  box-shadow:0 0 8px rgba(201,169,110,.6);
+  animation:rescuePulse 2s ease-in-out infinite;
+}
+@keyframes rescuePulse{
+  0%,100%{opacity:1;box-shadow:0 0 8px rgba(201,169,110,.6)}
+  50%{opacity:.55;box-shadow:0 0 16px rgba(201,169,110,.3)}
+}
+.rescue-btn-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:17px;font-weight:300;
+  color:var(--echo-gold);
+  letter-spacing:.01em;line-height:1.2;margin-bottom:3px;
+}
+.rescue-btn-sub{
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;font-weight:300;
+  letter-spacing:.14em;color:var(--t3);
+}
 /* All tip-jar styling lives in .echo-tip-card primitive block (below) */
 
 /* ── Supporter badge ───────────────────────────────────── */
@@ -3626,6 +3668,18 @@ button{font-variant-emoji:text}
       </div>
       <svg class="echo-icon" style="color:var(--echo-ink-3);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
     </div>
+    <!-- ✦ RESCUE — immediate anxiety/stress relief -->
+    <div style="margin:0 var(--s-4) var(--s-4)">
+      <button class="echo-rescue-btn" onclick="startRescue()" id="rescue-btn" aria-label="Start instant relief session">
+        <span class="rescue-btn-dot" aria-hidden="true"></span>
+        <div style="flex:1;text-align:left">
+          <div class="rescue-btn-title" id="rescue-btn-title">Need relief right now?</div>
+          <div class="rescue-btn-sub" id="rescue-btn-sub">2 min · theta · 4-7-8 breathing</div>
+        </div>
+        <svg class="echo-icon" style="color:var(--echo-gold);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+      </button>
+    </div>
+
     <!-- Library CTA — gold-edge premium card -->
     <div style="margin:var(--s-2) var(--s-4) var(--s-5)">
       <button id="lib-link" onclick="showLibrary()" style="
@@ -5741,6 +5795,136 @@ function signOutGently(){
 }
 
 // ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// RESCUE — immediate anxiety/stress relief
+// ─────────────────────────────────────────────────────────────
+let _rescueActive = false
+let _rescueTimerIv = null
+
+function startRescue(){
+  const f = FREQS.find(x => x.id === 'theta')
+  if(!f) return
+  _rescueActive = true
+
+  // Resume AudioContext + play theta binaural
+  const ctx = getCtx()
+  if(ctx.state === 'suspended') ctx.resume().then(()=>{ audioPlay(f) }).catch(()=>{ audioPlay(f) })
+  else audioPlay(f)
+  playing = true
+
+  // Translate labels
+  const isHe = lang === 'he'
+  const overlay = document.getElementById('rescue-overlay')
+  document.getElementById('rescue-freq-lbl').textContent = isHe ? 'θ תטא · 6 Hz · רגיעה עמוקה' : 'θ theta · 6 Hz · deep calm'
+  document.getElementById('rescue-stop-btn').textContent = isHe ? '✕ עצור' : '✕ stop'
+  document.getElementById('rescue-note').innerHTML = isHe
+    ? 'נשימת 4-7-8 מפעילה את מערכת הפאראסימפתטית.<br>קצב הלב יאט תוך 2 מחזורים.'
+    : '4-7-8 breathing activates the parasympathetic nervous system.<br>Your heart rate will slow within 2 cycles.'
+  document.getElementById('rescue-btn-title').textContent = isHe ? 'זקוק/ה לעזרה עכשיו?' : 'Need relief right now?'
+  document.getElementById('rescue-btn-sub').textContent = isHe ? '2 דק׳ · תטא · נשימת 4-7-8' : '2 min · theta · 4-7-8 breathing'
+
+  // Show overlay
+  overlay.style.display = 'flex'
+  track('rescue_start', { event_category:'rescue', freq:'theta' })
+
+  // 2-minute countdown
+  let secs = 120
+  _rescueTimerIv = setInterval(()=>{
+    secs--
+    if(!_rescueActive || secs <= 0){ stopRescue(); return }
+    const m = Math.floor(secs/60), s = secs%60
+    const el = document.getElementById('rescue-timer-lbl')
+    if(el) el.textContent = `${m}:${s.toString().padStart(2,'0')}`
+  }, 1000)
+
+  // Start breathing cycle
+  _runBreathCycle()
+}
+
+function _runBreathCycle(){
+  if(!_rescueActive) return
+  const ring = document.getElementById('rescue-ring')
+  const pulse = document.getElementById('rescue-pulse')
+  const phase = document.getElementById('rescue-phase')
+  const count = document.getElementById('rescue-count')
+  if(!ring || !phase) return
+  const isHe = lang === 'he'
+
+  // ── INHALE 4s ──
+  phase.textContent = isHe ? 'שאפ/י' : 'inhale'
+  count.textContent = '4'
+  ring.style.transition = 'width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1)'
+  pulse.style.transition = 'width 4s ease,height 4s ease,opacity 4s ease,border-color 4s ease'
+  ring.style.width = '160px'; ring.style.height = '160px'
+  pulse.style.width = '200px'; pulse.style.height = '200px'; pulse.style.opacity = '1'
+  pulse.style.borderColor = 'rgba(201,169,110,.35)'
+
+  let t = 3
+  const inhaleCount = setInterval(()=>{
+    if(!_rescueActive){ clearInterval(inhaleCount); return }
+    count.textContent = t > 0 ? t : ''
+    t--
+    if(t < 0) clearInterval(inhaleCount)
+  }, 1000)
+
+  setTimeout(()=>{
+    if(!_rescueActive) return
+    // ── HOLD 7s ──
+    clearInterval(inhaleCount)
+    phase.textContent = isHe ? 'החזק/י' : 'hold'
+    ring.style.transition = 'none'; pulse.style.transition = 'none'
+    count.textContent = '7'
+    let h = 6
+    const holdCount = setInterval(()=>{
+      if(!_rescueActive){ clearInterval(holdCount); return }
+      count.textContent = h > 0 ? h : ''
+      h--
+      if(h < 0) clearInterval(holdCount)
+    }, 1000)
+
+    setTimeout(()=>{
+      if(!_rescueActive) return
+      clearInterval(holdCount)
+      // ── EXHALE 8s ──
+      phase.textContent = isHe ? 'נשוף/י' : 'exhale'
+      count.textContent = '8'
+      ring.style.transition = 'width 8s cubic-bezier(.4,0,.2,1),height 8s cubic-bezier(.4,0,.2,1)'
+      pulse.style.transition = 'width 8s ease,height 8s ease,opacity 8s ease,border-color 8s ease'
+      ring.style.width = '80px'; ring.style.height = '80px'
+      pulse.style.width = '80px'; pulse.style.height = '80px'
+      pulse.style.opacity = '0'; pulse.style.borderColor = 'rgba(201,169,110,.1)'
+      let e = 7
+      const exhaleCount = setInterval(()=>{
+        if(!_rescueActive){ clearInterval(exhaleCount); return }
+        count.textContent = e > 0 ? e : ''
+        e--
+        if(e < 0) clearInterval(exhaleCount)
+      }, 1000)
+
+      setTimeout(()=>{
+        clearInterval(exhaleCount)
+        _runBreathCycle()  // next cycle
+      }, 8000)
+    }, 7000)
+  }, 4000)
+}
+
+function stopRescue(){
+  _rescueActive = false
+  clearInterval(_rescueTimerIv)
+  audioStopId('theta')
+  playing = false
+  const overlay = document.getElementById('rescue-overlay')
+  if(overlay){ overlay.style.display = 'none' }
+  // Reset ring for next time
+  const ring = document.getElementById('rescue-ring')
+  const pulse = document.getElementById('rescue-pulse')
+  if(ring){ ring.style.transition='none'; ring.style.width='80px'; ring.style.height='80px' }
+  if(pulse){ pulse.style.transition='none'; pulse.style.width='80px'; pulse.style.height='80px'; pulse.style.opacity='0' }
+  track('rescue_stop', { event_category:'rescue' })
+}
+
+// ─────────────────────────────────────────────────────────────
 // Tip Jar — opens Ko-fi in a new tab
 // ─────────────────────────────────────────────────────────────
 const KOFI_URL = 'https://ko-fi.com/echo11'
@@ -7395,6 +7579,40 @@ syncA11yPos()
     })
   }
 </script>
+<!-- ✦ RESCUE OVERLAY — fullscreen breathing guide -->
+<div id="rescue-overlay" role="dialog" aria-modal="true" aria-label="Relief session" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(6,5,4,.97);flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,24px) 24px env(safe-area-inset-bottom,32px)">
+
+  <!-- Top bar -->
+  <div style="position:absolute;top:env(safe-area-inset-top,24px);left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:16px 22px">
+    <div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:rgba(201,169,110,.6);text-transform:uppercase" id="rescue-freq-lbl">θ theta · 6 Hz</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;color:rgba(245,243,238,.45);margin-top:2px" id="rescue-timer-lbl">2:00</div>
+    </div>
+    <button onclick="stopRescue()" aria-label="Stop rescue session"
+      style="background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.12);border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.14em;color:rgba(245,243,238,.55);cursor:pointer;padding:7px 16px;transition:all .2s"
+      id="rescue-stop-btn">✕ stop</button>
+  </div>
+
+  <!-- Breathing ring -->
+  <div style="position:relative;width:220px;height:220px;display:flex;align-items:center;justify-content:center">
+    <!-- Outer pulse ring -->
+    <div id="rescue-pulse" style="position:absolute;border-radius:50%;background:transparent;border:1.5px solid rgba(201,169,110,.2);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1),opacity 4s ease,border-color 4s ease"></div>
+    <!-- Inner solid circle -->
+    <div id="rescue-ring" style="position:relative;z-index:1;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.22) 0%,rgba(201,169,110,.06) 70%,transparent 100%);border:1.5px solid rgba(201,169,110,.55);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(201,169,110,.1)">
+      <div id="rescue-count" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:200;color:rgba(201,169,110,.9);line-height:1;min-width:32px;text-align:center"></div>
+    </div>
+  </div>
+
+  <!-- Phase label -->
+  <div id="rescue-phase" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.32em;color:rgba(245,243,238,.4);text-transform:uppercase;margin-top:28px;height:16px;transition:opacity .4s">breathe</div>
+
+  <!-- Science note -->
+  <div style="position:absolute;bottom:calc(env(safe-area-inset-bottom,32px) + 24px);text-align:center;max-width:280px">
+    <div id="rescue-note" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:rgba(245,243,238,.3);line-height:1.55">4-7-8 breathing activates the parasympathetic nervous system.<br>Your heart rate will slow within 2 cycles.</div>
+  </div>
+
+</div>
+
 <!-- Supporter confirmation modal -->
 <div id="supporter-modal" role="dialog" aria-modal="true" aria-labelledby="supp-modal-title">
   <div class="supp-sheet">
