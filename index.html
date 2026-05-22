@@ -3161,6 +3161,8 @@ button{font-variant-emoji:text}
   color:rgba(245,243,238,.5);
   margin-bottom:8px;letter-spacing:.02em;
 }
+.pr-story-link{display:inline-block;margin-top:14px;font-size:12px;letter-spacing:.09em;color:rgba(245,243,238,.42);text-decoration:none;border-bottom:.5px solid rgba(245,243,238,.18);padding-bottom:2px;transition:color .25s,border-color .25s;}
+.pr-story-link:hover{color:rgba(245,243,238,.8);border-color:rgba(245,243,238,.45);}
 .pr-body-he{
   font-family:'DM Sans',sans-serif;
   font-size:15px;font-weight:300;line-height:1.8;
@@ -3507,6 +3509,7 @@ button{font-variant-emoji:text}
       <div class="pr-sub-he" style="font-size:clamp(17px,5vw,22px)">לפני שנכנסים לתדר —<br>יש להכין את הגוף, המוח והנשמה.</div>
       <div class="pr-divider"></div>
       <div class="pr-body">six steps before initiating your echo11 session.<br>scroll down to begin.</div>
+      <a href="https://echo-11-site.vercel.app/" target="_blank" rel="noopener" onclick="track('story_click_protocol',{event_category:'engagement'})" class="pr-story-link">הסיפור המלא ↗</a>
     </div>
     <div class="pr-scroll-hint"><span>scroll</span><div class="pr-scroll-line"></div></div>
   </div>
@@ -4533,6 +4536,17 @@ button{font-variant-emoji:text}
       </div>
       <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
     </button>
+
+    <!-- About / Story -->
+    <a href="https://echo-11-site.vercel.app/" target="_blank" rel="noopener" onclick="track('story_click',{event_category:'engagement'})" class="echo-stack-card">
+      <div class="echo-stack-icon"><svg class="echo-icon" aria-hidden="true"><use href="#i-sparkles"/></svg></div>
+      <div class="echo-stack-content">
+        <div class="echo-stack-title" id="prof-story-title">הסיפור מאחורי</div>
+        <div class="echo-stack-sub" id="prof-story-sub">about echo.11</div>
+        <div class="echo-stack-preview">echo-11-site.vercel.app</div>
+      </div>
+      <svg class="echo-stack-arrow echo-icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+    </a>
 
     <!-- Support -->
     <a href="mailto:hello@echo11.space?subject=echo.11%20Support" onclick="track('support_click',{event_category:'engagement'})" class="echo-stack-card">

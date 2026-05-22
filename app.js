@@ -1095,6 +1095,8 @@ function renderProfile(){
   const labels = {
     'prof-moodlog-title': {en:'Mood Log', he:'יומן מצבי רוח'},
     'prof-moodlog-sub':   {en:'Track your emotional journey', he:'עקבי אחר המסע הרגשי שלך'},
+    'prof-story-title':   {en:'The story behind', he:'הסיפור מאחורי'},
+    'prof-story-sub':     {en:'about echo.11', he:'על echo.11'},
     'prof-share-title':   {en:'Share echo.11', he:'שתפי את echo.11'},
     'prof-share-sub':     {en:'Pass it on to a friend', he:'העבירי הלאה לחברה'},
     'prof-supp-title':    {en:'Support', he:'תמיכה'},
