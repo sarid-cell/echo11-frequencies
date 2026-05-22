@@ -191,8 +191,8 @@
 
 <!-- Fonts: load asynchronously with font-display: swap (already in URL).
      Using the print/onload pattern for non-blocking CSS loading. -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;1,200;1,300&family=DM+Sans:wght@200;300;400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"></noscript>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -349,7 +349,7 @@
   --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms; --dur-slower:600ms;
 
   /* Fonts — DM Sans primary on mobile; Geist removed (poor mobile rendering) */
-  --font-serif:'Cormorant Garamond', Georgia, serif;
+  --font-serif:'Spectral', Georgia, serif;
   --font-sans:'DM Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono:ui-monospace, monospace;
 }
@@ -362,9 +362,9 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .scr{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 
 /* ══ Global type refinements ══
-   Cormorant Garamond as DISPLAY type — weight 300, tight tracking
-   Captures both literal "Cormorant Garamond" and var(--font-serif) styles */
-.dark [style*="Cormorant Garamond"]:not([style*="weight:500"]):not([style*="weight:600"]):not([style*="weight:700"]),
+   Spectral as DISPLAY type — weight 300, tight tracking
+   Captures both literal "Spectral" and var(--font-serif) styles */
+.dark [style*="Spectral"]:not([style*="weight:500"]):not([style*="weight:600"]):not([style*="weight:700"]),
 .dark [style*="--font-serif"],
 .dark .home-hero-tagline,
 .dark .home-freq-name,
@@ -589,20 +589,25 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   width:40px;height:40px;
   border:none;
   border-radius:var(--r-full);
-  background:linear-gradient(135deg, #2A2520 0%, #1A1612 100%);
+  background:var(--echo-glass-3);
   cursor:pointer;
-  color:var(--echo-ink-1);
+  color:var(--echo-ink-2);
   font-family:var(--font-sans);
   font-size:var(--t-xs);
   font-weight:500;
   letter-spacing:.04em;
   transition:all var(--dur-base) var(--spring-gentle);
+  box-shadow:inset 0 0 0 .5px var(--echo-line-2), 0 2px 8px rgba(0,0,0,.12);
+  flex-shrink:0;
+  overflow:hidden;
+}
+.dark .echo-avatar-btn{
+  background:linear-gradient(135deg, #2A2520 0%, #1A1612 100%);
+  color:var(--echo-ink-1);
   box-shadow:
     inset 0 0 0 .5px rgba(216,197,162,.30),
     inset 0 1px 0 rgba(247,242,228,.08),
     0 2px 8px rgba(0,0,0,.4);
-  flex-shrink:0;
-  overflow:hidden;
 }
 .echo-avatar-btn::before{
   content:'';position:absolute;inset:-1px;border-radius:inherit;
@@ -702,8 +707,8 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .echo-stack-card{
   display:flex;align-items:center;gap:var(--s-4);
   padding:var(--s-4) var(--s-5);
-  background:rgba(255,255,255,.055);
-  border:.5px solid rgba(255,255,255,.14);
+  background:var(--echo-glass-2);
+  border:.5px solid var(--echo-line-1);
   border-radius:28px;
   text-decoration:none;
   cursor:pointer;
@@ -713,10 +718,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   color:inherit;
   -webkit-backdrop-filter:blur(20px) saturate(150%);
   backdrop-filter:blur(20px) saturate(150%);
-  box-shadow:
-    0 1px 1px rgba(0,0,0,.6),
-    0 4px 14px rgba(0,0,0,.40),
-    inset 0 1px 0 rgba(255,255,255,.04);
+  box-shadow:var(--echo-lift-1);
   transition:
     background var(--dur-base) var(--ease-out),
     border-color var(--dur-base) var(--ease-out),
@@ -726,13 +728,20 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   overflow:hidden;
 }
 .echo-stack-card:hover{
+  background:var(--echo-glass-3);
+  border-color:var(--echo-line-2);
+  transform:translateY(-2px);
+  box-shadow:var(--echo-lift-2);
+}
+.dark .echo-stack-card{
+  background:rgba(255,255,255,.055);
+  border-color:rgba(255,255,255,.14);
+  box-shadow:0 1px 1px rgba(0,0,0,.6),0 4px 14px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.dark .echo-stack-card:hover{
   background:rgba(255,255,255,.09);
   border-color:rgba(255,255,255,.22);
-  transform:translateY(-2px);
-  box-shadow:
-    0 1px 2px rgba(0,0,0,.7),
-    0 8px 24px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.08);
+  box-shadow:0 1px 2px rgba(0,0,0,.7),0 8px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);
 }
 .echo-stack-icon{
   flex-shrink:0;
@@ -776,7 +785,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .echo-stack-preview{
   margin-top:var(--s-2);
   padding-top:var(--s-2);
-  border-top:.5px solid rgba(255,255,255,.06);
+  border-top:.5px solid var(--echo-line-1);
   font-family:var(--font-sans);
   font-size:var(--t-xs);          /* 12px */
   font-weight:400;
@@ -958,20 +967,28 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 }
 
 /* ── Quick relief card → premium ── */
-.dark #quick-relief-card{
-  background:var(--echo-glass-1) !important;
-  border-color:var(--echo-line-1) !important;
-  border-radius:var(--r-md) !important;
-  backdrop-filter:blur(20px) saturate(140%);
-  -webkit-backdrop-filter:blur(20px) saturate(140%);
-  box-shadow:var(--echo-lift-1);
-  transition:all var(--dur-base) var(--spring-gentle);
+/* Quick Relief card removed from home (redundant with Rescue button) */
+
+/* Home support tier buttons — adapt to light/dark */
+.hst-btn{
+  background:var(--echo-glass-2);
+  border:.5px solid var(--echo-line-1);
+  border-radius:14px;padding:14px 6px;
+  cursor:pointer;font-family:inherit;
+  transition:all .2s;
 }
-.dark #quick-relief-card:hover{
-  border-color:var(--echo-line-2) !important;
-  background:var(--echo-glass-2) !important;
-  box-shadow:var(--echo-lift-2);
-  transform:translateY(-2px);
+.hst-btn:hover{border-color:rgba(201,169,110,.5)!important}
+.dark .hst-btn{
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.15);
+}
+.hst-btn-f{
+  background:rgba(201,169,110,.15);
+  border:.5px solid rgba(201,169,110,.55);
+  border-radius:14px;padding:14px 6px;
+  cursor:pointer;font-family:inherit;
+  position:relative;box-shadow:0 0 20px rgba(201,169,110,.12);
+  transition:all .2s;
 }
 
 /* Hero gradient overlay — full-bleed image fades to pure black */
@@ -1169,7 +1186,6 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .dark .pl-fname{
   color:var(--echo-ink-2);
   font-family:var(--font-serif);
-  font-style:italic;
 }
 .dark .pl-back{
   background:var(--echo-glass-2) !important;
@@ -1289,6 +1305,183 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 
 /* Progress bar on player */
 .dark #pl-prog-fill{background:var(--echo-gold) !important;box-shadow:0 0 12px rgba(216,197,162,.4)}
+
+/* ══════════════════════════════════════════════════════════
+   PROFILE PAGE — base styles (light mode + shared layout)
+   .dark overrides below keep the premium dark look intact.
+══════════════════════════════════════════════════════════ */
+#profile{padding-bottom:calc(48px + env(safe-area-inset-bottom,0px));scroll-padding-bottom:48px}
+#profile > *{margin-bottom:var(--s-5) !important}
+#profile > *:last-child{margin-bottom:0 !important}
+.echo-profile-toolbar-legacy{display:none !important}
+
+/* Hero image — full-bleed atmospheric portrait */
+.echo-profile-hero{
+  position:relative;width:100%;height:340px;
+  margin:0 !important;padding:0 !important;
+  overflow:hidden;flex-shrink:0;
+}
+.echo-profile-hero-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 30%;display:block;
+  filter:grayscale(.10) contrast(1.03) brightness(.93);
+  animation:echo-hero-breathe 12s ease-in-out infinite alternate;
+}
+.echo-profile-hero-fade{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(245,240,232,.35) 0%,
+    rgba(245,240,232,.10) 20%,
+    rgba(245,240,232,.05) 42%,
+    rgba(245,240,232,.45) 68%,
+    rgba(245,240,232,.82) 86%,
+    var(--bg) 100%);
+}
+.echo-profile-hero-nav{
+  position:absolute;
+  top:calc(env(safe-area-inset-top,0px) + 14px);
+  left:0;right:0;z-index:2;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--s-4);
+}
+
+/* Avatar + greeting overlap hero bottom */
+#profile > div:nth-of-type(2),
+#profile > div:nth-of-type(3){
+  margin-top:-60px !important;
+  position:relative;z-index:3;
+}
+
+/* Affirmation card */
+.echo-affirmation-card{
+  width:calc(100% - 48px) !important;
+  display:flex !important;flex-direction:column !important;
+  align-items:center !important;gap:var(--s-3) !important;
+  margin:0 var(--s-5) !important;padding:28px 20px !important;
+  background:var(--echo-glass-2) !important;
+  border:.5px solid var(--echo-line-1) !important;
+  border-radius:28px !important;text-align:center !important;
+  cursor:pointer;transition:all var(--dur-base) var(--spring-gentle);
+  box-shadow:var(--echo-lift-1);position:relative;
+}
+.echo-affirmation-card:hover{
+  background:var(--echo-glass-3) !important;
+  border-color:var(--echo-line-2) !important;
+  box-shadow:var(--echo-lift-2);
+}
+.echo-affirmation-eyebrow{
+  display:block;font-family:var(--font-sans);font-size:11px;
+  font-weight:600;letter-spacing:.32em;color:var(--echo-gold);text-transform:uppercase;
+}
+.echo-affirmation-text,#prof-affirmation{
+  display:block;font-family:var(--font-serif) !important;
+  font-size:22px !important;font-weight:300 !important;
+  color:var(--echo-ink-1) !important;
+  letter-spacing:-0.015em !important;line-height:1.4 !important;
+  max-width:32ch;transition:opacity .25s;
+}
+.echo-affirmation-hint,#prof-aff-hint{
+  display:block;font-family:var(--font-sans) !important;
+  font-size:11px !important;font-weight:400 !important;
+  letter-spacing:.18em !important;color:var(--echo-ink-4) !important;text-transform:lowercase !important;
+}
+
+/* Tip card */
+.echo-tip-card{
+  margin:0 var(--s-5) !important;padding:28px 20px 20px !important;
+  background:var(--card) !important;
+  border:.5px solid rgba(139,115,85,.25) !important;
+  border-radius:28px !important;box-shadow:var(--echo-lift-2);position:relative;
+}
+.echo-tip-head{text-align:center;margin-bottom:20px}
+.echo-tip-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-sans);font-size:11px;font-weight:600;
+  letter-spacing:.30em;color:var(--echo-gold);text-transform:uppercase;margin-bottom:12px;
+}
+.echo-tip-eyebrow svg{width:14px;height:14px;color:var(--echo-gold)}
+.echo-tip-title,#prof-tip-headline{
+  display:block !important;font-family:var(--font-serif) !important;
+  font-size:20px !important;font-weight:300 !important;font-style:normal !important;
+  letter-spacing:-0.015em !important;line-height:1.35 !important;
+  color:var(--echo-ink-1) !important;max-width:28ch;margin:0 auto !important;
+}
+.echo-tip-tiers{
+  display:grid !important;grid-template-columns:repeat(3,1fr) !important;
+  gap:10px !important;margin-bottom:20px !important;
+}
+.echo-tip-tiers .tip-btn{
+  display:flex !important;flex-direction:column !important;
+  align-items:center !important;justify-content:center !important;gap:4px !important;
+  background:var(--echo-glass-2) !important;
+  border:.5px solid var(--echo-line-2) !important;
+  border-radius:16px !important;padding:14px 6px !important;
+  cursor:pointer;font-family:inherit;
+  transition:all 150ms cubic-bezier(.22,1.2,.36,1) !important;
+  position:relative !important;text-decoration:none;
+}
+.echo-tip-tiers .tip-btn:hover{
+  background:var(--echo-glass-3) !important;
+  border-color:rgba(139,115,85,.40) !important;
+  transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+.echo-tip-tiers .tip-btn.tip-middle{
+  background:rgba(139,115,85,.12) !important;
+  border-color:rgba(139,115,85,.38) !important;
+  box-shadow:0 0 16px rgba(139,115,85,.08);
+}
+.echo-tip-tiers .tip-amt{
+  display:block !important;font-family:var(--font-sans) !important;
+  font-size:22px !important;font-weight:500 !important;
+  color:var(--echo-ink-1) !important;letter-spacing:-0.02em !important;
+  font-variant-numeric:tabular-nums !important;line-height:1 !important;
+}
+.echo-tip-tiers .tip-lbl{
+  display:block !important;font-family:var(--font-sans) !important;
+  font-size:10px !important;font-weight:500 !important;letter-spacing:.14em !important;
+  color:var(--echo-ink-3) !important;text-transform:uppercase !important;line-height:1.2 !important;
+}
+.echo-tip-tiers .tip-badge{
+  position:absolute !important;top:-9px !important;left:50% !important;
+  transform:translateX(-50%) !important;
+  background:var(--echo-gold) !important;color:var(--echo-on-gold) !important;
+  font-family:var(--font-sans) !important;font-size:9px !important;
+  font-weight:600 !important;letter-spacing:.12em !important;
+  padding:3px 9px !important;border-radius:9999px !important;
+  text-transform:uppercase !important;white-space:nowrap !important;
+  box-shadow:0 2px 8px rgba(139,115,85,.30) !important;
+}
+.echo-tip-divider{height:.5px;background:var(--echo-line-1);margin:8px 0 16px}
+.echo-tip-explain,#prof-tip-sub{
+  display:block !important;font-family:var(--font-sans) !important;
+  font-size:13px !important;font-weight:400 !important;font-style:normal !important;
+  line-height:1.55 !important;color:var(--echo-ink-2) !important;
+  text-align:center !important;margin-bottom:16px !important;letter-spacing:0 !important;
+}
+.echo-tip-social{
+  display:flex !important;align-items:center !important;justify-content:center !important;
+  gap:8px !important;padding:10px 16px !important;
+  background:rgba(139,115,85,.08) !important;
+  border:.5px solid rgba(139,115,85,.20) !important;
+  border-radius:9999px !important;margin-bottom:14px !important;
+}
+.echo-tip-social-dot{color:var(--echo-gold) !important;font-size:14px !important}
+.echo-tip-social #prof-tip-social{
+  font-family:var(--font-sans) !important;font-size:13px !important;
+  font-weight:500 !important;letter-spacing:.02em !important;color:var(--echo-ink-1) !important;
+}
+.echo-tip-foot,#prof-tip-secure,#prof-tip-hint{
+  display:block !important;text-align:center !important;
+  font-family:var(--font-sans) !important;font-size:10px !important;font-weight:400 !important;
+  font-style:normal !important;letter-spacing:.12em !important;color:var(--echo-ink-4) !important;
+}
+
+/* Sign Out pill */
+#prof-signout{
+  background:var(--echo-glass-1);border:.5px solid var(--echo-line-2);
+  color:var(--echo-ink-2);font-size:var(--t-xs);letter-spacing:var(--ls-wider);padding:16px;
+}
+#prof-signout:hover{background:var(--echo-glass-2);border-color:var(--echo-line-3);color:var(--echo-ink-1)}
 
 /* ══════════════════════════════════════════════════════════
    PROFILE PAGE — premium dark, 24px breathing rhythm
@@ -1522,7 +1715,6 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   font-family:var(--font-serif) !important;
   font-size:26px !important;
   font-weight:300 !important;
-  font-style:italic !important;
   color:var(--echo-ink-1) !important;
   letter-spacing:-0.015em !important;
   line-height:1.4 !important;
@@ -1738,6 +1930,51 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   color:var(--echo-ink-1) !important;
 }
 
+/* ─── ✦ Rescue Button ─────────────────────────────────── */
+.echo-rescue-btn{
+  width:100%;display:flex;align-items:center;gap:16px;
+  padding:20px 20px;
+  background:linear-gradient(135deg,rgba(201,169,110,.14) 0%,rgba(201,169,110,.04) 100%);
+  border:1px solid rgba(201,169,110,.5);
+  border-radius:16px;
+  cursor:pointer;font-family:inherit;text-align:left;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 24px rgba(201,169,110,.12),0 0 0 1px rgba(201,169,110,.06);
+  transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.echo-rescue-btn::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 20% 50%,rgba(201,169,110,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.echo-rescue-btn:hover,.echo-rescue-btn:focus{
+  border-color:rgba(201,169,110,.75);
+  background:linear-gradient(135deg,rgba(201,169,110,.22) 0%,rgba(201,169,110,.08) 100%);
+  box-shadow:0 6px 32px rgba(201,169,110,.22),0 0 0 1px rgba(201,169,110,.12);
+}
+.rescue-btn-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--echo-gold);flex-shrink:0;
+  box-shadow:0 0 12px rgba(201,169,110,.8),0 0 24px rgba(201,169,110,.4);
+  animation:rescuePulse 2s ease-in-out infinite;
+}
+@keyframes rescuePulse{
+  0%,100%{opacity:1;box-shadow:0 0 12px rgba(201,169,110,.8),0 0 24px rgba(201,169,110,.4)}
+  50%{opacity:.6;box-shadow:0 0 6px rgba(201,169,110,.5),0 0 12px rgba(201,169,110,.2)}
+}
+.rescue-btn-title{
+  font-family:'Spectral',Georgia,serif;
+  font-size:21px;font-weight:300;
+  color:rgba(201,169,110,1);
+  letter-spacing:.01em;line-height:1.2;margin-bottom:4px;
+}
+.rescue-btn-sub{
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:300;
+  letter-spacing:.12em;color:var(--echo-ink-3);
+}
+@keyframes rescueOrbit1{to{transform:rotate(360deg)}}
+@keyframes rescueOrbit2{to{transform:rotate(-360deg)}}
 /* All tip-jar styling lives in .echo-tip-card primitive block (below) */
 
 /* ── Supporter badge ───────────────────────────────────── */
@@ -1767,7 +2004,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 @keyframes supp-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .supp-icon{font-size:30px;margin-bottom:16px}
 .supp-title{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:22px;font-weight:200;color:var(--t1);margin-bottom:8px;
 }
 .supp-sub{
@@ -1800,7 +2037,7 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .echo-tip-card.is-supported .echo-supporter-thanks{display:block}
 .supp-thanks-icon{font-size:24px;margin-bottom:10px}
 .supp-thanks-text{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:20px;font-weight:200;color:var(--echo-gold);margin-bottom:5px;
 }
 .supp-thanks-date{
@@ -2181,7 +2418,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .a11y-icon-fill{fill:#525250;stroke:#525250}
 .dark .a11y-icon-stroke{stroke:#a0a09a}
 .dark .a11y-icon-fill{fill:#a0a09a;stroke:#a0a09a}
-.pl-arr{background:none;border:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t4);transition:color .2s;-webkit-tap-highlight-color:transparent}
+.pl-arr{background:none;border:none;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Spectral',Georgia,serif;font-size:24px;font-weight:200;color:var(--t4);transition:color .2s;-webkit-tap-highlight-color:transparent}
 .pl-arr:hover,.pl-arr:active{color:var(--t2)}
 /* Safe area for iPhone notch + home indicator */
 .pl-bottom{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
@@ -2277,20 +2514,31 @@ input[type=range]{accent-color:var(--t3);width:100%}
   background:rgba(0,0,0,.40);
   -webkit-backdrop-filter:blur(20px) saturate(160%);
   backdrop-filter:blur(20px) saturate(160%);
-  border-bottom:.5px solid var(--echo-line-1);
+  border-bottom:.5px solid rgba(255,255,255,.10);
   transition:background var(--dur-base) var(--ease-out),
              border-color var(--dur-base) var(--ease-out);
 }
+/* Nav always has dark backdrop — keep all icons/text white regardless of theme */
+.home-nav-sticky .brand-name{color:rgba(255,255,255,.92);font-weight:400;letter-spacing:.14em;font-size:var(--t-sm)}
+.home-nav-sticky .brand-tag{color:rgba(255,255,255,.5);font-weight:300;font-size:var(--t-2xs);letter-spacing:.18em}
+.home-nav-sticky .bb{background:rgba(201,169,110,.9)}
+.home-nav-sticky .bt{background:rgba(255,255,255,.3)}
+.home-nav-sticky .echo-icon-btn{color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.08)}
+.home-nav-sticky .echo-icon-btn:hover{color:#fff;background:rgba(255,255,255,.14)}
+.home-nav-sticky .echo-lang-toggle{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+.home-nav-sticky .echo-lang-opt{color:rgba(255,255,255,.55)}
+.home-nav-sticky .echo-lang-opt.on{background:rgba(255,255,255,.18);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.home-nav-sticky .echo-avatar-btn{background:rgba(255,255,255,.10);color:rgba(255,255,255,.75);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.2)}
 .home-nav-sticky.scrolled{
-  background:rgba(0,0,0,.55);
-  border-bottom-color:var(--echo-line-2);
+  background:rgba(0,0,0,.62);
+  border-bottom-color:rgba(255,255,255,.08);
   box-shadow:0 8px 24px rgba(0,0,0,.4);
 }
 .dark .home-nav-sticky.scrolled{
   background:rgba(0,0,0,.65);
-  border-bottom-color:var(--echo-line-2);
   box-shadow:0 1px 0 rgba(255,255,255,.04), 0 8px 32px rgba(0,0,0,.6);
 }
+/* Dark mode brand overrides (still applicable since .home-nav-sticky covers light) */
 .dark .brand-name{color:var(--echo-ink-1);font-weight:400;letter-spacing:.14em;font-size:var(--t-sm)}
 .dark .brand-tag{color:var(--echo-ink-3);font-weight:300;font-size:var(--t-2xs);letter-spacing:.18em}
 .dark .bb{background:var(--echo-gold);opacity:.95}
@@ -2382,7 +2630,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 
 /* Tagline — left, large, high contrast */
 .home-hero-tagline{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:clamp(48px,7vw,100px);
   font-weight:200;
   line-height:1.05;
@@ -2459,7 +2707,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 }
 .home-freq-badge{display:flex;align-items:baseline;gap:4px}
 .home-freq-num{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:64px;font-weight:200;
   letter-spacing:-.02em;color:var(--t1);line-height:.9;
 }
@@ -2469,7 +2717,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
   letter-spacing:.28em;color:var(--t3);padding-bottom:6px;
 }
 .home-freq-name{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:13px;font-weight:200;font-style:italic;
   color:var(--t2);margin-top:2px;
 }
@@ -2527,7 +2775,7 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 .geo{width:50px;height:50px}.geo svg{width:100%;height:100%}
 .card-nm{font-size:13px;font-weight:300;letter-spacing:.05em;color:var(--t1)}
 .card-cnt{font-size:9px;letter-spacing:.15em;color:var(--t3)}
-.card-desc{font-family:'Cormorant Garamond',Georgia,serif;font-size:11px;font-weight:200;font-style:italic;color:var(--t4);margin-top:3px;text-align:center}
+.card-desc{font-family:'Spectral',Georgia,serif;font-size:11px;font-weight:300;color:var(--t4);margin-top:3px;text-align:center}
 .lib-link{margin:10px 14px 14px;padding:12px;background:var(--card);border:.5px solid var(--b1);border-radius:11px;text-align:center;font-size:10px;font-weight:200;letter-spacing:.14em;color:var(--t3);cursor:pointer;transition:all .2s;font-family:inherit;display:block;width:calc(100% - 28px)}
 .lib-link:hover{border-color:var(--b2);color:var(--t1)}
 .acc-bar{display:flex;align-items:center;gap:7px;padding:8px 14px;border-top:.5px solid var(--b1);flex-wrap:wrap;flex-shrink:0}
@@ -2546,9 +2794,9 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 
 /* Hz + Name — spacer zone, sits over image */
 .pl-freq-bar{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 22px 0;z-index:2;flex-shrink:0}
-.pl-fn{font-family:'Cormorant Garamond',Georgia,serif;font-size:80px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.88;text-shadow:0 2px 16px rgba(245,243,238,.6)}
+.pl-fn{font-family:'Spectral',Georgia,serif;font-size:80px;font-weight:200;letter-spacing:-.02em;color:var(--t1);line-height:.88;text-shadow:0 2px 16px rgba(245,243,238,.6)}
 .pl-fu{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:300;letter-spacing:.3em;color:var(--t4);margin-top:8px}
-.pl-fname{font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:var(--t2)}
+.pl-fname{font-family:'Spectral',Georgia,serif;font-size:14px;font-weight:300;color:var(--t2)}
 .pl-ftype{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.14em;color:var(--t3);background:none;border:.5px solid var(--b1);border-radius:20px;padding:3px 10px}
 
 /* Spacer — pushes controls to bottom */
@@ -2598,20 +2846,20 @@ video#hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cov
 .lb-search:focus-within{border-color:var(--b2)}
 .lb-si{background:none;border:none;outline:none;font-family:inherit;font-size:12px;color:var(--t1);flex:1}
 .lb-si::placeholder{color:var(--t4)}
-.lb-grp{display:flex;align-items:center;gap:9px;padding:13px 16px 7px}
-.lb-gl{font-size:10px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;flex-shrink:0}
-.lb-gline{flex:1;height:.5px;background:var(--b2)}.lb-gc{font-size:10px;color:var(--t3)}
-.lb-row{display:flex;align-items:center;gap:13px;padding:12px 16px;border-bottom:.5px solid var(--b1);cursor:pointer;transition:background .15s;position:relative;background:var(--bg);font-family:inherit;width:100%;text-align:left}
-.lb-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--t1);opacity:0;transition:opacity .2s;border-radius:0 1px 1px 0}
+.lb-grp{display:flex;align-items:center;gap:9px;padding:16px 16px 8px}
+.lb-gl{font-size:11px;letter-spacing:.22em;color:var(--echo-gold);text-transform:uppercase;flex-shrink:0;font-weight:500}
+.lb-gline{flex:1;height:.5px;background:var(--echo-gold);opacity:.25}.lb-gc{font-size:10px;color:var(--t4)}
+.lb-row{display:flex;align-items:center;gap:13px;padding:13px 16px;border-bottom:.5px solid var(--b1);cursor:pointer;transition:background .15s;position:relative;background:var(--bg);font-family:inherit;width:100%;text-align:left}
+.lb-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--echo-gold);opacity:0;transition:opacity .2s;border-radius:0 2px 2px 0}
 .lb-row:hover{background:var(--card)}.lb-row:hover::before{opacity:1}
 .lb-row:hover .lb-hv,.lb-row:hover .lb-nm,.lb-row:hover .lb-arr{color:var(--t1)}
-.lb-hc{display:flex;align-items:baseline;gap:2px;min-width:48px}
-.lb-hv{font-size:20px;font-weight:200;color:var(--t3);transition:color .2s}
+.lb-hc{display:flex;align-items:baseline;gap:2px;min-width:52px}
+.lb-hv{font-size:22px;font-weight:200;color:var(--echo-gold);transition:color .2s;opacity:.85}
 .lb-hu{font-size:9px;letter-spacing:.1em;color:var(--t4)}
-.lb-mid{flex:1}.lb-nm{font-size:13px;font-weight:300;color:var(--t2);transition:color .2s;margin-bottom:1px}
-.lb-sb{font-size:9px;letter-spacing:.1em;color:var(--t4)}
+.lb-mid{flex:1}.lb-nm{font-size:14px;font-weight:400;color:var(--t1);transition:color .2s;margin-bottom:2px}
+.lb-sb{font-size:10px;letter-spacing:.06em;color:var(--t3)}
 .lb-r{display:flex;align-items:center;gap:6px}
-.lb-arr{font-size:13px;color:var(--t4);transition:color .2s}
+.lb-arr{font-size:14px;color:var(--t3);transition:color .2s}
 .pl-dot{width:4px;height:4px;border-radius:50%;background:var(--t2);animation:pd 2s infinite}
 </style>
 <!-- Vercel Analytics: active on Vercel only -->
@@ -2742,7 +2990,7 @@ button{font-variant-emoji:text}
   color: var(--t1) !important;
   font-weight: 300 !important;
   font-size: 22px !important;
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-family: 'Spectral', Georgia, serif !important;
 }
 .lb-row .lb-hu {
   color: var(--t3) !important;
@@ -2868,7 +3116,7 @@ button{font-variant-emoji:text}
   margin-bottom:18px;text-transform:uppercase;
 }
 .pr-display{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:clamp(44px,13vw,80px);
   font-weight:200;line-height:.95;
   letter-spacing:.02em;
@@ -2895,7 +3143,7 @@ button{font-variant-emoji:text}
 }
 .pr-code::after{content:'';flex:1;max-width:40px;height:.5px;background:rgba(245,243,238,.15)}
 .pr-title{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:clamp(32px,10vw,52px);
   font-weight:200;line-height:1;
   color:#f5f3ee;margin-bottom:6px;
@@ -2962,7 +3210,7 @@ button{font-variant-emoji:text}
   direction:rtl;margin-bottom:12px;
 }
 .pr-what-accent{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:13px;font-style:italic;
   color:rgba(201,180,152,.7);
   letter-spacing:.04em;
@@ -3154,7 +3402,7 @@ button{font-variant-emoji:text}
   color:rgba(245,243,238,.22);margin-bottom:18px;
 }
 .pr-cta-display{
-  font-family:'Cormorant Garamond',Georgia,serif;
+  font-family:'Spectral',Georgia,serif;
   font-size:clamp(48px,14vw,88px);
   font-weight:200;line-height:.88;
   color:#f5f3ee;margin-bottom:6px;
@@ -3263,9 +3511,20 @@ button{font-variant-emoji:text}
     <div class="pr-scroll-hint"><span>scroll</span><div class="pr-scroll-line"></div></div>
   </div>
 
-  <!-- 1: What is echo11 -->
-  <!-- 1: Binaural Viz -->
+  <!-- 1: CIA Gateway Story -->
   <div class="pr-section" data-pr="1">
+    <div class="pr-bg" style="background-image:url('img-what.webp');background-position:center 30%"></div>
+    <div class="pr-content">
+      <div class="pr-what-tag">מה זה בעצם · what is echo.11</div>
+      <div class="pr-display" style="font-size:clamp(34px,10vw,58px)">echo.11<br>& the<br><em>CIA file.</em></div>
+      <div class="pr-what-body">ב-1983 חקרה ה-CIA פרויקט סודי בשם Gateway Experience — ניסויים במצבי תודעה מורחבים באמצעות תדרים בינאורליים. echo.11 מביאה את הפרוטוקול הזה לאפליקציה מודרנית.</div>
+      <div class="pr-what-body">22 תדרים. מדע אמיתי. לא מוסיקה — <strong style="color:rgba(245,243,238,.85)">צליל מובנה לעצבים.</strong></div>
+      <div class="pr-what-accent">not music. not meditation. structured sound — for a disordered world.</div>
+    </div>
+  </div>
+
+  <!-- 2: Binaural Viz -->
+  <div class="pr-section" data-pr="2">
     <div class="pr-bg" style="background-image:url('img-s4.webp');background-position:center 40%"></div>
     <div class="pr-content" style="max-width:540px">
       <div class="pr-eyebrow">how it works · איך זה עובד</div>
@@ -3314,7 +3573,7 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- 3: Step 01 -->
-  <div class="pr-section" data-pr="2">
+  <div class="pr-section" data-pr="3">
     <div class="pr-bg" style="background-image:url('img-s1.webp');background-position:center 25%"></div>
     <div class="pr-content">
       <div class="pr-code">01 / 06</div>
@@ -3326,7 +3585,7 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- 4: Step 02 -->
-  <div class="pr-section" data-pr="3">
+  <div class="pr-section" data-pr="4">
     <div class="pr-bg" style="background-image:url('img-s2.webp');background-position:center 20%"></div>
     <div class="pr-content">
       <div class="pr-code">02 / 06</div>
@@ -3338,7 +3597,7 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- 5: Step 03 -->
-  <div class="pr-section" data-pr="4">
+  <div class="pr-section" data-pr="5">
     <div class="pr-bg" style="background-image:url('img-s3.webp');background-position:center 30%"></div>
     <div class="pr-content">
       <div class="pr-code">03 / 06</div>
@@ -3350,7 +3609,7 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- 6: Step 04 -->
-  <div class="pr-section" data-pr="5">
+  <div class="pr-section" data-pr="6">
     <div class="pr-bg" style="background-image:url('img-s4.webp');background-position:center 40%"></div>
     <div class="pr-content">
       <div class="pr-code">04 / 06</div>
@@ -3362,7 +3621,7 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- 7: Step 05 -->
-  <div class="pr-section" data-pr="6">
+  <div class="pr-section" data-pr="7">
     <div class="pr-bg" style="background-image:url('img-s5.webp');background-position:center 20%"></div>
     <div class="pr-content">
       <div class="pr-code">05 / 06</div>
@@ -3374,7 +3633,7 @@ button{font-variant-emoji:text}
   </div>
 
   <!-- 8: Step 06 + CTA -->
-  <div class="pr-section" data-pr="7">
+  <div class="pr-section" data-pr="8">
     <div class="pr-bg" style="background-image:url('img-cta.webp');background-position:center 25%"></div>
     <div class="pr-content" style="max-width:none">
       <div class="pr-code">06 / 06</div>
@@ -3452,8 +3711,8 @@ button{font-variant-emoji:text}
 <div id="onboarding" style="display:none;position:fixed;inset:0;background:rgba(26,26,24,.85);z-index:999;align-items:flex-end;justify-content:center">
   <div style="background:var(--bg);border-radius:24px 24px 0 0;padding:32px 28px 48px;max-width:440px;width:100%;position:relative">
     <div id="ob-dots" style="display:flex;gap:6px;justify-content:center;margin-bottom:24px"></div>
-    <div id="ob-icon" style="font-size:32px;text-align:center;margin-bottom:14px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:200;color:var(--t1)"></div>
-    <div id="ob-title" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:10px;line-height:1.2"></div>
+    <div id="ob-icon" style="font-size:32px;text-align:center;margin-bottom:14px;font-family:'Spectral',Georgia,serif;font-weight:200;color:var(--t1)"></div>
+    <div id="ob-title" style="font-family:'Spectral',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:10px;line-height:1.2"></div>
     <div id="ob-body" style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t2);text-align:center;line-height:1.75;margin-bottom:28px"></div>
     <button id="ob-btn" onclick="obNext()" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer"></button>
     <button onclick="obSkip()" style="width:100%;margin-top:12px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t4);cursor:pointer;padding:8px">skip →</button>
@@ -3529,7 +3788,7 @@ button{font-variant-emoji:text}
     <div>
       <div class="home-today-lbl"><span class="echo-dot" style="width:5px;height:5px"></span><span id="today-lbl">today's frequency</span></div>
       <!-- Emotional hook BEFORE the technical number -->
-      <div id="today-intention" style="font-family:var(--font-serif);font-size:var(--t-md);font-weight:200;font-style:italic;color:var(--echo-ink-3);margin-bottom:6px;line-height:1.4"></div>
+      <div id="today-intention" style="font-family:var(--font-serif);font-size:var(--t-md);font-weight:200;color:var(--echo-ink-3);margin-bottom:6px;line-height:1.4"></div>
       <div class="home-freq-badge">
         <div class="home-freq-num tabular" id="hero-hz-num">432</div>
         <div class="home-freq-unit">Hz</div>
@@ -3561,11 +3820,11 @@ button{font-variant-emoji:text}
     <div style="padding:16px 18px 12px;border-bottom:.5px solid var(--b1);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--t3);text-transform:uppercase;margin-bottom:4px" id="cs-label">30-Day Consciousness Journey</div>
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1)" id="cs-level-name">Begin your ascent</div>
+        <div style="font-family:'Spectral',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1)" id="cs-level-name">Begin your ascent</div>
       </div>
       <div style="text-align:right">
         <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3)" id="cs-day-label">day 0 / 30</div>
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="cs-score">0</div>
+        <div style="font-family:'Spectral',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="cs-score">0</div>
       </div>
     </div>
     <!-- Hawkins Scale -->
@@ -3616,16 +3875,18 @@ button{font-variant-emoji:text}
         <div id="streak-cta-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:var(--t3);margin-top:2px">view history →</div>
       </div>
     </button>
-    <div id="quick-relief-card" style="margin:0 var(--s-4) var(--s-3);background:var(--card);border:.5px solid var(--b1);border-radius:var(--r-md);padding:var(--s-4) var(--s-4);display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);cursor:pointer" onclick="openQuickRelief()">
-      <div style="flex:1;min-width:0">
-        <div class="echo-eyebrow" style="margin-bottom:var(--s-2)">
-          <svg class="echo-icon sm" style="color:var(--echo-gold)" aria-hidden="true"><use href="#i-zap"/></svg>
-          <span id="quick-lbl">quick relief</span>
+    <!-- ✦ RESCUE — immediate anxiety/stress relief -->
+    <div style="margin:0 var(--s-4) var(--s-4)">
+      <button class="echo-rescue-btn" onclick="startRescue()" id="rescue-btn" aria-label="Start instant relief session">
+        <span class="rescue-btn-dot" aria-hidden="true"></span>
+        <div style="flex:1;text-align:left">
+          <div class="rescue-btn-title" id="rescue-btn-title">Need relief right now?</div>
+          <div class="rescue-btn-sub" id="rescue-btn-sub">2 min · theta · 4-7-8 breathing</div>
         </div>
-        <div style="font-family:var(--font-serif);font-size:var(--t-md);font-weight:200;font-style:italic;color:var(--echo-ink-1);line-height:1.35" id="quick-desc">feeling anxious? 3 minutes of calm.</div>
-      </div>
-      <svg class="echo-icon" style="color:var(--echo-ink-3);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        <svg class="echo-icon" style="color:var(--echo-gold);flex-shrink:0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+      </button>
     </div>
+
     <!-- Library CTA — gold-edge premium card -->
     <div style="margin:var(--s-2) var(--s-4) var(--s-5)">
       <button id="lib-link" onclick="showLibrary()" style="
@@ -3669,6 +3930,30 @@ button{font-variant-emoji:text}
       </button>
     </div>
 
+    <!-- ✦ SUPPORT CARD — visible tiers on home screen -->
+    <div style="margin:0 var(--s-4) var(--s-5)">
+      <div style="background:linear-gradient(180deg,rgba(201,169,110,.11) 0%,rgba(201,169,110,.04) 100%);border:.5px solid rgba(201,169,110,.32);border-radius:20px;padding:22px 20px 18px;text-align:center">
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.28em;color:var(--echo-gold);text-transform:uppercase;margin-bottom:10px">✦ support echo.11</div>
+        <div style="font-family:'Spectral',Georgia,serif;font-size:18px;font-weight:300;color:var(--echo-ink-1);line-height:1.4;margin-bottom:18px" id="home-support-tagline">echo.11 stays free for everyone.<br>A tip keeps it alive.</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+          <button onclick="startTip(5)" class="hst-btn">
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:var(--echo-ink-1);letter-spacing:-.02em;line-height:1">$5</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:var(--echo-ink-3);text-transform:uppercase;margin-top:4px">coffee</div>
+          </button>
+          <button onclick="startTip(7)" class="hst-btn-f">
+            <div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--echo-gold);border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:8px;font-weight:600;letter-spacing:.1em;color:#1a1612;padding:2px 9px;text-transform:uppercase;white-space:nowrap" id="home-support-popular">popular</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:var(--echo-ink-1);letter-spacing:-.02em;line-height:1">$7</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:var(--echo-ink-3);text-transform:uppercase;margin-top:4px" id="home-support-7lbl">a week</div>
+          </button>
+          <button onclick="startTip(14)" class="hst-btn">
+            <div style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:500;color:var(--echo-ink-1);letter-spacing:-.02em;line-height:1">$14</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:9px;font-weight:400;letter-spacing:.12em;color:var(--echo-ink-3);text-transform:uppercase;margin-top:4px">a month</div>
+          </button>
+        </div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.08em;color:var(--echo-ink-4)">no account needed · one-time · via Ko-fi</div>
+      </div>
+    </div>
+
     <!-- Footer — single compact line: legal · accessibility · protocol · text-size -->
     <div class="echo-home-footer">
       <a href="legal.html?from=home#access" class="echo-home-foot-link" id="foot-a11y-lnk">Accessibility</a>
@@ -3681,6 +3966,35 @@ button{font-variant-emoji:text}
       <span class="echo-home-foot-dot">·</span>
       <button class="echo-home-foot-aa" onclick="changeFontSize(1)" aria-label="Increase text size">A+</button>
       <button class="echo-home-foot-aa" onclick="changeFontSize(-1)" aria-label="Decrease text size">A−</button>
+    </div>
+    <!-- Social + Support row -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;padding:10px 0 4px">
+      <a href="https://www.instagram.com/shira.sarid/" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'instagram_home'})"
+         aria-label="Instagram" title="Follow on Instagram"
+         style="color:var(--t3);display:flex;align-items:center;transition:color .2s;padding:4px"
+         onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-instagram"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/shirasarid" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'linkedin_home'})"
+         aria-label="LinkedIn" title="Connect on LinkedIn"
+         style="color:var(--t3);display:flex;align-items:center;transition:color .2s;padding:4px"
+         onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-linkedin"/></svg>
+      </a>
+      <a href="https://shirasarid.substack.com/" target="_blank" rel="noopener noreferrer"
+         onclick="track('social_click',{event_category:'engagement',event_label:'substack_home'})"
+         aria-label="Substack" title="Read on Substack"
+         style="color:var(--t3);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.08em;font-weight:300;display:flex;align-items:center;gap:4px;transition:color .2s;padding:4px;text-decoration:none"
+         onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+      </a>
+      <button onclick="startTip(7)"
+         aria-label="Support echo.11"
+         style="background:none;border:none;color:var(--echo-gold);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.14em;font-weight:300;cursor:pointer;padding:4px 8px;opacity:.75;transition:opacity .2s"
+         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75"
+         id="foot-support-btn">✦ support</button>
     </div>
     <div class="echo-home-foot-copy" id="foot-copy">echo.11 © 2026</div>
   </div>
@@ -3735,22 +4049,22 @@ button{font-variant-emoji:text}
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
           <div style="text-align:center;flex:1">
             <div style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.25em;color:var(--t4);margin-bottom:4px">LEFT EAR</div>
-            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="pl-ear-l">200</div>
+            <div style="font-family:'Spectral',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="pl-ear-l">200</div>
             <div style="font-family:'DM Sans',sans-serif;font-size:8px;color:var(--t4);letter-spacing:.1em">Hz</div>
           </div>
           <div style="text-align:center;padding:0 12px">
             <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t4);margin-bottom:2px">=</div>
-            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-weight:200;font-style:italic;color:var(--t3)" id="pl-ear-wave">Alpha</div>
+            <div style="font-family:'Spectral',Georgia,serif;font-size:14px;font-weight:200;color:var(--t3)" id="pl-ear-wave">Alpha</div>
           </div>
           <div style="text-align:center;flex:1">
             <div style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.25em;color:var(--t4);margin-bottom:4px">RIGHT EAR</div>
-            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="pl-ear-r">210</div>
+            <div style="font-family:'Spectral',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1" id="pl-ear-r">210</div>
             <div style="font-family:'DM Sans',sans-serif;font-size:8px;color:var(--t4);letter-spacing:.1em">Hz</div>
           </div>
         </div>
         <div style="border-top:.5px solid var(--b1);padding-top:8px;display:flex;align-items:center;justify-content:center;gap:8px">
           <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t3);letter-spacing:.06em">brain perceives</div>
-          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1)" id="pl-ear-beat">10 Hz</div>
+          <div style="font-family:'Spectral',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1)" id="pl-ear-beat">10 Hz</div>
           <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t3)">·</div>
           <div style="font-family:'DM Sans',sans-serif;font-size:9px;color:var(--t3);letter-spacing:.06em" id="pl-ear-state">Alpha wave · relaxation</div>
         </div>
@@ -3762,7 +4076,7 @@ button{font-variant-emoji:text}
     <div id="pl-prog-wrap" style="display:none;margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
         <span id="pl-prog-elapsed" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;color:var(--t4)">0:00</span>
-        <span id="pl-prog-remain" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1)">20:00</span>
+        <span id="pl-prog-remain" style="font-family:'Spectral',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1)">20:00</span>
         <span id="pl-prog-total" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;color:var(--t4)">/ 20:00</span>
       </div>
       <div style="height:2px;background:var(--b1);border-radius:2px;overflow:hidden">
@@ -3858,16 +4172,16 @@ button{font-variant-emoji:text}
     <button onclick="show('home');renderStreak()" style="position:absolute;top:22px;left:22px;z-index:3;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.8);background:none;border:none;cursor:pointer" id="comp-back">← Back</button>
   </div>
   <div style="padding:28px 22px 20px">
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,4vw,32px);font-weight:200;font-style:italic;color:var(--t1);line-height:1.2;margin-bottom:6px" id="comp-headline"></div>
+    <div style="font-family:'Spectral',Georgia,serif;font-size:clamp(22px,4vw,32px);font-weight:200;color:var(--t1);line-height:1.2;margin-bottom:6px" id="comp-headline"></div>
     <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:24px" id="comp-freq-lbl"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px" id="comp-stats"></div>
     <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:18px;margin-bottom:16px">
       <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px" id="comp-brain-lbl">what happened</div>
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75" id="comp-brain-txt"></div>
+      <div style="font-family:'Spectral',Georgia,serif;font-size:16px;font-weight:200;color:var(--t1);line-height:1.75" id="comp-brain-txt"></div>
     </div>
     <div style="background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px">
       <canvas id="comp-shape-cv" width="80" height="80" style="width:40px;height:40px;flex-shrink:0"></canvas>
-      <div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;color:var(--t1);margin-bottom:3px" id="comp-shape-name"></div><div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5" id="comp-shape-desc"></div></div>
+      <div><div style="font-family:'Spectral',Georgia,serif;font-size:15px;font-weight:200;color:var(--t1);margin-bottom:3px" id="comp-shape-name"></div><div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.5" id="comp-shape-desc"></div></div>
     </div>
     <button onclick="replaySession()" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer;margin-bottom:10px" id="comp-replay">play again</button>
     <button onclick="show('home');renderStreak()" style="width:100%;padding:14px;background:none;border:.5px solid var(--b2);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;letter-spacing:.22em;color:var(--t2);cursor:pointer" id="comp-home">back to home</button>
@@ -3997,7 +4311,7 @@ button{font-variant-emoji:text}
     <!-- Dynamic emotional headline -->
     <div style="position:absolute;bottom:22px;left:22px;right:22px;z-index:3">
       <div id="hist-headline"
-        style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,4vw,36px);font-weight:200;font-style:italic;color:var(--t1);line-height:1.2;text-shadow:0 1px 20px rgba(245,243,238,.5)">
+        style="font-family:'Spectral',Georgia,serif;font-size:clamp(22px,4vw,36px);font-weight:200;color:var(--t1);line-height:1.2;text-shadow:0 1px 20px rgba(245,243,238,.5)">
       </div>
     </div>
   </div>
@@ -4015,7 +4329,7 @@ button{font-variant-emoji:text}
       </div>
       <!-- Shape meaning -->
       <div>
-        <div id="hist-shape-title" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1);margin-bottom:4px"></div>
+        <div id="hist-shape-title" style="font-family:'Spectral',Georgia,serif;font-size:18px;font-weight:200;color:var(--t1);margin-bottom:4px"></div>
         <div id="hist-shape-desc" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);line-height:1.6;max-width:200px"></div>
         <div style="margin-top:8px;display:flex;gap:4px" id="hist-dots"></div>
       </div>
@@ -4055,8 +4369,8 @@ button{font-variant-emoji:text}
 
     <!-- Top nav — overlays the image -->
     <div class="echo-profile-hero-nav">
-      <button class="pl-back" onclick="show('home');renderStreak()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--echo-ink-1);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer">← Back</button>
-      <button onclick="editProfile()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:var(--echo-ink-1);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer" id="prof-edit-btn">Edit</button>
+      <button class="pl-back" onclick="show('home');renderStreak()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.85);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer">← Back</button>
+      <button onclick="editProfile()" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.85);background:rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.18);border-radius:9999px;padding:8px 14px;cursor:pointer" id="prof-edit-btn">Edit</button>
     </div>
   </div>
 
@@ -4092,7 +4406,7 @@ button{font-variant-emoji:text}
     </div>
     <!-- Name + tagline -->
     <div>
-      <div id="prof-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1);margin-bottom:5px;line-height:1">Hi, Beautiful Soul</div>
+      <div id="prof-name" style="font-family:'Spectral',Georgia,serif;font-size:26px;font-weight:200;color:var(--t1);margin-bottom:5px;line-height:1">Hi, Beautiful Soul</div>
       <div id="prof-sub" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);letter-spacing:.16em;text-transform:lowercase">Your quiet space is here</div>
       <div id="prof-supporter-badge" aria-label="Supporter">✦ Supporter</div>
     </div>
@@ -4165,7 +4479,7 @@ button{font-variant-emoji:text}
       <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-month-lbl">This month</span>
     </div>
     <div style="display:flex;align-items:baseline;gap:5px">
-      <span id="prof-month-count" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;font-weight:200;color:var(--t1)">0</span>
+      <span id="prof-month-count" style="font-family:'Spectral',Georgia,serif;font-size:24px;font-weight:200;color:var(--t1)">0</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3)" id="prof-month-unit">quiet moments</span>
     </div>
   </div>
@@ -4177,7 +4491,7 @@ button{font-variant-emoji:text}
         <span style="width:8px;height:8px;border-radius:50%;background:var(--echo-gold)"></span>
         <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t1)" id="prof-explored-lbl">Frequencies explored</span>
       </div>
-      <div style="display:flex;align-items:baseline;gap:4px;font-family:'Cormorant Garamond',Georgia,serif;color:var(--t1)">
+      <div style="display:flex;align-items:baseline;gap:4px;font-family:'Spectral',Georgia,serif;color:var(--t1)">
         <span id="prof-explored-count" style="font-size:20px;font-weight:200">0</span>
         <span style="font-size:11px;color:var(--t3)" id="prof-explored-total">of 21</span>
       </div>
@@ -4269,7 +4583,7 @@ button{font-variant-emoji:text}
 
   <!-- Footer line -->
   <div style="text-align:center;padding:14px 22px 40px;border-top:.5px solid var(--b1);margin:0 22px">
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:12px;font-weight:200;font-style:italic;color:var(--t4)" id="prof-footer">A space to return to. Always.</div>
+    <div style="font-family:'Spectral',Georgia,serif;font-size:12px;font-weight:200;font-style:italic;color:var(--t4)" id="prof-footer">A space to return to. Always.</div>
     <div style="display:flex;justify-content:center;gap:20px;margin-top:14px">
       <a href="https://www.linkedin.com/in/shirasarid" target="_blank" rel="noopener noreferrer"
          onclick="track('social_click',{event_category:'engagement',event_label:'linkedin'})"
@@ -4409,7 +4723,7 @@ button{font-variant-emoji:text}
 ═══════════════════════════════════ -->
 <div id="prof-modal" style="display:none;position:fixed;inset:0;background:rgba(20,18,16,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:9500;align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--bg);border-radius:20px;padding:28px 24px;max-width:380px;width:100%;border:.5px solid var(--b1);box-shadow:0 20px 60px rgba(0,0,0,.3)">
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:6px" id="prof-modal-title">Tell us your name</div>
+    <div style="font-family:'Spectral',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:6px" id="prof-modal-title">Tell us your name</div>
     <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;color:var(--t3);text-align:center;margin-bottom:24px;letter-spacing:.04em" id="prof-modal-sub">It's how we'll greet you</div>
 
     <!-- Name input -->
@@ -4456,7 +4770,7 @@ button{font-variant-emoji:text}
 ═══════════════════════════════════ -->
 <div id="settings-modal" style="display:none;position:fixed;inset:0;background:rgba(20,18,16,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:9500;align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--bg);border-radius:20px;padding:28px 24px;max-width:380px;width:100%;border:.5px solid var(--b1);box-shadow:0 20px 60px rgba(0,0,0,.3)">
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:24px" id="settings-title">Settings</div>
+    <div style="font-family:'Spectral',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:24px" id="settings-title">Settings</div>
 
     <!-- Language -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
@@ -4705,7 +5019,7 @@ Guidelines:
     const data=await resp.json()
     const text=data.text||''
     content.innerHTML=`
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75;margin-bottom:14px">${text}</div>
+      <div style="font-family:'Spectral',Georgia,serif;font-size:15px;font-weight:300;color:var(--t1);line-height:1.75;margin-bottom:14px">${text}</div>
       <button onclick="runAIAnalysis()" style="background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t4);cursor:pointer;padding:0">↻ ${lang==='he'?'ניתוח מחדש':'refresh'}</button>`
   }catch(e){
     content.innerHTML=`<div style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--t3);padding:8px 0">${lang==='he'?'לא ניתן להתחבר כרגע.':'Could not connect right now.'}</div>
@@ -4741,7 +5055,7 @@ function buildHistory(){
   ].map(([v,l])=>`
     <div style="background:var(--bg2);border-radius:12px;padding:12px 10px;text-align:center">
       <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:5px">${l}</div>
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:200;color:var(--t1);line-height:1">${v}</div>
+      <div style="font-family:'Spectral',Georgia,serif;font-size:30px;font-weight:200;color:var(--t1);line-height:1">${v}</div>
     </div>`).join('')
 
   // ── Monthly stats ──
@@ -4753,7 +5067,7 @@ function buildHistory(){
     const isHe=lang==='he'
     reflEl.innerHTML=`
       <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">${isHe?'תובנת החודש':'this month'} · ${monthlyDays} ${isHe?'ימים':'days'}</div>
-      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:200;font-style:italic;color:var(--t1);line-height:1.75">${refl}</div>`
+      <div style="font-family:'Spectral',Georgia,serif;font-size:15px;font-weight:300;color:var(--t1);line-height:1.75">${refl}</div>`
   }
   // ── Weekly Shape ──
   const daysThisWeek=Math.min(streak,7)
@@ -4784,7 +5098,7 @@ function buildHistory(){
   const listEl=document.getElementById('hist-list')
   if(!listEl) return
   if(!keys.length){
-    listEl.innerHTML=`<div style="text-align:center;padding:40px 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:200;font-style:italic;color:var(--t3)">${isHe?'עדיין לא האזנת':'no sessions yet'}</div>`
+    listEl.innerHTML=`<div style="text-align:center;padding:40px 0;font-family:'Spectral',Georgia,serif;font-size:18px;font-weight:300;color:var(--t3)">${isHe?'עדיין לא האזנת':'no sessions yet'}</div>`
     return
   }
   const labelEl=document.getElementById('hist-list')
@@ -4804,7 +5118,7 @@ function buildHistory(){
         <div style="font-family:'DM Sans',sans-serif;font-size:10px;color:var(--t4)">${day}/${m}/${y} &nbsp;·&nbsp; ${mins} ${isHe?'דק':'min'}</div>
       </div>
       <div style="text-align:right;flex-shrink:0;margin-left:12px">
-        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:200;color:var(--t2)">${mins}</div>
+        <div style="font-family:'Spectral',Georgia,serif;font-size:22px;font-weight:200;color:var(--t2)">${mins}</div>
         <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.12em;color:var(--t4)">${isHe?'דק':'min'}</div>
       </div>
     </div>`
@@ -5555,7 +5869,7 @@ function renderProfile(){
     })
     const top3 = recent.slice(0,3)
     if(top3.length === 0){
-      tonesList.innerHTML = `<div style="text-align:center;padding:18px;background:var(--card);border:.5px dashed var(--b2);border-radius:12px;font-family:'Cormorant Garamond',Georgia,serif;font-size:13px;font-weight:200;font-style:italic;color:var(--t3)">${isHe?'התדרים שתאזיני להם יופיעו כאן':'frequencies you listen to will appear here'}</div>`
+      tonesList.innerHTML = `<div style="text-align:center;padding:18px;background:var(--card);border:.5px dashed var(--b2);border-radius:12px;font-family:'Spectral',Georgia,serif;font-size:13px;font-weight:300;color:var(--t3)">${isHe?'התדרים שתאזיני להם יופיעו כאן':'frequencies you listen to will appear here'}</div>`
     } else {
       const colors = [
         {bg:'linear-gradient(90deg,rgba(16,185,129,.18),rgba(20,184,166,.08))', border:'rgba(16,185,129,.3)'},
@@ -5709,6 +6023,137 @@ function signOutGently(){
       if(splash) splash.style.display = 'flex'
     }, 100)
   }
+}
+
+// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// RESCUE — immediate anxiety/stress relief
+// ─────────────────────────────────────────────────────────────
+let _rescueActive = false
+let _rescueTimerIv = null
+
+function startRescue(){
+  const f = FREQS.find(x => x.id === 'theta')
+  if(!f) return
+  _rescueActive = true
+
+  // Resume AudioContext + play theta binaural
+  const ctx = getCtx()
+  if(ctx.state === 'suspended') ctx.resume().then(()=>{ audioPlay(f) }).catch(()=>{ audioPlay(f) })
+  else audioPlay(f)
+  playing = true
+
+  // Translate labels
+  const isHe = lang === 'he'
+  const overlay = document.getElementById('rescue-overlay')
+  document.getElementById('rescue-freq-lbl').textContent = isHe ? 'θ תטא · 6 Hz · רגיעה עמוקה' : 'θ theta · 6 Hz · deep calm'
+  document.getElementById('rescue-lr-lbl').textContent = isHe ? '🎧 אוזן שמאל: 200 Hz · ימין: 206 Hz' : '🎧 L: 200 Hz · R: 206 Hz'
+  document.getElementById('rescue-stop-btn').textContent = isHe ? '✕ עצור' : '✕ stop'
+  document.getElementById('rescue-note').innerHTML = isHe
+    ? 'נשימת 4-7-8 מפעילה את מערכת הפאראסימפתטית.<br>קצב הלב יאט תוך 2 מחזורים.'
+    : '4-7-8 breathing activates the parasympathetic nervous system.<br>Your heart rate will slow within 2 cycles.'
+  document.getElementById('rescue-btn-title').textContent = isHe ? 'זקוק/ה לעזרה עכשיו?' : 'Need relief right now?'
+  document.getElementById('rescue-btn-sub').textContent = isHe ? '2 דק׳ · תטא · נשימת 4-7-8' : '2 min · theta · 4-7-8 breathing'
+
+  // Show overlay
+  overlay.style.display = 'flex'
+  track('rescue_start', { event_category:'rescue', freq:'theta' })
+
+  // 2-minute countdown
+  let secs = 120
+  _rescueTimerIv = setInterval(()=>{
+    secs--
+    if(!_rescueActive || secs <= 0){ stopRescue(); return }
+    const m = Math.floor(secs/60), s = secs%60
+    const el = document.getElementById('rescue-timer-lbl')
+    if(el) el.textContent = `${m}:${s.toString().padStart(2,'0')}`
+  }, 1000)
+
+  // Start breathing cycle
+  _runBreathCycle()
+}
+
+function _runBreathCycle(){
+  if(!_rescueActive) return
+  const ring = document.getElementById('rescue-ring')
+  const pulse = document.getElementById('rescue-pulse')
+  const phase = document.getElementById('rescue-phase')
+  const count = document.getElementById('rescue-count')
+  if(!ring || !phase) return
+  const isHe = lang === 'he'
+
+  // ── INHALE 4s ──
+  phase.textContent = isHe ? 'שאפ/י' : 'inhale'
+  count.textContent = '4'
+  ring.style.transition = 'width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1)'
+  pulse.style.transition = 'width 4s ease,height 4s ease,opacity 4s ease,border-color 4s ease'
+  ring.style.width = '160px'; ring.style.height = '160px'
+  pulse.style.width = '200px'; pulse.style.height = '200px'; pulse.style.opacity = '1'
+  pulse.style.borderColor = 'rgba(201,169,110,.35)'
+
+  let t = 3
+  const inhaleCount = setInterval(()=>{
+    if(!_rescueActive){ clearInterval(inhaleCount); return }
+    count.textContent = t > 0 ? t : ''
+    t--
+    if(t < 0) clearInterval(inhaleCount)
+  }, 1000)
+
+  setTimeout(()=>{
+    if(!_rescueActive) return
+    // ── HOLD 7s ──
+    clearInterval(inhaleCount)
+    phase.textContent = isHe ? 'החזק/י' : 'hold'
+    ring.style.transition = 'none'; pulse.style.transition = 'none'
+    count.textContent = '7'
+    let h = 6
+    const holdCount = setInterval(()=>{
+      if(!_rescueActive){ clearInterval(holdCount); return }
+      count.textContent = h > 0 ? h : ''
+      h--
+      if(h < 0) clearInterval(holdCount)
+    }, 1000)
+
+    setTimeout(()=>{
+      if(!_rescueActive) return
+      clearInterval(holdCount)
+      // ── EXHALE 8s ──
+      phase.textContent = isHe ? 'נשוף/י' : 'exhale'
+      count.textContent = '8'
+      ring.style.transition = 'width 8s cubic-bezier(.4,0,.2,1),height 8s cubic-bezier(.4,0,.2,1)'
+      pulse.style.transition = 'width 8s ease,height 8s ease,opacity 8s ease,border-color 8s ease'
+      ring.style.width = '80px'; ring.style.height = '80px'
+      pulse.style.width = '80px'; pulse.style.height = '80px'
+      pulse.style.opacity = '0'; pulse.style.borderColor = 'rgba(201,169,110,.1)'
+      let e = 7
+      const exhaleCount = setInterval(()=>{
+        if(!_rescueActive){ clearInterval(exhaleCount); return }
+        count.textContent = e > 0 ? e : ''
+        e--
+        if(e < 0) clearInterval(exhaleCount)
+      }, 1000)
+
+      setTimeout(()=>{
+        clearInterval(exhaleCount)
+        _runBreathCycle()  // next cycle
+      }, 8000)
+    }, 7000)
+  }, 4000)
+}
+
+function stopRescue(){
+  _rescueActive = false
+  clearInterval(_rescueTimerIv)
+  audioStopId('theta')
+  playing = false
+  const overlay = document.getElementById('rescue-overlay')
+  if(overlay){ overlay.style.display = 'none' }
+  // Reset ring for next time
+  const ring = document.getElementById('rescue-ring')
+  const pulse = document.getElementById('rescue-pulse')
+  if(ring){ ring.style.transition='none'; ring.style.width='80px'; ring.style.height='80px' }
+  if(pulse){ pulse.style.transition='none'; pulse.style.width='80px'; pulse.style.height='80px'; pulse.style.opacity='0' }
+  track('rescue_stop', { event_category:'rescue' })
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -5880,6 +6325,10 @@ function translateTipJar(){
     'prof-gift2-meta':   { en:'free download',                                     he:'הורדה חינמית' },
     'prof-gift3-meta':   { en:'free download',                                     he:'הורדה חינמית' },
     'prof-gifts-foot':   { en:'If one moved you — the tip jar is above. ↑',        he:'אם משהו הזיז משהו — צנצנת הטיפים למעלה. ↑' },
+    /* Home support card */
+    'home-support-tagline': { en:'echo.11 stays free for everyone.<br>A tip keeps it alive.', he:'echo.11 נשאר חינמי לכולם.<br>טיפ אחד שומר אותו חי.' },
+    'home-support-popular': { en:'popular',                                         he:'נבחר' },
+    'home-support-7lbl':    { en:'a week',                                          he:'שבוע' },
     /* Home CTA → Visions */
     'visions-cta-lbl':   { en:'Visions · Free',                                    he:'חזיונות · חינם' },
     'visions-cta-title': { en:'Postcards from inner deserts.',                     he:'גלויות מהמדבר הפנימי.' },
@@ -5900,9 +6349,13 @@ function translateTipJar(){
     'vis-tip-secure':    { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
     'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
+  const htmlIds = new Set(['home-support-tagline'])
   Object.keys(map).forEach(id => {
     const el = document.getElementById(id)
-    if(el) el.textContent = isHe ? map[id].he : map[id].en
+    if(!el) return
+    const val = isHe ? map[id].he : map[id].en
+    if(htmlIds.has(id)) el.innerHTML = val
+    else el.textContent = val
   })
   const subs = { 5: { en:'a coffee', he:'קפה' }, 7: { en:'a week', he:'שבוע' }, 14: { en:'a month', he:'חודש' } }
   document.querySelectorAll('[data-tip-sub]').forEach(el => {
@@ -6028,7 +6481,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const selectors = [
       '#home .streak-card',
       '#home #consciousness-card',
-      '#home #quick-relief-card',
       '#home #lib-link',
       '#home #binaural-strip',
       '#home .home-today-block',
@@ -7009,7 +7461,7 @@ function showComplete(freqId,listenedSecs){
   const hl=[[streak>=7,isHe?`${streak} ימים. את התדר.`:`${streak} days. you are the frequency.`],[mins>=20,isHe?`${mins} דקות של כוונון.`:`${mins} minutes. your system shifted.`],[mins>=3,isHe?'סשן הושלם. הגוף שלך יודע.':'session complete. your body knows.'],[true,isHe?'האזנת. זה מספיק.':'you listened. that is enough.']].find(([c])=>c)[1]
   if(el('comp-headline')) el('comp-headline').textContent=hl
   if(el('comp-freq-lbl')) el('comp-freq-lbl').textContent=(f?.hz||'')+' Hz · '+(t.name||'')
-  if(el('comp-stats')) el('comp-stats').innerHTML=[[mins,isHe?'דקות':'minutes'],[streak,isHe?'ימים רצופים':'day streak'],[totalMins,isHe?'סה"כ':'total min']].map(([v,l])=>`<div style="background:var(--bg2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">${l}</div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1">${v}</div></div>`).join('')
+  if(el('comp-stats')) el('comp-stats').innerHTML=[[mins,isHe?'דקות':'minutes'],[streak,isHe?'ימים רצופים':'day streak'],[totalMins,isHe?'סה"כ':'total min']].map(([v,l])=>`<div style="background:var(--bg2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">${l}</div><div style="font-family:'Spectral',Georgia,serif;font-size:28px;font-weight:200;color:var(--t1);line-height:1">${v}</div></div>`).join('')
   const bd=getBrainComplete(f)
   if(el('comp-brain-lbl')) el('comp-brain-lbl').textContent=isHe?'מה קרה':'what happened'
   if(el('comp-brain-txt')) el('comp-brain-txt').textContent=isHe?bd.he:bd.en
@@ -7366,6 +7818,47 @@ syncA11yPos()
     })
   }
 </script>
+<!-- ✦ RESCUE OVERLAY — fullscreen breathing guide -->
+<div id="rescue-overlay" role="dialog" aria-modal="true" aria-label="Relief session" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(6,5,4,.97);flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top,24px) 24px env(safe-area-inset-bottom,32px)">
+
+  <!-- Top bar: freq + timer centered -->
+  <div style="position:absolute;top:env(safe-area-inset-top,20px);left:0;right:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 22px;gap:6px">
+    <div style="font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.22em;color:rgba(201,169,110,.85);text-transform:uppercase" id="rescue-freq-lbl">θ theta · 6 Hz</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;color:rgba(201,169,110,.55)" id="rescue-lr-lbl">🎧 L: 200 Hz · R: 206 Hz</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:17px;letter-spacing:.1em;font-weight:300;color:rgba(245,243,238,.9);margin-top:2px" id="rescue-timer-lbl">2:00</div>
+  </div>
+
+  <!-- 3D Breathing animation -->
+  <div style="position:relative;width:280px;height:280px;display:flex;align-items:center;justify-content:center;perspective:600px">
+    <div style="position:absolute;width:280px;height:280px;display:flex;align-items:center;justify-content:center;transform:rotateX(28deg);transform-style:preserve-3d">
+      <!-- Outer slow orbit ring -->
+      <div style="position:absolute;border-radius:50%;width:256px;height:256px;border:1px solid rgba(201,169,110,.13);animation:rescueOrbit1 14s linear infinite"></div>
+      <!-- Middle counter-orbit ring -->
+      <div style="position:absolute;border-radius:50%;width:200px;height:200px;border:1px dashed rgba(201,169,110,.2);animation:rescueOrbit2 8s linear infinite"></div>
+      <!-- Outer pulse ring (JS-controlled) -->
+      <div id="rescue-pulse" style="position:absolute;border-radius:50%;background:transparent;border:1.5px solid rgba(201,169,110,.2);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1),opacity 4s ease,border-color 4s ease"></div>
+      <!-- Inner solid glow ring (JS-controlled) -->
+      <div id="rescue-ring" style="position:relative;z-index:1;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.32) 0%,rgba(201,169,110,.1) 55%,transparent 100%);border:1.5px solid rgba(201,169,110,.75);width:80px;height:80px;transition:width 4s cubic-bezier(.4,0,.2,1),height 4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;box-shadow:0 0 28px rgba(201,169,110,.5),0 0 56px rgba(201,169,110,.25),inset 0 0 18px rgba(201,169,110,.18)">
+        <div id="rescue-count" style="font-family:'Spectral',Georgia,serif;font-size:42px;font-weight:200;color:rgba(201,169,110,1);line-height:1;min-width:42px;text-align:center;text-shadow:0 0 20px rgba(201,169,110,.9)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase label — large and readable -->
+  <div id="rescue-phase" style="font-family:'DM Sans',sans-serif;font-size:28px;font-weight:200;letter-spacing:.3em;color:rgba(245,243,238,.9);text-transform:uppercase;margin-top:32px;height:42px;transition:opacity .4s">breathe</div>
+
+  <!-- Science note — readable size and contrast -->
+  <div style="text-align:center;max-width:300px;margin-top:14px">
+    <div id="rescue-note" style="font-family:'Spectral',Georgia,serif;font-size:16px;font-weight:300;color:rgba(245,243,238,.65);line-height:1.65">4-7-8 breathing activates the parasympathetic nervous system.<br>Your heart rate will slow within 2 cycles.</div>
+  </div>
+
+  <!-- Stop button — large, centered, bottom -->
+  <button onclick="stopRescue()" aria-label="Stop rescue session"
+    id="rescue-stop-btn"
+    style="position:absolute;bottom:calc(env(safe-area-inset-bottom,32px) + 20px);left:50%;transform:translateX(-50%);background:rgba(201,169,110,.14);border:1.5px solid rgba(201,169,110,.55);border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:15px;letter-spacing:.2em;color:rgba(245,243,238,.92);cursor:pointer;padding:15px 52px;min-width:190px;text-align:center;transition:all .25s;white-space:nowrap">✕ stop</button>
+
+</div>
+
 <!-- Supporter confirmation modal -->
 <div id="supporter-modal" role="dialog" aria-modal="true" aria-labelledby="supp-modal-title">
   <div class="supp-sheet">
