@@ -2166,7 +2166,7 @@ async function togglePlay(){
       track('audio_60s', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
     } else if(elapsed === 120){
       // 2-min nudge — user has received value, gentle tip reminder
-      if(!localStorage.getItem('echo11_supported')) showTipNudge()
+      if(!localStorage.getItem('echo11_supporter')) showTipNudge()
     } else if(elapsed === 300){
       const _f=FREQS[curIdx]
       track('audio_5min', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
