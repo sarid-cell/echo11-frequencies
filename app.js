@@ -1570,6 +1570,29 @@ async function shareEcho(){
   showShareSheet(text, url, isHe)
 }
 
+function showTipNudge(){
+  if(document.getElementById('tip-nudge-bar')) return
+  const isHe = lang === 'he'
+  const bar = document.createElement('div')
+  bar.id = 'tip-nudge-bar'
+  bar.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);z-index:8000;opacity:0;transition:all .4s ease;max-width:340px;width:calc(100% - 40px)'
+  bar.innerHTML = `
+    <div style="background:var(--card,#fdfaf5);border:.5px solid rgba(201,169,110,.45);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.18)">
+      <div style="flex:1">
+        <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;color:var(--t1,#1a1a18);line-height:1.5">${isHe ? '✦ echo.11 חינמי. תמיד יהיה.' : '✦ echo.11 is free. Always will be.'}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:300;color:var(--t3,#525250);margin-top:2px">${isHe ? 'רוצה להגיד תודה?' : 'Want to say thank you?'}</div>
+      </div>
+      <button onclick="startTip(7);document.getElementById('tip-nudge-bar')?.remove()"
+        style="flex-shrink:0;padding:8px 14px;background:var(--echo-gold,#c9a96e);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#1a1612;cursor:pointer;white-space:nowrap">$7 ✦</button>
+      <button onclick="document.getElementById('tip-nudge-bar')?.remove()"
+        style="flex-shrink:0;background:none;border:none;font-size:16px;color:var(--t3,#525250);cursor:pointer;padding:0 2px;line-height:1">×</button>
+    </div>`
+  document.body.appendChild(bar)
+  requestAnimationFrame(()=>{ bar.style.opacity='1'; bar.style.transform='translateX(-50%) translateY(0)' })
+  setTimeout(()=>{ if(bar.parentNode){ bar.style.opacity='0'; bar.style.transform='translateX(-50%) translateY(20px)'; setTimeout(()=>bar.remove(),400) } }, 12000)
+  track('tip_nudge_shown', { event_category:'funnel', method:'2min' })
+}
+
 function showShareSheet(text, url, isHe){
   const existing = document.getElementById('share-sheet-overlay')
   if(existing) existing.remove()
@@ -2141,6 +2164,9 @@ async function togglePlay(){
     } else if(elapsed === 60){
       const _f=FREQS[curIdx]
       track('audio_60s', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
+    } else if(elapsed === 120){
+      // 2-min nudge — user has received value, gentle tip reminder
+      if(!localStorage.getItem('echo11_supported')) showTipNudge()
     } else if(elapsed === 300){
       const _f=FREQS[curIdx]
       track('audio_5min', { event_category:'audio', event_label:_f?.id, freq_hz:_f?.hz })
@@ -2691,6 +2717,9 @@ function showComplete(freqId,listenedSecs){
   if(el('comp-replay')) el('comp-replay').textContent=isHe?`▶ שמע שוב · ${f?.hz||''} Hz`:`▶ listen again · ${f?.hz||''} Hz`
   if(el('comp-home')) el('comp-home').textContent=isHe?'← חזרה לבית':'← back to home'
   if(el('comp-back')) el('comp-back').textContent=isHe?'← חזרה':'← Back'
+  if(el('comp-tip-head')) el('comp-tip-head').textContent=isHe?'הסשן הזה היה חינמי.':'This session was free.'
+  if(el('comp-tip-sub')) el('comp-tip-sub').textContent=isHe?'echo.11 נשארת חינמית לכולם. טיפ הוא סתם תודה — חד-פעמי, ללא צורך בחשבון.':'echo.11 stays free for everyone. A tip is just a thank-you — one-time, no account needed.'
+  if(el('comp-share-btn')) el('comp-share-btn').textContent=isHe?'שתפי עם חברה — גם בשבילה חינמי':'Share with a friend — it\'s free for them too'
   show('complete')
   try{ renderStreak() }catch(e){}
 }
