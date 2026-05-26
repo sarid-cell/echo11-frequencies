@@ -1343,9 +1343,9 @@ function stopRescue(){
 }
 
 // ─────────────────────────────────────────────────────────────
-// Tip Jar — opens Ko-fi in a new tab
+// Tip Jar — opens PayPal directly (amount pre-filled via PayPal.Me)
 // ─────────────────────────────────────────────────────────────
-const KOFI_URL = 'https://ko-fi.com/echo11'
+const PAYPAL_URL = 'https://paypal.me/echo11space'
 
 function launchConfetti(days){
   const isHe=lang==='he'
@@ -1376,9 +1376,9 @@ function launchConfetti(days){
 }
 
 function startTip(amount){
-  const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'kofi'
+  const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'paypal'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
-  const dest = [5,7,14].includes(amount) ? `${KOFI_URL}?amount=${amount}` : KOFI_URL
+  const dest = amount ? `${PAYPAL_URL}/${amount}` : PAYPAL_URL
   const win = window.open(dest, '_blank', 'noopener,noreferrer')
 
   // Popup blocked — fall back to a visible link in the tip card
@@ -1392,7 +1392,7 @@ function startTip(amount){
     return
   }
 
-  // User went to Ko-fi — when they return to this tab, show a thank-you prompt
+  // User went to PayPal — when they return to this tab, show a thank-you prompt
   window._tipPending = { amount, dest, label }
 }
 
@@ -1410,7 +1410,7 @@ function showTipFeedback(html, duration){
   window._tipFeedbackTimer = setTimeout(()=>{ el.style.display='none' }, duration || 5000)
 }
 
-// When user returns to the tab after visiting Ko-fi — show supporter confirmation
+// When user returns to the tab after visiting PayPal — show supporter confirmation
 document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState !== 'visible') return
   const tip = window._tipPending
@@ -1502,8 +1502,8 @@ function translateTipJar(){
     'prof-tip-sub':      { en:'echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.',
                            he:'echo.11 נשאר חינמי לכולם — בלי מנוי, בלי פרסומות, בלי תשלום חובה. טיפ הוא תודה חד-פעמית, כמו לקנות כוס קפה למי שעבודתה ריגשה אותך.' },
     'prof-tip-social':   { en:'Be the first to support echo.11',                   he:'היו הראשונים לתמוך ב-echo.11' },
-    'prof-tip-hint':     { en:"You'll choose the exact amount on Ko-fi",           he:'את הסכום המדויק תבחרו ב-Ko-fi' },
-    'prof-tip-secure':   { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'prof-tip-hint':     { en:'amount pre-filled · complete on PayPal',             he:'הסכום ממולא מראש · השלמה ב-PayPal' },
+    'prof-tip-secure':   { en:'no account needed · one-time · powered by PayPal',  he:'בלי הרשמה · חד-פעמי · דרך PayPal' },
     'prof-gifts-lbl':    { en:'Gifts from echo.11',                                he:'מתנות מ-echo.11' },
     'prof-gifts-title':  { en:'Visions for your screen.',                          he:'חזיונות למסך שלך.' },
     'prof-gifts-sub':    { en:'Free. No login. No paywall. Take what speaks to you.', he:'חינם. בלי הרשמה. בלי חומה. קחו את מה שמדבר אליכם.' },
@@ -1532,7 +1532,7 @@ function translateTipJar(){
     'vis-dl-3':          { en:'Free download',                                     he:'הורדה חינמית' },
     'vis-tip-lbl':       { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
     'vis-tip-headline':  { en:'If a vision moved you, you can return the gift.',   he:'אם חיזיון אחד הזיז משהו, אפשר להגיד תודה.' },
-    'vis-tip-secure':    { en:'no account needed · one-time · powered by Ko-fi',   he:'בלי הרשמה · חד-פעמי · דרך Ko-fi' },
+    'vis-tip-secure':    { en:'no account needed · one-time · powered by PayPal',   he:'בלי הרשמה · חד-פעמי · דרך PayPal' },
     'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
   const htmlIds = new Set(['home-support-tagline'])
