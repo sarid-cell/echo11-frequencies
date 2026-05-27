@@ -1,4 +1,4 @@
-const CACHE = 'echo11-v4'
+const CACHE = 'echo11-v5'
 
 const PRECACHE = [
   '/glassmorphism-overrides.css',
@@ -28,6 +28,9 @@ self.addEventListener('activate', e => {
         keys.filter(k => k !== CACHE).map(k => caches.delete(k))
       ))
       .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type:'window' }).then(clients =>
+        clients.forEach(c => c.postMessage({ type:'SW_UPDATED' }))
+      ))
   )
 })
 
@@ -60,9 +63,10 @@ self.addEventListener('fetch', e => {
     return
   }
 
-  // HTML, JS, CSS, JSON — network-first so every deploy reaches users immediately
+  // HTML, JS, CSS, JSON — network-first, bypass HTTP cache so immutable CDN
+  // headers don't serve stale app.js after a deploy
   e.respondWith(
-    fetch(e.request)
+    fetch(new Request(e.request, { cache: 'no-cache' }))
       .then(res => {
         if (res && res.status === 200) {
           const clone = res.clone()

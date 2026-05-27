@@ -5193,11 +5193,23 @@ body.no-anim *{
 <!-- Vercel Speed Insights — deferred -->
 <script defer src="/_vercel/speed-insights/script.js"></script>
 
-<!-- Service Worker registration -->
+<!-- Service Worker registration + update banner -->
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js').catch(() => {})
+    })
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data?.type !== 'SW_UPDATED') return
+      // Show a subtle tap-to-reload banner
+      if (document.getElementById('sw-update-bar')) return
+      const bar = document.createElement('div')
+      bar.id = 'sw-update-bar'
+      bar.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:8000;background:rgba(14,12,10,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:.5px solid rgba(201,180,152,.3);border-radius:30px;padding:10px 20px;font-family:"DM Sans",sans-serif;font-size:12px;letter-spacing:.08em;color:rgba(201,180,152,.9);cursor:pointer;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.4)'
+      bar.textContent = '✦ New version ready — tap to refresh'
+      bar.onclick = () => location.reload()
+      document.body.appendChild(bar)
+      setTimeout(() => bar.remove(), 12000)
     })
   }
 </script>
