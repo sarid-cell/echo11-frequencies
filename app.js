@@ -907,6 +907,137 @@ function shuffleAffirmation(){
   }catch(e){}
 }
 
+// ══ QUOTE SHARE ══════════════════════════════════════════════
+let _qTheme = 'dark'
+const QUOTE_COLORS = {
+  dark:  { bg:'#0d0c0b', text:'#f5e6c8', sub:'rgba(201,180,152,.55)', line:'rgba(201,180,152,.18)' },
+  warm:  { bg:'#c5aa8a', text:'#ffffff',  sub:'rgba(255,255,255,.65)', line:'rgba(255,255,255,.28)' },
+  light: { bg:'#f5f0e8', text:'#1a1907',  sub:'rgba(26,25,7,.42)',     line:'rgba(26,25,7,.15)'     },
+}
+
+function openShareQuote(){
+  const modal = document.getElementById('qshare-modal')
+  if(!modal) return
+  _qTheme = document.body.classList.contains('dark') ? 'dark' : 'warm'
+  modal.style.display = 'flex'
+  const isHe = lang === 'he'
+  const titleEl = document.getElementById('qshare-title')
+  if(titleEl) titleEl.textContent = isHe ? 'שתפי את הציטוט' : 'Share quote'
+  const bgLbl = document.getElementById('qshare-bg-lbl')
+  if(bgLbl) bgLbl.textContent = isHe ? 'רקע' : 'Background'
+  const btnLbl = document.getElementById('qshare-btn-lbl')
+  if(btnLbl) btnLbl.textContent = isHe ? 'הורדה · שיתוף' : 'Download · Share'
+  const closeLbl = document.getElementById('qshare-close-btn')
+  if(closeLbl) closeLbl.textContent = isHe ? 'סגור' : 'Close'
+  _syncQThemeBtns()
+  document.fonts.ready.then(() => _renderQCanvas())
+  track('quote_share_opened', { event_category:'share' })
+}
+
+function closeQuoteShare(){
+  const modal = document.getElementById('qshare-modal')
+  if(modal) modal.style.display = 'none'
+}
+
+function setQTheme(t){
+  _qTheme = t
+  _syncQThemeBtns()
+  _renderQCanvas()
+}
+
+function _syncQThemeBtns(){
+  document.querySelectorAll('.qshare-tb').forEach(b => {
+    const sel = b.dataset.t === _qTheme
+    b.style.outline = sel ? '2.5px solid var(--t1)' : '2.5px solid transparent'
+    b.style.outlineOffset = '3px'
+    b.style.transform = sel ? 'scale(1.1)' : 'scale(1)'
+  })
+}
+
+function _wrapQText(ctx, text, x, y, maxW, lineH){
+  const words = text.split(' ')
+  let line = ''
+  for(let n = 0; n < words.length; n++){
+    const test = line + words[n] + ' '
+    if(ctx.measureText(test).width > maxW && n > 0){
+      ctx.fillText(line.trim(), x, y)
+      line = words[n] + ' '; y += lineH
+    } else { line = test }
+  }
+  if(line.trim()) ctx.fillText(line.trim(), x, y)
+  return y
+}
+
+function _renderQCanvas(){
+  const cv = document.getElementById('qshare-cv')
+  if(!cv) return
+  const ctx = cv.getContext('2d')
+  const W = 1080, H = 1080
+  const c = QUOTE_COLORS[_qTheme]
+  const isHe = lang === 'he'
+  const text = document.getElementById('prof-affirmation')?.textContent || '"echo.11"'
+
+  ctx.clearRect(0, 0, W, H)
+  ctx.fillStyle = c.bg; ctx.fillRect(0, 0, W, H)
+
+  // Top accent line
+  ctx.fillStyle = 'rgba(201,180,152,.5)'
+  ctx.fillRect(W/2 - 44, 100, 88, 1)
+
+  // Eyebrow
+  ctx.fillStyle = c.sub
+  ctx.font = '300 20px "DM Sans", Arial, sans-serif'
+  ctx.textAlign = 'center'; ctx.direction = 'ltr'
+  ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", W/2, 158)
+
+  // Quote — Spectral italic, wrapped
+  ctx.fillStyle = c.text
+  ctx.textAlign = 'center'
+  ctx.direction = isHe ? 'rtl' : 'ltr'
+  ctx.font = isHe ? 'italic 300 52px "Spectral", Georgia, serif' : 'italic 300 54px "Spectral", Georgia, serif'
+  _wrapQText(ctx, text, W/2, 340, 860, 80)
+
+  // Bottom separator
+  ctx.strokeStyle = c.line; ctx.lineWidth = 0.7
+  ctx.beginPath(); ctx.moveTo(80, H - 170); ctx.lineTo(W - 80, H - 170); ctx.stroke()
+
+  // Brand
+  ctx.fillStyle = c.sub
+  ctx.font = '300 20px "DM Sans", Arial, sans-serif'
+  ctx.direction = 'ltr'; ctx.textAlign = 'center'
+  ctx.fillText('echo.11  ·  echo11.space', W/2, H - 106)
+}
+
+function downloadQuote(){
+  const cv = document.getElementById('qshare-cv')
+  if(!cv) return
+  const a = document.createElement('a')
+  a.download = 'echo11-quote.png'
+  a.href = cv.toDataURL('image/png')
+  a.click()
+  track('quote_downloaded', { event_category:'share', event_label:_qTheme })
+}
+
+async function shareQuoteCard(){
+  const cv = document.getElementById('qshare-cv')
+  if(!cv) return
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  track('quote_shared', { event_category:'share', event_label:_qTheme })
+  if(navigator.share){
+    try{
+      cv.toBlob(async blob => {
+        const file = new File([blob], 'echo11-quote.png', { type:'image/png' })
+        try{
+          if(navigator.canShare && navigator.canShare({ files:[file] })){
+            await navigator.share({ files:[file], title:'echo.11', text:text+'\n\necho11.space' }); return
+          }
+        }catch(_){}
+        await navigator.share({ title:'echo.11', text:text+'\n\necho11.space', url:'https://echo11.space' })
+      }, 'image/png')
+    }catch(_){ downloadQuote() }
+  } else { downloadQuote() }
+}
+
 function loadProfile(){
   try{
     const p = JSON.parse(localStorage.getItem(PROFILE_KEY)||'null')
@@ -1043,6 +1174,8 @@ function renderProfile(){
   }
   const affHint = document.getElementById('prof-aff-hint')
   if(affHint) affHint.textContent = isHe ? 'הקליקי לעוד אחת' : 'tap for another'
+  const affShareBtn = document.getElementById('prof-aff-share-btn')
+  if(affShareBtn) affShareBtn.textContent = isHe ? '↑ שתפי ציטוט' : '↑ share quote'
 
   // Monthly count
   const monthCount = getMonthlyMomentsCount()

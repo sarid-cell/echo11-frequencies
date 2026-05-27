@@ -4619,6 +4619,7 @@ button{font-variant-emoji:text}
     <div id="prof-affirmation" class="echo-affirmation-text">"Your sensitivity is your superpower"</div>
     <span class="echo-affirmation-hint" id="prof-aff-hint">tap for another</span>
   </button>
+  <button id="prof-aff-share-btn" onclick="openShareQuote()" style="display:flex;align-items:center;gap:5px;margin:-4px auto 14px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3);padding:6px 14px;text-transform:uppercase">↑ share quote</button>
 
   <!-- ═════════════════════════════════════════════════
        TIP JAR — promoted, explained, with social proof
@@ -5282,6 +5283,36 @@ body.no-anim *{
       <button class="supp-yes" id="supp-modal-yes" onclick="claimSupporter()">Yes, I did ✦</button>
       <button class="supp-no" id="supp-modal-no" onclick="dismissSupporterModal()">Not this time</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ QUOTE SHARE MODAL ═════════════════════════════════════ -->
+<div id="qshare-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.65);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeQuoteShare()">
+  <div style="background:var(--bg);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:24px 20px 40px;max-height:92vh;overflow-y:auto">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <span style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;color:var(--t1)" id="qshare-title">Share quote</span>
+      <button onclick="closeQuoteShare()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--t3)" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <!-- Canvas preview -->
+    <canvas id="qshare-cv" width="1080" height="1080" style="width:100%;max-width:320px;display:block;margin:0 auto 24px;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.28)"></canvas>
+    <!-- Color themes -->
+    <div style="margin-bottom:22px">
+      <div id="qshare-bg-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px">Background</div>
+      <div style="display:flex;gap:14px;align-items:center">
+        <button class="qshare-tb" data-t="dark"  onclick="setQTheme('dark')"  style="width:40px;height:40px;border-radius:50%;background:#0d0c0b;border:.5px solid rgba(255,255,255,.12);cursor:pointer;transition:transform .15s;outline:2.5px solid var(--t1);outline-offset:3px" aria-label="Dark theme"></button>
+        <button class="qshare-tb" data-t="warm"  onclick="setQTheme('warm')"  style="width:40px;height:40px;border-radius:50%;background:#c5aa8a;border:.5px solid rgba(255,255,255,.12);cursor:pointer;transition:transform .15s;outline:2.5px solid transparent;outline-offset:3px" aria-label="Warm theme"></button>
+        <button class="qshare-tb" data-t="light" onclick="setQTheme('light')" style="width:40px;height:40px;border-radius:50%;background:#f5f0e8;border:.5px solid #ccc;cursor:pointer;transition:transform .15s;outline:2.5px solid transparent;outline-offset:3px" aria-label="Light theme"></button>
+      </div>
+    </div>
+    <!-- Download / Share button -->
+    <button onclick="shareQuoteCard()" style="width:100%;padding:15px;background:var(--echo-gold);border:none;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;color:#1a1907;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="qshare-btn-lbl">Download · Share</span>
+    </button>
+    <button onclick="closeQuoteShare()" id="qshare-close-btn" style="width:100%;padding:12px;background:transparent;border:.5px solid var(--b1);border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t2)">Close</button>
   </div>
 </div>
 
