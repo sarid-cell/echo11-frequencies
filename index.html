@@ -4621,58 +4621,6 @@ button{font-variant-emoji:text}
   </button>
   <button id="prof-aff-share-btn" onclick="openShareQuote()" style="display:flex;align-items:center;gap:5px;margin:-4px auto 14px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;color:var(--t3);padding:6px 14px;text-transform:uppercase">↑ share quote</button>
 
-  <!-- ═════════════════════════════════════════════════
-       TIP JAR — promoted, explained, with social proof
-       (moved up from bottom-of-page so it isn't hidden)
-  ═════════════════════════════════════════════════ -->
-  <div class="echo-tip-card">
-    <div class="echo-tip-head">
-      <span class="echo-tip-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-sparkles"/></svg><span id="prof-tip-lbl">Support echo.11</span></span>
-      <div id="prof-tip-headline" class="echo-tip-title">If echo.11 brought you calm, you can return the gift.</div>
-    </div>
-
-    <div class="echo-tip-tiers">
-      <button onclick="startTip(5)" data-tip="5" class="tip-btn">
-        <span class="tip-amt">$5</span>
-        <span class="tip-lbl" data-tip-sub="5">a coffee</span>
-      </button>
-      <button onclick="startTip(7)" data-tip="7" class="tip-btn tip-middle">
-        <span data-tip-badge class="tip-badge">most chosen</span>
-        <span class="tip-amt">$7</span>
-        <span class="tip-lbl" data-tip-sub="7">a week</span>
-      </button>
-      <button onclick="startTip(14)" data-tip="14" class="tip-btn">
-        <span class="tip-amt">$14</span>
-        <span class="tip-lbl" data-tip-sub="14">a month</span>
-      </button>
-    </div>
-
-    <div class="echo-tip-divider"></div>
-
-    <div class="echo-tip-explain" id="prof-tip-sub">
-      echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.
-    </div>
-
-    <div class="echo-tip-social">
-      <span class="echo-tip-social-dot">✦</span>
-      <span id="prof-tip-social">Be the first to support echo.11</span>
-    </div>
-
-    <div class="echo-tip-foot" id="prof-tip-secure">
-      no account needed · one-time · powered by PayPal
-    </div>
-    <div class="echo-tip-foot" id="prof-tip-hint" style="opacity:.65;margin-top:6px">
-      amount pre-filled · complete on PayPal
-    </div>
-    <div class="echo-supporter-thanks">
-      <div class="supp-thanks-icon">✦</div>
-      <div class="supp-thanks-text" id="prof-supp-thanks-title">Thank you, Supporter.</div>
-      <div class="supp-thanks-date" id="prof-supp-thanks-date"></div>
-    </div>
-  </div>
-
-  <!-- Gifts moved to dedicated /visions page — entry point on home -->
-
 
   <!-- Quiet moments stat -->
   <div style="margin:0 22px 12px;background:var(--card);border:.5px solid var(--b1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
@@ -4792,7 +4740,28 @@ button{font-variant-emoji:text}
     " id="prof-signout">→ Sign Out Gently</button>
   </div>
 
-  <!-- Tip Jar moved to top of profile (right after affirmation) — see above -->
+  <!-- ══ TIP JAR ══ -->
+  <div class="echo-tip-card">
+    <div class="echo-tip-head">
+      <span class="echo-tip-eyebrow"><svg class="echo-icon sm" aria-hidden="true"><use href="#i-sparkles"/></svg><span id="prof-tip-lbl">Support echo.11</span></span>
+      <div id="prof-tip-headline" class="echo-tip-title">If echo.11 brought you calm, you can return the gift.</div>
+    </div>
+    <div class="echo-tip-tiers">
+      <button onclick="startTip(5)" data-tip="5" class="tip-btn"><span class="tip-amt">$5</span><span class="tip-lbl" data-tip-sub="5">a coffee</span></button>
+      <button onclick="startTip(7)" data-tip="7" class="tip-btn tip-middle"><span data-tip-badge class="tip-badge">most chosen</span><span class="tip-amt">$7</span><span class="tip-lbl" data-tip-sub="7">a week</span></button>
+      <button onclick="startTip(14)" data-tip="14" class="tip-btn"><span class="tip-amt">$14</span><span class="tip-lbl" data-tip-sub="14">a month</span></button>
+    </div>
+    <div class="echo-tip-divider"></div>
+    <div class="echo-tip-explain" id="prof-tip-sub">echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.</div>
+    <div class="echo-tip-social"><span class="echo-tip-social-dot">✦</span><span id="prof-tip-social">Be the first to support echo.11</span></div>
+    <div class="echo-tip-foot" id="prof-tip-secure">no account needed · one-time · powered by PayPal</div>
+    <div class="echo-tip-foot" id="prof-tip-hint" style="opacity:.65;margin-top:6px">amount pre-filled · complete on PayPal</div>
+    <div class="echo-supporter-thanks">
+      <div class="supp-thanks-icon">✦</div>
+      <div class="supp-thanks-text" id="prof-supp-thanks-title">Thank you, Supporter.</div>
+      <div class="supp-thanks-date" id="prof-supp-thanks-date"></div>
+    </div>
+  </div>
 
   <!-- Footer line -->
   <div style="text-align:center;padding:14px 22px 40px;border-top:.5px solid var(--b1);margin:0 22px">
@@ -5287,32 +5256,86 @@ body.no-anim *{
 </div>
 
 <!-- ══ QUOTE SHARE MODAL ═════════════════════════════════════ -->
-<div id="qshare-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.65);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeQuoteShare()">
-  <div style="background:var(--bg);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:24px 20px 40px;max-height:92vh;overflow-y:auto">
+<div id="qshare-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeQuoteShare()">
+  <div style="background:rgba(10,9,8,.92);-webkit-backdrop-filter:blur(40px);backdrop-filter:blur(40px);border:.5px solid rgba(255,255,255,.09);width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 40px;max-height:92vh;overflow-y:auto">
+
+    <!-- Handle bar -->
+    <div style="width:40px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 20px"></div>
+
     <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <span style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;color:var(--t1)" id="qshare-title">Share quote</span>
-      <button onclick="closeQuoteShare()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--t3)" aria-label="Close">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <span style="font-family:'DM Sans',sans-serif;font-size:15px;letter-spacing:.06em;font-weight:400;color:rgba(255,255,255,.9)" id="qshare-title">Share quote</span>
+      <button onclick="closeQuoteShare()" style="background:rgba(255,255,255,.07);border:.5px solid rgba(255,255,255,.1);border-radius:50%;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6)" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
+
     <!-- Canvas preview -->
-    <canvas id="qshare-cv" width="1080" height="1080" style="width:100%;max-width:320px;display:block;margin:0 auto 24px;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.28)"></canvas>
-    <!-- Color themes -->
-    <div style="margin-bottom:22px">
-      <div id="qshare-bg-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:12px">Background</div>
-      <div style="display:flex;gap:14px;align-items:center">
-        <button class="qshare-tb" data-t="dark"  onclick="setQTheme('dark')"  style="width:40px;height:40px;border-radius:50%;background:#0d0c0b;border:.5px solid rgba(255,255,255,.12);cursor:pointer;transition:transform .15s;outline:2.5px solid var(--t1);outline-offset:3px" aria-label="Dark theme"></button>
-        <button class="qshare-tb" data-t="warm"  onclick="setQTheme('warm')"  style="width:40px;height:40px;border-radius:50%;background:#c5aa8a;border:.5px solid rgba(255,255,255,.12);cursor:pointer;transition:transform .15s;outline:2.5px solid transparent;outline-offset:3px" aria-label="Warm theme"></button>
-        <button class="qshare-tb" data-t="light" onclick="setQTheme('light')" style="width:40px;height:40px;border-radius:50%;background:#f5f0e8;border:.5px solid #ccc;cursor:pointer;transition:transform .15s;outline:2.5px solid transparent;outline-offset:3px" aria-label="Light theme"></button>
+    <canvas id="qshare-cv" width="1080" height="1080" style="width:100%;max-width:300px;display:block;margin:0 auto 22px;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.55)"></canvas>
+
+    <!-- Color themes row -->
+    <div style="margin-bottom:20px">
+      <div id="qshare-bg-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:12px">Background</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <button class="qshare-tb" data-t="dark"  onclick="setQTheme('dark')"
+          style="width:38px;height:38px;border-radius:50%;background:#0d0c0b;border:.5px solid rgba(255,255,255,.15);cursor:pointer;transition:all .18s;outline:2.5px solid rgba(201,180,152,.8);outline-offset:3px" aria-label="Dark"></button>
+        <button class="qshare-tb" data-t="warm"  onclick="setQTheme('warm')"
+          style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#c9b898,#b89d7a);border:.5px solid rgba(255,255,255,.15);cursor:pointer;transition:all .18s;outline:2.5px solid transparent;outline-offset:3px" aria-label="Warm"></button>
+        <button class="qshare-tb" data-t="light" onclick="setQTheme('light')"
+          style="width:38px;height:38px;border-radius:50%;background:#f5f0e8;border:.5px solid rgba(255,255,255,.15);cursor:pointer;transition:all .18s;outline:2.5px solid transparent;outline-offset:3px" aria-label="Light"></button>
       </div>
     </div>
-    <!-- Download / Share button -->
-    <button onclick="shareQuoteCard()" style="width:100%;padding:15px;background:var(--echo-gold);border:none;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;color:#1a1907;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span id="qshare-btn-lbl">Download · Share</span>
+
+    <!-- Platform share buttons -->
+    <div style="margin-bottom:16px">
+      <div id="qshare-share-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:12px">Share to</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+
+        <!-- Instagram -->
+        <button onclick="qShareIG()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <defs><linearGradient id="ig-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f9a8d4"/><stop offset="100%" stop-color="#fb923c"/></linearGradient></defs>
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">Instagram</span>
+        </button>
+
+        <!-- WhatsApp -->
+        <button onclick="qShareWA()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M20.52 3.48A11.93 11.93 0 0012 0C5.37 0 0 5.37 0 12c0 2.12.55 4.1 1.51 5.83L0 24l6.33-1.49A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.48-8.52z" fill="#25D366" opacity=".15"/>
+            <path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.65.07c-1.8-.9-2.98-1.6-4.17-3.63-.31-.54.31-.5.9-1.66.1-.2.05-.37-.03-.52S9.4 7.88 9.14 7.26c-.26-.6-.52-.52-.67-.53-.17-.01-.37-.01-.57-.01s-.52.07-.79.37-1.04 1.02-1.04 2.48 1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49 1.89.82 2.63.89 3.57.75.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.19-.57-.34z" fill="#25D366"/>
+          </svg>
+          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">WhatsApp</span>
+        </button>
+
+        <!-- LinkedIn -->
+        <button onclick="qShareLI()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#0A66C2">
+            <rect width="24" height="24" rx="4" fill="#0A66C2" opacity=".15"/>
+            <path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4V8.48zM13.32 8.48H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.82-2.91l.14-1.68z" fill="#0A66C2"/>
+          </svg>
+          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">LinkedIn</span>
+        </button>
+
+        <!-- Facebook -->
+        <button onclick="qShareFB()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1877F2">
+            <circle cx="12" cy="12" r="12" fill="#1877F2" opacity=".15"/>
+            <path d="M17 2h-3a5 5 0 00-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" fill="#1877F2" stroke="#1877F2" stroke-width=".5"/>
+          </svg>
+          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">Facebook</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Download (primary) -->
+    <button onclick="downloadQuote()" style="width:100%;padding:14px;background:linear-gradient(135deg,rgba(201,180,152,.25),rgba(201,180,152,.15));border:.5px solid rgba(201,180,152,.35);border-radius:14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;color:rgba(201,180,152,.95);display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 12l-4 4m0 0l-4-4m4 4V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="qshare-btn-lbl">Download PNG</span>
     </button>
-    <button onclick="closeQuoteShare()" id="qshare-close-btn" style="width:100%;padding:12px;background:transparent;border:.5px solid var(--b1);border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t2)">Close</button>
+    <button onclick="closeQuoteShare()" id="qshare-close-btn" style="width:100%;padding:12px;background:transparent;border:.5px solid rgba(255,255,255,.08);border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,.35)">Close</button>
   </div>
 </div>
 
