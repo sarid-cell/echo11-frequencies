@@ -926,9 +926,11 @@ function openShareQuote(){
   const bgLbl = document.getElementById('qshare-bg-lbl')
   if(bgLbl) bgLbl.textContent = isHe ? 'רקע' : 'Background'
   const btnLbl = document.getElementById('qshare-btn-lbl')
-  if(btnLbl) btnLbl.textContent = isHe ? 'הורדה · שיתוף' : 'Download · Share'
+  if(btnLbl) btnLbl.textContent = isHe ? 'הורדת PNG' : 'Download PNG'
   const closeLbl = document.getElementById('qshare-close-btn')
   if(closeLbl) closeLbl.textContent = isHe ? 'סגור' : 'Close'
+  const shareLbl = document.getElementById('qshare-share-lbl')
+  if(shareLbl) shareLbl.textContent = isHe ? 'שתפי ב' : 'Share to'
   _syncQThemeBtns()
   document.fonts.ready.then(() => _renderQCanvas())
   track('quote_share_opened', { event_category:'share' })
@@ -968,6 +970,16 @@ function _wrapQText(ctx, text, x, y, maxW, lineH){
   return y
 }
 
+function _roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath()
+  ctx.moveTo(x+r, y)
+  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r)
+  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r)
+  ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r)
+  ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r)
+  ctx.closePath()
+}
+
 function _renderQCanvas(){
   const cv = document.getElementById('qshare-cv')
   if(!cv) return
@@ -978,34 +990,50 @@ function _renderQCanvas(){
   const text = document.getElementById('prof-affirmation')?.textContent || '"echo.11"'
 
   ctx.clearRect(0, 0, W, H)
-  ctx.fillStyle = c.bg; ctx.fillRect(0, 0, W, H)
 
-  // Top accent line
-  ctx.fillStyle = 'rgba(201,180,152,.5)'
-  ctx.fillRect(W/2 - 44, 100, 88, 1)
+  // Outer background (slightly darker than card)
+  const outerBg = _qTheme==='dark' ? '#080706' : _qTheme==='warm' ? '#b8977a' : '#e8e2d8'
+  ctx.fillStyle = outerBg; ctx.fillRect(0, 0, W, H)
+
+  // Card with rounded corners — the main content area
+  const PAD = 56
+  _roundRect(ctx, PAD, PAD, W-PAD*2, H-PAD*2, 32)
+  ctx.fillStyle = c.bg; ctx.fill()
+  // Card inner border/glow
+  _roundRect(ctx, PAD, PAD, W-PAD*2, H-PAD*2, 32)
+  ctx.strokeStyle = _qTheme==='dark' ? 'rgba(201,180,152,.12)' : 'rgba(255,255,255,.25)'; ctx.lineWidth=1; ctx.stroke()
+
+  // Gold sparkle ✦ top center
+  ctx.fillStyle = 'rgba(201,180,152,.7)'
+  ctx.font = '300 26px "DM Sans", Arial, sans-serif'
+  ctx.textAlign = 'center'; ctx.direction = 'ltr'
+  ctx.fillText('✦', W/2, PAD + 90)
 
   // Eyebrow
   ctx.fillStyle = c.sub
-  ctx.font = '300 20px "DM Sans", Arial, sans-serif'
-  ctx.textAlign = 'center'; ctx.direction = 'ltr'
-  ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", W/2, 158)
+  ctx.font = '300 18px "DM Sans", Arial, sans-serif'
+  ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", W/2, PAD + 140)
 
-  // Quote — Spectral italic, wrapped
+  // Thin gold line below eyebrow
+  ctx.strokeStyle = 'rgba(201,180,152,.3)'; ctx.lineWidth = 0.8
+  ctx.beginPath(); ctx.moveTo(W/2-50, PAD+158); ctx.lineTo(W/2+50, PAD+158); ctx.stroke()
+
+  // Quote text — Spectral italic
   ctx.fillStyle = c.text
   ctx.textAlign = 'center'
   ctx.direction = isHe ? 'rtl' : 'ltr'
-  ctx.font = isHe ? 'italic 300 52px "Spectral", Georgia, serif' : 'italic 300 54px "Spectral", Georgia, serif'
-  _wrapQText(ctx, text, W/2, 340, 860, 80)
+  ctx.font = isHe ? 'italic 300 50px "Spectral", Georgia, serif' : 'italic 300 52px "Spectral", Georgia, serif'
+  _wrapQText(ctx, text, W/2, PAD + 280, 820, 78)
 
   // Bottom separator
   ctx.strokeStyle = c.line; ctx.lineWidth = 0.7
-  ctx.beginPath(); ctx.moveTo(80, H - 170); ctx.lineTo(W - 80, H - 170); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(PAD+80, H-PAD-130); ctx.lineTo(W-PAD-80, H-PAD-130); ctx.stroke()
 
   // Brand
   ctx.fillStyle = c.sub
-  ctx.font = '300 20px "DM Sans", Arial, sans-serif'
+  ctx.font = '300 18px "DM Sans", Arial, sans-serif'
   ctx.direction = 'ltr'; ctx.textAlign = 'center'
-  ctx.fillText('echo.11  ·  echo11.space', W/2, H - 106)
+  ctx.fillText('echo.11  ·  echo11.space', W/2, H-PAD-72)
 }
 
 function downloadQuote(){
@@ -1036,6 +1064,44 @@ async function shareQuoteCard(){
       }, 'image/png')
     }catch(_){ downloadQuote() }
   } else { downloadQuote() }
+}
+
+function _qOpenUrl(url){ const a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove() }
+
+function qShareWA(){
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  track('quote_shared', { event_category:'share', event_label:'whatsapp' })
+  _qOpenUrl('https://api.whatsapp.com/send?text='+encodeURIComponent(text+'\n\necho11.space'))
+}
+function qShareFB(){
+  track('quote_shared', { event_category:'share', event_label:'facebook' })
+  _qOpenUrl('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://echo11.space'))
+}
+function qShareLI(){
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  track('quote_shared', { event_category:'share', event_label:'linkedin' })
+  _qOpenUrl('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://echo11.space')+'&summary='+encodeURIComponent(text))
+}
+async function qShareIG(){
+  track('quote_shared', { event_category:'share', event_label:'instagram' })
+  const cv = document.getElementById('qshare-cv')
+  if(!cv) return
+  // Try native share first (iOS can route to Instagram stories)
+  if(navigator.share){
+    try{
+      cv.toBlob(async blob => {
+        const file = new File([blob], 'echo11-quote.png', { type:'image/png' })
+        if(navigator.canShare && navigator.canShare({ files:[file] })){
+          await navigator.share({ files:[file], title:'echo.11' }); return
+        }
+        downloadQuote()
+        showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4000)
+      }, 'image/png')
+    }catch(_){ downloadQuote() }
+  } else {
+    downloadQuote()
+    showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4000)
+  }
 }
 
 function loadProfile(){
