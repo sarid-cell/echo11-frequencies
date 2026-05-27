@@ -354,6 +354,19 @@ let playerAnimId=null,playerT=0
 // ══ localStorage ENGINE ══════════════════════════════════════
 const STORE_KEY='echo11_sessions'
 
+function getLastPlayed(){
+  try{
+    const sessions=loadSessions()
+    const dates=Object.keys(sessions).sort((a,b)=>b.localeCompare(a))
+    for(const date of dates){
+      const freqs=sessions[date].freqs||{}
+      const topId=Object.entries(freqs).sort((a,b)=>b[1]-a[1])[0]?.[0]
+      if(topId){ const f=FREQS.find(x=>x.id===topId); if(f) return f }
+    }
+  }catch(e){}
+  return null
+}
+
 function getTodayKey(){
   const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
 }
@@ -599,6 +612,26 @@ function renderStreak(){
   if(intentEl){
     const todayFreqId=document.getElementById('today-cta')?.getAttribute('data-freq')||'hz432'
     intentEl.textContent=getIntention(todayFreqId)
+  }
+  // ── Last played quick-resume card ──
+  const lpRow=document.getElementById('last-played-row')
+  if(lpRow){
+    const lastF=getLastPlayed()
+    if(lastF && !isNew){
+      const isHe=lang==='he'
+      const name=lastF[isHe?'he':'en']?.name||lastF.en.name
+      lpRow.style.display=''
+      lpRow.innerHTML=`<button onclick="openPlayer('${lastF.id}')" style="width:100%;display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--card);border:.5px solid var(--b1);border-radius:12px;cursor:pointer;font-family:inherit;text-align:left">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" style="flex-shrink:0"><circle cx="15" cy="15" r="14" stroke="var(--echo-gold)" stroke-width="1"/><path d="M12.5 10l8 5-8 5V10z" fill="var(--echo-gold)"/></svg>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase;margin-bottom:2px">${isHe?'המשך מאיפה שעצרת':'continue where you left off'}</div>
+          <div style="font-family:'Spectral',Georgia,serif;font-size:15px;font-weight:300;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name} · ${lastF.hz} Hz</div>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;color:var(--t3)"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>`
+    } else {
+      lpRow.style.display='none'
+    }
   }
 }
 
