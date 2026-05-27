@@ -1391,8 +1391,10 @@ function startTip(amount){
   a.click()
   a.remove()
 
-  // User went to PayPal — when they return to this tab, show a thank-you prompt
-  window._tipPending = { amount, dest, label }
+  // Persist pending tip to sessionStorage so mobile page-reload doesn't lose it
+  const pending = { amount, dest, label }
+  window._tipPending = pending
+  sessionStorage.setItem('echo11_tipPending', JSON.stringify(pending))
 }
 
 function showTipFeedback(html, duration){
@@ -1412,9 +1414,14 @@ function showTipFeedback(html, duration){
 // When user returns to the tab after visiting PayPal — show supporter confirmation
 document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState !== 'visible') return
-  const tip = window._tipPending
+  // Recover from sessionStorage if window._tipPending was lost (mobile page reload)
+  let tip = window._tipPending
+  if(!tip){
+    try{ tip = JSON.parse(sessionStorage.getItem('echo11_tipPending')) }catch(e){}
+  }
   if(!tip) return
   window._tipPending = null
+  sessionStorage.removeItem('echo11_tipPending')
   track('tip_return', { event_category:'tip_jar', event_label:tip.label, value:tip.amount })
   showSupporterModal(tip)
 })
@@ -1490,6 +1497,16 @@ function renderSupporterState(){
     const visDate = document.getElementById('vis-supp-thanks-date')
     if(visDate) visDate.textContent = isHe ? `תמכת ב-${dateStr}` : `Supporter since ${dateStr}`
   }
+
+  // Complete screen: hide tip buttons, show supporter acknowledgment
+  const compNonSupp = document.getElementById('comp-tip-nonsupp')
+  const compSupp    = document.getElementById('comp-tip-supp')
+  if(compNonSupp) compNonSupp.style.display = 'none'
+  if(compSupp)    compSupp.style.display = 'block'
+  const compSuppTitle = document.getElementById('comp-supp-title')
+  const compSuppSub   = document.getElementById('comp-supp-sub')
+  if(compSuppTitle) compSuppTitle.textContent = isHe ? 'תודה, תומכת echo.11.' : 'Thank you, Supporter.'
+  if(compSuppSub)   compSuppSub.textContent   = isHe ? 'את חלק מ-echo.11 עכשיו.' : 'You\'re part of echo.11 now.'
 }
 
 // Tip Jar translations — applied when profile renders
@@ -2721,6 +2738,7 @@ function showComplete(freqId,listenedSecs){
   if(el('comp-share-btn')) el('comp-share-btn').textContent=isHe?'שתפי עם חברה — גם בשבילה חינמי':'Share with a friend — it\'s free for them too'
   show('complete')
   try{ renderStreak() }catch(e){}
+  checkSupporter()
 }
 
 ;(function(){
