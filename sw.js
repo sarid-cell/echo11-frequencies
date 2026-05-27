@@ -1,4 +1,4 @@
-const CACHE = 'echo11-v2'
+const CACHE = 'echo11-v3'
 
 const PRECACHE = [
   '/glassmorphism-overrides.css',
