@@ -1379,18 +1379,17 @@ function startTip(amount){
   const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'paypal'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
   const dest = amount ? `${PAYPAL_URL}/${amount}` : PAYPAL_URL
-  const win = window.open(dest, '_blank', 'noopener,noreferrer')
 
-  // Popup blocked — fall back to a visible link in the tip card
-  if(!win){
-    track('tip_popup_blocked', { event_category:'tip_jar', event_label:label, value:amount })
-    const isHe = lang === 'he'
-    const msg = isHe
-      ? `הדפדפן חסם את הפתיחה — <a href="${dest}" target="_blank" rel="noopener noreferrer" style="color:var(--echo-gold);text-decoration:underline">לחצי כאן לתשלום</a>`
-      : `Popup blocked — <a href="${dest}" target="_blank" rel="noopener noreferrer" style="color:var(--echo-gold);text-decoration:underline">tap here to support</a>`
-    showTipFeedback(msg, 9000)
-    return
-  }
+  // Use anchor click — never blocked by popup blockers (unlike window.open).
+  // Must be synchronous within the click event to work on iOS Safari.
+  const a = document.createElement('a')
+  a.href = dest
+  a.target = '_blank'
+  a.rel = 'noopener noreferrer'
+  a.style.display = 'none'
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
 
   // User went to PayPal — when they return to this tab, show a thank-you prompt
   window._tipPending = { amount, dest, label }
