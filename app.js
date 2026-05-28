@@ -947,6 +947,7 @@ function openShareQuote(){
   const cv = document.getElementById('qshare-cv')
   if(cv){ cv.width=1080; cv.height=1080; _applyCanvasPreviewStyle(cv) }
   document.fonts.ready.then(() => _renderQCanvas())
+  _updateQShareUI()
   // ESC key close
   _qEscHandler = e => { if(e.key==='Escape') closeQuoteShare() }
   document.addEventListener('keydown', _qEscHandler)
@@ -1000,7 +1001,9 @@ function _fadeCanvas(fn){
 
 function _applyCanvasPreviewStyle(cv){
   const s = QSIZES[_qSize]
-  const common = 'border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.72),0 4px 12px rgba(0,0,0,.5);transition:opacity .14s ease'
+  // Inset border ensures dark card on dark background is always visible
+  const shadow = '0 16px 48px rgba(0,0,0,.72),0 4px 12px rgba(0,0,0,.5),inset 0 0 0 1.5px rgba(255,255,255,.10)'
+  const common = `border-radius:10px;box-shadow:${shadow};transition:opacity .14s ease`
   if(s.w > s.h){
     cv.style.cssText = `width:100%;max-height:160px;display:block;${common}`
   } else {
@@ -1132,7 +1135,7 @@ function downloadQuote(){
 // Shared helper: try native file share → fall back to download
 async function _qShareFile(onFallback){
   const cv = document.getElementById('qshare-cv')
-  if(!cv){ onFallback(); return }
+  if(!cv){ onFallback(); return false }
   const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
   const text = document.getElementById('prof-affirmation')?.textContent || ''
   if(navigator.share){
@@ -1143,7 +1146,7 @@ async function _qShareFile(onFallback){
         await navigator.share({ files:[file], title:'echo.11', text:text+'\n\necho11.space' })
         return true
       }
-    }catch(_){}
+    }catch(e){ if(e?.name==='AbortError') return true }
   }
   onFallback()
   return false
@@ -1151,44 +1154,76 @@ async function _qShareFile(onFallback){
 
 async function shareQuoteCard(){
   track('quote_shared', { event_category:'share', event_label:_qTheme })
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  const isHe = lang === 'he'
   const shared = await _qShareFile(() => downloadQuote())
-  if(!shared){
-    const text = document.getElementById('prof-affirmation')?.textContent || ''
+  if(!shared && navigator.share){
     try{ await navigator.share({ title:'echo.11', text:text+'\n\necho11.space', url:'https://echo11.space' }) }catch(_){}
+  }
+  if(!shared && !navigator.share){
+    _qToast(isHe ? 'תמונה הורדה ✓' : 'Image saved ✓', 3000)
   }
 }
 
 function _qOpenUrl(url){ const a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove() }
 function _qToast(msg, ms=5000){ showTipFeedback(msg, ms) }
 
-// Instagram — native file share (iOS/Android → can pick Instagram); desktop → download + guide
+// Detects file-share support and shows/hides the native share button
+async function _updateQShareUI(){
+  const nativeBtn = document.getElementById('qshare-native-btn')
+  if(!nativeBtn) return
+  let canFileShare = false
+  if(navigator.share){
+    try{
+      const f = new File(['x'], 't.png', { type:'image/png' })
+      canFileShare = !!(navigator.canShare && navigator.canShare({ files:[f] }))
+    }catch(_){}
+  }
+  // Show native share button on any device with share support
+  nativeBtn.style.display = navigator.share ? 'flex' : 'none'
+  // Update label
+  const lbl = document.getElementById('qshare-native-lbl')
+  if(lbl){
+    const isHe = lang === 'he'
+    lbl.textContent = canFileShare
+      ? (isHe ? '↑ שתפי עם תמונה' : '↑ Share Image')
+      : (isHe ? '↑ שתפי לינק' : '↑ Share Link')
+  }
+}
+
+// Instagram — mobile: native share sheet (user picks IG); desktop: download + open IG
 async function qShareIG(){
   track('quote_shared', { event_category:'share', event_label:'instagram' })
   const isHe = lang === 'he'
   const shared = await _qShareFile(() => {
     downloadQuote()
-    _qToast(isHe ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 5000)
+    setTimeout(() => {
+      _qOpenUrl('https://www.instagram.com/')
+      _qToast(
+        isHe
+          ? '✓ PNG הורד &nbsp;·&nbsp; <a href="https://www.instagram.com/" target="_blank" rel="noopener" style="color:#f9a8d4;text-decoration:none">פתחי Instagram</a> ← New Post ← בחרי את הקובץ'
+          : '✓ PNG saved &nbsp;·&nbsp; <a href="https://www.instagram.com/" target="_blank" rel="noopener" style="color:#f9a8d4;text-decoration:none">Open Instagram</a> → New Post → choose file',
+        9000
+      )
+    }, 350)
   })
-  if(!shared) return
-  // Native share succeeded — no extra toast needed
+  if(shared) return // native share handled — user picks IG from sheet
 }
 
-// WhatsApp — native file share on mobile (image in chat); desktop → text link
+// WhatsApp — mobile: native share sheet (image in chat); desktop: text link
 async function qShareWA(){
   track('quote_shared', { event_category:'share', event_label:'whatsapp' })
   const text = document.getElementById('prof-affirmation')?.textContent || ''
-  const shared = await _qShareFile(() => {
+  await _qShareFile(() => {
     _qOpenUrl('https://api.whatsapp.com/send?text='+encodeURIComponent(text+'\n\necho11.space'))
   })
-  // If native share opened (returns true), don't also open WA web — it was already handled by native sheet
 }
 
-// Pinterest — native file share on mobile; desktop → download + guide toast with direct Pinterest link
+// Pinterest — mobile: native share sheet; desktop: download + open pin-builder
 async function qSharePinterest(){
   track('quote_shared', { event_category:'share', event_label:'pinterest' })
   const isHe = lang === 'he'
-  const text = document.getElementById('prof-affirmation')?.textContent || 'healing frequencies'
-  // Mobile: native share sheet lets user pick Pinterest app
+  // Mobile: native share → user picks Pinterest app → gets the PNG
   if(navigator.share){
     const cv = document.getElementById('qshare-cv')
     if(cv){
@@ -1202,26 +1237,27 @@ async function qSharePinterest(){
       }catch(e){ if(e?.name==='AbortError') return }
     }
   }
-  // Desktop fallback: download the PNG, then open Pinterest pin builder
+  // Desktop: download PNG → open Pinterest pin builder (NOT pin/create/button — that scrapes OG image)
   downloadQuote()
-  const desc = encodeURIComponent(text + ' — echo11.space')
-  const pinUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent('https://echo11.space')}&description=${desc}`
   setTimeout(() => {
-    _qOpenUrl(pinUrl)
-    const step1 = isHe ? '✓ PNG הורד' : '✓ PNG saved'
-    const step2 = isHe ? 'ב-Pinterest: Create Pin → Upload → בחרי את הקובץ' : 'Pinterest: Create Pin → Upload → choose the file'
-    _qToast(`${step1} &nbsp;·&nbsp; ${step2}`, 8000)
-  }, 300)
+    _qOpenUrl('https://www.pinterest.com/pin-builder/')
+    _qToast(
+      isHe
+        ? '✓ PNG הורד &nbsp;·&nbsp; <a href="https://www.pinterest.com/pin-builder/" target="_blank" rel="noopener" style="color:#E60023;text-decoration:none">פתחי Pinterest</a> → Create Pin → Upload Image → בחרי את הקובץ'
+        : '✓ PNG saved &nbsp;·&nbsp; <a href="https://www.pinterest.com/pin-builder/" target="_blank" rel="noopener" style="color:#E60023;text-decoration:none">Open Pinterest</a> → Create Pin → Upload Image → choose file',
+      9000
+    )
+  }, 350)
 }
 
-// LinkedIn — web share only (no file API); attaches page URL + text
+// LinkedIn — URL share only (no file-upload API exists)
 function qShareLI(){
   const text = document.getElementById('prof-affirmation')?.textContent || ''
   track('quote_shared', { event_category:'share', event_label:'linkedin' })
   _qOpenUrl('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://echo11.space')+'&summary='+encodeURIComponent(text+' — echo11.space'))
 }
 
-// Facebook — web share only (FB has no public file-upload API)
+// Facebook — URL share only (FB has no public file-upload API from web)
 function qShareFB(){
   track('quote_shared', { event_category:'share', event_label:'facebook' })
   _qOpenUrl('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://echo11.space'))
