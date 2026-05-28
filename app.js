@@ -909,29 +909,39 @@ function shuffleAffirmation(){
 
 // ══ QUOTE SHARE ══════════════════════════════════════════════
 let _qTheme = 'dark'
+let _qSize  = '1:1'
 const QUOTE_COLORS = {
   dark:  { bg:'#0d0c0b', text:'#f5e6c8', sub:'rgba(201,180,152,.55)', line:'rgba(201,180,152,.18)' },
   warm:  { bg:'#c5aa8a', text:'#ffffff',  sub:'rgba(255,255,255,.65)', line:'rgba(255,255,255,.28)' },
   light: { bg:'#f5f0e8', text:'#1a1907',  sub:'rgba(26,25,7,.42)',     line:'rgba(26,25,7,.15)'     },
+}
+const QSIZES = {
+  '1:1':  { w:1080, h:1080 },
+  '4:5':  { w:1080, h:1350 },
+  '9:16': { w:1080, h:1920 },
+  '16:9': { w:1920, h:1080 },
 }
 
 function openShareQuote(){
   const modal = document.getElementById('qshare-modal')
   if(!modal) return
   _qTheme = document.body.classList.contains('dark') ? 'dark' : 'warm'
+  _qSize  = '1:1'
   modal.style.display = 'flex'
   const isHe = lang === 'he'
-  const titleEl = document.getElementById('qshare-title')
-  if(titleEl) titleEl.textContent = isHe ? 'שתפי את הציטוט' : 'Share quote'
-  const bgLbl = document.getElementById('qshare-bg-lbl')
-  if(bgLbl) bgLbl.textContent = isHe ? 'רקע' : 'Background'
-  const btnLbl = document.getElementById('qshare-btn-lbl')
-  if(btnLbl) btnLbl.textContent = isHe ? 'הורדת PNG' : 'Download PNG'
-  const closeLbl = document.getElementById('qshare-close-btn')
-  if(closeLbl) closeLbl.textContent = isHe ? 'סגור' : 'Close'
-  const shareLbl = document.getElementById('qshare-share-lbl')
-  if(shareLbl) shareLbl.textContent = isHe ? 'שתפי ב' : 'Share to'
+  const els = {
+    'qshare-title':    isHe ? 'שתפי את הציטוט' : 'Share quote',
+    'qshare-bg-lbl':   isHe ? 'רקע' : 'Background',
+    'qshare-size-lbl': isHe ? 'גודל' : 'Size',
+    'qshare-share-lbl':isHe ? 'שתפי ב' : 'Share to',
+    'qshare-btn-lbl':  isHe ? 'הורדת PNG' : 'Download PNG',
+    'qshare-close-btn':isHe ? 'סגור' : 'Close',
+  }
+  Object.entries(els).forEach(([id, txt]) => { const el=document.getElementById(id); if(el) el.textContent=txt })
   _syncQThemeBtns()
+  _syncQSizeBtns()
+  const cv = document.getElementById('qshare-cv')
+  if(cv){ cv.width=1080; cv.height=1080; _applyCanvasPreviewStyle(cv) }
   document.fonts.ready.then(() => _renderQCanvas())
   track('quote_share_opened', { event_category:'share' })
 }
@@ -947,6 +957,28 @@ function setQTheme(t){
   _renderQCanvas()
 }
 
+function setQSize(s){
+  _qSize = s
+  _syncQSizeBtns()
+  const dim = QSIZES[s]
+  const cv = document.getElementById('qshare-cv')
+  if(!cv) return
+  cv.width = dim.w; cv.height = dim.h
+  _applyCanvasPreviewStyle(cv)
+  _renderQCanvas()
+}
+
+function _applyCanvasPreviewStyle(cv){
+  const s = QSIZES[_qSize]
+  const base = 'display:block;margin:0 auto 22px;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.55)'
+  if(s.w > s.h){
+    cv.style.cssText = `width:100%;max-height:180px;${base}`
+  } else {
+    const maxW = s.h >= s.w * 1.6 ? 148 : s.h >= s.w * 1.2 ? 204 : 252
+    cv.style.cssText = `width:100%;max-width:${maxW}px;${base}`
+  }
+}
+
 function _syncQThemeBtns(){
   document.querySelectorAll('.qshare-tb').forEach(b => {
     const sel = b.dataset.t === _qTheme
@@ -956,105 +988,124 @@ function _syncQThemeBtns(){
   })
 }
 
-function _wrapQText(ctx, text, x, y, maxW, lineH){
-  const words = text.split(' ')
-  let line = ''
-  for(let n = 0; n < words.length; n++){
-    const test = line + words[n] + ' '
-    if(ctx.measureText(test).width > maxW && n > 0){
-      ctx.fillText(line.trim(), x, y)
-      line = words[n] + ' '; y += lineH
-    } else { line = test }
-  }
-  if(line.trim()) ctx.fillText(line.trim(), x, y)
-  return y
-}
-
-function _roundRect(ctx, x, y, w, h, r){
-  ctx.beginPath()
-  ctx.moveTo(x+r, y)
-  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r)
-  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r)
-  ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r)
-  ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r)
-  ctx.closePath()
+function _syncQSizeBtns(){
+  document.querySelectorAll('.qshare-sb').forEach(b => {
+    const sel = b.dataset.s === _qSize
+    b.style.background   = sel ? 'rgba(201,180,152,.18)' : 'rgba(255,255,255,.05)'
+    b.style.borderColor  = sel ? 'rgba(201,180,152,.6)'  : 'rgba(255,255,255,.12)'
+    b.style.color        = sel ? 'rgba(201,180,152,.95)' : 'rgba(255,255,255,.38)'
+  })
 }
 
 function _renderQCanvas(){
   const cv = document.getElementById('qshare-cv')
   if(!cv) return
   const ctx = cv.getContext('2d')
-  const W = 1080, H = 1080
+  const W = cv.width, H = cv.height
   const c = QUOTE_COLORS[_qTheme]
   const isHe = lang === 'he'
   const text = document.getElementById('prof-affirmation')?.textContent || '"echo.11"'
 
   ctx.clearRect(0, 0, W, H)
 
-  // Outer background (slightly darker than card)
-  const outerBg = _qTheme==='dark' ? '#080706' : _qTheme==='warm' ? '#b8977a' : '#e8e2d8'
-  ctx.fillStyle = outerBg; ctx.fillRect(0, 0, W, H)
+  // Seamless full-bleed background — no card frame
+  ctx.fillStyle = c.bg
+  ctx.fillRect(0, 0, W, H)
 
-  // Card with rounded corners — the main content area
-  const PAD = 56
-  _roundRect(ctx, PAD, PAD, W-PAD*2, H-PAD*2, 32)
-  ctx.fillStyle = c.bg; ctx.fill()
-  // Card inner border/glow
-  _roundRect(ctx, PAD, PAD, W-PAD*2, H-PAD*2, 32)
-  ctx.strokeStyle = _qTheme==='dark' ? 'rgba(201,180,152,.12)' : 'rgba(255,255,255,.25)'; ctx.lineWidth=1; ctx.stroke()
+  const CX = W / 2
+  const BASE = Math.min(W, H)
+  const isPortrait = H > W
 
-  // Gold sparkle ✦ top center
-  ctx.fillStyle = 'rgba(201,180,152,.7)'
-  ctx.font = '300 26px "DM Sans", Arial, sans-serif'
+  // Font sizes proportional to shorter dimension
+  const sparkleSize = Math.round(BASE * 0.024)
+  const eyeSize     = Math.round(BASE * 0.016)
+  const quoteSize   = Math.round(BASE * 0.048)
+  const brandSize   = Math.round(BASE * 0.015)
+  const lineHeight  = quoteSize * 1.55
+
+  // Top / bottom padding proportional to full canvas height
+  const topPad = H * (isPortrait ? 0.15 : 0.10)
+  const botPad = H * (isPortrait ? 0.07 : 0.10)
+  const maxTextW = Math.min(W * 0.78, BASE * 0.84)
+
+  // Gold sparkle ✦
+  ctx.fillStyle = 'rgba(201,180,152,.72)'
+  ctx.font = `300 ${sparkleSize}px "DM Sans", Arial, sans-serif`
   ctx.textAlign = 'center'; ctx.direction = 'ltr'
-  ctx.fillText('✦', W/2, PAD + 90)
+  const sparkleY = topPad + sparkleSize * 1.5
+  ctx.fillText('✦', CX, sparkleY)
 
   // Eyebrow
   ctx.fillStyle = c.sub
-  ctx.font = '300 18px "DM Sans", Arial, sans-serif'
-  ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", W/2, PAD + 140)
+  ctx.font = `300 ${eyeSize}px "DM Sans", Arial, sans-serif`
+  const eyebrowY = sparkleY + eyeSize * 3.2
+  ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", CX, eyebrowY)
 
-  // Thin gold line below eyebrow
-  ctx.strokeStyle = 'rgba(201,180,152,.3)'; ctx.lineWidth = 0.8
-  ctx.beginPath(); ctx.moveTo(W/2-50, PAD+158); ctx.lineTo(W/2+50, PAD+158); ctx.stroke()
+  // Gold line
+  ctx.strokeStyle = 'rgba(201,180,152,.28)'; ctx.lineWidth = 0.8
+  const goldLineY = eyebrowY + eyeSize * 1.8
+  ctx.beginPath()
+  ctx.moveTo(CX - BASE * 0.05, goldLineY)
+  ctx.lineTo(CX + BASE * 0.05, goldLineY)
+  ctx.stroke()
 
-  // Quote text — Spectral italic
+  // Pre-measure text to vertically center the block
+  ctx.font = `italic 300 ${quoteSize}px "Spectral", Georgia, serif`
+  const words = text.split(' ')
+  const lines = []
+  let cur = ''
+  for(const wd of words){
+    const t = cur ? cur + ' ' + wd : wd
+    if(ctx.measureText(t).width > maxTextW && cur){ lines.push(cur); cur = wd }
+    else cur = t
+  }
+  if(cur) lines.push(cur)
+
+  const brandAreaH = brandSize * 5
+  const quoteZoneTop = goldLineY + eyeSize * 2
+  const quoteZoneBot = H - botPad - brandAreaH
+  const textBlockH   = lines.length * lineHeight
+  const quoteStartY  = quoteZoneTop + (quoteZoneBot - quoteZoneTop - textBlockH) / 2 + quoteSize
+
   ctx.fillStyle = c.text
   ctx.textAlign = 'center'
   ctx.direction = isHe ? 'rtl' : 'ltr'
-  ctx.font = isHe ? 'italic 300 50px "Spectral", Georgia, serif' : 'italic 300 52px "Spectral", Georgia, serif'
-  _wrapQText(ctx, text, W/2, PAD + 280, 820, 78)
+  lines.forEach((line, i) => ctx.fillText(line, CX, quoteStartY + i * lineHeight))
 
   // Bottom separator
+  const sepY = H - botPad - brandAreaH * 0.65
   ctx.strokeStyle = c.line; ctx.lineWidth = 0.7
-  ctx.beginPath(); ctx.moveTo(PAD+80, H-PAD-130); ctx.lineTo(W-PAD-80, H-PAD-130); ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(W * 0.18, sepY); ctx.lineTo(W * 0.82, sepY)
+  ctx.stroke()
 
-  // Brand
+  // Brand attribution
   ctx.fillStyle = c.sub
-  ctx.font = '300 18px "DM Sans", Arial, sans-serif'
+  ctx.font = `300 ${brandSize}px "DM Sans", Arial, sans-serif`
   ctx.direction = 'ltr'; ctx.textAlign = 'center'
-  ctx.fillText('echo.11  ·  echo11.space', W/2, H-PAD-72)
+  ctx.fillText('echo.11  ·  echo11.space', CX, H - botPad - brandSize * 0.2)
 }
 
 function downloadQuote(){
   const cv = document.getElementById('qshare-cv')
   if(!cv) return
   const a = document.createElement('a')
-  a.download = 'echo11-quote.png'
+  a.download = `echo11-quote-${_qSize.replace(':','x')}.png`
   a.href = cv.toDataURL('image/png')
   a.click()
-  track('quote_downloaded', { event_category:'share', event_label:_qTheme })
+  track('quote_downloaded', { event_category:'share', event_label:`${_qTheme}_${_qSize}` })
 }
 
 async function shareQuoteCard(){
   const cv = document.getElementById('qshare-cv')
   if(!cv) return
   const text = document.getElementById('prof-affirmation')?.textContent || ''
+  const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
   track('quote_shared', { event_category:'share', event_label:_qTheme })
   if(navigator.share){
     try{
       cv.toBlob(async blob => {
-        const file = new File([blob], 'echo11-quote.png', { type:'image/png' })
+        const file = new File([blob], fname, { type:'image/png' })
         try{
           if(navigator.canShare && navigator.canShare({ files:[file] })){
             await navigator.share({ files:[file], title:'echo.11', text:text+'\n\necho11.space' }); return
@@ -1086,22 +1137,37 @@ async function qShareIG(){
   track('quote_shared', { event_category:'share', event_label:'instagram' })
   const cv = document.getElementById('qshare-cv')
   if(!cv) return
-  // Try native share first (iOS can route to Instagram stories)
+  const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
   if(navigator.share){
     try{
       cv.toBlob(async blob => {
-        const file = new File([blob], 'echo11-quote.png', { type:'image/png' })
+        const file = new File([blob], fname, { type:'image/png' })
         if(navigator.canShare && navigator.canShare({ files:[file] })){
           await navigator.share({ files:[file], title:'echo.11' }); return
         }
         downloadQuote()
-        showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4000)
+        showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4500)
       }, 'image/png')
     }catch(_){ downloadQuote() }
   } else {
     downloadQuote()
-    showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4000)
+    showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4500)
   }
+}
+function qSharePinterest(){
+  track('quote_shared', { event_category:'share', event_label:'pinterest' })
+  downloadQuote()
+  const text = document.getElementById('prof-affirmation')?.textContent || 'healing frequencies'
+  const desc = encodeURIComponent(text + ' — echo11.space')
+  const media = encodeURIComponent('https://echo11.space/astronaut.webp')
+  const url = encodeURIComponent('https://echo11.space')
+  setTimeout(() => {
+    _qOpenUrl(`https://pinterest.com/pin/create/button/?url=${url}&media=${media}&description=${desc}`)
+    showTipFeedback(
+      lang==='he' ? 'PNG הורד — החלף את התמונה ב-Pinterest בקובץ שהורד' : 'PNG saved — replace the image in Pinterest with your downloaded file',
+      6000
+    )
+  }, 350)
 }
 
 function loadProfile(){
