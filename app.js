@@ -921,6 +921,10 @@ const QSIZES = {
   '9:16': { w:1080, h:1920 },
   '16:9': { w:1920, h:1080 },
 }
+// Larger, platform-appropriate font sizes per ratio (px at 1080 base)
+const QFONT = { '1:1':64, '4:5':72, '9:16':86, '16:9':60 }
+
+let _qEscHandler = null
 
 function openShareQuote(){
   const modal = document.getElementById('qshare-modal')
@@ -943,39 +947,65 @@ function openShareQuote(){
   const cv = document.getElementById('qshare-cv')
   if(cv){ cv.width=1080; cv.height=1080; _applyCanvasPreviewStyle(cv) }
   document.fonts.ready.then(() => _renderQCanvas())
+  // ESC key close
+  _qEscHandler = e => { if(e.key==='Escape') closeQuoteShare() }
+  document.addEventListener('keydown', _qEscHandler)
+  // Swipe-down to close (mobile)
+  _setupQSwipe(modal)
   track('quote_share_opened', { event_category:'share' })
 }
 
 function closeQuoteShare(){
   const modal = document.getElementById('qshare-modal')
   if(modal) modal.style.display = 'none'
+  if(_qEscHandler){ document.removeEventListener('keydown', _qEscHandler); _qEscHandler=null }
+}
+
+function _setupQSwipe(modal){
+  const sheet = modal.querySelector('.qshare-sheet')
+  if(!sheet) return
+  let startY=0, dragging=false
+  sheet.addEventListener('touchstart', e => { startY=e.touches[0].clientY; dragging=true }, { passive:true })
+  sheet.addEventListener('touchend', e => {
+    if(dragging && e.changedTouches[0].clientY - startY > 72) closeQuoteShare()
+    dragging=false
+  }, { passive:true })
 }
 
 function setQTheme(t){
   _qTheme = t
   _syncQThemeBtns()
-  _renderQCanvas()
+  _fadeCanvas(() => _renderQCanvas())
 }
 
 function setQSize(s){
   _qSize = s
   _syncQSizeBtns()
-  const dim = QSIZES[s]
+  _fadeCanvas(() => {
+    const dim = QSIZES[s]
+    const cv = document.getElementById('qshare-cv')
+    if(!cv) return
+    cv.width = dim.w; cv.height = dim.h
+    _applyCanvasPreviewStyle(cv)
+    _renderQCanvas()
+  })
+}
+
+function _fadeCanvas(fn){
   const cv = document.getElementById('qshare-cv')
-  if(!cv) return
-  cv.width = dim.w; cv.height = dim.h
-  _applyCanvasPreviewStyle(cv)
-  _renderQCanvas()
+  if(!cv){ fn(); return }
+  cv.style.opacity = '0'
+  setTimeout(() => { fn(); requestAnimationFrame(() => { cv.style.opacity='1' }) }, 140)
 }
 
 function _applyCanvasPreviewStyle(cv){
   const s = QSIZES[_qSize]
-  const base = 'display:block;margin:0 auto 22px;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.55)'
+  const common = 'border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.72),0 4px 12px rgba(0,0,0,.5);transition:opacity .14s ease'
   if(s.w > s.h){
-    cv.style.cssText = `width:100%;max-height:180px;${base}`
+    cv.style.cssText = `width:100%;max-height:160px;display:block;${common}`
   } else {
-    const maxW = s.h >= s.w * 1.6 ? 148 : s.h >= s.w * 1.2 ? 204 : 252
-    cv.style.cssText = `width:100%;max-width:${maxW}px;${base}`
+    const maxW = s.h >= s.w * 1.6 ? 140 : s.h >= s.w * 1.2 ? 196 : 248
+    cv.style.cssText = `width:100%;max-width:${maxW}px;display:block;margin:0 auto;${common}`
   }
 }
 
@@ -984,7 +1014,8 @@ function _syncQThemeBtns(){
     const sel = b.dataset.t === _qTheme
     b.style.outline = sel ? '2.5px solid var(--t1)' : '2.5px solid transparent'
     b.style.outlineOffset = '3px'
-    b.style.transform = sel ? 'scale(1.1)' : 'scale(1)'
+    b.style.transform = sel ? 'scale(1.12)' : 'scale(1)'
+    b.style.transition = 'all 0.18s cubic-bezier(0.34,1.56,0.64,1)'
   })
 }
 
@@ -994,6 +1025,8 @@ function _syncQSizeBtns(){
     b.style.background   = sel ? 'rgba(201,180,152,.18)' : 'rgba(255,255,255,.05)'
     b.style.borderColor  = sel ? 'rgba(201,180,152,.6)'  : 'rgba(255,255,255,.12)'
     b.style.color        = sel ? 'rgba(201,180,152,.95)' : 'rgba(255,255,255,.38)'
+    b.style.transform    = sel ? 'scale(1.04)' : 'scale(1)'
+    b.style.transition   = 'all 0.2s cubic-bezier(0.34,1.56,0.64,1)'
   })
 }
 
@@ -1007,8 +1040,6 @@ function _renderQCanvas(){
   const text = document.getElementById('prof-affirmation')?.textContent || '"echo.11"'
 
   ctx.clearRect(0, 0, W, H)
-
-  // Seamless full-bleed background — no card frame
   ctx.fillStyle = c.bg
   ctx.fillRect(0, 0, W, H)
 
@@ -1016,40 +1047,42 @@ function _renderQCanvas(){
   const BASE = Math.min(W, H)
   const isPortrait = H > W
 
-  // Font sizes proportional to shorter dimension
-  const sparkleSize = Math.round(BASE * 0.024)
-  const eyeSize     = Math.round(BASE * 0.016)
-  const quoteSize   = Math.round(BASE * 0.048)
-  const brandSize   = Math.round(BASE * 0.015)
-  const lineHeight  = quoteSize * 1.55
+  // Per-size font — much larger than before
+  const quoteFontPx = QFONT[_qSize] || 64
+  const quoteSize = Math.round(quoteFontPx * BASE / 1080)
+  const sparkleSize = Math.round(BASE * 0.026)
+  const eyeSize     = Math.round(BASE * 0.018)
+  const brandSize   = Math.round(BASE * 0.016)
+  const lineHeight  = quoteSize * 1.52
 
-  // Top / bottom padding proportional to full canvas height
-  const topPad = H * (isPortrait ? 0.15 : 0.10)
-  const botPad = H * (isPortrait ? 0.07 : 0.10)
-  const maxTextW = Math.min(W * 0.78, BASE * 0.84)
+  const topPad = H * (isPortrait ? 0.14 : 0.10)
+  const botPad = H * (isPortrait ? 0.065 : 0.10)
+  const maxTextW = Math.min(W * 0.76, BASE * 0.82)
 
-  // Gold sparkle ✦
-  ctx.fillStyle = 'rgba(201,180,152,.72)'
+  // Sparkle ✦
+  ctx.fillStyle = 'rgba(201,180,152,.75)'
   ctx.font = `300 ${sparkleSize}px "DM Sans", Arial, sans-serif`
   ctx.textAlign = 'center'; ctx.direction = 'ltr'
-  const sparkleY = topPad + sparkleSize * 1.5
+  const sparkleY = topPad + sparkleSize * 1.6
   ctx.fillText('✦', CX, sparkleY)
 
   // Eyebrow
   ctx.fillStyle = c.sub
   ctx.font = `300 ${eyeSize}px "DM Sans", Arial, sans-serif`
-  const eyebrowY = sparkleY + eyeSize * 3.2
+  const eyebrowY = sparkleY + eyeSize * 3.4
+  ctx.letterSpacing = `${Math.round(eyeSize * 0.22)}px`
   ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", CX, eyebrowY)
+  ctx.letterSpacing = '0px'
 
   // Gold line
-  ctx.strokeStyle = 'rgba(201,180,152,.28)'; ctx.lineWidth = 0.8
-  const goldLineY = eyebrowY + eyeSize * 1.8
+  ctx.strokeStyle = 'rgba(201,180,152,.28)'; ctx.lineWidth = 0.9
+  const goldLineY = eyebrowY + eyeSize * 1.9
   ctx.beginPath()
-  ctx.moveTo(CX - BASE * 0.05, goldLineY)
-  ctx.lineTo(CX + BASE * 0.05, goldLineY)
+  ctx.moveTo(CX - BASE * 0.048, goldLineY)
+  ctx.lineTo(CX + BASE * 0.048, goldLineY)
   ctx.stroke()
 
-  // Pre-measure text to vertically center the block
+  // Pre-measure lines for vertical centering
   ctx.font = `italic 300 ${quoteSize}px "Spectral", Georgia, serif`
   const words = text.split(' ')
   const lines = []
@@ -1061,8 +1094,8 @@ function _renderQCanvas(){
   }
   if(cur) lines.push(cur)
 
-  const brandAreaH = brandSize * 5
-  const quoteZoneTop = goldLineY + eyeSize * 2
+  const brandAreaH = brandSize * 5.5
+  const quoteZoneTop = goldLineY + eyeSize * 2.2
   const quoteZoneBot = H - botPad - brandAreaH
   const textBlockH   = lines.length * lineHeight
   const quoteStartY  = quoteZoneTop + (quoteZoneBot - quoteZoneTop - textBlockH) / 2 + quoteSize
@@ -1073,17 +1106,17 @@ function _renderQCanvas(){
   lines.forEach((line, i) => ctx.fillText(line, CX, quoteStartY + i * lineHeight))
 
   // Bottom separator
-  const sepY = H - botPad - brandAreaH * 0.65
+  const sepY = H - botPad - brandAreaH * 0.62
   ctx.strokeStyle = c.line; ctx.lineWidth = 0.7
   ctx.beginPath()
-  ctx.moveTo(W * 0.18, sepY); ctx.lineTo(W * 0.82, sepY)
+  ctx.moveTo(W * 0.19, sepY); ctx.lineTo(W * 0.81, sepY)
   ctx.stroke()
 
-  // Brand attribution
+  // Brand
   ctx.fillStyle = c.sub
   ctx.font = `300 ${brandSize}px "DM Sans", Arial, sans-serif`
   ctx.direction = 'ltr'; ctx.textAlign = 'center'
-  ctx.fillText('echo.11  ·  echo11.space', CX, H - botPad - brandSize * 0.2)
+  ctx.fillText('echo.11  ·  echo11.space', CX, H - botPad - brandSize * 0.3)
 }
 
 function downloadQuote(){
@@ -1096,78 +1129,102 @@ function downloadQuote(){
   track('quote_downloaded', { event_category:'share', event_label:`${_qTheme}_${_qSize}` })
 }
 
-async function shareQuoteCard(){
+// Shared helper: try native file share → fall back to download
+async function _qShareFile(onFallback){
   const cv = document.getElementById('qshare-cv')
-  if(!cv) return
-  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  if(!cv){ onFallback(); return }
   const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
-  track('quote_shared', { event_category:'share', event_label:_qTheme })
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
   if(navigator.share){
     try{
-      cv.toBlob(async blob => {
-        const file = new File([blob], fname, { type:'image/png' })
-        try{
-          if(navigator.canShare && navigator.canShare({ files:[file] })){
-            await navigator.share({ files:[file], title:'echo.11', text:text+'\n\necho11.space' }); return
-          }
-        }catch(_){}
-        await navigator.share({ title:'echo.11', text:text+'\n\necho11.space', url:'https://echo11.space' })
-      }, 'image/png')
-    }catch(_){ downloadQuote() }
-  } else { downloadQuote() }
+      const blob = await new Promise(res => cv.toBlob(res, 'image/png'))
+      const file = new File([blob], fname, { type:'image/png' })
+      if(navigator.canShare && navigator.canShare({ files:[file] })){
+        await navigator.share({ files:[file], title:'echo.11', text:text+'\n\necho11.space' })
+        return true
+      }
+    }catch(_){}
+  }
+  onFallback()
+  return false
+}
+
+async function shareQuoteCard(){
+  track('quote_shared', { event_category:'share', event_label:_qTheme })
+  const shared = await _qShareFile(() => downloadQuote())
+  if(!shared){
+    const text = document.getElementById('prof-affirmation')?.textContent || ''
+    try{ await navigator.share({ title:'echo.11', text:text+'\n\necho11.space', url:'https://echo11.space' }) }catch(_){}
+  }
 }
 
 function _qOpenUrl(url){ const a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove() }
+function _qToast(msg, ms=5000){ showTipFeedback(msg, ms) }
 
-function qShareWA(){
-  const text = document.getElementById('prof-affirmation')?.textContent || ''
-  track('quote_shared', { event_category:'share', event_label:'whatsapp' })
-  _qOpenUrl('https://api.whatsapp.com/send?text='+encodeURIComponent(text+'\n\necho11.space'))
-}
-function qShareFB(){
-  track('quote_shared', { event_category:'share', event_label:'facebook' })
-  _qOpenUrl('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://echo11.space'))
-}
-function qShareLI(){
-  const text = document.getElementById('prof-affirmation')?.textContent || ''
-  track('quote_shared', { event_category:'share', event_label:'linkedin' })
-  _qOpenUrl('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://echo11.space')+'&summary='+encodeURIComponent(text))
-}
+// Instagram — native file share (iOS/Android → can pick Instagram); desktop → download + guide
 async function qShareIG(){
   track('quote_shared', { event_category:'share', event_label:'instagram' })
-  const cv = document.getElementById('qshare-cv')
-  if(!cv) return
-  const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
+  const isHe = lang === 'he'
+  const shared = await _qShareFile(() => {
+    downloadQuote()
+    _qToast(isHe ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 5000)
+  })
+  if(!shared) return
+  // Native share succeeded — no extra toast needed
+}
+
+// WhatsApp — native file share on mobile (image in chat); desktop → text link
+async function qShareWA(){
+  track('quote_shared', { event_category:'share', event_label:'whatsapp' })
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  const shared = await _qShareFile(() => {
+    _qOpenUrl('https://api.whatsapp.com/send?text='+encodeURIComponent(text+'\n\necho11.space'))
+  })
+  // If native share opened (returns true), don't also open WA web — it was already handled by native sheet
+}
+
+// Pinterest — native file share on mobile; desktop → download + guide toast with direct Pinterest link
+async function qSharePinterest(){
+  track('quote_shared', { event_category:'share', event_label:'pinterest' })
+  const isHe = lang === 'he'
+  const text = document.getElementById('prof-affirmation')?.textContent || 'healing frequencies'
+  // Mobile: native share sheet lets user pick Pinterest app
   if(navigator.share){
-    try{
-      cv.toBlob(async blob => {
+    const cv = document.getElementById('qshare-cv')
+    if(cv){
+      try{
+        const blob = await new Promise(res => cv.toBlob(res, 'image/png'))
+        const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
         const file = new File([blob], fname, { type:'image/png' })
         if(navigator.canShare && navigator.canShare({ files:[file] })){
           await navigator.share({ files:[file], title:'echo.11' }); return
         }
-        downloadQuote()
-        showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4500)
-      }, 'image/png')
-    }catch(_){ downloadQuote() }
-  } else {
-    downloadQuote()
-    showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4500)
+      }catch(e){ if(e?.name==='AbortError') return }
+    }
   }
-}
-function qSharePinterest(){
-  track('quote_shared', { event_category:'share', event_label:'pinterest' })
+  // Desktop fallback: download the PNG, then open Pinterest pin builder
   downloadQuote()
-  const text = document.getElementById('prof-affirmation')?.textContent || 'healing frequencies'
   const desc = encodeURIComponent(text + ' — echo11.space')
-  const media = encodeURIComponent('https://echo11.space/astronaut.webp')
-  const url = encodeURIComponent('https://echo11.space')
+  const pinUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent('https://echo11.space')}&description=${desc}`
   setTimeout(() => {
-    _qOpenUrl(`https://pinterest.com/pin/create/button/?url=${url}&media=${media}&description=${desc}`)
-    showTipFeedback(
-      lang==='he' ? 'PNG הורד — החלף את התמונה ב-Pinterest בקובץ שהורד' : 'PNG saved — replace the image in Pinterest with your downloaded file',
-      6000
-    )
-  }, 350)
+    _qOpenUrl(pinUrl)
+    const step1 = isHe ? '✓ PNG הורד' : '✓ PNG saved'
+    const step2 = isHe ? 'ב-Pinterest: Create Pin → Upload → בחרי את הקובץ' : 'Pinterest: Create Pin → Upload → choose the file'
+    _qToast(`${step1} &nbsp;·&nbsp; ${step2}`, 8000)
+  }, 300)
+}
+
+// LinkedIn — web share only (no file API); attaches page URL + text
+function qShareLI(){
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  track('quote_shared', { event_category:'share', event_label:'linkedin' })
+  _qOpenUrl('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://echo11.space')+'&summary='+encodeURIComponent(text+' — echo11.space'))
+}
+
+// Facebook — web share only (FB has no public file-upload API)
+function qShareFB(){
+  track('quote_shared', { event_category:'share', event_label:'facebook' })
+  _qOpenUrl('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://echo11.space'))
 }
 
 function loadProfile(){

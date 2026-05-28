@@ -1463,8 +1463,32 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .echo-affirmation-hint,#prof-aff-hint{
   display:block;font-family:var(--font-sans) !important;
   font-size:11px !important;font-weight:400 !important;
-  letter-spacing:.18em !important;color:var(--echo-ink-4) !important;text-transform:lowercase !important;
+  letter-spacing:.18em !important;color:var(--echo-ink-2) !important;text-transform:lowercase !important;
+  animation:aff-hint-breathe 3.8s ease-in-out infinite;
 }
+.echo-affirmation-hint::before,#prof-aff-hint::before{ content:'↻  '; }
+
+@keyframes aff-hint-breathe{
+  0%,100%{ opacity:.5 }
+  50%    { opacity:.9 }
+}
+
+/* ── Share-quote modal ── */
+@keyframes qshare-slide-up{
+  from{ transform:translateY(110%); opacity:0 }
+  to  { transform:translateY(0);    opacity:1 }
+}
+.qshare-sheet{
+  animation:qshare-slide-up 0.42s cubic-bezier(0.32,0.72,0,1);
+}
+/* Canvas pedestal — subtle glow behind the preview */
+.qshare-cv-ped{
+  display:flex;align-items:center;justify-content:center;
+  padding:18px 16px 20px;margin:0 -4px;
+  background:radial-gradient(ellipse at 50% 25%,rgba(201,180,152,.13) 0%,transparent 60%);
+}
+/* Size chip active/hover */
+.qshare-sb:active{ transform:scale(.94); }
 
 /* Tip card */
 .echo-tip-card{
@@ -1808,8 +1832,9 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   font-size:11px !important;
   font-weight:400 !important;
   letter-spacing:.18em !important;
-  color:var(--echo-ink-4) !important;
+  color:var(--echo-ink-2) !important;
   text-transform:lowercase !important;
+  animation:aff-hint-breathe 3.8s ease-in-out infinite;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -5269,7 +5294,7 @@ body.no-anim *{
 
 <!-- ══ QUOTE SHARE MODAL ═════════════════════════════════════ -->
 <div id="qshare-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeQuoteShare()">
-  <div style="background:rgba(10,9,8,.92);-webkit-backdrop-filter:blur(40px);backdrop-filter:blur(40px);border:.5px solid rgba(255,255,255,.09);width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 40px;max-height:92vh;overflow-y:auto">
+  <div class="qshare-sheet" style="background:rgba(10,9,8,.92);-webkit-backdrop-filter:blur(40px);backdrop-filter:blur(40px);border:.5px solid rgba(255,255,255,.09);width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 40px;max-height:92vh;overflow-y:auto">
 
     <!-- Handle bar -->
     <div style="width:40px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 20px"></div>
@@ -5282,8 +5307,10 @@ body.no-anim *{
       </button>
     </div>
 
-    <!-- Canvas preview -->
-    <canvas id="qshare-cv" width="1080" height="1080" style="width:100%;max-width:252px;display:block;margin:0 auto 22px;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.55)"></canvas>
+    <!-- Canvas preview — floating card with depth -->
+    <div class="qshare-cv-ped">
+      <canvas id="qshare-cv" width="1080" height="1080" style="width:100%;max-width:252px;display:block;border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.72),0 4px 12px rgba(0,0,0,.5);transition:opacity .14s ease"></canvas>
+    </div>
 
     <!-- Color themes row -->
     <div style="margin-bottom:16px">
