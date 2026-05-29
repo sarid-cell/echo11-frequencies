@@ -14,9 +14,10 @@
 
 <!-- ═══ Meta tags · AEO/SEO optimized ═══ -->
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="echo.11"/>
-<meta name="theme-color" content="#f5f4f0"/>
+<meta name="theme-color" content="#f5f4f0" media="(prefers-color-scheme: light)"/>
+<meta name="theme-color" content="#1a1a18" media="(prefers-color-scheme: dark)"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 
 <!-- ✦ Primary SEO -->
@@ -75,13 +76,18 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
+      "@type": ["WebApplication", "SoftwareApplication"],
       "name": "echo.11",
       "alternateName": "echo.11 · frequencies",
       "url": "https://echo11.space/",
       "description": "A web-based wellness app delivering 22 healing frequencies — binaural beats, solfeggio tones, and original compositions — inspired by the declassified CIA Gateway Experience (1983) and Monroe Institute research. Designed for sleep, focus, healing, and abundance.",
       "applicationCategory": "HealthApplication",
-      "operatingSystem": "Web Browser",
+      "applicationSubCategory": "Sound Healing",
+      "operatingSystem": "iOS, Android, Web Browser",
+      "availableOnDevice": "Mobile, Tablet, Desktop",
+      "softwareVersion": "1.0",
+      "downloadUrl": "https://echo11.space/",
+      "installUrl": "https://echo11.space/",
       "browserRequirements": "Requires modern browser with Web Audio API support",
       "offers": [
         {
@@ -118,7 +124,7 @@
       "@type": "Organization",
       "name": "echo.11",
       "url": "https://echo11.space/",
-      "logo": "https://echo11.space/astronaut.jpg",
+      "logo": "https://echo11.space/web-app-manifest-512x512.png",
       "description": "echo.11 designs structured sound experiences for nervous system regulation. Built on declassified research and modern wellness science.",
       "founder": {
         "@type": "Person",
@@ -3634,29 +3640,32 @@ button{font-variant-emoji:text}
   font-size:9px;letter-spacing:.1em;
   color:rgba(245,243,238,.15);line-height:1.9;
 }
-/* copy protection */
-body,body *{
+/* images and media — no drag, no save-as */
+img,video,canvas,audio{
   -webkit-user-select:none;
-  -moz-user-select:none;
   user-select:none;
+  pointer-events:none;
 }
-input,textarea,select,[contenteditable]{
-  -webkit-user-select:text;
-  -moz-user-select:text;
-  user-select:text;
-}
+canvas{pointer-events:auto;}
 </style>
 <script>
 (function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();},true);
-  document.addEventListener('keydown',function(e){
-    var k=e.key||'';
-    if((e.ctrlKey||e.metaKey)&&['u','U','s','S','a','A'].includes(k)){e.preventDefault();}
-    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&['i','I','j','J','c','C'].includes(k)){e.preventDefault();}
-    if(k==='F12'){e.preventDefault();}
+  /* Right-click: allow on text/buttons, block on images/canvas */
+  document.addEventListener('contextmenu',function(e){
+    var t=e.target;
+    if(t.tagName==='IMG'||t.tagName==='CANVAS'||t.tagName==='VIDEO'){e.preventDefault();}
   },true);
-  document.addEventListener('copy',function(e){e.preventDefault();},true);
-  document.addEventListener('dragstart',function(e){e.preventDefault();},true);
+  /* Block view-source, save-page, devtools — not Ctrl+C (accessibility) */
+  document.addEventListener('keydown',function(e){
+    var k=(e.key||'').toLowerCase();
+    if((e.ctrlKey||e.metaKey)&&(k==='u'||k==='s')){e.preventDefault();}
+    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&(k==='i'||k==='j')){e.preventDefault();}
+    if(k==='f12'){e.preventDefault();}
+  },true);
+  /* Block drag-to-copy on images */
+  document.addEventListener('dragstart',function(e){
+    if(e.target.tagName==='IMG'){e.preventDefault();}
+  },true);
 })();
 </script>
 </head>

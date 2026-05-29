@@ -1,7 +1,6 @@
 const CACHE = 'echo11-v6'
 
 const PRECACHE = [
-  '/glassmorphism-overrides.css',
   '/site.webmanifest',
   '/favicon.svg',
   '/hero-poster.webp',
