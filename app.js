@@ -708,6 +708,8 @@ async function audioPlay(f){
     })
     navigator.mediaSession.setActionHandler('play', ()=>{ if(!playing) togglePlay() })
     navigator.mediaSession.setActionHandler('pause', ()=>{ if(playing) doStop() })
+    navigator.mediaSession.setActionHandler('nexttrack', ()=>{ nextFreq(); if(!playing) togglePlay() })
+    navigator.mediaSession.setActionHandler('previoustrack', ()=>{ prevFreq(); if(!playing) togglePlay() })
     navigator.mediaSession.playbackState='playing'
   }
 }
