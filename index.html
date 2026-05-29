@@ -2628,8 +2628,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-title{animation:sp-fade-up .9s .75s cubic-bezier(.22,.8,.32,1) both}
 .sp-sub{animation:sp-fade-up .8s .9s ease both}
 .sp-line{animation:sp-line-grow .6s 1.05s ease both}
-.sp-desc{animation:sp-fade-up .8s 1.0s ease both}
-.sp-hp{animation:sp-fade-up .8s 1.15s ease both}
+.sp-desc{animation:sp-fade-up .7s 0.55s ease both}
+.sp-hp{animation:sp-fade-up .7s 0.6s ease both}
 .sp-btn{
   width:100%;
   padding:16px 28px;
@@ -2666,7 +2666,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-hp{display:flex;align-items:center;gap:12px;background:var(--card);border:.5px solid var(--b2);border-radius:12px;padding:11px 15px;margin-bottom:15px;max-width:270px;width:100%}
 .sp-hp-m{font-size:11px;font-weight:300;color:var(--t2)}
 .sp-hp-s{font-size:10px;letter-spacing:.14em;color:var(--t3);margin-top:2px}
-.sp-btn{max-width:270px;width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:opacity .2s;animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
+.sp-btn{max-width:270px;width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:opacity .2s;animation:sp-fade-up .7s 0.4s cubic-bezier(.22,.8,.32,1) both}
 .sp-btn:hover,.sp-btn:focus{opacity:.84;outline:2px solid var(--t1);outline-offset:3px}
 
 /* SHARED */
@@ -4009,11 +4009,10 @@ canvas{pointer-events:auto;}
       <span id="sp-btn-hp">▸ &nbsp; enter the frequency</span>
     </button>
     <!-- Secondary: no headphones path -->
-    <div style="margin-top:10px;text-align:center">
-      <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.4)">no headphones?</span>
+    <div style="margin-top:14px;text-align:center;animation:sp-fade-up .6s 0.6s ease both">
       <button onclick="openPlayerDirect('hz528')"
-        style="display:inline;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.65);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0 0 0 4px"
-        id="sp-btn-no-hp">start with 528 Hz →</button>
+        style="background:none;border:.5px solid rgba(245,243,238,.25);border-radius:20px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;color:rgba(245,243,238,.7);cursor:pointer;padding:8px 18px"
+        id="sp-btn-no-hp">no headphones? start with 528 Hz →</button>
     </div>
   </div>
 </div>
