@@ -294,7 +294,8 @@ function buildHistory(){
     const [y,m,day]=key.split('-')
     const freqName=d.freqs?Object.keys(d.freqs).map(fid=>{
       const f=FREQS.find(x=>x.id===fid)
-      return f?(f[lang]||f.en).name:fid
+      if(f) return (f[lang]||f.en).name
+      return fid.replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]))
     }).join(', '):(isHe?'האזנה':'session')
     html+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
       <div style="flex:1;min-width:0">
