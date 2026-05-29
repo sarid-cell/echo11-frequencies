@@ -909,42 +909,107 @@ function shuffleAffirmation(){
 
 // ══ QUOTE SHARE ══════════════════════════════════════════════
 let _qTheme = 'dark'
+let _qSize  = '1:1'
 const QUOTE_COLORS = {
   dark:  { bg:'#0d0c0b', text:'#f5e6c8', sub:'rgba(201,180,152,.55)', line:'rgba(201,180,152,.18)' },
   warm:  { bg:'#c5aa8a', text:'#ffffff',  sub:'rgba(255,255,255,.65)', line:'rgba(255,255,255,.28)' },
   light: { bg:'#f5f0e8', text:'#1a1907',  sub:'rgba(26,25,7,.42)',     line:'rgba(26,25,7,.15)'     },
 }
+const QSIZES = {
+  '1:1':  { w:1080, h:1080 },
+  '4:5':  { w:1080, h:1350 },
+  '9:16': { w:1080, h:1920 },
+  '16:9': { w:1920, h:1080 },
+}
+// Larger, platform-appropriate font sizes per ratio (px at 1080 base)
+const QFONT = { '1:1':64, '4:5':72, '9:16':86, '16:9':60 }
+
+let _qEscHandler = null
 
 function openShareQuote(){
   const modal = document.getElementById('qshare-modal')
   if(!modal) return
   _qTheme = document.body.classList.contains('dark') ? 'dark' : 'warm'
+  _qSize  = '1:1'
   modal.style.display = 'flex'
   const isHe = lang === 'he'
-  const titleEl = document.getElementById('qshare-title')
-  if(titleEl) titleEl.textContent = isHe ? 'שתפי את הציטוט' : 'Share quote'
-  const bgLbl = document.getElementById('qshare-bg-lbl')
-  if(bgLbl) bgLbl.textContent = isHe ? 'רקע' : 'Background'
-  const btnLbl = document.getElementById('qshare-btn-lbl')
-  if(btnLbl) btnLbl.textContent = isHe ? 'הורדת PNG' : 'Download PNG'
-  const closeLbl = document.getElementById('qshare-close-btn')
-  if(closeLbl) closeLbl.textContent = isHe ? 'סגור' : 'Close'
-  const shareLbl = document.getElementById('qshare-share-lbl')
-  if(shareLbl) shareLbl.textContent = isHe ? 'שתפי ב' : 'Share to'
+  const els = {
+    'qshare-title':    isHe ? 'שתפי את הציטוט' : 'Share quote',
+    'qshare-bg-lbl':   isHe ? 'רקע' : 'Background',
+    'qshare-size-lbl': isHe ? 'גודל' : 'Size',
+    'qshare-share-lbl':isHe ? 'שתפי ב' : 'Share to',
+    'qshare-btn-lbl':  isHe ? 'הורדת PNG' : 'Download PNG',
+    'qshare-close-btn':isHe ? 'סגור' : 'Close',
+  }
+  Object.entries(els).forEach(([id, txt]) => { const el=document.getElementById(id); if(el) el.textContent=txt })
   _syncQThemeBtns()
+  _syncQSizeBtns()
+  const cv = document.getElementById('qshare-cv')
+  if(cv){ cv.width=1080; cv.height=1080; _applyCanvasPreviewStyle(cv) }
   document.fonts.ready.then(() => _renderQCanvas())
+  _updateQShareUI()
+  // ESC key close
+  _qEscHandler = e => { if(e.key==='Escape') closeQuoteShare() }
+  document.addEventListener('keydown', _qEscHandler)
+  // Swipe-down to close (mobile)
+  _setupQSwipe(modal)
   track('quote_share_opened', { event_category:'share' })
 }
 
 function closeQuoteShare(){
   const modal = document.getElementById('qshare-modal')
   if(modal) modal.style.display = 'none'
+  if(_qEscHandler){ document.removeEventListener('keydown', _qEscHandler); _qEscHandler=null }
+}
+
+function _setupQSwipe(modal){
+  const sheet = modal.querySelector('.qshare-sheet')
+  if(!sheet) return
+  let startY=0, dragging=false
+  sheet.addEventListener('touchstart', e => { startY=e.touches[0].clientY; dragging=true }, { passive:true })
+  sheet.addEventListener('touchend', e => {
+    if(dragging && e.changedTouches[0].clientY - startY > 72) closeQuoteShare()
+    dragging=false
+  }, { passive:true })
 }
 
 function setQTheme(t){
   _qTheme = t
   _syncQThemeBtns()
-  _renderQCanvas()
+  _fadeCanvas(() => _renderQCanvas())
+}
+
+function setQSize(s){
+  _qSize = s
+  _syncQSizeBtns()
+  _fadeCanvas(() => {
+    const dim = QSIZES[s]
+    const cv = document.getElementById('qshare-cv')
+    if(!cv) return
+    cv.width = dim.w; cv.height = dim.h
+    _applyCanvasPreviewStyle(cv)
+    _renderQCanvas()
+  })
+}
+
+function _fadeCanvas(fn){
+  const cv = document.getElementById('qshare-cv')
+  if(!cv){ fn(); return }
+  cv.style.opacity = '0'
+  setTimeout(() => { fn(); requestAnimationFrame(() => { cv.style.opacity='1' }) }, 140)
+}
+
+function _applyCanvasPreviewStyle(cv){
+  const s = QSIZES[_qSize]
+  // Inset border ensures dark card on dark background is always visible
+  const shadow = '0 16px 48px rgba(0,0,0,.72),0 4px 12px rgba(0,0,0,.5),inset 0 0 0 1.5px rgba(255,255,255,.10)'
+  const common = `border-radius:10px;box-shadow:${shadow};transition:opacity .14s ease`
+  if(s.w > s.h){
+    cv.style.cssText = `width:100%;max-height:160px;display:block;${common}`
+  } else {
+    const maxW = s.h >= s.w * 1.6 ? 140 : s.h >= s.w * 1.2 ? 196 : 248
+    cv.style.cssText = `width:100%;max-width:${maxW}px;display:block;margin:0 auto;${common}`
+  }
 }
 
 function _syncQThemeBtns(){
@@ -952,156 +1017,249 @@ function _syncQThemeBtns(){
     const sel = b.dataset.t === _qTheme
     b.style.outline = sel ? '2.5px solid var(--t1)' : '2.5px solid transparent'
     b.style.outlineOffset = '3px'
-    b.style.transform = sel ? 'scale(1.1)' : 'scale(1)'
+    b.style.transform = sel ? 'scale(1.12)' : 'scale(1)'
+    b.style.transition = 'all 0.18s cubic-bezier(0.34,1.56,0.64,1)'
   })
 }
 
-function _wrapQText(ctx, text, x, y, maxW, lineH){
-  const words = text.split(' ')
-  let line = ''
-  for(let n = 0; n < words.length; n++){
-    const test = line + words[n] + ' '
-    if(ctx.measureText(test).width > maxW && n > 0){
-      ctx.fillText(line.trim(), x, y)
-      line = words[n] + ' '; y += lineH
-    } else { line = test }
-  }
-  if(line.trim()) ctx.fillText(line.trim(), x, y)
-  return y
-}
-
-function _roundRect(ctx, x, y, w, h, r){
-  ctx.beginPath()
-  ctx.moveTo(x+r, y)
-  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r)
-  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r)
-  ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r)
-  ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r)
-  ctx.closePath()
+function _syncQSizeBtns(){
+  document.querySelectorAll('.qshare-sb').forEach(b => {
+    const sel = b.dataset.s === _qSize
+    b.style.background   = sel ? 'rgba(201,180,152,.18)' : 'rgba(255,255,255,.05)'
+    b.style.borderColor  = sel ? 'rgba(201,180,152,.6)'  : 'rgba(255,255,255,.12)'
+    b.style.color        = sel ? 'rgba(201,180,152,.95)' : 'rgba(255,255,255,.38)'
+    b.style.transform    = sel ? 'scale(1.04)' : 'scale(1)'
+    b.style.transition   = 'all 0.2s cubic-bezier(0.34,1.56,0.64,1)'
+  })
 }
 
 function _renderQCanvas(){
   const cv = document.getElementById('qshare-cv')
   if(!cv) return
   const ctx = cv.getContext('2d')
-  const W = 1080, H = 1080
+  const W = cv.width, H = cv.height
   const c = QUOTE_COLORS[_qTheme]
   const isHe = lang === 'he'
   const text = document.getElementById('prof-affirmation')?.textContent || '"echo.11"'
 
   ctx.clearRect(0, 0, W, H)
+  ctx.fillStyle = c.bg
+  ctx.fillRect(0, 0, W, H)
 
-  // Outer background (slightly darker than card)
-  const outerBg = _qTheme==='dark' ? '#080706' : _qTheme==='warm' ? '#b8977a' : '#e8e2d8'
-  ctx.fillStyle = outerBg; ctx.fillRect(0, 0, W, H)
+  const CX = W / 2
+  const BASE = Math.min(W, H)
+  const isPortrait = H > W
 
-  // Card with rounded corners — the main content area
-  const PAD = 56
-  _roundRect(ctx, PAD, PAD, W-PAD*2, H-PAD*2, 32)
-  ctx.fillStyle = c.bg; ctx.fill()
-  // Card inner border/glow
-  _roundRect(ctx, PAD, PAD, W-PAD*2, H-PAD*2, 32)
-  ctx.strokeStyle = _qTheme==='dark' ? 'rgba(201,180,152,.12)' : 'rgba(255,255,255,.25)'; ctx.lineWidth=1; ctx.stroke()
+  // Per-size font — much larger than before
+  const quoteFontPx = QFONT[_qSize] || 64
+  const quoteSize = Math.round(quoteFontPx * BASE / 1080)
+  const sparkleSize = Math.round(BASE * 0.026)
+  const eyeSize     = Math.round(BASE * 0.018)
+  const brandSize   = Math.round(BASE * 0.016)
+  const lineHeight  = quoteSize * 1.52
 
-  // Gold sparkle ✦ top center
-  ctx.fillStyle = 'rgba(201,180,152,.7)'
-  ctx.font = '300 26px "DM Sans", Arial, sans-serif'
+  const topPad = H * (isPortrait ? 0.14 : 0.10)
+  const botPad = H * (isPortrait ? 0.065 : 0.10)
+  const maxTextW = Math.min(W * 0.76, BASE * 0.82)
+
+  // Sparkle ✦
+  ctx.fillStyle = 'rgba(201,180,152,.75)'
+  ctx.font = `300 ${sparkleSize}px "DM Sans", Arial, sans-serif`
   ctx.textAlign = 'center'; ctx.direction = 'ltr'
-  ctx.fillText('✦', W/2, PAD + 90)
+  const sparkleY = topPad + sparkleSize * 1.6
+  ctx.fillText('✦', CX, sparkleY)
 
   // Eyebrow
   ctx.fillStyle = c.sub
-  ctx.font = '300 18px "DM Sans", Arial, sans-serif'
-  ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", W/2, PAD + 140)
+  ctx.font = `300 ${eyeSize}px "DM Sans", Arial, sans-serif`
+  const eyebrowY = sparkleY + eyeSize * 3.4
+  ctx.letterSpacing = `${Math.round(eyeSize * 0.22)}px`
+  ctx.fillText(isHe ? 'לחישת היום' : "TODAY'S WHISPER", CX, eyebrowY)
+  ctx.letterSpacing = '0px'
 
-  // Thin gold line below eyebrow
-  ctx.strokeStyle = 'rgba(201,180,152,.3)'; ctx.lineWidth = 0.8
-  ctx.beginPath(); ctx.moveTo(W/2-50, PAD+158); ctx.lineTo(W/2+50, PAD+158); ctx.stroke()
+  // Gold line
+  ctx.strokeStyle = 'rgba(201,180,152,.28)'; ctx.lineWidth = 0.9
+  const goldLineY = eyebrowY + eyeSize * 1.9
+  ctx.beginPath()
+  ctx.moveTo(CX - BASE * 0.048, goldLineY)
+  ctx.lineTo(CX + BASE * 0.048, goldLineY)
+  ctx.stroke()
 
-  // Quote text — Spectral italic
+  // Pre-measure lines for vertical centering
+  ctx.font = `italic 300 ${quoteSize}px "Spectral", Georgia, serif`
+  const words = text.split(' ')
+  const lines = []
+  let cur = ''
+  for(const wd of words){
+    const t = cur ? cur + ' ' + wd : wd
+    if(ctx.measureText(t).width > maxTextW && cur){ lines.push(cur); cur = wd }
+    else cur = t
+  }
+  if(cur) lines.push(cur)
+
+  const brandAreaH = brandSize * 5.5
+  const quoteZoneTop = goldLineY + eyeSize * 2.2
+  const quoteZoneBot = H - botPad - brandAreaH
+  const textBlockH   = lines.length * lineHeight
+  const quoteStartY  = quoteZoneTop + (quoteZoneBot - quoteZoneTop - textBlockH) / 2 + quoteSize
+
   ctx.fillStyle = c.text
   ctx.textAlign = 'center'
   ctx.direction = isHe ? 'rtl' : 'ltr'
-  ctx.font = isHe ? 'italic 300 50px "Spectral", Georgia, serif' : 'italic 300 52px "Spectral", Georgia, serif'
-  _wrapQText(ctx, text, W/2, PAD + 280, 820, 78)
+  lines.forEach((line, i) => ctx.fillText(line, CX, quoteStartY + i * lineHeight))
 
   // Bottom separator
+  const sepY = H - botPad - brandAreaH * 0.62
   ctx.strokeStyle = c.line; ctx.lineWidth = 0.7
-  ctx.beginPath(); ctx.moveTo(PAD+80, H-PAD-130); ctx.lineTo(W-PAD-80, H-PAD-130); ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(W * 0.19, sepY); ctx.lineTo(W * 0.81, sepY)
+  ctx.stroke()
 
   // Brand
   ctx.fillStyle = c.sub
-  ctx.font = '300 18px "DM Sans", Arial, sans-serif'
+  ctx.font = `300 ${brandSize}px "DM Sans", Arial, sans-serif`
   ctx.direction = 'ltr'; ctx.textAlign = 'center'
-  ctx.fillText('echo.11  ·  echo11.space', W/2, H-PAD-72)
+  ctx.fillText('echo.11  ·  echo11.space', CX, H - botPad - brandSize * 0.3)
 }
 
 function downloadQuote(){
   const cv = document.getElementById('qshare-cv')
   if(!cv) return
   const a = document.createElement('a')
-  a.download = 'echo11-quote.png'
+  a.download = `echo11-quote-${_qSize.replace(':','x')}.png`
   a.href = cv.toDataURL('image/png')
   a.click()
-  track('quote_downloaded', { event_category:'share', event_label:_qTheme })
+  track('quote_downloaded', { event_category:'share', event_label:`${_qTheme}_${_qSize}` })
+}
+
+// Shared helper: try native file share → fall back to download
+async function _qShareFile(onFallback){
+  const cv = document.getElementById('qshare-cv')
+  if(!cv){ onFallback(); return false }
+  const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  if(navigator.share){
+    try{
+      const blob = await new Promise(res => cv.toBlob(res, 'image/png'))
+      const file = new File([blob], fname, { type:'image/png' })
+      if(navigator.canShare && navigator.canShare({ files:[file] })){
+        await navigator.share({ files:[file], title:'echo.11', text:text+'\n\necho11.space' })
+        return true
+      }
+    }catch(e){ if(e?.name==='AbortError') return true }
+  }
+  onFallback()
+  return false
 }
 
 async function shareQuoteCard(){
-  const cv = document.getElementById('qshare-cv')
-  if(!cv) return
-  const text = document.getElementById('prof-affirmation')?.textContent || ''
   track('quote_shared', { event_category:'share', event_label:_qTheme })
-  if(navigator.share){
-    try{
-      cv.toBlob(async blob => {
-        const file = new File([blob], 'echo11-quote.png', { type:'image/png' })
-        try{
-          if(navigator.canShare && navigator.canShare({ files:[file] })){
-            await navigator.share({ files:[file], title:'echo.11', text:text+'\n\necho11.space' }); return
-          }
-        }catch(_){}
-        await navigator.share({ title:'echo.11', text:text+'\n\necho11.space', url:'https://echo11.space' })
-      }, 'image/png')
-    }catch(_){ downloadQuote() }
-  } else { downloadQuote() }
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  const isHe = lang === 'he'
+  const shared = await _qShareFile(() => downloadQuote())
+  if(!shared && navigator.share){
+    try{ await navigator.share({ title:'echo.11', text:text+'\n\necho11.space', url:'https://echo11.space' }) }catch(_){}
+  }
+  if(!shared && !navigator.share){
+    _qToast(isHe ? 'תמונה הורדה ✓' : 'Image saved ✓', 3000)
+  }
 }
 
 function _qOpenUrl(url){ const a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove() }
+function _qToast(msg, ms=5000){ showTipFeedback(msg, ms) }
 
-function qShareWA(){
-  const text = document.getElementById('prof-affirmation')?.textContent || ''
-  track('quote_shared', { event_category:'share', event_label:'whatsapp' })
-  _qOpenUrl('https://api.whatsapp.com/send?text='+encodeURIComponent(text+'\n\necho11.space'))
+// Detects file-share support and shows/hides the native share button
+async function _updateQShareUI(){
+  const nativeBtn = document.getElementById('qshare-native-btn')
+  if(!nativeBtn) return
+  // Only show on mobile — desktop share sheet shows Mail/AirDrop/Notes (not social apps)
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+  if(!isMobile || !navigator.share){ nativeBtn.style.display = 'none'; return }
+  let canFileShare = false
+  try{
+    const f = new File(['x'], 't.png', { type:'image/png' })
+    canFileShare = !!(navigator.canShare && navigator.canShare({ files:[f] }))
+  }catch(_){}
+  nativeBtn.style.display = 'flex'
+  const lbl = document.getElementById('qshare-native-lbl')
+  if(lbl){
+    const isHe = lang === 'he'
+    lbl.textContent = canFileShare
+      ? (isHe ? '↑ שתפי עם תמונה' : '↑ Share Image')
+      : (isHe ? '↑ שתפי לינק' : '↑ Share Link')
+  }
 }
-function qShareFB(){
-  track('quote_shared', { event_category:'share', event_label:'facebook' })
-  _qOpenUrl('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://echo11.space'))
-}
-function qShareLI(){
-  const text = document.getElementById('prof-affirmation')?.textContent || ''
-  track('quote_shared', { event_category:'share', event_label:'linkedin' })
-  _qOpenUrl('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://echo11.space')+'&summary='+encodeURIComponent(text))
-}
+
+// Instagram — mobile: native share sheet (user picks IG); desktop: download + open IG
 async function qShareIG(){
   track('quote_shared', { event_category:'share', event_label:'instagram' })
-  const cv = document.getElementById('qshare-cv')
-  if(!cv) return
-  // Try native share first (iOS can route to Instagram stories)
+  const isHe = lang === 'he'
+  const shared = await _qShareFile(() => {
+    downloadQuote()
+    setTimeout(() => {
+      _qOpenUrl('https://www.instagram.com/')
+      _qToast(
+        isHe
+          ? '✓ PNG הורד &nbsp;·&nbsp; <a href="https://www.instagram.com/" target="_blank" rel="noopener" style="color:#f9a8d4;text-decoration:none">פתחי Instagram</a> ← New Post ← בחרי את הקובץ'
+          : '✓ PNG saved &nbsp;·&nbsp; <a href="https://www.instagram.com/" target="_blank" rel="noopener" style="color:#f9a8d4;text-decoration:none">Open Instagram</a> → New Post → choose file',
+        9000
+      )
+    }, 350)
+  })
+  if(shared) return // native share handled — user picks IG from sheet
+}
+
+// WhatsApp — mobile: native share sheet (image in chat); desktop: text link
+async function qShareWA(){
+  track('quote_shared', { event_category:'share', event_label:'whatsapp' })
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  await _qShareFile(() => {
+    _qOpenUrl('https://api.whatsapp.com/send?text='+encodeURIComponent(text+'\n\necho11.space'))
+  })
+}
+
+// Pinterest — mobile: native share sheet; desktop: download + open pin-builder
+async function qSharePinterest(){
+  track('quote_shared', { event_category:'share', event_label:'pinterest' })
+  const isHe = lang === 'he'
+  // Mobile: native share → user picks Pinterest app → gets the PNG
   if(navigator.share){
-    try{
-      cv.toBlob(async blob => {
-        const file = new File([blob], 'echo11-quote.png', { type:'image/png' })
+    const cv = document.getElementById('qshare-cv')
+    if(cv){
+      try{
+        const blob = await new Promise(res => cv.toBlob(res, 'image/png'))
+        const fname = `echo11-quote-${_qSize.replace(':','x')}.png`
+        const file = new File([blob], fname, { type:'image/png' })
         if(navigator.canShare && navigator.canShare({ files:[file] })){
           await navigator.share({ files:[file], title:'echo.11' }); return
         }
-        downloadQuote()
-        showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4000)
-      }, 'image/png')
-    }catch(_){ downloadQuote() }
-  } else {
-    downloadQuote()
-    showTipFeedback(lang==='he' ? 'תמונה הורדה — פתחי Instagram לשיתוף' : 'Image saved — open Instagram to share', 4000)
+      }catch(e){ if(e?.name==='AbortError') return }
+    }
   }
+  // Desktop: download PNG → open Pinterest pin builder (NOT pin/create/button — that scrapes OG image)
+  downloadQuote()
+  setTimeout(() => {
+    _qOpenUrl('https://www.pinterest.com/pin-builder/')
+    _qToast(
+      isHe
+        ? '✓ PNG הורד &nbsp;·&nbsp; <a href="https://www.pinterest.com/pin-builder/" target="_blank" rel="noopener" style="color:#E60023;text-decoration:none">פתחי Pinterest</a> → Create Pin → Upload Image → בחרי את הקובץ'
+        : '✓ PNG saved &nbsp;·&nbsp; <a href="https://www.pinterest.com/pin-builder/" target="_blank" rel="noopener" style="color:#E60023;text-decoration:none">Open Pinterest</a> → Create Pin → Upload Image → choose file',
+      9000
+    )
+  }, 350)
+}
+
+// LinkedIn — URL share only (no file-upload API exists)
+function qShareLI(){
+  const text = document.getElementById('prof-affirmation')?.textContent || ''
+  track('quote_shared', { event_category:'share', event_label:'linkedin' })
+  _qOpenUrl('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent('https://echo11.space')+'&summary='+encodeURIComponent(text+' — echo11.space'))
+}
+
+// Facebook — URL share only (FB has no public file-upload API from web)
+function qShareFB(){
+  track('quote_shared', { event_category:'share', event_label:'facebook' })
+  _qOpenUrl('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://echo11.space'))
 }
 
 function loadProfile(){

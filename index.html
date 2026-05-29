@@ -1463,8 +1463,32 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
 .echo-affirmation-hint,#prof-aff-hint{
   display:block;font-family:var(--font-sans) !important;
   font-size:11px !important;font-weight:400 !important;
-  letter-spacing:.18em !important;color:var(--echo-ink-4) !important;text-transform:lowercase !important;
+  letter-spacing:.18em !important;color:var(--echo-ink-2) !important;text-transform:lowercase !important;
+  animation:aff-hint-breathe 3.8s ease-in-out infinite;
 }
+.echo-affirmation-hint::before,#prof-aff-hint::before{ content:'↻  '; }
+
+@keyframes aff-hint-breathe{
+  0%,100%{ opacity:.5 }
+  50%    { opacity:.9 }
+}
+
+/* ── Share-quote modal ── */
+@keyframes qshare-slide-up{
+  from{ transform:translateY(110%); opacity:0 }
+  to  { transform:translateY(0);    opacity:1 }
+}
+.qshare-sheet{
+  animation:qshare-slide-up 0.42s cubic-bezier(0.32,0.72,0,1);
+}
+/* Canvas pedestal — subtle glow behind the preview */
+.qshare-cv-ped{
+  display:flex;align-items:center;justify-content:center;
+  padding:18px 16px 20px;margin:0 -4px;
+  background:radial-gradient(ellipse at 50% 25%,rgba(201,180,152,.13) 0%,transparent 60%);
+}
+/* Size chip active/hover */
+.qshare-sb:active{ transform:scale(.94); }
 
 /* Tip card */
 .echo-tip-card{
@@ -1808,8 +1832,9 @@ body{font-family:var(--font-sans);font-size:var(--t-md);font-weight:400;line-hei
   font-size:11px !important;
   font-weight:400 !important;
   letter-spacing:.18em !important;
-  color:var(--echo-ink-4) !important;
+  color:var(--echo-ink-2) !important;
   text-transform:lowercase !important;
+  animation:aff-hint-breathe 3.8s ease-in-out infinite;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -5269,7 +5294,7 @@ body.no-anim *{
 
 <!-- ══ QUOTE SHARE MODAL ═════════════════════════════════════ -->
 <div id="qshare-modal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeQuoteShare()">
-  <div style="background:rgba(10,9,8,.92);-webkit-backdrop-filter:blur(40px);backdrop-filter:blur(40px);border:.5px solid rgba(255,255,255,.09);width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 40px;max-height:92vh;overflow-y:auto">
+  <div class="qshare-sheet" style="background:rgba(10,9,8,.92);-webkit-backdrop-filter:blur(40px);backdrop-filter:blur(40px);border:.5px solid rgba(255,255,255,.09);width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px 40px;max-height:92vh;overflow-y:auto">
 
     <!-- Handle bar -->
     <div style="width:40px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 20px"></div>
@@ -5282,11 +5307,13 @@ body.no-anim *{
       </button>
     </div>
 
-    <!-- Canvas preview -->
-    <canvas id="qshare-cv" width="1080" height="1080" style="width:100%;max-width:300px;display:block;margin:0 auto 22px;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.55)"></canvas>
+    <!-- Canvas preview — floating card with depth -->
+    <div class="qshare-cv-ped">
+      <canvas id="qshare-cv" width="1080" height="1080" style="width:100%;max-width:252px;display:block;border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.72),0 4px 12px rgba(0,0,0,.5);transition:opacity .14s ease"></canvas>
+    </div>
 
     <!-- Color themes row -->
-    <div style="margin-bottom:20px">
+    <div style="margin-bottom:16px">
       <div id="qshare-bg-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:12px">Background</div>
       <div style="display:flex;gap:12px;align-items:center">
         <button class="qshare-tb" data-t="dark"  onclick="setQTheme('dark')"
@@ -5298,45 +5325,71 @@ body.no-anim *{
       </div>
     </div>
 
+    <!-- Size selector -->
+    <div style="margin-bottom:20px">
+      <div id="qshare-size-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:12px">Size</div>
+      <div style="display:flex;gap:8px">
+        <button class="qshare-sb" data-s="1:1"  onclick="setQSize('1:1')"  style="flex:1;padding:7px 4px;background:rgba(201,180,152,.18);border:.5px solid rgba(201,180,152,.6);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.04em;color:rgba(201,180,152,.95);transition:all .18s">1:1</button>
+        <button class="qshare-sb" data-s="4:5"  onclick="setQSize('4:5')"  style="flex:1;padding:7px 4px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.12);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.04em;color:rgba(255,255,255,.38);transition:all .18s">4:5</button>
+        <button class="qshare-sb" data-s="9:16" onclick="setQSize('9:16')" style="flex:1;padding:7px 4px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.12);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.04em;color:rgba(255,255,255,.38);transition:all .18s">Story</button>
+        <button class="qshare-sb" data-s="16:9" onclick="setQSize('16:9')" style="flex:1;padding:7px 4px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.12);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.04em;color:rgba(255,255,255,.38);transition:all .18s">16:9</button>
+      </div>
+    </div>
+
+    <!-- Native share (mobile only — shown/hidden by JS) -->
+    <button id="qshare-native-btn" onclick="shareQuoteCard()" style="display:none;width:100%;padding:13px;background:linear-gradient(135deg,rgba(201,180,152,.22),rgba(201,180,152,.12));border:.5px solid rgba(201,180,152,.4);border-radius:14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;color:rgba(201,180,152,.95);align-items:center;justify-content:center;gap:8px;margin-bottom:12px;transition:background .18s" onmouseover="this.style.background='linear-gradient(135deg,rgba(201,180,152,.32),rgba(201,180,152,.2))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(201,180,152,.22),rgba(201,180,152,.12))'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4m0 0L8 6m4-4v13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="qshare-native-lbl">↑ Share Image</span>
+    </button>
+
     <!-- Platform share buttons -->
     <div style="margin-bottom:16px">
       <div id="qshare-share-lbl" style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:12px">Share to</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
 
         <!-- Instagram -->
-        <button onclick="qShareIG()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <button onclick="qShareIG()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:14px;padding:11px 4px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <defs><linearGradient id="ig-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f9a8d4"/><stop offset="100%" stop-color="#fb923c"/></linearGradient></defs>
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
           </svg>
-          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">Instagram</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.04em;color:rgba(255,255,255,.5)">Instagram</span>
+        </button>
+
+        <!-- Pinterest -->
+        <button onclick="qSharePinterest()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:14px;padding:11px 4px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="12" fill="#E60023" opacity=".12"/>
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.207-5.119 1.207-5.119s-.308-.616-.308-1.527c0-1.432.831-2.502 1.864-2.502.879 0 1.305.66 1.305 1.452 0 .885-.563 2.209-.855 3.436-.243 1.027.514 1.862 1.524 1.862 1.829 0 3.236-1.929 3.236-4.714 0-2.464-1.771-4.187-4.299-4.187-2.928 0-4.647 2.196-4.647 4.467 0 .884.34 1.832.764 2.349.084.102.096.191.071.295-.078.322-.251 1.027-.285 1.171-.046.19-.152.23-.351.138-1.297-.604-2.108-2.503-2.108-4.027 0-3.272 2.377-6.28 6.858-6.28 3.599 0 6.397 2.565 6.397 5.989 0 3.574-2.253 6.449-5.38 6.449-1.051 0-2.04-.547-2.378-1.19l-.646 2.412c-.234.901-.866 2.028-1.29 2.715.973.301 2.006.464 3.076.464C17.523 22 22 17.523 22 12S17.523 2 12 2z" fill="#E60023"/>
+          </svg>
+          <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.04em;color:rgba(255,255,255,.5)">Pinterest</span>
         </button>
 
         <!-- WhatsApp -->
-        <button onclick="qShareWA()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <button onclick="qShareWA()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:14px;padding:11px 4px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M20.52 3.48A11.93 11.93 0 0012 0C5.37 0 0 5.37 0 12c0 2.12.55 4.1 1.51 5.83L0 24l6.33-1.49A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.48-8.52z" fill="#25D366" opacity=".15"/>
             <path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.65.07c-1.8-.9-2.98-1.6-4.17-3.63-.31-.54.31-.5.9-1.66.1-.2.05-.37-.03-.52S9.4 7.88 9.14 7.26c-.26-.6-.52-.52-.67-.53-.17-.01-.37-.01-.57-.01s-.52.07-.79.37-1.04 1.02-1.04 2.48 1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49 1.89.82 2.63.89 3.57.75.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.19-.57-.34z" fill="#25D366"/>
           </svg>
-          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">WhatsApp</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.04em;color:rgba(255,255,255,.5)">WhatsApp</span>
         </button>
 
         <!-- LinkedIn -->
-        <button onclick="qShareLI()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="#0A66C2">
+        <button onclick="qShareLI()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:14px;padding:11px 4px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#0A66C2">
             <rect width="24" height="24" rx="4" fill="#0A66C2" opacity=".15"/>
             <path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4V8.48zM13.32 8.48H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.82-2.91l.14-1.68z" fill="#0A66C2"/>
           </svg>
-          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">LinkedIn</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.04em;color:rgba(255,255,255,.5)">LinkedIn</span>
         </button>
 
         <!-- Facebook -->
-        <button onclick="qShareFB()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1877F2">
+        <button onclick="qShareFB()" style="background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:14px;padding:11px 4px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:background .18s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
             <circle cx="12" cy="12" r="12" fill="#1877F2" opacity=".15"/>
             <path d="M17 2h-3a5 5 0 00-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" fill="#1877F2" stroke="#1877F2" stroke-width=".5"/>
           </svg>
-          <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.5)">Facebook</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.04em;color:rgba(255,255,255,.5)">Facebook</span>
         </button>
 
       </div>
