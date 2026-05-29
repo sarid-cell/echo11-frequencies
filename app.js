@@ -1172,16 +1172,15 @@ function _qToast(msg, ms=5000){ showTipFeedback(msg, ms) }
 async function _updateQShareUI(){
   const nativeBtn = document.getElementById('qshare-native-btn')
   if(!nativeBtn) return
+  // Only show on mobile — desktop share sheet shows Mail/AirDrop/Notes (not social apps)
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+  if(!isMobile || !navigator.share){ nativeBtn.style.display = 'none'; return }
   let canFileShare = false
-  if(navigator.share){
-    try{
-      const f = new File(['x'], 't.png', { type:'image/png' })
-      canFileShare = !!(navigator.canShare && navigator.canShare({ files:[f] }))
-    }catch(_){}
-  }
-  // Show native share button on any device with share support
-  nativeBtn.style.display = navigator.share ? 'flex' : 'none'
-  // Update label
+  try{
+    const f = new File(['x'], 't.png', { type:'image/png' })
+    canFileShare = !!(navigator.canShare && navigator.canShare({ files:[f] }))
+  }catch(_){}
+  nativeBtn.style.display = 'flex'
   const lbl = document.getElementById('qshare-native-lbl')
   if(lbl){
     const isHe = lang === 'he'
