@@ -14,9 +14,10 @@
 
 <!-- ═══ Meta tags · AEO/SEO optimized ═══ -->
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="echo.11"/>
-<meta name="theme-color" content="#f5f4f0"/>
+<meta name="theme-color" content="#f5f0e8" media="(prefers-color-scheme: light)"/>
+<meta name="theme-color" content="#080706" media="(prefers-color-scheme: dark)"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 
 <!-- ✦ Primary SEO -->
@@ -66,7 +67,6 @@
 <link rel="shortcut icon" href="/favicon.ico"/>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <link rel="manifest" href="/site.webmanifest"/>
-<link rel="manifest" href="manifest.json"/>
 
 <title>echo.11 — Free Binaural Beats &amp; Healing Frequencies | Sleep · Focus · Anxiety Relief</title>
 
@@ -76,13 +76,18 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
+      "@type": ["WebApplication", "SoftwareApplication"],
       "name": "echo.11",
       "alternateName": "echo.11 · frequencies",
       "url": "https://echo11.space/",
       "description": "A web-based wellness app delivering 22 healing frequencies — binaural beats, solfeggio tones, and original compositions — inspired by the declassified CIA Gateway Experience (1983) and Monroe Institute research. Designed for sleep, focus, healing, and abundance.",
       "applicationCategory": "HealthApplication",
-      "operatingSystem": "Web Browser",
+      "applicationSubCategory": "Sound Healing",
+      "operatingSystem": "iOS, Android, Web Browser",
+      "availableOnDevice": "Mobile, Tablet, Desktop",
+      "softwareVersion": "1.0",
+      "downloadUrl": "https://echo11.space/",
+      "installUrl": "https://echo11.space/",
       "browserRequirements": "Requires modern browser with Web Audio API support",
       "offers": [
         {
@@ -119,7 +124,7 @@
       "@type": "Organization",
       "name": "echo.11",
       "url": "https://echo11.space/",
-      "logo": "https://echo11.space/astronaut.jpg",
+      "logo": "https://echo11.space/web-app-manifest-512x512.png",
       "description": "echo.11 designs structured sound experiences for nervous system regulation. Built on declassified research and modern wellness science.",
       "founder": {
         "@type": "Person",
@@ -232,6 +237,86 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Yes. echo.11 is fully bilingual — English and Hebrew (עברית) with RTL layout. Switch language from within the app or visit echo11.space/?lang=he for the Hebrew interface. echo.11 is built by Shira Sarid (שירה שריד), based in Israel."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I add echo.11 to my iPhone or Android home screen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On iPhone (iOS Safari): Open echo11.space in Safari, tap the Share button at the bottom, then tap 'Add to Home Screen'. On Android (Chrome): Open echo11.space in Chrome, tap the three-dot menu, then tap 'Add to Home screen'. echo.11 installs as a full-screen app with no browser chrome — exactly like a native app."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is brainwave entrainment?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Brainwave entrainment is the brain's natural tendency to synchronize its electrical activity with an external rhythmic stimulus. When you listen to binaural beats or isochronic tones at a specific frequency, your brainwaves gradually shift toward that frequency — a phenomenon called the frequency-following response. echo.11 uses this principle to guide listeners into desired mental states."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Solfeggio scale?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Solfeggio frequencies are a set of ancient tones — 396, 417, 432, 528, 639, 741, 852, and 963 Hz — used in Gregorian chant and sacred music traditions. Each tone is associated with a specific healing property: 396 Hz for liberating guilt and fear, 528 Hz for DNA repair and love, 639 Hz for relationships, 741 Hz for intuition and awakening. echo.11 generates all eight Solfeggio tones with mathematical precision."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is 963 Hz used for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "963 Hz is the highest Solfeggio frequency, often called the 'frequency of the gods' or the 'pineal gland activator'. It is associated with spiritual awakening, divine connection, and returning to oneness. In echo.11, 963 Hz Solfeggio is available in the frequency catalog for deep spiritual meditation and crown chakra activation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use echo.11 while sleeping?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. echo.11's Delta Sleep frequency (2 Hz binaural beats) is specifically designed to be played during sleep to support deep sleep cycles. To use safely: set the timer using the in-app timer, keep volume low, and use comfortable headphones or a pillow speaker. The Sleep mode in echo.11 dims the screen and enables continuous playback so the audio continues through the night."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is echo.11 safe for children?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "echo.11 is designed for adults. Children under 12 should not use binaural beats without parental supervision, as the brainwave entrainment effects are stronger on developing brains. Solfeggio frequencies played at moderate volume are generally considered safe for all ages. Always consult a pediatrician for guidance regarding children with neurological conditions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the echo.11 frequency timer work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "echo.11 includes a built-in session timer. After starting a frequency, you can set a timer (5, 10, 15, 30, 60 minutes or infinite) and the audio will fade out gently when time expires. This is useful for sleep sessions (so you don't sleep all night with headphones in) and for structured meditation practices."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between solfeggio and binaural beats?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Solfeggio frequencies are single pure tones at specific Hz values (e.g., 528 Hz) played in both ears simultaneously — they work through speakers or headphones. Binaural beats require headphones: two slightly different tones are played in each ear, and the brain perceives a phantom beat at the difference (e.g., 300 Hz left + 302 Hz right = 2 Hz delta beat). echo.11 offers both types, clearly labeled in the frequency catalog."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who created echo.11?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "echo.11 was created by Shira Sarid (שירה שריד), an Israeli wellness entrepreneur and sound healing enthusiast based in Israel. The app was built as a modern, science-backed alternative to the existing frequency apps — inspired by CIA Gateway Experience research, Monroe Institute protocols, and a deep personal interest in consciousness and healing. The name 'echo.11' reflects the idea of the mind echoing back to its natural, resonant frequency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does echo.11 require an internet connection?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "After the first visit, echo.11 works offline. The app is a Progressive Web App (PWA) with a Service Worker that caches all content locally. Frequencies are generated in real-time using the Web Audio API — they are not audio files that need to be downloaded. This means echo.11 works on planes, in areas with no signal, and in any offline environment."
           }
         }
       ]
@@ -2543,8 +2628,8 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-title{animation:sp-fade-up .9s .75s cubic-bezier(.22,.8,.32,1) both}
 .sp-sub{animation:sp-fade-up .8s .9s ease both}
 .sp-line{animation:sp-line-grow .6s 1.05s ease both}
-.sp-desc{animation:sp-fade-up .8s 1.0s ease both}
-.sp-hp{animation:sp-fade-up .8s 1.15s ease both}
+.sp-desc{animation:sp-fade-up .7s 0.55s ease both}
+.sp-hp{animation:sp-fade-up .7s 0.6s ease both}
 .sp-btn{
   width:100%;
   padding:16px 28px;
@@ -2581,7 +2666,7 @@ input[type=range]{accent-color:var(--t3);width:100%}
 .sp-hp{display:flex;align-items:center;gap:12px;background:var(--card);border:.5px solid var(--b2);border-radius:12px;padding:11px 15px;margin-bottom:15px;max-width:270px;width:100%}
 .sp-hp-m{font-size:11px;font-weight:300;color:var(--t2)}
 .sp-hp-s{font-size:10px;letter-spacing:.14em;color:var(--t3);margin-top:2px}
-.sp-btn{max-width:270px;width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:opacity .2s;animation:sp-fade-up .9s 1.3s cubic-bezier(.22,.8,.32,1) both}
+.sp-btn{max-width:270px;width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.24em;color:var(--bg);cursor:pointer;text-align:center;transition:opacity .2s;animation:sp-fade-up .7s 0.4s cubic-bezier(.22,.8,.32,1) both}
 .sp-btn:hover,.sp-btn:focus{opacity:.84;outline:2px solid var(--t1);outline-offset:3px}
 
 /* SHARED */
@@ -3555,9 +3640,40 @@ button{font-variant-emoji:text}
   font-size:9px;letter-spacing:.1em;
   color:rgba(245,243,238,.15);line-height:1.9;
 }
+/* images and media — no drag, no save-as */
+img,video,canvas,audio{
+  -webkit-user-select:none;
+  user-select:none;
+  pointer-events:none;
+}
+canvas{pointer-events:auto;}
 </style>
+<script>
+(function(){
+  /* Right-click: allow on text/buttons, block on images/canvas */
+  document.addEventListener('contextmenu',function(e){
+    var t=e.target;
+    if(t.tagName==='IMG'||t.tagName==='CANVAS'||t.tagName==='VIDEO'){e.preventDefault();}
+  },true);
+  /* Block view-source, save-page, devtools — not Ctrl+C (accessibility) */
+  document.addEventListener('keydown',function(e){
+    var k=(e.key||'').toLowerCase();
+    if((e.ctrlKey||e.metaKey)&&(k==='u'||k==='s')){e.preventDefault();}
+    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&(k==='i'||k==='j')){e.preventDefault();}
+    if(k==='f12'){e.preventDefault();}
+  },true);
+  /* Block drag-to-copy on images */
+  document.addEventListener('dragstart',function(e){
+    if(e.target.tagName==='IMG'){e.preventDefault();}
+  },true);
+})();
+</script>
 </head>
 <body class="dark">
+
+<!-- Screen reader live region — announces frequency changes, timer events, etc. -->
+<div id="sr-announcer" aria-live="polite" aria-atomic="true"
+     style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;pointer-events:none"></div>
 
 <!-- SEO static catalog — visible to crawlers, hidden from users.
      Googlebot indexes this on first crawl before JS renders the app. -->
@@ -3624,9 +3740,24 @@ button{font-variant-emoji:text}
     <dt>Is echo.11 free?</dt><dd>Yes. echo.11 is in free beta. All 22 frequencies are accessible without payment or signup.</dd>
     <dt>Do I need headphones?</dt><dd>Headphones are required for binaural beats. Solfeggio tones work on speakers too.</dd>
     <dt>Does it work on iPhone?</dt><dd>Yes. echo.11 is a Progressive Web App — open echo11.space in Safari on iPhone, no App Store download needed.</dd>
+    <dt>How do I add echo.11 to my iPhone home screen?</dt><dd>Open echo11.space in Safari, tap the Share button, then tap "Add to Home Screen". The app will install like a native app — no App Store required.</dd>
     <dt>What is the CIA Gateway Experience?</dt><dd>A 1983 declassified U.S. Army intelligence report on brainwave entrainment using binaural beats, developed at the Monroe Institute. The Army concluded the technique had real, measurable effects on consciousness.</dd>
     <dt>Can binaural beats help with anxiety?</dt><dd>Theta (6 Hz) and Alpha (10 Hz) binaural beats have peer-reviewed evidence for short-term anxiety reduction. echo.11 offers both, alongside solfeggio tones traditionally used for stress relief.</dd>
     <dt>What is misophonia?</dt><dd>Misophonia is extreme sensitivity to specific sounds. echo.11 is the only free binaural beats app with a dedicated Misophonia Relief frequency (Theta 6 Hz, auditory nervous system calming).</dd>
+    <dt>What is brainwave entrainment?</dt><dd>Brainwave entrainment is the brain's tendency to synchronize with an external rhythmic stimulus. When you listen to binaural beats, your brainwaves shift toward that frequency — called the frequency-following response.</dd>
+    <dt>Can I use echo.11 while sleeping?</dt><dd>Yes. Delta Sleep (2 Hz) is designed for sleep. Set the built-in timer, use comfortable headphones at low volume, and the audio fades when the timer expires.</dd>
+    <dt>Does echo.11 work offline?</dt><dd>Yes. After your first visit, echo.11 works without internet. The Service Worker caches all content locally. Frequencies are generated in real-time by the Web Audio API — not downloaded files.</dd>
+    <dt>What is the difference between solfeggio and binaural beats?</dt><dd>Solfeggio are single pure tones (e.g., 528 Hz) that work on speakers. Binaural beats need headphones — two slightly different tones create a phantom beat in the brain (e.g., 300 Hz + 302 Hz = 2 Hz delta beat).</dd>
+    <dt>Who created echo.11?</dt><dd>echo.11 was created by Shira Sarid (שירה שריד), an Israeli wellness entrepreneur inspired by CIA Gateway Experience research, Monroe Institute protocols, and personal healing.</dd>
+  </dl>
+
+  <h2>echo.11 — אפליקציית תדרים בעברית · שאלות ותשובות</h2>
+  <dl>
+    <dt>מהם תדרי ריפוי?</dt><dd>תדרי ריפוי הם גלי קול בתדרים ספציפיים — כמו 528 Hz (תדר האהבה), 432 Hz (תדר היקום), או 7.83 Hz (תהודת שומן) — המשמשים לאיזון ועוגן של מערכת העצבים.</dd>
+    <dt>מה זה ביינוראל ביטס?</dt><dd>ביינוראל ביטס הוא תופעת שמע בה שני תדרים שונים מעט מושמעים בכל אוזן בנפרד, והמוח "שומע" את ההפרש ביניהם — ומסנכרן את גלי המוח לתדר זה.</dd>
+    <dt>האם echo.11 מתאים לשינה?</dt><dd>כן. תדר Delta Sleep (2 Hz) של echo.11 נועד במיוחד לשינה עמוקה. השתמשו בטיימר המובנה ובאוזניות בעוצמה נמוכה.</dd>
+    <dt>מה זה 528 Hz?</dt><dd>528 Hz הוא "תדר האהבה" — טון MI בסולם הסולפג׳יו העתיק. מיוחס לפתיחת הלב, שחרור רגשי ורפוי עצמי. echo.11 מייצר 528 Hz מדויק מתמטית.</dd>
+    <dt>האם אפשר להשתמש ב-echo.11 בלי הורדה?</dt><dd>כן. echo.11 הוא Progressive Web App — ניתן להשתמש בו ישירות מהדפדפן בכתובת echo11.space, ללא הורדה מחנות האפליקציות.</dd>
   </dl>
 </div>
 
@@ -3878,11 +4009,10 @@ button{font-variant-emoji:text}
       <span id="sp-btn-hp">▸ &nbsp; enter the frequency</span>
     </button>
     <!-- Secondary: no headphones path -->
-    <div style="margin-top:10px;text-align:center">
-      <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.4)">no headphones?</span>
+    <div style="margin-top:14px;text-align:center;animation:sp-fade-up .6s 0.6s ease both">
       <button onclick="openPlayerDirect('hz528')"
-        style="display:inline;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.14em;color:rgba(245,243,238,.65);cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0 0 0 4px"
-        id="sp-btn-no-hp">start with 528 Hz →</button>
+        style="background:none;border:.5px solid rgba(245,243,238,.25);border-radius:20px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;color:rgba(245,243,238,.7);cursor:pointer;padding:8px 18px"
+        id="sp-btn-no-hp">no headphones? start with 528 Hz →</button>
     </div>
   </div>
 </div>
@@ -3894,7 +4024,7 @@ button{font-variant-emoji:text}
     <div id="ob-icon" style="font-size:32px;text-align:center;margin-bottom:14px;font-family:'Spectral',Georgia,serif;font-weight:200;color:var(--t1)"></div>
     <div id="ob-title" style="font-family:'Spectral',Georgia,serif;font-size:22px;font-weight:200;color:var(--t1);text-align:center;margin-bottom:10px;line-height:1.2"></div>
     <div id="ob-body" style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--t2);text-align:center;line-height:1.75;margin-bottom:28px"></div>
-    <button id="ob-btn" onclick="obNext()" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer"></button>
+    <button id="ob-btn" onclick="obNext()" aria-label="Continue" style="width:100%;padding:16px;background:var(--t1);border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:.22em;color:var(--bg);cursor:pointer"></button>
     <button onclick="obSkip()" style="width:100%;margin-top:12px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;color:var(--t4);cursor:pointer;padding:8px">skip →</button>
   </div>
 </div>
@@ -3938,7 +4068,7 @@ button{font-variant-emoji:text}
       <video id="hero-video" loop muted playsinline preload="none" poster="hero-poster.webp"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;pointer-events:none">
   <source src="hero.mp4" type="video/mp4"/>
-  <img src="img_home.webp" alt="echo.11" width="1170" height="2000" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"/>
+  <img src="img_home.webp" alt="echo.11 — ethereal healing frequencies home screen" width="1170" height="2000" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"/>
 </video>
     <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.45) 0%,rgba(0,0,0,.1) 50%,transparent 100%);z-index:1;pointer-events:none"></div>
     </div>
@@ -4418,7 +4548,7 @@ button{font-variant-emoji:text}
 <div id="library" class="scr">
   <!-- Library hero image -->
   <div style="position:relative;height:190px;overflow:hidden;flex-shrink:0;border-bottom:.5px solid var(--b1)">
-    <img src="img_library.jpg" alt="echo.11" width="1170" height="500" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 35%"/>
+    <img src="img_library.jpg" alt="echo.11 frequency library — 22 healing tones catalog" width="1170" height="500" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 35%"/>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,transparent 40%,var(--bg) 100%)"></div>
     <div style="position:absolute;top:0;left:0;right:0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
       <button class="pl-back" id="lib-back" onclick="showHome()" style="color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)">← Back</button>
@@ -4779,7 +4909,8 @@ button{font-variant-emoji:text}
     <div class="echo-tip-divider"></div>
     <div class="echo-tip-explain" id="prof-tip-sub">echo.11 stays free for everyone — no subscription, no ads, no paywall. A tip is a one-time thank-you, like buying coffee for someone whose work moved you.</div>
     <div class="echo-tip-social"><span class="echo-tip-social-dot">✦</span><span id="prof-tip-social">Be the first to support echo.11</span></div>
-    <div class="echo-tip-foot" id="prof-tip-secure">no account needed · one-time · powered by PayPal</div>
+    <button class="tip-bit-btn" onclick="startBitTip()" style="display:none;width:100%;margin-top:10px;padding:11px;background:none;border:.5px solid #1e90ff55;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#60a5fa;cursor:pointer;letter-spacing:.04em">💙 Pay with Bit</button>
+    <div class="echo-tip-foot" id="prof-tip-secure">no PayPal account needed · credit/debit card works · one-time</div>
     <div class="echo-tip-foot" id="prof-tip-hint" style="opacity:.65;margin-top:6px">amount pre-filled · complete on PayPal</div>
     <div class="echo-supporter-thanks">
       <div class="supp-thanks-icon">✦</div>
@@ -4911,7 +5042,8 @@ button{font-variant-emoji:text}
         <span class="tip-lbl" data-tip-sub="14">a month</span>
       </button>
     </div>
-    <div class="echo-tip-foot" id="vis-tip-secure">no account needed · one-time · powered by PayPal</div>
+    <button class="tip-bit-btn" onclick="startBitTip()" style="display:none;width:100%;margin-top:10px;padding:11px;background:none;border:.5px solid #1e90ff55;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#60a5fa;cursor:pointer;letter-spacing:.04em">💙 Pay with Bit</button>
+    <div class="echo-tip-foot" id="vis-tip-secure">no PayPal account needed · credit/debit card works · one-time</div>
     <div class="echo-supporter-thanks">
       <div class="supp-thanks-icon">✦</div>
       <div class="supp-thanks-text">Thank you, Supporter.</div>

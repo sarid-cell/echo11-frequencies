@@ -294,7 +294,8 @@ function buildHistory(){
     const [y,m,day]=key.split('-')
     const freqName=d.freqs?Object.keys(d.freqs).map(fid=>{
       const f=FREQS.find(x=>x.id===fid)
-      return f?(f[lang]||f.en).name:fid
+      if(f) return (f[lang]||f.en).name
+      return fid.replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]))
     }).join(', '):(isHe?'האזנה':'session')
     html+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:.5px solid var(--b1)">
       <div style="flex:1;min-width:0">
@@ -344,6 +345,8 @@ const BRAIN=[
   {t:180,en:"Deep entrainment. Your brain generating <em>Delta waves (0.5–4 Hz)</em>.",he:"שלב סנכרון עמוק. המוח שלך מייצר <em>גלי דלתא (0.5–4 Hz)</em>."},
   {t:300,en:"Optimal depth. <em>Natural recovery processes</em> are now active.",he:"עומק מיטבי. <em>תהליכי ריפוי טבעיים</em> פעילים."},
 ]
+
+function srAnnounce(msg){ const el=document.getElementById('sr-announcer'); if(el){ el.textContent=''; requestAnimationFrame(()=>{ el.textContent=msg }) } }
 
 let lang='en',dark=true,playing=false
 let curIdx=FREQS.findIndex(f=>f.id==='hz432')
@@ -706,6 +709,8 @@ async function audioPlay(f){
     })
     navigator.mediaSession.setActionHandler('play', ()=>{ if(!playing) togglePlay() })
     navigator.mediaSession.setActionHandler('pause', ()=>{ if(playing) doStop() })
+    navigator.mediaSession.setActionHandler('nexttrack', ()=>{ nextFreq(); if(!playing) togglePlay() })
+    navigator.mediaSession.setActionHandler('previoustrack', ()=>{ prevFreq(); if(!playing) togglePlay() })
     navigator.mediaSession.playbackState='playing'
   }
 }
@@ -1736,6 +1741,25 @@ function stopRescue(){
 // Tip Jar — opens PayPal directly (amount pre-filled via PayPal.Me)
 // ─────────────────────────────────────────────────────────────
 const PAYPAL_URL = 'https://paypal.me/echo11space'
+// Set BIT_URL to your Bit (ביט) link to enable Israeli payment option
+// Format: 'https://pay.bit.co.il/user/YOUR_PHONE' — leave empty to hide
+const BIT_URL = ''
+
+function _openLink(url){
+  const a = document.createElement('a')
+  a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'
+  a.style.display = 'none'; document.body.appendChild(a)
+  a.click(); a.remove()
+}
+
+function startBitTip(){
+  if(!BIT_URL) return
+  track('tip_clicked', { event_category:'tip_jar', event_label:'bit', currency:'ILS' })
+  const pending = { amount: null, dest: BIT_URL, label: 'bit' }
+  window._tipPending = pending
+  sessionStorage.setItem('echo11_tipPending', JSON.stringify(pending))
+  _openLink(BIT_URL)
+}
 
 function launchConfetti(days){
   const isHe=lang==='he'
@@ -1769,22 +1793,10 @@ function startTip(amount){
   const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'paypal'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
   const dest = amount ? `${PAYPAL_URL}/${amount}` : PAYPAL_URL
-
-  // Use anchor click — never blocked by popup blockers (unlike window.open).
-  // Must be synchronous within the click event to work on iOS Safari.
-  const a = document.createElement('a')
-  a.href = dest
-  a.target = '_blank'
-  a.rel = 'noopener noreferrer'
-  a.style.display = 'none'
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-
-  // Persist pending tip to sessionStorage so mobile page-reload doesn't lose it
   const pending = { amount, dest, label }
   window._tipPending = pending
   sessionStorage.setItem('echo11_tipPending', JSON.stringify(pending))
+  _openLink(dest)
 }
 
 function showTipFeedback(html, duration){
@@ -1909,7 +1921,7 @@ function translateTipJar(){
                            he:'echo.11 נשאר חינמי לכולם — בלי מנוי, בלי פרסומות, בלי תשלום חובה. טיפ הוא תודה חד-פעמית, כמו לקנות כוס קפה למי שעבודתה ריגשה אותך.' },
     'prof-tip-social':   { en:'Be the first to support echo.11',                   he:'היו הראשונים לתמוך ב-echo.11' },
     'prof-tip-hint':     { en:'amount pre-filled · complete on PayPal',             he:'הסכום ממולא מראש · השלמה ב-PayPal' },
-    'prof-tip-secure':   { en:'no account needed · one-time · powered by PayPal',  he:'בלי הרשמה · חד-פעמי · דרך PayPal' },
+    'prof-tip-secure':   { en:'no PayPal account needed · credit/debit card works · one-time',  he:'ללא חשבון PayPal · כרטיס אשראי/דביט עובד · חד-פעמי' },
     'prof-gifts-lbl':    { en:'Gifts from echo.11',                                he:'מתנות מ-echo.11' },
     'prof-gifts-title':  { en:'Visions for your screen.',                          he:'חזיונות למסך שלך.' },
     'prof-gifts-sub':    { en:'Free. No login. No paywall. Take what speaks to you.', he:'חינם. בלי הרשמה. בלי חומה. קחו את מה שמדבר אליכם.' },
@@ -1938,7 +1950,7 @@ function translateTipJar(){
     'vis-dl-3':          { en:'Free download',                                     he:'הורדה חינמית' },
     'vis-tip-lbl':       { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
     'vis-tip-headline':  { en:'If a vision moved you, you can return the gift.',   he:'אם חיזיון אחד הזיז משהו, אפשר להגיד תודה.' },
-    'vis-tip-secure':    { en:'no account needed · one-time · powered by PayPal',   he:'בלי הרשמה · חד-פעמי · דרך PayPal' },
+    'vis-tip-secure':    { en:'no PayPal account needed · credit/debit card works · one-time',   he:'ללא חשבון PayPal · כרטיס אשראי/דביט עובד · חד-פעמי' },
     'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
   const htmlIds = new Set(['home-support-tagline'])
@@ -1956,6 +1968,12 @@ function translateTipJar(){
   })
   const badge = document.querySelector('[data-tip-badge]')
   if(badge) badge.textContent = isHe ? 'הכי נבחר' : 'most chosen'
+
+  // Show Bit (ביט) button if configured — Israeli payment option
+  document.querySelectorAll('.tip-bit-btn').forEach(btn => {
+    btn.style.display = BIT_URL ? 'block' : 'none'
+    btn.textContent = isHe ? '💙 שלמי עם ביט' : '💙 Pay with Bit'
+  })
 }
 
 // Share — Web Share API → WhatsApp sheet fallback
@@ -2503,6 +2521,7 @@ function doStop(){
   // Save accumulated time so resuming the same frequency continues the counter
   if(elapsed>0) sessionStorage.setItem('echo11_resume_'+f.id, elapsed)
   elapsed=0
+  srAnnounce(lang==='he' ? 'השמעה הופסקה' : 'Playback stopped')
   document.getElementById('el-row').style.display='none'
   if('mediaSession' in navigator) navigator.mediaSession.playbackState='paused'
   updatePlayBtn()
@@ -2541,6 +2560,8 @@ async function togglePlay(){
     return
   }
   await audioPlay(f); playing=true; audioVol(f.id,volume)
+  const _ft=f[lang]||f.en
+  srAnnounce(lang==='he' ? `מנגן: ${_ft.name} — ${f.hz} Hz` : `Now playing: ${_ft.name} — ${f.hz} Hz`)
   // Restore accumulated time if resuming the same frequency in the same session
   const _resumed=parseInt(sessionStorage.getItem('echo11_resume_'+f.id)||0)
   elapsed=_resumed; sessionStorage.removeItem('echo11_resume_'+f.id)
