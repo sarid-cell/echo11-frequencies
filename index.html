@@ -3671,6 +3671,10 @@ canvas{pointer-events:auto;}
 </head>
 <body class="dark">
 
+<!-- Screen reader live region — announces frequency changes, timer events, etc. -->
+<div id="sr-announcer" aria-live="polite" aria-atomic="true"
+     style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;pointer-events:none"></div>
+
 <!-- SEO static catalog — visible to crawlers, hidden from users.
      Googlebot indexes this on first crawl before JS renders the app. -->
 <div id="seo-catalog" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;pointer-events:none">
@@ -3736,9 +3740,24 @@ canvas{pointer-events:auto;}
     <dt>Is echo.11 free?</dt><dd>Yes. echo.11 is in free beta. All 22 frequencies are accessible without payment or signup.</dd>
     <dt>Do I need headphones?</dt><dd>Headphones are required for binaural beats. Solfeggio tones work on speakers too.</dd>
     <dt>Does it work on iPhone?</dt><dd>Yes. echo.11 is a Progressive Web App — open echo11.space in Safari on iPhone, no App Store download needed.</dd>
+    <dt>How do I add echo.11 to my iPhone home screen?</dt><dd>Open echo11.space in Safari, tap the Share button, then tap "Add to Home Screen". The app will install like a native app — no App Store required.</dd>
     <dt>What is the CIA Gateway Experience?</dt><dd>A 1983 declassified U.S. Army intelligence report on brainwave entrainment using binaural beats, developed at the Monroe Institute. The Army concluded the technique had real, measurable effects on consciousness.</dd>
     <dt>Can binaural beats help with anxiety?</dt><dd>Theta (6 Hz) and Alpha (10 Hz) binaural beats have peer-reviewed evidence for short-term anxiety reduction. echo.11 offers both, alongside solfeggio tones traditionally used for stress relief.</dd>
     <dt>What is misophonia?</dt><dd>Misophonia is extreme sensitivity to specific sounds. echo.11 is the only free binaural beats app with a dedicated Misophonia Relief frequency (Theta 6 Hz, auditory nervous system calming).</dd>
+    <dt>What is brainwave entrainment?</dt><dd>Brainwave entrainment is the brain's tendency to synchronize with an external rhythmic stimulus. When you listen to binaural beats, your brainwaves shift toward that frequency — called the frequency-following response.</dd>
+    <dt>Can I use echo.11 while sleeping?</dt><dd>Yes. Delta Sleep (2 Hz) is designed for sleep. Set the built-in timer, use comfortable headphones at low volume, and the audio fades when the timer expires.</dd>
+    <dt>Does echo.11 work offline?</dt><dd>Yes. After your first visit, echo.11 works without internet. The Service Worker caches all content locally. Frequencies are generated in real-time by the Web Audio API — not downloaded files.</dd>
+    <dt>What is the difference between solfeggio and binaural beats?</dt><dd>Solfeggio are single pure tones (e.g., 528 Hz) that work on speakers. Binaural beats need headphones — two slightly different tones create a phantom beat in the brain (e.g., 300 Hz + 302 Hz = 2 Hz delta beat).</dd>
+    <dt>Who created echo.11?</dt><dd>echo.11 was created by Shira Sarid (שירה שריד), an Israeli wellness entrepreneur inspired by CIA Gateway Experience research, Monroe Institute protocols, and personal healing.</dd>
+  </dl>
+
+  <h2>echo.11 — אפליקציית תדרים בעברית · שאלות ותשובות</h2>
+  <dl>
+    <dt>מהם תדרי ריפוי?</dt><dd>תדרי ריפוי הם גלי קול בתדרים ספציפיים — כמו 528 Hz (תדר האהבה), 432 Hz (תדר היקום), או 7.83 Hz (תהודת שומן) — המשמשים לאיזון ועוגן של מערכת העצבים.</dd>
+    <dt>מה זה ביינוראל ביטס?</dt><dd>ביינוראל ביטס הוא תופעת שמע בה שני תדרים שונים מעט מושמעים בכל אוזן בנפרד, והמוח "שומע" את ההפרש ביניהם — ומסנכרן את גלי המוח לתדר זה.</dd>
+    <dt>האם echo.11 מתאים לשינה?</dt><dd>כן. תדר Delta Sleep (2 Hz) של echo.11 נועד במיוחד לשינה עמוקה. השתמשו בטיימר המובנה ובאוזניות בעוצמה נמוכה.</dd>
+    <dt>מה זה 528 Hz?</dt><dd>528 Hz הוא "תדר האהבה" — טון MI בסולם הסולפג׳יו העתיק. מיוחס לפתיחת הלב, שחרור רגשי ורפוי עצמי. echo.11 מייצר 528 Hz מדויק מתמטית.</dd>
+    <dt>האם אפשר להשתמש ב-echo.11 בלי הורדה?</dt><dd>כן. echo.11 הוא Progressive Web App — ניתן להשתמש בו ישירות מהדפדפן בכתובת echo11.space, ללא הורדה מחנות האפליקציות.</dd>
   </dl>
 </div>
 

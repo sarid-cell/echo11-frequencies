@@ -345,6 +345,8 @@ const BRAIN=[
   {t:300,en:"Optimal depth. <em>Natural recovery processes</em> are now active.",he:"עומק מיטבי. <em>תהליכי ריפוי טבעיים</em> פעילים."},
 ]
 
+function srAnnounce(msg){ const el=document.getElementById('sr-announcer'); if(el){ el.textContent=''; requestAnimationFrame(()=>{ el.textContent=msg }) } }
+
 let lang='en',dark=true,playing=false
 let curIdx=FREQS.findIndex(f=>f.id==='hz432')
 let volume=40,elapsed=0,activeTab=0,selTimerSec=1200
@@ -2516,6 +2518,7 @@ function doStop(){
   // Save accumulated time so resuming the same frequency continues the counter
   if(elapsed>0) sessionStorage.setItem('echo11_resume_'+f.id, elapsed)
   elapsed=0
+  srAnnounce(lang==='he' ? 'השמעה הופסקה' : 'Playback stopped')
   document.getElementById('el-row').style.display='none'
   if('mediaSession' in navigator) navigator.mediaSession.playbackState='paused'
   updatePlayBtn()
@@ -2554,6 +2557,8 @@ async function togglePlay(){
     return
   }
   await audioPlay(f); playing=true; audioVol(f.id,volume)
+  const _ft=f[lang]||f.en
+  srAnnounce(lang==='he' ? `מנגן: ${_ft.name} — ${f.hz} Hz` : `Now playing: ${_ft.name} — ${f.hz} Hz`)
   // Restore accumulated time if resuming the same frequency in the same session
   const _resumed=parseInt(sessionStorage.getItem('echo11_resume_'+f.id)||0)
   elapsed=_resumed; sessionStorage.removeItem('echo11_resume_'+f.id)
