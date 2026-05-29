@@ -1736,6 +1736,25 @@ function stopRescue(){
 // Tip Jar — opens PayPal directly (amount pre-filled via PayPal.Me)
 // ─────────────────────────────────────────────────────────────
 const PAYPAL_URL = 'https://paypal.me/echo11space'
+// Set BIT_URL to your Bit (ביט) link to enable Israeli payment option
+// Format: 'https://pay.bit.co.il/user/YOUR_PHONE' — leave empty to hide
+const BIT_URL = ''
+
+function _openLink(url){
+  const a = document.createElement('a')
+  a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'
+  a.style.display = 'none'; document.body.appendChild(a)
+  a.click(); a.remove()
+}
+
+function startBitTip(){
+  if(!BIT_URL) return
+  track('tip_clicked', { event_category:'tip_jar', event_label:'bit', currency:'ILS' })
+  const pending = { amount: null, dest: BIT_URL, label: 'bit' }
+  window._tipPending = pending
+  sessionStorage.setItem('echo11_tipPending', JSON.stringify(pending))
+  _openLink(BIT_URL)
+}
 
 function launchConfetti(days){
   const isHe=lang==='he'
@@ -1769,22 +1788,10 @@ function startTip(amount){
   const label = [5,7,14].includes(amount) ? `usd_${amount}_suggested` : 'paypal'
   track('tip_clicked', { event_category:'tip_jar', event_label:label, value:amount, currency:'USD' })
   const dest = amount ? `${PAYPAL_URL}/${amount}` : PAYPAL_URL
-
-  // Use anchor click — never blocked by popup blockers (unlike window.open).
-  // Must be synchronous within the click event to work on iOS Safari.
-  const a = document.createElement('a')
-  a.href = dest
-  a.target = '_blank'
-  a.rel = 'noopener noreferrer'
-  a.style.display = 'none'
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-
-  // Persist pending tip to sessionStorage so mobile page-reload doesn't lose it
   const pending = { amount, dest, label }
   window._tipPending = pending
   sessionStorage.setItem('echo11_tipPending', JSON.stringify(pending))
+  _openLink(dest)
 }
 
 function showTipFeedback(html, duration){
@@ -1909,7 +1916,7 @@ function translateTipJar(){
                            he:'echo.11 נשאר חינמי לכולם — בלי מנוי, בלי פרסומות, בלי תשלום חובה. טיפ הוא תודה חד-פעמית, כמו לקנות כוס קפה למי שעבודתה ריגשה אותך.' },
     'prof-tip-social':   { en:'Be the first to support echo.11',                   he:'היו הראשונים לתמוך ב-echo.11' },
     'prof-tip-hint':     { en:'amount pre-filled · complete on PayPal',             he:'הסכום ממולא מראש · השלמה ב-PayPal' },
-    'prof-tip-secure':   { en:'no account needed · one-time · powered by PayPal',  he:'בלי הרשמה · חד-פעמי · דרך PayPal' },
+    'prof-tip-secure':   { en:'no PayPal account needed · credit/debit card works · one-time',  he:'ללא חשבון PayPal · כרטיס אשראי/דביט עובד · חד-פעמי' },
     'prof-gifts-lbl':    { en:'Gifts from echo.11',                                he:'מתנות מ-echo.11' },
     'prof-gifts-title':  { en:'Visions for your screen.',                          he:'חזיונות למסך שלך.' },
     'prof-gifts-sub':    { en:'Free. No login. No paywall. Take what speaks to you.', he:'חינם. בלי הרשמה. בלי חומה. קחו את מה שמדבר אליכם.' },
@@ -1938,7 +1945,7 @@ function translateTipJar(){
     'vis-dl-3':          { en:'Free download',                                     he:'הורדה חינמית' },
     'vis-tip-lbl':       { en:'Support echo.11',                                   he:'תמיכה ב-echo.11' },
     'vis-tip-headline':  { en:'If a vision moved you, you can return the gift.',   he:'אם חיזיון אחד הזיז משהו, אפשר להגיד תודה.' },
-    'vis-tip-secure':    { en:'no account needed · one-time · powered by PayPal',   he:'בלי הרשמה · חד-פעמי · דרך PayPal' },
+    'vis-tip-secure':    { en:'no PayPal account needed · credit/debit card works · one-time',   he:'ללא חשבון PayPal · כרטיס אשראי/דביט עובד · חד-פעמי' },
     'vis-footer':        { en:'A space to return to. Always.',                     he:'מרחב לחזור אליו. תמיד.' },
   }
   const htmlIds = new Set(['home-support-tagline'])
@@ -1956,6 +1963,12 @@ function translateTipJar(){
   })
   const badge = document.querySelector('[data-tip-badge]')
   if(badge) badge.textContent = isHe ? 'הכי נבחר' : 'most chosen'
+
+  // Show Bit (ביט) button if configured — Israeli payment option
+  document.querySelectorAll('.tip-bit-btn').forEach(btn => {
+    btn.style.display = BIT_URL ? 'block' : 'none'
+    btn.textContent = isHe ? '💙 שלמי עם ביט' : '💙 Pay with Bit'
+  })
 }
 
 // Share — Web Share API → WhatsApp sheet fallback
